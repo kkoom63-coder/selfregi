@@ -25,7 +25,6 @@ header p{font-size:13px;color:rgba(255,255,255,.6)}
 main{max-width:720px;margin:0 auto;padding:20px 14px 60px}
 .card{background:var(--card);border-radius:var(--radius);border:1px solid var(--border);padding:22px;margin-bottom:14px;box-shadow:var(--shadow)}
 .card.blue-card{border:1.5px solid var(--blue);background:#f0f5ff}
-.card.gold-card{border:1.5px solid #d4a843;background:linear-gradient(135deg,#fffbf0,#fff8e6)}
 .ch{display:flex;align-items:center;gap:10px;margin-bottom:16px}
 .ci{width:32px;height:32px;background:#eef3fb;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
 .ct{font-size:14px;font-weight:700;color:var(--navy)}
@@ -59,14 +58,6 @@ select{cursor:pointer;appearance:auto}
 .btn-custom-toggle{display:inline-flex;align-items:center;gap:6px;background:none;border:1px solid var(--border);border-radius:8px;padding:7px 13px;font-size:12px;font-family:inherit;color:var(--muted);cursor:pointer;transition:border-color .15s,color .15s;margin-top:10px}
 .btn-custom-toggle:hover{border-color:var(--blue);color:var(--blue)}
 .btn-custom-toggle.active{border-color:var(--blue);color:var(--blue);background:#eef3ff}
-
-/* 대행서비스 */
-.pbadge{display:inline-flex;align-items:center;background:var(--gold);color:#fff;font-size:9px;font-weight:700;letter-spacing:.8px;padding:2px 7px;border-radius:4px;margin-bottom:8px}
-.pl{list-style:none}
-.pl li{font-size:12px;color:#5a4000;padding:2px 0;padding-left:16px;position:relative}
-.pl li::before{content:'✓';position:absolute;left:0;color:var(--gold);font-weight:700}
-.pc{margin-top:12px;font-size:11px;color:var(--muted)}
-.pc a{color:var(--blue);text-decoration:none}
 
 /* 체크리스트 */
 .cl-tab{display:flex;gap:8px;margin-bottom:16px}
@@ -164,11 +155,10 @@ footer{text-align:center;padding:18px;font-size:11px;color:#a0aec0;max-width:720
     </div>
   </div>
   <div class="ntc inf">
-    <strong>💡 대지지분을 모르는 경우:</strong> 매매(분양)계약서·등기부등본에서 확인하거나 아래 플러스 서비스를 이용해주세요.
+    <strong>💡 대지지분을 모르는 경우:</strong> 매매(분양)계약서·등기부등본에서 확인하세요.
   </div>
 </div>
 
-<!-- hidden: 대행서비스용 -->
 <input type="hidden" id="trust-year"><input type="hidden" id="trust-month">
 <input type="hidden" id="trust-day"><input type="hidden" id="receipt-no">
 <input type="hidden" id="trust-book-no"><input type="hidden" id="trust-book-sub">
@@ -227,7 +217,7 @@ footer{text-align:center;padding:18px;font-size:11px;color:#a0aec0;max-width:720
   </div>
 
   <div class="ntc inf2" style="margin-top:12px">
-    <strong>💡 매수자 사전입력확인서 작성 시:</strong> 인터넷등기소(iros.go.kr) → 열람·발급 → 법인인감증명서 발급지원 → 매도용 매수자 등록에서 위 법인 정보로 매도인 검색 후 본인 정보를 등록합니다. 위임하고 싶다면 <strong>플러스 서비스</strong>를 이용해주세요.
+    <strong>💡 매수자 사전입력확인서 작성 시:</strong> 인터넷등기소(iros.go.kr) → 열람·발급 → 법인인감증명서 발급지원 → 매도용 매수자 등록에서 위 법인 정보로 매도인 검색 후 본인 정보를 등록합니다.
   </div>
 </div>
 
@@ -238,37 +228,6 @@ footer{text-align:center;padding:18px;font-size:11px;color:#a0aec0;max-width:720
     <label>이메일 주소 <span class="req">*</span></label>
     <input type="email" id="user-email" placeholder="예: hong@example.com">
   </div></div>
-</div>
-
-<!-- ⑥ 대행서비스 -->
-<div class="card gold-card">
-  <div class="pbadge">★ 대행 서비스</div>
-  <div class="ch" style="margin-bottom:4px"><div class="ci" style="background:#fef3d0">📑</div><div><div class="ct" style="color:#7a5000">서류 작성 대행 서비스</div><div class="cs" style="color:#9a6e00">직접 작성이 어려우신 분들을 위한 단계별 대행 옵션</div></div></div>
-  <div style="display:flex;flex-direction:column;gap:9px;margin-top:12px">
-    <div style="border:1px solid #e0c870;border-radius:9px;padding:12px 14px;background:#fffdf5">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px">
-        <span style="font-size:12px;font-weight:700;color:#5a3d00">① 기본 서비스</span>
-        <span style="font-size:15px;font-weight:700;color:#7a5000">15,000원</span>
-      </div>
-      <ul class="pl"><li>위임장 (소유권이전등기) 작성 및 발급</li><li>신탁일부해지증서 작성 및 발급</li><li>워드(.docx) + PDF 동시 제공</li></ul>
-    </div>
-    <div style="border:1.5px solid #d4a843;border-radius:9px;padding:12px 14px;background:#fff9e8">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px">
-        <span style="font-size:12px;font-weight:700;color:#5a3d00">② 플러스 서비스 <span style="font-size:10px;font-weight:400;color:#9a6e00">(① 포함)</span></span>
-        <span style="font-size:15px;font-weight:700;color:#7a5000">20,000원</span>
-      </div>
-      <ul class="pl"><li>기본 서비스 전체 포함</li><li>등기부등본 열람 대행 → 대지지분 직접 확인·기입</li><li>신탁등기 접수번호·원부번호 확인 후 기입</li></ul>
-    </div>
-    <div style="border:2px solid #c8901a;border-radius:9px;padding:12px 14px;background:#fff5d6;position:relative">
-      <div style="position:absolute;top:-9px;left:12px;background:#c8901a;color:#fff;font-size:9px;font-weight:700;padding:2px 9px;border-radius:20px">BEST</div>
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px">
-        <span style="font-size:12px;font-weight:700;color:#5a3d00">③ 풀서비스 <span style="font-size:10px;font-weight:400;color:#9a6e00">(①+② 포함)</span></span>
-        <span style="font-size:15px;font-weight:700;color:#7a5000">25,000원</span>
-      </div>
-      <ul class="pl"><li>플러스 서비스 전체 포함</li><li>매수자 사전입력확인서 작성 방법 1:1 안내</li><li>인터넷등기소 매수자 등록 → 확인서 발급 가이드</li></ul>
-    </div>
-  </div>
-  <div class="pc">신청 및 문의: <a href="mailto:contact@selfregi.co.kr">contact@selfregi.co.kr</a> 또는 카카오톡 채널 <strong>셀프등기</strong></div>
 </div>
 
 <!-- ⑦ 체크리스트 -->
