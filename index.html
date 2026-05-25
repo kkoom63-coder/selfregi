@@ -262,18 +262,13 @@ footer{text-align:center;padding:18px;font-size:11px;color:#a0aec0;max-width:720
 <!-- ⑦ 다운로드 -->
 <div class="card">
   <div style="font-size:13px;font-weight:700;color:var(--navy);margin-bottom:12px">📥 서류 생성 및 다운로드</div>
-  <div class="dg">
-    <button class="dbtn d1" onclick="downloadDoc1()">
-      <div class="diw">📝</div>
-      <div class="dn">위임장</div>
-      <div class="ds">소유권이전등기 위임장.docx</div>
-    </button>
-    <button class="dbtn d2" onclick="downloadDoc2()">
-      <div class="diw">🔓</div>
-      <div class="dn">신탁일부해지증서</div>
-      <div class="ds">대지지분포기 해지증서.docx</div>
-    </button>
-  </div>
+  <button class="dbtn d1" onclick="downloadAll()" style="width:100%;display:flex;flex-direction:row;align-items:center;justify-content:center;gap:12px;padding:18px 20px">
+    <div class="diw" style="font-size:22px">📦</div>
+    <div style="text-align:left">
+      <div class="dn">위임장 + 신탁일부해지증서 동시 다운로드</div>
+      <div class="ds">위임장.docx · 신탁일부해지증서.docx 2개 파일</div>
+    </div>
+  </button>
   <div class="ntc inf" style="margin-top:12px">
     <strong>⚠️ 유의사항:</strong> 생성된 서류는 작성 보조 목적입니다. 주민등록번호·날인 등 빈칸은 출력 후 직접 기재하신 후 제출하시기 바랍니다.
   </div>
@@ -432,14 +427,16 @@ async function fillTemplate(b64, replacements) {
 }
 
 // =============================================
-// 위임장 다운로드
+// 위임장 + 신탁일부해지증서 동시 다운로드
 // =============================================
-async function downloadDoc1() {
+async function downloadAll() {
   if (!validate()) return;
   if (typeof JSZip === 'undefined') { showToast('❌ 라이브러리 로딩 중, 잠시 후 다시 시도해주세요', '#c0392b'); return; }
   try {
     const d = getData();
-    const blob = await fillTemplate(WIMI_B64, {
+
+    // 위임장
+    const blob1 = await fillTemplate(WIMI_B64, {
       JIBUN_ADDR: d.jibun,
       DONG: d.dong,
       HO: d.ho,
@@ -455,21 +452,13 @@ async function downloadDoc1() {
       OWNER_NAME: d.ownerName,
       OWNER_ADDR: d.ownerAddr,
     });
-    blobDL(blob, `위임장_${d.ownerName}_${d.dong}동${d.ho}호.docx`);
-    showToast('✅ 위임장 다운로드 완료!');
-    sendConfirmEmail('위임장 (소유권이전등기)');
-  } catch(e) { showToast('❌ ' + e.message, '#c0392b'); console.error(e); }
-}
+    blobDL(blob1, `위임장_${d.ownerName}_${d.dong}동${d.ho}호.docx`);
 
-// =============================================
-// 신탁일부해지증서 다운로드
-// =============================================
-async function downloadDoc2() {
-  if (!validate()) return;
-  if (typeof JSZip === 'undefined') { showToast('❌ 라이브러리 로딩 중, 잠시 후 다시 시도해주세요', '#c0392b'); return; }
-  try {
-    const d = getData();
-    const blob = await fillTemplate(SINTAG_B64, {
+    // 살짝 딜레이 후 신탁일부해지증서 (브라우저 다운로드 충돌 방지)
+    await new Promise(r => setTimeout(r, 400));
+
+    // 신탁일부해지증서
+    const blob2 = await fillTemplate(SINTAG_B64, {
       JIBUN_ADDR: d.jibun,
       DONG: d.dong,
       HO: d.ho,
@@ -488,16 +477,17 @@ async function downloadDoc2() {
       TRUST_ADDR2: '',
       TRUST_CEO: d.tCEO,
     });
-    blobDL(blob, `신탁일부해지증서_${d.ownerName}_${d.dong}동${d.ho}호.docx`);
-    showToast('✅ 신탁일부해지증서 다운로드 완료!');
-    sendConfirmEmail('신탁일부해지증서 (대지지분)');
+    blobDL(blob2, `신탁일부해지증서_${d.ownerName}_${d.dong}동${d.ho}호.docx`);
+
+    showToast('✅ 2개 서류 다운로드 완료!');
+    sendConfirmEmail();
   } catch(e) { showToast('❌ ' + e.message, '#c0392b'); console.error(e); }
 }
 
 // =============================================
 // EmailJS — 다운로드 완료 시 자동 이메일 회신
 // =============================================
-function sendConfirmEmail(docType) {
+function sendConfirmEmail() {
   const email = gv('user-email');
   if (!email) return;
 
@@ -509,7 +499,6 @@ function sendConfirmEmail(docType) {
     building:      d.dong,
     unit:          d.ho,
     trust_company: d.tName,
-    doc_type:      docType,
   }).catch(err => console.warn('EmailJS 오류:', err));
 }
 </script>
