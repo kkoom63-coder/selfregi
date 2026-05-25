@@ -6,6 +6,8 @@
 <title>셀프등기 서류 자동생성기</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>emailjs.init('Ry2pyJz_cIirdIRJF');</script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{--navy:#1e3a5f;--blue:#2a5f9e;--gold:#b8952e;--bg:#f2f4f8;--card:#fff;--text:#1a1e2e;--muted:#6b7280;--border:#dde2ec;--radius:12px;--shadow:0 2px 12px rgba(30,58,95,.08)}
@@ -455,6 +457,7 @@ async function downloadDoc1() {
     });
     blobDL(blob, `위임장_${d.ownerName}_${d.dong}동${d.ho}호.docx`);
     showToast('✅ 위임장 다운로드 완료!');
+    sendConfirmEmail('위임장 (소유권이전등기)');
   } catch(e) { showToast('❌ ' + e.message, '#c0392b'); console.error(e); }
 }
 
@@ -487,7 +490,27 @@ async function downloadDoc2() {
     });
     blobDL(blob, `신탁일부해지증서_${d.ownerName}_${d.dong}동${d.ho}호.docx`);
     showToast('✅ 신탁일부해지증서 다운로드 완료!');
+    sendConfirmEmail('신탁일부해지증서 (대지지분)');
   } catch(e) { showToast('❌ ' + e.message, '#c0392b'); console.error(e); }
+}
+
+// =============================================
+// EmailJS — 다운로드 완료 시 자동 이메일 회신
+// =============================================
+function sendConfirmEmail(docType) {
+  const email = gv('user-email');
+  if (!email) return;
+
+  const d = getData();
+  emailjs.send('service_selfregi', 'template_selfregi', {
+    owner_name:    d.ownerName,
+    to_email:      email,
+    address:       d.jibun,
+    building:      d.dong,
+    unit:          d.ho,
+    trust_company: d.tName,
+    doc_type:      docType,
+  }).catch(err => console.warn('EmailJS 오류:', err));
 }
 </script>
 </body>
