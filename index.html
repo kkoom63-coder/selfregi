@@ -3,35 +3,74 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>셀프등기 서류 자동생성기</title>
+<title>셀프등기24 | 소유권이전등기 서류 자동생성</title>
+<meta name="description" content="아파트 소유권이전등기, 법무사 없이 직접 하세요. 서류 자동생성으로 최대 30만원 절약.">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{--navy:#1e3a5f;--blue:#2a5f9e;--gold:#b8952e;--bg:#f2f4f8;--card:#fff;--text:#1a1e2e;--muted:#6b7280;--border:#dde2ec;--radius:12px;--shadow:0 2px 12px rgba(30,58,95,.08)}
-body{font-family:'Noto Sans KR','Malgun Gothic',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6}
+body{font-family:'Noto Sans KR','Malgun Gothic',sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
 
-/* 헤더 — normal_form.html과 동일 */
-header{background:var(--navy);color:#fff}
-.hi{max-width:720px;margin:0 auto;padding:22px 20px 18px}
-.badge{display:inline-block;background:rgba(184,149,46,.25);color:#f0d075;font-size:10px;font-weight:700;letter-spacing:1.5px;padding:2px 9px;border-radius:20px;margin-bottom:10px}
-header h1{font-size:21px;font-weight:700;margin-bottom:4px}
-header p{font-size:13px;color:rgba(255,255,255,.6)}
-header .sub-note{font-size:11px;color:rgba(255,255,255,.4);margin-top:6px}
-.sbar{background:#172f4e;border-top:1px solid rgba(255,255,255,.08)}
-.sbi{max-width:720px;margin:0 auto;padding:9px 20px;font-size:11px;color:rgba(255,255,255,.45)}
+/* ── 네비게이션 ── */
+nav{background:var(--navy);position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(255,255,255,.06)}
+.nav-inner{max-width:720px;margin:0 auto;padding:0 20px;height:52px;display:flex;align-items:center;gap:6px}
+.nav-logo{font-size:16px;font-weight:700;color:#fff;text-decoration:none;margin-right:auto;letter-spacing:-.3px}
+.nav-logo span{display:inline-block;background:rgba(184,149,46,.3);color:#f0d075;font-size:9px;font-weight:700;letter-spacing:1.2px;padding:1px 6px;border-radius:10px;vertical-align:middle;margin-left:6px}
+.nav-a{color:rgba(255,255,255,.55);font-size:12px;padding:5px 11px;border-radius:7px;text-decoration:none;transition:all .15s;white-space:nowrap}
+.nav-a:hover{background:rgba(255,255,255,.1);color:#fff}
+.nav-a.cta{background:rgba(255,255,255,.12);color:#fff;font-weight:600}
+.nav-a.cta:hover{background:rgba(255,255,255,.2)}
 
-/* 레이아웃 */
-main{max-width:720px;margin:0 auto;padding:20px 14px 60px}
+/* ── 히어로 ── */
+.hero{background:var(--navy);padding:52px 20px 48px;text-align:center}
+.hero-eyebrow{display:inline-block;background:rgba(184,149,46,.25);color:#f0d075;font-size:11px;font-weight:700;letter-spacing:.8px;padding:4px 14px;border-radius:20px;margin-bottom:18px}
+.hero h1{font-size:32px;font-weight:700;color:#fff;line-height:1.35;margin-bottom:12px}
+.hero h1 br{display:block}
+.hero-sub{font-size:14px;color:rgba(255,255,255,.6);margin-bottom:28px;line-height:1.7}
+.hero-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:16px}
+.btn-primary{display:inline-flex;align-items:center;gap:7px;padding:13px 26px;background:#2a5f9e;color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;text-decoration:none;transition:background .15s}
+.btn-primary:hover{background:#1d4d85}
+.btn-ghost{display:inline-flex;align-items:center;gap:7px;padding:13px 22px;background:rgba(255,255,255,.1);color:rgba(255,255,255,.85);border:1.5px solid rgba(255,255,255,.2);border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;text-decoration:none;transition:all .15s}
+.btn-ghost:hover{background:rgba(255,255,255,.16);color:#fff}
+.hero-trust{font-size:11px;color:rgba(255,255,255,.35)}
+
+/* ── 신뢰 지표 배너 ── */
+.stats-bar{background:#172f4e;border-bottom:1px solid rgba(255,255,255,.06)}
+.stats-inner{max-width:720px;margin:0 auto;display:grid;grid-template-columns:repeat(2,1fr);padding:0}
+.stat-item{padding:20px 16px;text-align:center;border-right:1px solid rgba(255,255,255,.06)}
+.stat-item:last-child{border-right:none}
+.stat-num{display:block;font-size:20px;font-weight:700;color:#fff;margin-bottom:3px}
+.stat-label{font-size:11px;color:rgba(255,255,255,.45);line-height:1.4}
+
+/* ── 공통 섹션 ── */
+.section{max-width:720px;margin:0 auto;padding:36px 14px 0}
+.sec-label{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;color:var(--blue);letter-spacing:.6px;margin-bottom:10px}
+.sec-label::before{content:'';display:block;width:3px;height:12px;background:var(--blue);border-radius:2px}
+.sec-title{font-size:20px;font-weight:700;color:var(--navy);margin-bottom:6px;line-height:1.4}
+.sec-sub{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:20px}
+
+/* ── 3단계 프로세스 ── */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.step-box{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:18px 16px;box-shadow:var(--shadow)}
+.step-n{font-size:11px;font-weight:700;color:var(--blue);margin-bottom:8px}
+.step-t{font-size:13px;font-weight:700;color:var(--navy);margin-bottom:5px;line-height:1.4}
+.step-d{font-size:11px;color:var(--muted);line-height:1.5}
+.step-arrow{display:flex;align-items:center;justify-content:center;color:#c5d0de;font-size:18px;padding-top:18px}
+
+/* ── 구분선 ── */
+.div-line{max-width:720px;margin:32px auto 0 auto;padding:0 14px}
+.div-line hr{border:none;border-top:1px solid var(--border)}
+
+/* ── 카드 (기존 유지) ── */
+main{max-width:720px;margin:0 auto;padding:16px 14px 20px}
 .card{background:var(--card);border-radius:var(--radius);border:1px solid var(--border);padding:22px;margin-bottom:14px;box-shadow:var(--shadow)}
-
-/* 카드 헤더 */
 .ch{display:flex;align-items:center;gap:10px;margin-bottom:4px}
-.ci{width:32px;height:32px;background:#eef3fb;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
-.step-num{width:32px;height:32px;background:var(--navy);color:#fff;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0;letter-spacing:-0.3px}
+.step-num{width:32px;height:32px;background:var(--navy);color:#fff;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0;letter-spacing:-.3px}
+.step-num.grn{background:#1a6b3c}
 .ct{font-size:14px;font-weight:700;color:var(--navy)}
 .cs{font-size:11px;color:var(--muted);margin-top:1px}
 
-/* 진단 영역 */
+/* ── 진단 마법사 ── */
 .wizard-q{background:#f8fafc;border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:12px}
 .q-text{font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px}
 .q-hint{font-size:11px;color:var(--blue);margin-bottom:12px;display:block}
@@ -39,12 +78,11 @@ main{max-width:720px;margin:0 auto;padding:20px 14px 60px}
 .opt-btn{flex:1;padding:10px;border:1.5px solid var(--border);background:#fff;border-radius:8px;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;transition:all .15s;font-family:inherit}
 .opt-btn:hover{border-color:var(--blue);color:var(--blue)}
 .opt-btn.active{border-color:var(--blue);background:var(--blue);color:#fff}
-
 .skip-link{text-align:right;margin-top:8px}
 .skip-link a{color:var(--muted);font-size:11px;text-decoration:underline;cursor:pointer}
 .skip-link a:hover{color:var(--blue)}
 
-/* 케이스 카드 */
+/* ── 케이스 카드 ── */
 .cases{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:4px}
 .case-card{border:2px solid var(--border);border-radius:10px;padding:18px 16px;cursor:pointer;transition:all .15s;position:relative}
 .case-card:hover{border-color:var(--blue);box-shadow:0 4px 14px rgba(42,95,158,.12)}
@@ -54,202 +92,330 @@ main{max-width:720px;margin:0 auto;padding:20px 14px 60px}
 .c-title{font-size:14px;font-weight:700;color:var(--navy);margin-bottom:5px;line-height:1.4}
 .c-desc{font-size:12px;color:var(--muted);line-height:1.5}
 .c-when{margin-top:10px;padding-top:10px;border-top:1px dashed var(--border);font-size:11px;color:var(--blue);font-weight:500}
+.soon-badge{display:inline-block;background:#f0f4f8;color:#9aa5b1;font-size:10px;font-weight:700;padding:2px 8px;border-radius:6px;margin-left:6px;vertical-align:middle}
 
-/* 결과 영역 */
+/* ── 결과 ── */
 #result{display:none}
 .result-box{background:#f0f5ff;border:1.5px solid #c5d5f5;border-radius:10px;padding:16px}
 .r-label{font-size:11px;color:var(--muted);margin-bottom:3px}
 .r-case{font-size:17px;font-weight:800;color:var(--navy)}
-
-/* 다음 버튼 — normal_form.html의 다운로드 버튼과 동일 계열 */
 .next-btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;margin-top:14px;padding:15px 20px;background:var(--navy);color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;transition:background .15s}
 .next-btn:hover{background:var(--blue)}
 .next-btn.disabled{background:#b0bcc8;cursor:not-allowed}
 
-/* 준비중 배지 */
-.soon-badge{display:inline-block;background:#f0f4f8;color:#9aa5b1;font-size:10px;font-weight:700;padding:2px 8px;border-radius:6px;margin-left:6px;vertical-align:middle}
-
-/* 공지 박스 */
+/* ── 공지 박스 ── */
 .ntc{border-radius:8px;padding:10px 12px;font-size:11px;line-height:1.6;margin-top:12px}
 .ntc.inf{background:#eef3ff;border:1px solid #c5d5f5;color:#2a4080}
-.ntc strong{font-weight:600}
+.ntc.warn{background:#fffbeb;border:1px solid #fde68a;color:#92400e}
 
-footer{text-align:center;padding:18px;font-size:11px;color:#a0aec0;max-width:720px;margin:0 auto}
+/* ── 취득세 계산기 ── */
+.tx-inputs{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+.tx-field label{display:block;font-size:12px;font-weight:600;color:var(--text);margin-bottom:5px}
+.tx-wrap{position:relative}
+.tx-wrap input{width:100%;padding:10px 40px 10px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;font-family:inherit;outline:none;transition:border-color .15s;background:#fff;color:var(--text)}
+.tx-wrap input:focus{border-color:var(--blue)}
+.tx-wrap input::placeholder{color:#b0bcc8}
+.tx-unit{position:absolute;right:11px;top:50%;transform:translateY(-50%);font-size:11px;color:var(--muted);pointer-events:none}
+.tx-result-box{margin-top:16px;background:#f8fafc;border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.tx-row{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;font-size:13px;border-bottom:1px solid var(--border)}
+.tx-row:last-child{border-bottom:none}
+.tx-row .l{color:var(--muted)}.tx-row .v{font-weight:600;color:var(--text)}
+.tx-total{display:flex;justify-content:space-between;align-items:center;padding:13px 14px;background:#eef3ff;border-top:1.5px solid #c5d5f5}
+.tx-total .l{font-size:14px;font-weight:700;color:var(--navy)}
+.tx-total .v{font-size:18px;font-weight:800;color:var(--navy)}
+.tx-ph{text-align:center;padding:22px;color:#b0bcc8;font-size:13px}
+.wetax-a{display:inline-flex;align-items:center;gap:4px;margin-top:10px;color:var(--blue);font-size:12px;font-weight:600;text-decoration:none}
+.wetax-a:hover{text-decoration:underline}
+
+/* ── FAQ ── */
+.faq-item{border-bottom:1px solid var(--border)}
+.faq-item:last-child{border-bottom:none}
+.faq-q{width:100%;display:flex;justify-content:space-between;align-items:center;padding:14px 0;font-size:13px;font-weight:600;color:var(--text);background:none;border:none;cursor:pointer;font-family:inherit;text-align:left;gap:8px;transition:color .12s}
+.faq-q:hover{color:var(--blue)}
+.faq-q .ico{flex-shrink:0;font-size:18px;color:var(--muted);transition:transform .2s}
+.faq-q.open .ico{transform:rotate(45deg)}
+.faq-a{font-size:12px;color:var(--muted);line-height:1.7;padding:0 0 14px;display:none}
+.faq-a a{color:var(--blue)}
+
+/* ── 푸터 ── */
+footer{background:var(--navy);margin-top:40px;padding:28px 20px}
+.foot-inner{max-width:720px;margin:0 auto}
+.foot-brand{font-size:14px;font-weight:700;color:rgba(255,255,255,.8);margin-bottom:8px}
+.foot-links{display:flex;gap:14px;margin-bottom:10px;flex-wrap:wrap}
+.foot-links a{font-size:11px;color:rgba(255,255,255,.4);text-decoration:none}
+.foot-links a:hover{color:rgba(255,255,255,.7)}
+.foot-copy{font-size:11px;color:rgba(255,255,255,.25);line-height:1.6}
+
 .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(80px);background:#1a7a4a;color:#fff;padding:9px 18px;border-radius:8px;font-size:12px;font-weight:500;transition:transform .3s;z-index:999;white-space:nowrap}
 .toast.show{transform:translateX(-50%) translateY(0)}
 
-@media(max-width:520px){.cases{grid-template-columns:1fr}.opt-row{flex-direction:column}}
+@media(max-width:520px){
+  .hero h1{font-size:24px}
+  .stats-inner{grid-template-columns:1fr;padding:0 16px}
+  .stat-item{border-right:none;border-bottom:1px solid rgba(255,255,255,.06);padding:14px 0;text-align:left;display:flex;align-items:center;gap:12px}
+  .stat-item:last-child{border-bottom:none}
+  .stat-num{font-size:18px;margin-bottom:0}
+  .steps{grid-template-columns:1fr}
+  .cases{grid-template-columns:1fr}
+  .opt-row{flex-direction:column}
+  .tx-inputs{grid-template-columns:1fr}
+  .hero-btns{flex-direction:column;align-items:stretch}
+  .btn-primary,.btn-ghost{justify-content:center}
+}
 </style>
 </head>
 <body>
 
-<header>
-  <div class="hi">
-    <div class="badge">Beta</div>
-    <h1>📄 셀프등기 서류 자동생성기</h1>
-    <p>소유권이전등기(준공건물 · 신탁해지) 서류를 직접 작성해 비용을 절약하세요</p>
-    <p class="sub-note">본 서비스는 개인정보를 별도로 저장하고 있지 않으며, 개인정보를 기재하지 않아도 서류 발급이 가능합니다.</p>
+<!-- 네비게이션 -->
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">셀프등기24 <span>BETA</span></a>
+    <a href="#start" class="nav-a">서류 만들기</a>
+    <a href="calculator.html" class="nav-a">취득세 계산기</a>
+    <a href="https://selfregi.tistory.com" target="_blank" rel="noopener" class="nav-a">블로그</a>
+    <a href="#start" class="nav-a cta">시작하기 →</a>
   </div>
-  <div class="sbar"><div class="sbi">먼저 어떤 등기를 진행하시는지 확인해 주세요</div></div>
-</header>
+</nav>
 
-<main>
-
-<!-- ① 진단 마법사 -->
-<div class="card" id="wizardCard">
-  <div class="ch">
-    <div class="step-num">01</div>
-    <div><div class="ct">내 케이스 진단</div><div class="cs">2가지 질문으로 알맞은 서류를 안내해 드립니다</div></div>
+<!-- 히어로 -->
+<section class="hero">
+  <div class="hero-eyebrow">법무사 수수료 최대 30만원 절약</div>
+  <h1>아파트 소유권이전,<br>직접 해도 됩니다</h1>
+  <p class="hero-sub">잔금 납부 후 등기까지 — 서류 자동생성으로<br>법무사 없이 직접 완료하세요<br><br>셀프등기 관련 상세한 안내는 <a href="https://selfregi.tistory.com" target="_blank" rel="noopener" style="color:#f0d075;text-decoration:underline">블로그</a>를 확인하면 도움이 됩니다.</p>
+  <div class="hero-btns">
+    <a href="#start" class="btn-primary">서류 작성 시작하기 →</a>
+    <a href="calculator.html" class="btn-ghost">취득세 계산해보기</a>
   </div>
+</section>
 
-  <div style="height:14px"></div>
-
-  <div class="wizard-q">
-    <div class="q-text">Q1. 건물(전유부분) 소유권이전등기는 이미 완료되었나요?</div>
-    <span class="q-hint">등기부등본 '갑구'에 본인 이름이 소유자로 등재되어 있는지 확인하세요</span>
-    <div class="opt-row">
-      <button class="opt-btn" data-q="1" data-val="yes">예, 완료했습니다</button>
-      <button class="opt-btn" data-q="1" data-val="no">아니오 / 아직입니다</button>
+<!-- 신뢰 지표 배너 -->
+<div class="stats-bar">
+  <div class="stats-inner">
+    <div class="stat-item">
+      <span class="stat-num">최대 15~30만원</span>
+      <span class="stat-label">절약 가능한<br>법무사 수수료</span>
     </div>
-  </div>
-
-  <div class="wizard-q" id="q2" style="display:none">
-    <div class="q-text">Q2. 등기부등본 표제부에 <b>"별도등기 있음"</b> 표시가 있나요?</div>
-    <span class="q-hint">토지(대지권)에 신탁등기가 남아 있는 경우 표시됩니다</span>
-    <div class="opt-row">
-      <button class="opt-btn" data-q="2" data-val="yes">예, 있습니다</button>
-      <button class="opt-btn" data-q="2" data-val="no">아니오 / 모르겠습니다</button>
+    <div class="stat-item">
+      <span class="stat-num">당일 발급</span>
+      <span class="stat-label">서류 생성<br>소요 시간</span>
     </div>
-  </div>
-
-  <div class="skip-link"><a onclick="skipWizard()">진단 없이 직접 선택할게요 →</a></div>
-</div>
-
-<!-- ② 케이스 선택 -->
-<div class="card" id="caseCard">
-  <div class="ch">
-    <div class="step-num">02</div>
-    <div><div class="ct">등기 케이스 선택</div><div class="cs">해당하는 케이스를 선택하세요</div></div>
-  </div>
-
-  <div class="cases">
-    <div class="case-card" data-case="general" onclick="selectCase('general')">
-      <div class="c-icon-box">A</div>
-      <div class="c-title">일반 신탁해지<br>소유권이전</div>
-      <div class="c-desc">분양받은 아파트의 잔금을 치르고 소유권을 이전받는 가장 일반적인 경우</div>
-      <div class="c-when">→ 위임장 + 신탁일부해지증서</div>
-    </div>
-
-    <div class="case-card" data-case="landShare" onclick="selectCase('landShare')">
-      <div class="c-icon-box">B</div>
-      <div class="c-title">대지지분 별도등기<span class="soon-badge">준비중</span></div>
-      <div class="c-desc">택지지구·도시개발사업 등으로 토지(대지권)를 추가로 등기해야 하는 경우</div>
-      <div class="c-when">→ 위임장 + 신탁일부해지증서(대지)</div>
-    </div>
-  </div>
-
-  <div class="ntc inf" style="margin-top:14px">
-    <strong>💡 케이스를 모르시나요?</strong> 위 진단 질문에 답하시면 자동으로 선택됩니다.
   </div>
 </div>
 
-<!-- ③ 결과 -->
-<div class="card" id="result">
-  <div class="ch">
-    <div class="step-num">03</div>
-    <div><div class="ct">서류 작성 시작</div><div class="cs">선택하신 케이스로 진행합니다</div></div>
+<!-- 3단계 프로세스 -->
+<div class="section" style="padding-bottom:32px">
+  <div class="sec-label">진행 절차</div>
+  <p class="sec-title">3단계로 끝나는 셀프등기</p>
+  <p class="sec-sub">'내가 잘 하고 있나?' 걱정할 필요 없어요. 케이스에 맞는 서류를 자동으로 만들어드립니다.</p>
+  <div class="steps">
+    <div class="step-box">
+      <div class="step-n">01</div>
+      <div class="step-t">케이스 진단</div>
+      <div class="step-d">2가지 질문으로 내 등기 유형 자동 확인</div>
+    </div>
+    <div class="step-box">
+      <div class="step-n">02</div>
+      <div class="step-t">서류 자동 생성</div>
+      <div class="step-d">정보 입력 → 완성된 서류 ZIP 다운로드</div>
+    </div>
+    <div class="step-box">
+      <div class="step-n">03</div>
+      <div class="step-t">등기소 제출</div>
+      <div class="step-d">인근 등기소에 직접 방문해 접수 완료</div>
+    </div>
   </div>
-  <div style="height:14px"></div>
-  <div class="result-box">
-    <div class="r-label">선택하신 케이스</div>
-    <div class="r-case" id="resultCase">—</div>
-  </div>
-  <button class="next-btn" id="nextBtn" onclick="goNext()">
-    <span>📝</span>
-    <span>이 케이스로 서류 작성 시작하기 →</span>
-  </button>
 </div>
+
+<!-- 구분선 -->
+<div class="div-line"><hr></div>
+
+<!-- 케이스 선택 + 서류 작성 도구 -->
+<main id="start">
+
+  <!-- ① 진단 마법사 -->
+  <div class="card" id="wizardCard">
+    <div class="ch">
+      <div class="step-num">01</div>
+      <div><div class="ct">내 케이스 진단</div><div class="cs">2가지 질문으로 알맞은 서류를 안내해 드립니다</div></div>
+    </div>
+    <div style="height:14px"></div>
+    <div class="wizard-q">
+      <div class="q-text">Q1. 건물(전유부분) 소유권이전등기는 이미 완료되었나요?</div>
+      <span class="q-hint">등기부등본 '갑구'에 본인 이름이 소유자로 등재되어 있는지 확인하세요</span>
+      <div class="opt-row">
+        <button class="opt-btn" data-q="1" data-val="yes">예, 완료했습니다</button>
+        <button class="opt-btn" data-q="1" data-val="no">아니오 / 아직입니다</button>
+      </div>
+    </div>
+    <div class="wizard-q" id="q2" style="display:none">
+      <div class="q-text">Q2. 등기부등본 표제부에 <b>"별도등기 있음"</b> 표시가 있나요?</div>
+      <span class="q-hint">토지(대지권)에 신탁등기가 남아 있는 경우 표시됩니다</span>
+      <div class="opt-row">
+        <button class="opt-btn" data-q="2" data-val="yes">예, 있습니다</button>
+        <button class="opt-btn" data-q="2" data-val="no">아니오 / 모르겠습니다</button>
+      </div>
+    </div>
+    <div class="skip-link"><a onclick="skipWizard()">진단 없이 직접 선택할게요 →</a></div>
+  </div>
+
+  <!-- ② 케이스 선택 -->
+  <div class="card" id="caseCard">
+    <div class="ch">
+      <div class="step-num">02</div>
+      <div><div class="ct">등기 케이스 선택</div><div class="cs">해당하는 케이스를 선택하세요</div></div>
+    </div>
+    <div class="cases">
+      <div class="case-card" data-case="general" onclick="selectCase('general')">
+        <div class="c-icon-box">A</div>
+        <div class="c-title">일반 신탁해지<br>소유권이전</div>
+        <div class="c-desc">분양받은 아파트의 잔금을 치르고 소유권을 이전받는 가장 일반적인 경우</div>
+        <div class="c-when">→ 위임장 + 신탁일부해지증서</div>
+      </div>
+      <div class="case-card" data-case="landShare" onclick="selectCase('landShare')">
+        <div class="c-icon-box">B</div>
+        <div class="c-title">대지지분 별도등기<span class="soon-badge">준비중</span></div>
+        <div class="c-desc">택지지구·도시개발사업 등으로 토지(대지권)를 추가로 등기해야 하는 경우</div>
+        <div class="c-when">→ 위임장 + 신탁일부해지증서(대지)</div>
+      </div>
+    </div>
+    <div class="ntc inf" style="margin-top:14px">
+      <strong>💡 케이스를 모르시나요?</strong> 위 진단 질문에 답하시면 자동으로 선택됩니다.
+    </div>
+  </div>
+
+  <!-- ③ 결과 -->
+  <div class="card" id="result">
+    <div class="ch">
+      <div class="step-num">03</div>
+      <div><div class="ct">서류 작성 시작</div><div class="cs">선택하신 케이스로 진행합니다</div></div>
+    </div>
+    <div style="height:14px"></div>
+    <div class="result-box">
+      <div class="r-label">선택하신 케이스</div>
+      <div class="r-case" id="resultCase">—</div>
+    </div>
+    <button class="next-btn" id="nextBtn" onclick="goNext()">
+      <span>📝</span><span>이 케이스로 서류 작성 시작하기 →</span>
+    </button>
+  </div>
 
 </main>
 
-<footer>© 2025 셀프등기24 셀프등기 서류 자동생성기 · 본 서비스는 법률 자문을 제공하지 않습니다</footer>
+
+<!-- 구분선 -->
+<div class="div-line" style="margin-top:0"><hr></div>
+
+<!-- FAQ -->
+<div class="section" style="padding-bottom:0">
+  <div class="sec-label">자주 묻는 질문</div>
+  <p class="sec-title">궁금한 점에 답해드릴게요</p>
+</div>
+<main style="padding-top:12px;padding-bottom:8px">
+  <div class="card">
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        셀프등기, 정말 혼자 할 수 있나요?<span class="ico">+</span>
+      </button>
+      <div class="faq-a">네, 가능합니다. 부동산등기는 법무사 선임 의무가 없으며 본인이 직접 신청할 수 있습니다. 잔금대출이 없는 경우(현금 취득) 또는 은행이 셀프등기를 허용하는 경우에 현실적으로 가능합니다. 셀프등기24는 복잡한 서류 작성을 자동화해 드립니다.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        잔금대출이 있어도 셀프등기가 가능한가요?<span class="ico">+</span>
+      </button>
+      <div class="faq-a">대출 은행이 셀프등기를 허용하는 경우에 한해 가능합니다. 이 경우 은행은 근저당 설정 서류만 요구하며, 소유권이전 부분은 본인이 직접 처리할 수 있습니다. 대출 실행 전 담당 행원에게 셀프등기 가능 여부를 반드시 확인하세요.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">
+        케이스 A와 B의 차이가 뭔가요?<span class="ico">+</span>
+      </button>
+      <div class="faq-a">케이스 A는 분양 아파트의 일반적인 소유권이전 케이스입니다. 케이스 B는 LH 등 도시개발사업 지구처럼 건물 준공 후 토지(대지권) 등기가 별도로 남아있는 경우입니다. 등기부등본 표제부에 <strong>'별도등기 있음'</strong> 표시가 있다면 케이스 B에 해당합니다.</div>
+    </div>
+  </div>
+</main>
+
+<!-- 푸터 -->
+<footer>
+  <div class="foot-inner">
+    <div class="foot-brand">셀프등기24</div>
+    <div class="foot-links">
+      <a href="https://selfregi.tistory.com" target="_blank" rel="noopener">블로그</a>
+      <a href="#">개인정보처리방침</a>
+      <a href="#">면책고지</a>
+    </div>
+    <div class="foot-copy">
+      © 2025 셀프등기24 · 개인정보를 별도로 저장하지 않습니다 · 본 서비스는 법률 자문을 제공하지 않습니다.
+    </div>
+  </div>
+</footer>
+
 <div class="toast" id="toast"></div>
 
 <script>
+/* ===== 케이스 선택 ===== */
 const CASES = {
-  general:   { label: '일반 신탁해지 소유권이전 (케이스 A)', url: 'normal_form.html' },
-  landShare: { label: '대지지분 별도등기 (케이스 B)', url: null }
+  general:   { label:'일반 신탁해지 소유권이전 (케이스 A)', url:'normal_form.html' },
+  landShare: { label:'대지지분 별도등기 (케이스 B)',        url:null }
 };
-
-let answers = { q1: null, q2: null };
+let answers = {q1:null,q2:null};
 
 document.querySelectorAll('.opt-btn').forEach(btn => {
   btn.addEventListener('click', () => {
-    const q = btn.dataset.q, val = btn.dataset.val;
-    document.querySelectorAll(`.opt-btn[data-q="${q}"]`).forEach(b => b.classList.remove('active'));
+    const q=btn.dataset.q, val=btn.dataset.val;
+    document.querySelectorAll(`.opt-btn[data-q="${q}"]`).forEach(b=>b.classList.remove('active'));
     btn.classList.add('active');
-    answers['q' + q] = val;
-
-    if (q === '1') {
-      if (val === 'yes') {
-        document.getElementById('q2').style.display = 'block';
-      } else {
-        document.getElementById('q2').style.display = 'none';
-        answers.q2 = null;
-        decide('general');
-      }
+    answers['q'+q]=val;
+    if(q==='1'){
+      document.getElementById('q2').style.display = val==='yes'?'block':'none';
+      if(val==='no'){answers.q2=null;decide('general');}
     }
-    if (q === '2') {
-      decide(val === 'yes' ? 'landShare' : 'general');
-    }
+    if(q==='2') decide(val==='yes'?'landShare':'general');
   });
 });
 
-function decide(caseId) {
-  highlightCard(caseId);
-  showResult(caseId);
+function decide(id){highlightCard(id);showResult(id);}
+function selectCase(id){highlightCard(id);showResult(id);}
+
+function highlightCard(id){
+  document.querySelectorAll('.case-card').forEach(c=>c.classList.remove('selected','recommended'));
+  const el=document.querySelector(`.case-card[data-case="${id}"]`);
+  if(el) el.classList.add('selected','recommended');
+}
+function showResult(id){
+  const c=CASES[id];
+  document.getElementById('resultCase').textContent=c.label;
+  document.getElementById('result').style.display='block';
+  window.selectedCase=id;
+  const btn=document.getElementById('nextBtn');
+  if(!c.url){btn.classList.add('disabled');btn.textContent='⏳ 준비중인 서비스입니다';}
+  else{btn.classList.remove('disabled');btn.innerHTML='<span>📝</span><span>이 케이스로 서류 작성 시작하기 →</span>';}
+  document.getElementById('result').scrollIntoView({behavior:'smooth',block:'nearest'});
+}
+function skipWizard(){
+  document.getElementById('wizardCard').style.display='none';
+  document.getElementById('caseCard').scrollIntoView({behavior:'smooth'});
+}
+function goNext(){
+  const c=CASES[window.selectedCase];
+  if(!c||!c.url)return;
+  window.location.href=c.url;
 }
 
-function selectCase(caseId) {
-  highlightCard(caseId);
-  showResult(caseId);
+/* ===== FAQ 토글 ===== */
+function toggleFaq(btn){
+  const a=btn.nextElementSibling;
+  const open=btn.classList.toggle('open');
+  a.style.display=open?'block':'none';
 }
 
-function highlightCard(caseId) {
-  document.querySelectorAll('.case-card').forEach(c => c.classList.remove('selected', 'recommended'));
-  const el = document.querySelector(`.case-card[data-case="${caseId}"]`);
-  if (el) { el.classList.add('selected', 'recommended'); }
-}
-
-function showResult(caseId) {
-  const c = CASES[caseId];
-  document.getElementById('resultCase').textContent = c.label;
-  document.getElementById('result').style.display = 'block';
-  window.selectedCase = caseId;
-
-  // 준비중 케이스면 버튼 비활성화
-  const btn = document.getElementById('nextBtn');
-  if (!c.url) {
-    btn.classList.add('disabled');
-    btn.textContent = '⏳ 준비중인 서비스입니다';
-  } else {
-    btn.classList.remove('disabled');
-    btn.innerHTML = '<span>📝</span><span>이 케이스로 서류 작성 시작하기 →</span>';
-  }
-
-  document.getElementById('result').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-}
-
-function skipWizard() {
-  document.getElementById('wizardCard').style.display = 'none';
-  document.getElementById('caseCard').scrollIntoView({ behavior: 'smooth' });
-}
-
-function goNext() {
-  const c = CASES[window.selectedCase];
-  if (!c || !c.url) return;
-  window.location.href = c.url;
-}
+/* ===== 네비 앵커 스무스 스크롤 ===== */
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    const id=a.getAttribute('href').slice(1);
+    if(!id)return;
+    const el=document.getElementById(id);
+    if(el){e.preventDefault();el.scrollIntoView({behavior:'smooth'});}
+  });
+});
 </script>
 </body>
 </html>
