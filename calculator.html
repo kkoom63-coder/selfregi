@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>취득세 계산기 | 셀프등기24</title>
+<meta name="description" content="아파트 취득세를 미리 계산하세요. 1주택·2주택·생애최초 기준 참고용 계산기.">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--navy:#1e3a5f;--blue:#2a5f9e;--gold:#b8952e;--bg:#f2f4f8;--card:#fff;--text:#1a1e2e;--muted:#6b7280;--border:#dde2ec;--radius:12px;--shadow:0 2px 12px rgba(30,58,95,.08)}
+body{font-family:'Noto Sans KR','Malgun Gothic',sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+
+/* ── 네비게이션 (index.html 동일) ── */
+nav{background:var(--navy);position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(255,255,255,.06)}
+.nav-inner{max-width:720px;margin:0 auto;padding:0 20px;height:52px;display:flex;align-items:center;gap:6px}
+.nav-logo{font-size:16px;font-weight:700;color:#fff;text-decoration:none;margin-right:auto;letter-spacing:-.3px}
+.nav-logo span{display:inline-block;background:rgba(184,149,46,.3);color:#f0d075;font-size:9px;font-weight:700;letter-spacing:1.2px;padding:1px 6px;border-radius:10px;vertical-align:middle;margin-left:6px}
+.nav-a{color:rgba(255,255,255,.55);font-size:12px;padding:5px 11px;border-radius:7px;text-decoration:none;transition:all .15s;white-space:nowrap}
+.nav-a:hover{background:rgba(255,255,255,.1);color:#fff}
+.nav-a.active{background:rgba(255,255,255,.12);color:#fff}
+.nav-a.cta{background:rgba(255,255,255,.12);color:#fff;font-weight:600}
+.nav-a.cta:hover{background:rgba(255,255,255,.2)}
+
+/* ── 페이지 헤더 ── */
+.page-header{background:var(--navy);padding:36px 20px 32px}
+.page-header-inner{max-width:720px;margin:0 auto}
+.page-eyebrow{display:inline-block;background:rgba(184,149,46,.25);color:#f0d075;font-size:10px;font-weight:700;letter-spacing:.8px;padding:3px 12px;border-radius:20px;margin-bottom:12px}
+.page-header h1{font-size:22px;font-weight:700;color:#fff;margin-bottom:6px}
+.page-header p{font-size:13px;color:rgba(255,255,255,.55)}
+
+/* ── 레이아웃 ── */
+main{max-width:720px;margin:0 auto;padding:20px 14px 60px}
+.card{background:var(--card);border-radius:var(--radius);border:1px solid var(--border);padding:22px;margin-bottom:14px;box-shadow:var(--shadow)}
+.ch{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+.step-num{width:32px;height:32px;background:var(--navy);color:#fff;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0;letter-spacing:-.3px}
+.step-num.grn{background:#1a6b3c}
+.ct{font-size:14px;font-weight:700;color:var(--navy)}
+.cs{font-size:11px;color:var(--muted);margin-top:1px}
+
+/* ── 입력 영역 ── */
+.field-grid{display:grid;gap:14px}
+.field-grid.col2{grid-template-columns:1fr 1fr}
+.field-grid.col3{grid-template-columns:1fr 1fr 1fr}
+.field label{display:block;font-size:12px;font-weight:600;color:var(--text);margin-bottom:6px}
+.inp-wrap{position:relative}
+.inp-wrap input[type=number],.inp-wrap select{width:100%;padding:11px 44px 11px 13px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;font-family:inherit;outline:none;transition:border-color .15s;background:#fff;color:var(--text);appearance:none;-webkit-appearance:none}
+.inp-wrap input[type=number]:focus,.inp-wrap select:focus{border-color:var(--blue)}
+.inp-wrap input::placeholder{color:#b0bcc8}
+.inp-unit{position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:11px;color:var(--muted);pointer-events:none}
+
+/* ── 세그먼트 버튼 ── */
+.seg{display:flex;gap:6px;flex-wrap:wrap}
+.seg-btn{flex:1;min-width:80px;padding:9px 10px;border:1.5px solid var(--border);background:#fff;border-radius:8px;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;transition:all .15s;font-family:inherit;text-align:center}
+.seg-btn:hover{border-color:var(--blue);color:var(--blue)}
+.seg-btn.on{border-color:var(--blue);background:var(--blue);color:#fff}
+
+/* ── 구분선 ── */
+.divider{border:none;border-top:1px solid var(--border);margin:18px 0}
+
+/* ── 결과 영역 ── */
+.result-area{background:#f8fafc;border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-top:18px}
+.res-row{display:flex;justify-content:space-between;align-items:center;padding:11px 16px;font-size:13px;border-bottom:1px solid var(--border)}
+.res-row:last-child{border-bottom:none}
+.res-row .l{color:var(--muted)}
+.res-row .v{font-weight:600;color:var(--text)}
+.res-total{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;background:#eef3ff;border-top:1.5px solid #c5d5f5}
+.res-total .l{font-size:15px;font-weight:700;color:var(--navy)}
+.res-total .v{font-size:22px;font-weight:800;color:var(--navy)}
+.res-ph{text-align:center;padding:28px;color:#b0bcc8;font-size:13px}
+
+/* ── 태그 배지 ── */
+.rate-tag{display:inline-block;background:#eef3ff;color:var(--blue);font-size:10px;font-weight:700;padding:2px 8px;border-radius:6px;margin-left:6px;vertical-align:middle}
+.heavy-tag{background:#fff0f0;color:#c0392b}
+
+/* ── 공지 박스 ── */
+.ntc{border-radius:8px;padding:11px 13px;font-size:11px;line-height:1.7;margin-top:14px}
+.ntc.warn{background:#fffbeb;border:1px solid #fde68a;color:#92400e}
+.ntc.inf{background:#eef3ff;border:1px solid #c5d5f5;color:#2a4080}
+
+/* ── 세율표 ── */
+.rate-table{width:100%;border-collapse:collapse;font-size:12px;margin-top:6px}
+.rate-table th{background:#f0f4f8;color:var(--navy);font-weight:700;padding:9px 12px;text-align:left;border-bottom:1px solid var(--border)}
+.rate-table td{padding:9px 12px;border-bottom:1px solid var(--border);color:var(--text)}
+.rate-table tr:last-child td{border-bottom:none}
+.rate-table td.hl{font-weight:600;color:var(--navy)}
+
+/* ── 링크 ── */
+.wetax-a{display:inline-flex;align-items:center;gap:4px;margin-top:12px;color:var(--blue);font-size:12px;font-weight:600;text-decoration:none}
+.wetax-a:hover{text-decoration:underline}
+.back-a{display:inline-flex;align-items:center;gap:4px;color:rgba(255,255,255,.5);font-size:12px;text-decoration:none;margin-bottom:14px;transition:color .12s}
+.back-a:hover{color:#fff}
+
+/* ── 토글 섹션 ── */
+.toggle-hd{display:flex;justify-content:space-between;align-items:center;cursor:pointer;padding:4px 0;user-select:none}
+.toggle-hd .ico{font-size:18px;color:var(--muted);transition:transform .2s}
+.toggle-hd.open .ico{transform:rotate(45deg)}
+.toggle-body{display:none;margin-top:14px}
+
+/* ── 푸터 (index.html 동일) ── */
+footer{background:var(--navy);margin-top:40px;padding:28px 20px}
+.foot-inner{max-width:720px;margin:0 auto}
+.foot-brand{font-size:14px;font-weight:700;color:rgba(255,255,255,.8);margin-bottom:8px}
+.foot-links{display:flex;gap:14px;margin-bottom:10px;flex-wrap:wrap}
+.foot-links a{font-size:11px;color:rgba(255,255,255,.4);text-decoration:none}
+.foot-links a:hover{color:rgba(255,255,255,.7)}
+.foot-copy{font-size:11px;color:rgba(255,255,255,.25);line-height:1.6}
+
+@media(max-width:520px){
+  .field-grid.col2,.field-grid.col3{grid-template-columns:1fr}
+  .seg{flex-direction:column}
+  .seg-btn{flex:none}
+  .page-header h1{font-size:18px}
+}
+</style>
+</head>
+<body>
+
+<!-- 네비게이션 -->
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">셀프등기24 <span>BETA</span></a>
+    <a href="index.html" class="nav-a">서류 만들기</a>
+    <a href="calculator.html" class="nav-a active">취득세 계산기</a>
+    <a href="https://selfregi.tistory.com" target="_blank" rel="noopener" class="nav-a">블로그</a>
+    <a href="index.html#start" class="nav-a cta">시작하기 →</a>
+  </div>
+</nav>
+
+<!-- 페이지 헤더 -->
+<div class="page-header">
+  <div class="page-header-inner">
+    <a href="index.html" class="back-a">← 홈으로</a>
+    <div class="page-eyebrow">참고용 계산기</div>
+    <h1>취득세 계산기</h1>
+    <p>공동주택(아파트) 기준 · 1세대 기준 표준세율 적용 · 실제 납부세액은 위택스에서 확인하세요</p>
+  </div>
+</div>
+
+<main>
+
+  <!-- ① 입력 카드 -->
+  <div class="card">
+    <div class="ch">
+      <div class="step-num">01</div>
+      <div><div class="ct">기본 정보 입력</div><div class="cs">취득가액과 조건을 입력하면 자동으로 계산됩니다</div></div>
+    </div>
+
+    <!-- 취득가액 -->
+    <div class="field-grid col2">
+      <div class="field">
+        <label>취득가액</label>
+        <div class="inp-wrap">
+          <input type="number" id="price" placeholder="45000" min="0" oninput="calc()">
+          <span class="inp-unit">만원</span>
+        </div>
+      </div>
+      <div class="field">
+        <label>전용면적</label>
+        <div class="inp-wrap">
+          <input type="number" id="area" placeholder="84" min="0" oninput="calc()">
+          <span class="inp-unit">㎡</span>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <!-- 주택 수 -->
+    <div class="field" style="margin-bottom:14px">
+      <label>취득 후 보유 주택 수 <span style="font-size:11px;font-weight:400;color:var(--muted)">(1세대 기준)</span></label>
+      <div class="seg" id="seg-house">
+        <button class="seg-btn on" data-val="1" onclick="setSeg('seg-house',this)">1주택</button>
+        <button class="seg-btn"   data-val="2" onclick="setSeg('seg-house',this)">2주택</button>
+        <button class="seg-btn"   data-val="3" onclick="setSeg('seg-house',this)">3주택 이상</button>
+      </div>
+    </div>
+
+    <!-- 조정대상지역 (2주택 이상일 때만 의미 있음) -->
+    <div class="field" id="row-zone" style="margin-bottom:14px">
+      <label>취득 물건 소재지</label>
+      <div class="seg" id="seg-zone">
+        <button class="seg-btn on" data-val="adj" onclick="setSeg('seg-zone',this)">조정대상지역</button>
+        <button class="seg-btn"   data-val="non" onclick="setSeg('seg-zone',this)">비조정대상지역</button>
+      </div>
+    </div>
+
+    <!-- 생애최초 (1주택일 때만) -->
+    <div class="field" id="row-first">
+      <label>생애최초 주택 취득 여부</label>
+      <div class="seg" id="seg-first">
+        <button class="seg-btn" data-val="y" onclick="setSeg('seg-first',this)">예 (생애최초)</button>
+        <button class="seg-btn on" data-val="n" onclick="setSeg('seg-first',this)">아니오</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ② 결과 카드 -->
+  <div class="card">
+    <div class="ch">
+      <div class="step-num grn">세</div>
+      <div><div class="ct">계산 결과</div><div class="cs">아래는 참고용 수치입니다</div></div>
+    </div>
+
+    <div class="res-ph" id="res-ph">취득가액을 입력하면 결과가 표시됩니다</div>
+
+    <div id="res-body" style="display:none">
+      <div class="result-area">
+        <div class="res-row">
+          <span class="l" id="r-acq-l">취득세</span>
+          <span class="v" id="r-acq-v">—</span>
+        </div>
+        <div class="res-row">
+          <span class="l" id="r-edu-l">지방교육세</span>
+          <span class="v" id="r-edu-v">—</span>
+        </div>
+        <div class="res-row" id="r-agr-row">
+          <span class="l">농어촌특별세 (0.20%)</span>
+          <span class="v" id="r-agr-v">—</span>
+        </div>
+      </div>
+      <div class="res-total">
+        <span class="l">합계 <span class="rate-tag" id="r-tag"></span></span>
+        <span class="v" id="r-total">—</span>
+      </div>
+      <div class="ntc warn" id="r-warn" style="display:none"></div>
+      <div class="ntc inf" id="r-first-note" style="display:none">
+        생애최초 감면 적용 시 취득세 200만원 한도 감면됩니다. 실제 감면 여부는 위택스 신고 시 확인하세요.
+      </div>
+    </div>
+
+    <a href="https://www.wetax.go.kr" target="_blank" rel="noopener" class="wetax-a">위택스(WETAX)에서 정확히 신고하기 →</a>
+  </div>
+
+  <!-- ③ 세율표 카드 (토글) -->
+  <div class="card">
+    <div class="toggle-hd" onclick="toggleSection(this)">
+      <div>
+        <div class="ct">1주택 표준세율표</div>
+        <div class="cs" style="margin-top:2px">공동주택 기준 · 지방교육세·농특세 포함 합산세율</div>
+      </div>
+      <span class="ico">+</span>
+    </div>
+    <div class="toggle-body">
+      <table class="rate-table">
+        <thead>
+          <tr>
+            <th>취득가액</th>
+            <th>취득세율</th>
+            <th>지방교육세</th>
+            <th>농특세</th>
+            <th>합산세율</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>6억원 이하</td>
+            <td>1.00%</td>
+            <td>0.10%</td>
+            <td>— (85㎡↓)<br>0.20% (85㎡↑)</td>
+            <td class="hl">1.10% / 1.30%</td>
+          </tr>
+          <tr>
+            <td>6억 초과~9억 이하</td>
+            <td>1.01%~2.99%<br><span style="font-size:10px;color:var(--muted)">(가액×2/3억-3)÷100</span></td>
+            <td>취득세×10%</td>
+            <td>— (85㎡↓)<br>0.20% (85㎡↑)</td>
+            <td class="hl">사선형 누진</td>
+          </tr>
+          <tr>
+            <td>9억원 초과</td>
+            <td>3.00%</td>
+            <td>0.30%</td>
+            <td>— (85㎡↓)<br>0.20% (85㎡↑)</td>
+            <td class="hl">3.30% / 3.50%</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="ntc inf" style="margin-top:10px">
+        <strong>다주택 중과세율 (2025년 기준)</strong><br>
+        · 조정지역 2주택: 취득세 8% → 합산 약 9%<br>
+        · 3주택 이상 / 비조정 3주택: 취득세 12% → 합산 약 13.4%<br>
+        · 법인 취득: 주택 수·지역 무관 취득세 12%
+      </div>
+    </div>
+  </div>
+
+  <!-- ④ 안내 카드 -->
+  <div class="card">
+    <div class="toggle-hd" onclick="toggleSection(this)">
+      <div>
+        <div class="ct">계산에 포함되지 않는 항목</div>
+        <div class="cs" style="margin-top:2px">복잡 케이스는 위택스 또는 세무사 확인 필요</div>
+      </div>
+      <span class="ico">+</span>
+    </div>
+    <div class="toggle-body">
+      <ul style="font-size:12px;color:var(--muted);line-height:2;padding-left:16px">
+        <li>생애최초 감면 (200만원 한도) — 소득·가액 요건 있음</li>
+        <li>일시적 2주택 특례 — 처분 기한 내 매도 조건</li>
+        <li>임대사업자 등록 감면</li>
+        <li>법인 취득 (단일 12%)</li>
+        <li>분양권·입주권의 주택 수 포함 여부</li>
+        <li>조정대상지역 지정·해제 이후 변동 적용</li>
+      </ul>
+      <p style="font-size:11px;color:var(--muted);margin-top:10px">위 케이스는 위택스 신고 시 정확한 세율이 자동 적용되거나, 세무사 상담을 통해 확인하세요.</p>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <div class="foot-inner">
+    <div class="foot-brand">셀프등기24</div>
+    <div class="foot-links">
+      <a href="index.html">홈</a>
+      <a href="https://selfregi.tistory.com" target="_blank" rel="noopener">블로그</a>
+      <a href="#">개인정보처리방침</a>
+      <a href="#">면책고지</a>
+    </div>
+    <div class="foot-copy">
+      © 2025 셀프등기24 · 개인정보를 별도로 저장하지 않습니다 · 본 서비스는 법률 자문을 제공하지 않습니다.
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ── 세그먼트 선택 ── */
+function setSeg(groupId, btn){
+  document.querySelectorAll(`#${groupId} .seg-btn`).forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  updateUI();
+  calc();
+}
+function getVal(groupId){
+  const el=document.querySelector(`#${groupId} .seg-btn.on`);
+  return el ? el.dataset.val : null;
+}
+
+/* ── 조건별 UI 표시/숨김 ── */
+function updateUI(){
+  const h=parseInt(getVal('seg-house')||'1');
+  document.getElementById('row-zone').style.display  = h>=2 ? 'block':'none';
+  document.getElementById('row-first').style.display = h===1 ? 'block':'none';
+}
+
+/* ── 핵심 계산 ── */
+function calc(){
+  const price = parseFloat(document.getElementById('price').value)*1e4;
+  const area  = parseFloat(document.getElementById('area').value)||0;
+  const house = parseInt(getVal('seg-house')||'1');
+  const zone  = getVal('seg-zone');       // 'adj' | 'non'
+  const first = getVal('seg-first');      // 'y' | 'n'
+
+  const ph   = document.getElementById('res-ph');
+  const body = document.getElementById('res-body');
+
+  if(!price||price<=0){ body.style.display='none'; ph.style.display='block'; return; }
+
+  /* 취득세율 결정 */
+  let rate, heavy=false, warnMsg='';
+
+  if(house===1){
+    // 1주택 표준세율
+    if     (price<=6e8) rate=0.01;
+    else if(price<=9e8) rate=(price*2/3e8-3)/100;
+    else                rate=0.03;
+  } else if(house===2){
+    if(zone==='adj'){
+      // 조정지역 2주택 → 8% 중과
+      rate=0.08; heavy=true;
+      warnMsg='조정대상지역 2주택 중과세율(8%)이 적용됩니다. 일시적 2주택 특례 해당 여부를 반드시 확인하세요.';
+    } else {
+      // 비조정지역 2주택 → 표준세율
+      if     (price<=6e8) rate=0.01;
+      else if(price<=9e8) rate=(price*2/3e8-3)/100;
+      else                rate=0.03;
+    }
+  } else {
+    // 3주택 이상 → 12% 중과
+    rate=0.12; heavy=true;
+    warnMsg='3주택 이상 중과세율(12%)이 적용됩니다. 세무사 상담을 권장합니다.';
+  }
+
+  /* 부가세 계산 */
+  const acq = Math.round(price * rate);
+
+  // 지방교육세: 중과 구간은 취득세율 기준 별도 적용
+  // 표준세율: 취득세 × 10%  /  중과(8%): 0.4%  /  중과(12%): 0.4%
+  let edu;
+  if(heavy){
+    edu = Math.round(price * 0.004); // 중과 공통 0.4%
+  } else {
+    edu = Math.round(acq * 0.1);     // 표준: 취득세 × 10%
+  }
+
+  // 농어촌특별세: 전용 85㎡ 초과 시
+  // 표준 1% 구간 제외, 중과 시 1%
+  let agr = 0;
+  if(area > 85){
+    if(heavy)          agr = Math.round(price * 0.01);   // 중과 1%
+    else if(rate>0.01) agr = Math.round(price * 0.002);  // 표준 0.2%
+  }
+
+  const total = acq + edu + agr;
+  const fmt   = n => Math.round(n/1e4).toLocaleString('ko-KR')+'만원';
+  const pct   = r => (r*100).toFixed(2)+'%';
+
+  /* 결과 출력 */
+  document.getElementById('r-acq-l').textContent = heavy
+    ? `취득세 (중과 ${pct(rate)})`
+    : `취득세 (${pct(rate)})`;
+  document.getElementById('r-acq-v').textContent = fmt(acq);
+
+  const eduRate = heavy ? 0.004 : rate*0.1;
+  document.getElementById('r-edu-l').textContent = `지방교육세 (${pct(eduRate)})`;
+  document.getElementById('r-edu-v').textContent = fmt(edu);
+
+  const agrRow = document.getElementById('r-agr-row');
+  if(agr>0){
+    document.getElementById('r-agr-v').textContent = fmt(agr);
+    agrRow.style.display='flex';
+  } else {
+    agrRow.style.display='none';
+  }
+
+  // 합산 실효세율
+  const effRate = total/price;
+  const tag = document.getElementById('r-tag');
+  tag.textContent = `실효 ${pct(effRate)}`;
+  tag.className   = 'rate-tag' + (heavy?' heavy-tag':'');
+
+  document.getElementById('r-total').textContent = fmt(total);
+
+  // 경고 문구
+  const warn = document.getElementById('r-warn');
+  if(warnMsg){ warn.textContent=warnMsg; warn.style.display='block'; }
+  else warn.style.display='none';
+
+  // 생애최초 안내
+  const fnote = document.getElementById('r-first-note');
+  fnote.style.display = (house===1 && first==='y') ? 'block':'none';
+
+  ph.style.display='none';
+  body.style.display='block';
+}
+
+/* ── 토글 섹션 ── */
+function toggleSection(hd){
+  hd.classList.toggle('open');
+  const body = hd.nextElementSibling;
+  body.style.display = hd.classList.contains('open') ? 'block':'none';
+}
+
+/* 초기 UI 설정 */
+updateUI();
+</script>
+</body>
+</html>
