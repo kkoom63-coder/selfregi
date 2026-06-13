@@ -61,6 +61,12 @@ select{cursor:pointer;appearance:auto}
 
 /* 체크리스트 */
 .cl-tab{display:flex;gap:8px;margin-bottom:16px}
+
+/* 매매유형 탭 */
+.deal-tab{display:flex;gap:8px}
+.deal-tab-btn{flex:1;padding:11px 8px;border:1.5px solid var(--border);border-radius:8px;background:#fafbfd;font-size:13px;font-weight:600;font-family:inherit;color:var(--muted);cursor:pointer;transition:all .15s}
+.deal-tab-btn.active{border-color:var(--blue);background:#eef3ff;color:var(--navy)}
+.cl-item.trust-only{display:none}
 .cl-tab-btn{flex:1;padding:8px;border:1.5px solid var(--border);border-radius:8px;background:#fafbfd;font-size:12px;font-weight:600;font-family:inherit;color:var(--muted);cursor:pointer;transition:all .15s}
 .cl-tab-btn.active{border-color:var(--blue);background:#eef3ff;color:var(--navy)}
 .cl-section{margin-bottom:14px}
@@ -94,7 +100,7 @@ footer{text-align:center;padding:18px;font-size:11px;color:#a0aec0;max-width:720
   <div class="hi">
     <div class="badge">Beta</div>
     <h1>📄 셀프등기 서류 자동생성기</h1>
-    <p>소유권이전등기(준공건물 · 신탁해지) 서류를 직접 작성해 비용을 절약하세요</p>
+    <p>소유권이전등기(일반매매 · 신탁해지) 서류를 직접 작성해 비용을 절약하세요</p>
     <p style="font-size:11px;color:rgba(255,255,255,.4);margin-top:6px;">본 서비스는 개인정보를 별도로 저장하고 있지 않으며, 개인정보를 기재하지 않아도 서류 발급이 가능합니다.</p>
   </div>
   <div class="sbar"><div class="sbi">
@@ -140,6 +146,18 @@ footer{text-align:center;padding:18px;font-size:11px;color:#a0aec0;max-width:720
   </div>
 </div>
 
+<!-- 매매유형 선택 -->
+<div class="card">
+  <div class="ch"><div class="ci">🧭</div><div><div class="ct">등기 유형 선택</div><div class="cs">소유권이전등기의 원인을 선택하세요</div></div></div>
+  <div class="deal-tab">
+    <button class="deal-tab-btn active" onclick="switchDeal('sale', this)">일반매매</button>
+    <button class="deal-tab-btn" onclick="switchDeal('trust', this)">신탁해지 (분양·신축)</button>
+  </div>
+  <div class="ntc inf2" id="deal-desc" style="margin-top:12px">
+    <strong>일반매매:</strong> 개인 간 매매로 소유권을 이전하는 경우입니다. 매도인은 개인(또는 법인)이며, 신탁일부해지증서는 필요하지 않습니다.
+  </div>
+</div>
+
 <!-- ③ 대지지분 -->
 <div class="card">
   <div class="ch"><div class="ci">📐</div><div><div class="ct">대지지분 정보</div><div class="cs">등기부등본 또는 매매(분양)계약서에서 확인</div></div></div>
@@ -166,59 +184,84 @@ footer{text-align:center;padding:18px;font-size:11px;color:#a0aec0;max-width:720
 
 <!-- ④ 매도인 정보 -->
 <div class="card">
-  <div class="ch"><div class="ci">🏦</div><div><div class="ct">매도인 정보</div><div class="cs">매매(분양)계약서의 매도인 정보를 선택하세요</div></div></div>
-  <div class="ntc wrn" style="margin-bottom:14px">
-    <strong>📄 매매(분양)계약서를 확인하세요.</strong> 매도인은 부동산신탁회사(아래 목록)이거나 시공사 직접분양인 경우 직접 입력합니다.
-  </div>
+  <div class="ch"><div class="ci">🏦</div><div><div class="ct">매도인 정보</div><div class="cs">매매(분양)계약서의 매도인 정보를 입력하세요</div></div></div>
 
-  <!-- 신탁사 드롭다운 -->
-  <div class="f">
-    <label>매도인(신탁사 등) 선택 <span class="req">*</span></label>
-    <select id="trust-select" onchange="onTrustSelect()">
-      <option value="">-- 신탁사를 선택하거나 직접 입력하세요 --</option>
-      <optgroup label="부동산신탁회사 (분양계약서 매도인 확인)">
-        <option value="hana">주식회사 하나자산신탁</option>
-        <option value="koreit">한국토지신탁 주식회사</option>
-        <option value="kb">KB부동산신탁 주식회사</option>
-        <option value="koramco">코람코자산신탁 주식회사</option>
-        <option value="daeshin">대신자산신탁 주식회사</option>
-        <option value="mudong">무궁화신탁 주식회사</option>
-        <option value="korit">한국자산신탁 주식회사</option>
-        <option value="genasset">생보부동산신탁 주식회사</option>
-        <option value="kdb">KDB생명보험(신탁)</option>
-      </optgroup>
-      <optgroup label="직접 입력">
-        <option value="custom">✏️ 시공사 또는 기타 매도인 직접 입력</option>
-      </optgroup>
-    </select>
-  </div>
+  <!-- 신탁해지 매도인 영역 -->
+  <div id="seller-trust" style="display:none">
+    <div class="ntc wrn" style="margin-bottom:14px">
+      <strong>📄 분양계약서를 확인하세요.</strong> 매도인은 부동산신탁회사(아래 목록)이거나 시공사 직접분양인 경우 직접 입력합니다.
+    </div>
 
-  <!-- 선택된 신탁사 미리보기 -->
-  <div class="trust-preview" id="trust-preview">
-    <strong id="tp-name"></strong>
-    <span id="tp-addr" style="color:#2a4080;font-size:11px"></span><br>
-    <span style="color:#555">대표이사: </span><span id="tp-ceo"></span> &nbsp;|&nbsp;
-    <span style="color:#555">법인번호: </span><span id="tp-reg"></span>
-  </div>
+    <!-- 신탁사 드롭다운 -->
+    <div class="f">
+      <label>매도인 선택 <span class="req">*</span></label>
+      <select id="trust-select" onchange="onTrustSelect()">
+        <option value="">-- 직접 입력하거나 신탁사를 선택하세요 --</option>
+        <optgroup label="직접 입력">
+          <option value="custom">✏️ 매도인 직접입력</option>
+        </optgroup>
+        <optgroup label="부동산신탁회사 (분양계약서 매도인 확인)">
+          <option value="kb">케이비부동산신탁 주식회사</option>
+          <option value="daehan">대한토지신탁 주식회사</option>
+          <option value="shinhan">신한자산신탁 주식회사</option>
+          <option value="hana">주식회사 하나자산신탁</option>
+          <option value="korea">코리아신탁 주식회사</option>
+          <option value="mudong">주식회사 무궁화신탁</option>
+          <option value="koramco">주식회사 코람코자산신탁</option>
+          <option value="kyobo">교보자산신탁 주식회사</option>
+          <option value="woori">우리자산신탁 주식회사</option>
+          <option value="kic">한국투자부동산신탁 주식회사</option>
+          <option value="daeshin">대신자산신탁 주식회사</option>
+          <option value="shinyoung">신영부동산신탁 주식회사</option>
+          <option value="korit">한국자산신탁 주식회사</option>
+          <option value="koreit">주식회사 한국토지신탁</option>
+        </optgroup>
+      </select>
+    </div>
 
-  <!-- 직접 입력 영역 -->
-  <div id="custom-fields">
-    <div class="fg s1" style="margin-top:10px"><div class="f">
-      <label>매도인 상호(법인명) <span class="req">*</span></label>
-      <input type="text" id="c-name" placeholder="예: 주식회사○○건설">
-    </div></div>
-    <div class="fg s1" style="margin-top:10px"><div class="f">
-      <label>매도인 주소 <span class="req">*</span></label>
-      <input type="text" id="c-addr" placeholder="예: 서울특별시 강남구 테헤란로 000, 0층">
-    </div></div>
-    <div class="fg" style="margin-top:10px">
-      <div class="f"><label>대표이사 성명 <span class="req">*</span></label><input type="text" id="c-ceo" placeholder="예: 홍 길 동"></div>
-      <div class="f"><label>법인등록번호 <span class="req">*</span></label><input type="text" id="c-reg" placeholder="예: 110111-0000000"></div>
+    <!-- 선택된 신탁사 미리보기 -->
+    <div class="trust-preview" id="trust-preview">
+      <strong id="tp-name"></strong>
+      <span id="tp-addr" style="color:#2a4080;font-size:11px"></span><br>
+      <span style="color:#555">대표이사: </span><span id="tp-ceo"></span> &nbsp;|&nbsp;
+      <span style="color:#555">법인번호: </span><span id="tp-reg"></span>
+    </div>
+
+    <!-- 직접 입력 영역 -->
+    <div id="custom-fields">
+      <div class="fg s1" style="margin-top:10px"><div class="f">
+        <label>매도인 상호(법인명) <span class="req">*</span></label>
+        <input type="text" id="c-name" placeholder="예: 주식회사○○건설">
+      </div></div>
+      <div class="fg s1" style="margin-top:10px"><div class="f">
+        <label>매도인 주소 <span class="req">*</span></label>
+        <input type="text" id="c-addr" placeholder="예: 서울특별시 강남구 테헤란로 000, 0층">
+      </div></div>
+      <div class="fg" style="margin-top:10px">
+        <div class="f"><label>대표이사 성명 <span class="req">*</span></label><input type="text" id="c-ceo" placeholder="예: 홍 길 동"></div>
+        <div class="f"><label>법인등록번호 <span class="req">*</span></label><input type="text" id="c-reg" placeholder="예: 110111-0000000"></div>
+      </div>
+    </div>
+
+    <div class="ntc inf2" style="margin-top:12px">
+      <strong>💡 매수자 사전입력확인서 작성 시:</strong> 인터넷등기소(iros.go.kr) → 열람·발급 → 법인인감증명서 발급지원 → 매도용 매수자 등록에서 위 법인 정보로 매도인 검색 후 본인 정보를 등록합니다.
     </div>
   </div>
 
-  <div class="ntc inf2" style="margin-top:12px">
-    <strong>💡 매수자 사전입력확인서 작성 시:</strong> 인터넷등기소(iros.go.kr) → 열람·발급 → 법인인감증명서 발급지원 → 매도용 매수자 등록에서 위 법인 정보로 매도인 검색 후 본인 정보를 등록합니다.
+  <!-- 일반매매 매도인 영역 -->
+  <div id="seller-sale">
+    <div class="ntc wrn" style="margin-bottom:14px">
+      <strong>📄 매매계약서를 확인하세요.</strong> 일반매매의 매도인은 개인(자연인)입니다. 매매계약서상 매도인 정보를 입력하세요.
+    </div>
+    <div class="fg s1"><div class="f">
+      <label>매도인 성명 <span class="req">*</span></label>
+      <input type="text" id="s-name" placeholder="예: 홍길동">
+      <span class="fn">주민등록번호는 서류 출력 후 직접 기재합니다</span>
+    </div></div>
+    <div class="fg s1" style="margin-top:10px"><div class="f">
+      <label>매도인 주소 <span class="req">*</span><span class="hint">(도로명 주소)</span></label>
+      <input type="text" id="s-addr" placeholder="예: 서울특별시 강남구 테헤란로 000, 0동 0호">
+    </div></div>
   </div>
 </div>
 
@@ -245,7 +288,7 @@ footer{text-align:center;padding:18px;font-size:11px;color:#a0aec0;max-width:720
     <div class="cl-section">
       <div class="cl-section-title">① 서류 출력 및 날인</div>
       <div class="cl-item"><input type="checkbox" id="p1"><label for="p1">위임장 출력 → 주민등록번호 자필 기재 → 인감 날인</label></div>
-      <div class="cl-item"><input type="checkbox" id="p2"><label for="p2">신탁일부해지증서 출력 → 내용 확인</label></div>
+      <div class="cl-item trust-only"><input type="checkbox" id="p2"><label for="p2">신탁일부해지증서 출력 → 내용 확인</label></div>
     </div>
     <div class="cl-section">
       <div class="cl-section-title">② 본인 준비 서류</div>
@@ -271,7 +314,7 @@ footer{text-align:center;padding:18px;font-size:11px;color:#a0aec0;max-width:720
     <div class="cl-section">
       <div class="cl-section-title">① 서류 출력 및 날인</div>
       <div class="cl-item"><input type="checkbox" id="c1"><label for="c1">위임장 출력 → 법인 대표자명 기재 → 법인 인감 날인</label></div>
-      <div class="cl-item"><input type="checkbox" id="c2"><label for="c2">신탁일부해지증서 출력 → 내용 확인</label></div>
+      <div class="cl-item trust-only"><input type="checkbox" id="c2"><label for="c2">신탁일부해지증서 출력 → 내용 확인</label></div>
     </div>
     <div class="cl-section">
       <div class="cl-section-title">② 법인 준비 서류</div>
@@ -299,36 +342,86 @@ footer{text-align:center;padding:18px;font-size:11px;color:#a0aec0;max-width:720
 <!-- ⑧ 다운로드 -->
 <div class="card">
   <div style="font-size:13px;font-weight:700;color:var(--navy);margin-bottom:12px">📥 서류 생성 및 다운로드</div>
-  <button class="dbtn d1" onclick="downloadAll()" style="width:100%;display:flex;flex-direction:row;align-items:center;justify-content:center;gap:12px;padding:18px 20px">
-    <div class="diw" style="font-size:22px">📦</div>
+
+  <!-- 신탁해지: 위임장 + 해지증서 -->
+  <button id="dl-trust" class="dbtn d1" onclick="downloadAll()" style="display:none;width:100%;flex-direction:row;align-items:center;justify-content:center;gap:12px;padding:18px 20px">
+    <div class="diw" style="font-size:22px">📄</div>
     <div style="text-align:left">
-      <div class="dn">위임장 + 신탁일부해지증서 동시 다운로드</div>
-      <div class="ds">위임장.docx · 신탁일부해지증서.docx 2개 파일</div>
+      <div class="dn">위임장 + 신탁일부해지증서 다운로드</div>
+      <div class="ds">위임장.docx · 신탁일부해지증서.docx</div>
     </div>
   </button>
+
+  <!-- 일반매매: 위임장 -->
+  <button id="dl-sale" class="dbtn d1" onclick="downloadWimiOnly()" style="width:100%;display:flex;flex-direction:row;align-items:center;justify-content:center;gap:12px;padding:18px 20px">
+    <div class="diw" style="font-size:22px">📄</div>
+    <div style="text-align:left">
+      <div class="dn">위임장 다운로드</div>
+      <div class="ds">위임장.docx</div>
+    </div>
+  </button>
+
   <div class="ntc inf" style="margin-top:12px">
-    <strong>⚠️ 유의사항:</strong> 생성된 서류는 작성 보조 목적입니다. 주민등록번호·날인 등 빈칸은 출력 후 직접 기재하신 후 제출하시기 바랍니다.
+    <strong>⚠️ 유의사항</strong> <br>본 서비스는 법률 자문을 제공하지 않습니다. 개인정보를 입력하지 않아 공란으로 발급된 부분은 직접 기재하시어 제출하시기 바랍니다.
   </div>
 </div>
 
 </main>
-<footer>© 2025 셀프등기24 셀프등기 서류 자동생성기 · 본 서비스는 법률 자문을 제공하지 않습니다</footer>
+<footer>
+  셀프등기 서류 및 상세 절차 안내는 <a href="https://selfregi.tistory.com" target="_blank" rel="noopener" style="color:#7a8aa8;text-decoration:underline">블로그</a>를 참고하시기 바랍니다.<br>
+  © 2025 셀프등기24 셀프등기 서류 자동생성기 · 본 서비스는 법률 자문을 제공하지 않습니다
+</footer>
 <div class="toast" id="toast"></div>
 
 <script>
 // =============================================
+// 매매유형 상태 (trust: 신탁해지 / sale: 일반매매)
+// =============================================
+let dealType = 'sale';
+
+function switchDeal(type, btn) {
+  dealType = type;
+  document.querySelectorAll('.deal-tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+
+  const isTrust = type === 'trust';
+  // 매도인 영역 전환
+  document.getElementById('seller-trust').style.display = isTrust ? 'block' : 'none';
+  document.getElementById('seller-sale').style.display  = isTrust ? 'none' : 'block';
+  // 다운로드 버튼 전환
+  document.getElementById('dl-trust').style.display = isTrust ? 'flex' : 'none';
+  document.getElementById('dl-sale').style.display  = isTrust ? 'none' : 'flex';
+  // 안내 문구
+  const desc = document.getElementById('deal-desc');
+  if (isTrust) {
+    desc.innerHTML = '<strong>신탁해지:</strong> 분양받은 신축 물건의 신탁등기를 해지하며 소유권을 이전하는 경우입니다. 매도인은 부동산신탁회사입니다.';
+  } else {
+    desc.innerHTML = '<strong>일반매매:</strong> 개인 간 매매로 소유권을 이전하는 경우입니다. 매도인은 개인(또는 법인)이며, 신탁일부해지증서는 필요하지 않습니다.';
+  }
+  // 체크리스트 신탁 관련 항목 표시 전환
+  document.querySelectorAll('.trust-only').forEach(el => {
+    el.style.display = isTrust ? 'flex' : 'none';
+  });
+}
+
+// =============================================
 // 신탁사 DB — 법인 데이터 공유받으면 여기 추가
 // =============================================
 const TRUST_DB = {
-  hana:    { name:'주식회사 하나자산신탁', addr:'서울특별시 강남구 테헤란로 127, 15층 (역삼동, 하나금융그룹강남사옥)', ceo:'민 관 식', reg:'110111-1714818' },
-  koreit:  { name:'한국토지신탁 주식회사', addr:'서울특별시 종로구 종로1길 50, 7층 (수송동, 더케이트윈타워)', ceo:'강 태 욱', reg:'110111-1432411' },
-  kb:      { name:'KB부동산신탁 주식회사', addr:'서울특별시 영등포구 여의대로 77, 20층 (여의도동)', ceo:'최 재 영', reg:'110111-3367547' },
-  koramco: { name:'코람코자산신탁 주식회사', addr:'서울특별시 영등포구 국제금융로 56, 15층 (여의도동)', ceo:'유 창 근', reg:'110111-2994624' },
-  daeshin: { name:'대신자산신탁 주식회사', addr:'서울특별시 중구 남대문로 92, 10층 (다동)', ceo:'강 홍 렬', reg:'110111-3906777' },
-  mudong:  { name:'무궁화신탁 주식회사', addr:'서울특별시 강남구 테헤란로 508, 14층 (대치동)', ceo:'정 성 용', reg:'110111-2434519' },
-  korit:   { name:'한국자산신탁 주식회사', addr:'서울특별시 강남구 테헤란로 108길 42, 7층 (대치동)', ceo:'한 창 희', reg:'110111-2125815' },
-  genasset:{ name:'생보부동산신탁 주식회사', addr:'서울특별시 종로구 종로 33, 그랑서울 15층', ceo:'김 형 균', reg:'110111-2741910' },
-  kdb:     { name:'KDB생명보험 주식회사', addr:'서울특별시 영등포구 의사당대로 97', ceo:'이 환 주', reg:'110111-0316058' },
+  kb:      { name:'케이비부동산신탁 주식회사', addr:'서울특별시 강남구 테헤란로 129, (역삼동)', ceo:'성 채 현', reg:'110111-1348237' },
+  daehan:  { name:'대한토지신탁 주식회사', addr:'서울특별시 강남구 영동대로 517, 26층, 33층 (삼성동, 아셈타워)', ceo:'박 종 철', reg:'110111-1492513' },
+  shinhan: { name:'신한자산신탁 주식회사', addr:'서울특별시 영등포구 여의대로 70 (여의도동, 신한투자증권빌딩)', ceo:'이 승 수', reg:'110111-3543801' },
+  hana:    { name:'주식회사 하나자산신탁', addr:'서울특별시 강남구 테헤란로 127, 15층 (역삼동, 하나금융그룹 강남사옥)', ceo:'민 관 식', reg:'110111-1714818' },
+  korea:   { name:'코리아신탁 주식회사', addr:'서울특별시 강남구 테헤란로 508, 10층 (대치동, 해성2빌딩)', ceo:'백 영 기', reg:'110111-2937831' },
+  mudong:  { name:'주식회사 무궁화신탁', addr:'서울특별시 강남구 테헤란로 134, 22층 (역삼동, 포스코피앤에스타워)', ceo:'권 준 명', reg:'110111-2867418' },
+  koramco: { name:'주식회사 코람코자산신탁', addr:'서울특별시 강남구 삼성로 511, 4층 (삼성동, 아이콘 삼성)', ceo:'정 준 호', reg:'110111-2359837' },
+  kyobo:   { name:'교보자산신탁 주식회사', addr:'서울특별시 서초구 강남대로 465 (서초동, 강남교보타워)', ceo:'조 휘 성', reg:'110111-1617434' },
+  woori:   { name:'우리자산신탁 주식회사', addr:'서울특별시 강남구 테헤란로 301, 13층 (역삼동)', ceo:'이 종 근', reg:'110111-2003236' },
+  kic:     { name:'한국투자부동산신탁 주식회사', addr:'서울특별시 강남구 테헤란로 518, 섬유센터 7층 (대치동)', ceo:'이 국 형', reg:'110111-7125720' },
+  daeshin: { name:'대신자산신탁 주식회사', addr:'서울특별시 중구 삼일대로 343 (저동1가, 대신파이낸스센터)', ceo:'김 철 종', reg:'110111-7124665' },
+  shinyoung:{ name:'신영부동산신탁 주식회사', addr:'서울특별시 영등포구 국제금융로8길 16, 8층 (여의도동, 신영증권빌딩)', ceo:'박 순 문', reg:'110111-7126835' },
+  korit:   { name:'한국자산신탁 주식회사', addr:'서울특별시 강남구 테헤란로 306 (역삼동, 카이트타워)', ceo:'김 규 철', reg:'110111-2196304' },
+  koreit:  { name:'주식회사 한국토지신탁', addr:'서울특별시 강남구 테헤란로 137 (역삼동)', ceo:'최 윤 성', reg:'110111-1258220' },
 };
 
 function onTrustSelect() {
@@ -354,6 +447,16 @@ function onTrustSelect() {
 }
 
 function getTrust() {
+  // 일반매매: 개인 매도인 정보 반환
+  if (dealType === 'sale') {
+    return {
+      name: gv('s-name'),
+      addr: gv('s-addr'),
+      ceo:  '',
+      reg:  '',
+    };
+  }
+  // 신탁해지: 기존 로직
   const val = document.getElementById('trust-select').value;
   if (val === 'custom') {
     return {
@@ -388,19 +491,10 @@ function blobDL(blob, name) {
 }
 
 function validate() {
-  const reqs = [
-    ['owner-name','성명'],['owner-address','소유자 주소'],
-    ['jibun-address','지번 주소'],['dong','동'],['ho','호'],
-    ['total-land','전체 대지지분'],['unit-land','동호수 대지지분']
-  ];
-  for (const [id, lbl] of reqs) {
-    if (!gv(id)) { showToast('❌ ' + lbl + ' 을(를) 입력해주세요', '#c0392b'); document.getElementById(id).focus(); return false; }
+  // 베타테스트: 입력값이 비어 있어도 다운로드 가능 (빈 항목은 출력 후 직접 기재)
+  if (!gv('user-email')) {
+    showToast('⚠️ 이메일을 입력하면 체크리스트 안내를 받을 수 있습니다 (건너뛰어도 다운로드는 진행됩니다)', '#b8952e');
   }
-  const trustVal = document.getElementById('trust-select').value;
-  if (!trustVal) { showToast('❌ 매도인(신탁사)을 선택해주세요', '#c0392b'); return false; }
-  const t = getTrust();
-  if (!t || !t.name) { showToast('❌ 매도인 상호를 입력해주세요', '#c0392b'); return false; }
-  if (!gv('user-email')) { showToast('❌ 이메일 주소를 입력해주세요', '#c0392b'); document.getElementById('user-email').focus(); return false; }
   return true;
 }
 
@@ -518,6 +612,36 @@ async function downloadAll() {
     blobDL(blob2, `신탁일부해지증서_${d.ownerName}_${d.dong}동${d.ho}호.docx`);
 
     showToast('✅ 2개 서류 다운로드 완료!');
+    sendConfirmEmail();
+  } catch(e) { showToast('❌ ' + e.message, '#c0392b'); console.error(e); }
+}
+
+// =============================================
+// 위임장 단독 다운로드 (일반매매)
+// =============================================
+async function downloadWimiOnly() {
+  if (!validate()) return;
+  if (typeof JSZip === 'undefined') { showToast('❌ 라이브러리 로딩 중, 잠시 후 다시 시도해주세요', '#c0392b'); return; }
+  try {
+    const d = getData();
+    const blob1 = await fillTemplate(WIMI_B64, {
+      JIBUN_ADDR: d.jibun,
+      DONG: d.dong,
+      HO: d.ho,
+      TOTAL: d.total,
+      UNIT: d.unit,
+      YEAR: d.yr.trim() ? d.yr : '    ',
+      MONTH: d.mo.trim() ? d.mo : '  ',
+      DAY: d.dy.trim() ? d.dy : '  ',
+      TRUST_NAME: d.tName,
+      TRUST_ADDR: d.tAddr,
+      TRUST_ADDR2: '',
+      TRUST_CEO: d.tCEO,
+      OWNER_NAME: d.ownerName,
+      OWNER_ADDR: d.ownerAddr,
+    });
+    blobDL(blob1, `위임장_${d.ownerName}_${d.dong}동${d.ho}호.docx`);
+    showToast('✅ 위임장 다운로드 완료!');
     sendConfirmEmail();
   } catch(e) { showToast('❌ ' + e.message, '#c0392b'); console.error(e); }
 }
