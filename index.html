@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>셀프등기24 | 소유권이전등기 서류 자동생성</title>
-<meta name="description" content="아파트 소유권이전등기, 법무사 없이 직접 하세요. 서류 자동생성으로 최대 30만원 절약.">
+<meta name="description" content="아파트 소유권이전등기, 법무사 없이 직접 하세요. 서류 자동생성으로 최대 25만원 절약.">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -179,7 +179,7 @@ footer{background:var(--navy);margin-top:40px;padding:28px 20px}
 
 <!-- 히어로 -->
 <section class="hero">
-  <div class="hero-eyebrow">법무사 수수료 최대 30만원 절약</div>
+  <div class="hero-eyebrow">법무사 수수료 최대 25만원 절약</div>
   <h1>아파트 소유권이전,<br>직접 해도 됩니다</h1>
   <p class="hero-sub">잔금 납부 후 등기까지 — 서류 자동생성으로<br>법무사 없이 직접 완료하세요<br><br>셀프등기 관련 상세한 안내는 <a href="https://selfregi.tistory.com" target="_blank" rel="noopener" style="color:#f0d075;text-decoration:underline">블로그</a>를 확인하면 도움이 됩니다.</p>
   <div class="hero-btns">
@@ -192,11 +192,11 @@ footer{background:var(--navy);margin-top:40px;padding:28px 20px}
 <div class="stats-bar">
   <div class="stats-inner">
     <div class="stat-item">
-      <span class="stat-num">최대 30만원</span>
+      <span class="stat-num">10~25만원</span>
       <span class="stat-label">절약 가능한<br>법무사 수수료</span>
     </div>
     <div class="stat-item">
-      <span class="stat-num">위임장 즉시 발급</span>
+      <span class="stat-num">당일 발급</span>
       <span class="stat-label">서류 생성<br>소요 시간</span>
     </div>
   </div>
@@ -216,7 +216,7 @@ footer{background:var(--navy);margin-top:40px;padding:28px 20px}
     <div class="step-box">
       <div class="step-n">02</div>
       <div class="step-t">서류 자동 생성</div>
-      <div class="step-d">정보 입력 → 완성된 서류 Word 파일 다운로드</div>
+      <div class="step-d">정보 입력 → 완성된 서류 ZIP 다운로드</div>
     </div>
     <div class="step-box">
       <div class="step-n">03</div>
@@ -267,19 +267,19 @@ footer{background:var(--navy);margin-top:40px;padding:28px 20px}
     <div class="cases">
       <div class="case-card" data-case="general" onclick="selectCase('general')">
         <div class="c-icon-box">A</div>
-        <div class="c-title">일반 신탁해지<br>소유권이전</div>
-        <div class="c-desc">분양받은 아파트의 잔금을 치르고 소유권을 이전받는 가장 일반적인 경우</div>
-        <div class="c-when">→ 위임장 + 신탁일부해지증서</div>
+        <div class="c-title">매매계약에 따른<br>소유권이전</div>
+        <div class="c-desc">매매계약 체결 후 잔금 납부 이후 소유권을 이전 받는 가장 일반적인 경우</div>
+        <div class="c-when">→ 위임장(및 해지증서)</div>
       </div>
       <div class="case-card" data-case="landShare" onclick="selectCase('landShare')">
         <div class="c-icon-box">B</div>
         <div class="c-title">대지지분 별도등기<span class="soon-badge">준비중</span></div>
-        <div class="c-desc">택지지구·도시개발사업 등으로 토지(대지권)를 추가로 등기해야 하는 경우</div>
-        <div class="c-when">→ 위임장 + 신탁일부해지증서(대지)</div>
+        <div class="c-desc">현재 부동산등기부 상 건축물에 '대지지분'이 없는 경우로 대지권 등기를 진행해야 하는 경우</div>
+        <div class="c-when">→ 위임장(및 대지지분 포기증서)</div>
       </div>
     </div>
     <div class="ntc inf" style="margin-top:14px">
-      <strong>케이스를 모르시나요?</strong> 위 진단 질문에 답하시면 자동으로 선택됩니다.
+      <strong>💡 케이스를 모르시나요?</strong> 위 진단 질문에 답하시면 자동으로 선택됩니다.
     </div>
   </div>
 
@@ -328,7 +328,7 @@ footer{background:var(--navy);margin-top:40px;padding:28px 20px}
       <button class="faq-q" onclick="toggleFaq(this)">
         케이스 A와 B의 차이가 뭔가요?<span class="ico">+</span>
       </button>
-      <div class="faq-a">케이스 A는 분양 아파트의 일반적인 소유권이전 케이스입니다. 케이스 B는 LH 등 도시개발사업 지구처럼 건물 준공 후 토지(대지권) 등기가 별도로 남아있는 경우입니다. 등기부등본 표제부에 <strong>'별도등기 있음'</strong> 표시가 있다면 케이스 B에 해당합니다.</div>
+      <div class="faq-a">케이스 A는 일반적인 소유권이전 케이스로 매매계약 체결 후 잔금납부 이후의 일반적인 경우입니다. 케이스 B는 현재 건축물에 대지 지분(대지권)이 등기되어 있지 않아 대지권 등기를 진행해야 하는 경우입니다.</div>
     </div>
   </div>
 </main>
@@ -353,7 +353,7 @@ footer{background:var(--navy);margin-top:40px;padding:28px 20px}
 <script>
 /* ===== 케이스 선택 ===== */
 const CASES = {
-  general:   { label:'일반 신탁해지 소유권이전 (케이스 A)', url:'normal_form.html' },
+  general:   { label:'매매계약에 따른 소유권이전 (케이스 A)', url:'normal_form.html' },
   landShare: { label:'대지지분 별도등기 (케이스 B)',        url:null }
 };
 let answers = {q1:null,q2:null};
