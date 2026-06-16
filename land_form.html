@@ -13,6 +13,10 @@
 :root{--navy:#1e3a5f;--blue:#2a5f9e;--gold:#b8952e;--bg:#f2f4f8;--card:#fff;--text:#1a1e2e;--muted:#6b7280;--border:#dde2ec;--radius:12px;--shadow:0 2px 12px rgba(30,58,95,.08)}
 body{font-family:'Noto Sans KR','Malgun Gothic',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6}
 header{background:var(--navy);color:#fff}
+.back-bar{background:var(--navy);border-bottom:1px solid rgba(255,255,255,.06);padding:0 20px}
+.back-bar-inner{max-width:720px;margin:0 auto;height:32px;display:flex;align-items:center}
+.back-a{display:inline-flex;align-items:center;gap:4px;color:rgba(255,255,255,.45);font-size:11px;font-weight:500;text-decoration:none;transition:color .12s}
+.back-a:hover{color:#fff}
 .hi{max-width:720px;margin:0 auto;padding:22px 20px 18px}
 .badge{display:inline-block;background:rgba(184,149,46,.25);color:#f0d075;font-size:10px;font-weight:700;letter-spacing:1.5px;padding:2px 9px;border-radius:20px;margin-bottom:10px}
 header h1{font-size:21px;font-weight:700;margin-bottom:4px}
@@ -78,6 +82,14 @@ footer{text-align:center;padding:18px;font-size:11px;color:#a0aec0;max-width:720
 
 </head>
 <body>
+
+<!-- 홈으로 바 -->
+<div class="back-bar">
+  <div class="back-bar-inner">
+    <a href="index.html" class="back-a">← 홈으로</a>
+  </div>
+</div>
+
 <header>
   <div class="hi">
     <div class="badge">Beta</div>

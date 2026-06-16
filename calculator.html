@@ -88,7 +88,9 @@ main{max-width:720px;margin:0 auto;padding:20px 14px 60px}
 /* ── 링크 ── */
 .wetax-a{display:inline-flex;align-items:center;gap:4px;margin-top:12px;color:var(--blue);font-size:12px;font-weight:600;text-decoration:none}
 .wetax-a:hover{text-decoration:underline}
-.back-a{display:inline-flex;align-items:center;gap:4px;color:rgba(255,255,255,.5);font-size:12px;text-decoration:none;margin-bottom:14px;transition:color .12s}
+.back-bar{background:var(--navy);border-bottom:1px solid rgba(255,255,255,.06);padding:0 20px}
+.back-bar-inner{max-width:720px;margin:0 auto;height:32px;display:flex;align-items:center}
+.back-a{display:inline-flex;align-items:center;gap:4px;color:rgba(255,255,255,.45);font-size:11px;font-weight:500;text-decoration:none;transition:color .12s;padding:0}
 .back-a:hover{color:#fff}
 
 /* ── 토글 섹션 ── */
@@ -127,10 +129,16 @@ footer{background:var(--navy);margin-top:40px;padding:28px 20px}
   </div>
 </nav>
 
+<!-- 홈으로 바 -->
+<div class="back-bar">
+  <div class="back-bar-inner">
+    <a href="index.html" class="back-a">← 홈으로</a>
+  </div>
+</div>
+
 <!-- 페이지 헤더 -->
 <div class="page-header">
   <div class="page-header-inner">
-    <a href="index.html" class="back-a">← 홈으로</a>
     <div class="page-eyebrow">참고용 계산기</div>
     <h1>취득세 계산기</h1>
     <p>공동주택(아파트) 기준 · 1세대 기준 표준세율 적용 · 실제 납부세액은 위택스에서 확인하세요</p>
