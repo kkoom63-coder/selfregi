@@ -2,30 +2,21 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<!-- 모바일에서 강제 줌(확대/축소)을 완벽히 차단하고 네이티브 앱처럼 동작하게 설정 -->
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>셀프등기24 | 소유권이전등기 서류 자동생성</title>
 <meta name="description" content="아파트 소유권이전등기, 법무사 없이 직접 하세요. 서류 자동생성으로 최대 25만원 절약.">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{--navy:#1e3a5f;--blue:#2a5f9e;--gold:#b8952e;--bg:#f2f4f8;--card:#fff;--text:#1a1e2e;--muted:#6b7280;--border:#dde2ec;--radius:12px;--shadow:0 2px 12px rgba(30,58,95,.08)}
-html, body {overflow-x:hidden; touch-action:manipulation; /* 가로 스크롤 및 더블탭 줌 방지 */}
 body{font-family:'Noto Sans KR','Malgun Gothic',sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
 
 /* ── 네비게이션 ── */
 nav{background:var(--navy);position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(255,255,255,.06)}
-.nav-inner{
-  max-width:720px;margin:0 auto;padding:0 20px;height:52px;
-  display:flex;align-items:center;gap:12px;
-  overflow-x:auto; /* 모바일에서 메뉴가 길면 가로로 스와이프 가능하도록 설정 */
-  white-space:nowrap; 
-  -webkit-overflow-scrolling:touch;
-}
-.nav-inner::-webkit-scrollbar { display:none; } /* 스크롤바 숨김 */
-.nav-logo{flex-shrink:0;font-size:16px;font-weight:700;color:#fff;text-decoration:none;margin-right:auto;letter-spacing:-.3px}
+.nav-inner{max-width:720px;margin:0 auto;padding:0 20px;height:52px;display:flex;align-items:center;gap:6px}
+.nav-logo{font-size:16px;font-weight:700;color:#fff;text-decoration:none;margin-right:auto;letter-spacing:-.3px}
 .nav-logo span{display:inline-block;background:rgba(184,149,46,.3);color:#f0d075;font-size:9px;font-weight:700;letter-spacing:1.2px;padding:1px 6px;border-radius:10px;vertical-align:middle;margin-left:6px}
-.nav-a{flex-shrink:0;color:rgba(255,255,255,.55);font-size:12px;padding:5px 11px;border-radius:7px;text-decoration:none;transition:all .15s}
+.nav-a{color:rgba(255,255,255,.55);font-size:12px;padding:5px 11px;border-radius:7px;text-decoration:none;transition:all .15s;white-space:nowrap}
 .nav-a:hover{background:rgba(255,255,255,.1);color:#fff}
 .nav-a.cta{background:rgba(255,255,255,.12);color:#fff;font-weight:600}
 .nav-a.cta:hover{background:rgba(255,255,255,.2)}
@@ -33,9 +24,9 @@ nav{background:var(--navy);position:sticky;top:0;z-index:100;border-bottom:1px s
 /* ── 히어로 ── */
 .hero{background:var(--navy);padding:52px 20px 48px;text-align:center}
 .hero-eyebrow{display:inline-block;background:rgba(184,149,46,.25);color:#f0d075;font-size:11px;font-weight:700;letter-spacing:.8px;padding:4px 14px;border-radius:20px;margin-bottom:18px}
-.hero h1{font-size:32px;font-weight:700;color:#fff;line-height:1.35;margin-bottom:12px;word-break:keep-all;}
+.hero h1{font-size:32px;font-weight:700;color:#fff;line-height:1.35;margin-bottom:12px}
 .hero h1 br{display:block}
-.hero-sub{font-size:14px;color:rgba(255,255,255,.6);margin-bottom:28px;line-height:1.7;word-break:keep-all;}
+.hero-sub{font-size:14px;color:rgba(255,255,255,.6);margin-bottom:28px;line-height:1.7}
 .hero-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:16px}
 .btn-primary{display:inline-flex;align-items:center;gap:7px;padding:13px 26px;background:#2a5f9e;color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;text-decoration:none;transition:background .15s}
 .btn-primary:hover{background:#1d4d85}
@@ -49,21 +40,21 @@ nav{background:var(--navy);position:sticky;top:0;z-index:100;border-bottom:1px s
 .stat-item{padding:20px 16px;text-align:center;border-right:1px solid rgba(255,255,255,.06)}
 .stat-item:last-child{border-right:none}
 .stat-num{display:block;font-size:20px;font-weight:700;color:#fff;margin-bottom:3px}
-.stat-label{font-size:11px;color:rgba(255,255,255,.45);line-height:1.4;word-break:keep-all}
+.stat-label{font-size:11px;color:rgba(255,255,255,.45);line-height:1.4}
 
 /* ── 공통 섹션 ── */
 .section{max-width:720px;margin:0 auto;padding:36px 14px 0}
 .sec-label{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;color:var(--blue);letter-spacing:.6px;margin-bottom:10px}
 .sec-label::before{content:'';display:block;width:3px;height:12px;background:var(--blue);border-radius:2px}
 .sec-title{font-size:20px;font-weight:700;color:var(--navy);margin-bottom:6px;line-height:1.4}
-.sec-sub{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:20px;word-break:keep-all}
+.sec-sub{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:20px}
 
 /* ── 3단계 프로세스 ── */
 .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
 .step-box{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:18px 16px;box-shadow:var(--shadow)}
 .step-n{font-size:11px;font-weight:700;color:var(--blue);margin-bottom:8px}
 .step-t{font-size:13px;font-weight:700;color:var(--navy);margin-bottom:5px;line-height:1.4}
-.step-d{font-size:11px;color:var(--muted);line-height:1.5;word-break:keep-all}
+.step-d{font-size:11px;color:var(--muted);line-height:1.5}
 .step-arrow{display:flex;align-items:center;justify-content:center;color:#c5d0de;font-size:18px;padding-top:18px}
 
 /* ── 구분선 ── */
@@ -77,12 +68,12 @@ main{max-width:720px;margin:0 auto;padding:16px 14px 20px}
 .step-num{width:32px;height:32px;background:var(--navy);color:#fff;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0;letter-spacing:-.3px}
 .step-num.grn{background:#1a6b3c}
 .ct{font-size:14px;font-weight:700;color:var(--navy)}
-.cs{font-size:11px;color:var(--muted);margin-top:1px;word-break:keep-all}
+.cs{font-size:11px;color:var(--muted);margin-top:1px}
 
 /* ── 진단 마법사 ── */
 .wizard-q{background:#f8fafc;border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:12px}
-.q-text{font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px;word-break:keep-all}
-.q-hint{font-size:11px;color:var(--blue);margin-bottom:12px;display:block;word-break:keep-all}
+.q-text{font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px}
+.q-hint{font-size:11px;color:var(--blue);margin-bottom:12px;display:block}
 .opt-row{display:flex;gap:8px}
 .opt-btn{flex:1;padding:10px;border:1.5px solid var(--border);background:#fff;border-radius:8px;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;transition:all .15s;font-family:inherit}
 .opt-btn:hover{border-color:var(--blue);color:var(--blue)}
@@ -98,31 +89,52 @@ main{max-width:720px;margin:0 auto;padding:16px 14px 20px}
 .case-card.selected{border-color:var(--blue);background:#f0f5ff}
 .case-card.recommended::after{content:"추천";position:absolute;top:-10px;right:14px;background:var(--blue);color:#fff;font-size:10px;font-weight:700;padding:2px 9px;border-radius:10px}
 .c-icon-box{width:36px;height:36px;background:#eef3fb;border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--navy);font-size:14px;font-weight:900;margin-bottom:10px}
-.c-title{font-size:14px;font-weight:700;color:var(--navy);margin-bottom:5px;line-height:1.4;word-break:keep-all}
-.c-desc{font-size:12px;color:var(--muted);line-height:1.5;word-break:keep-all}
+.c-title{font-size:14px;font-weight:700;color:var(--navy);margin-bottom:5px;line-height:1.4}
+.c-desc{font-size:12px;color:var(--muted);line-height:1.5}
 .c-when{margin-top:10px;padding-top:10px;border-top:1px dashed var(--border);font-size:11px;color:var(--blue);font-weight:500}
+.soon-badge{display:inline-block;background:#f0f4f8;color:#9aa5b1;font-size:10px;font-weight:700;padding:2px 8px;border-radius:6px;margin-left:6px;vertical-align:middle}
 
 /* ── 결과 ── */
 #result{display:none}
 .result-box{background:#f0f5ff;border:1.5px solid #c5d5f5;border-radius:10px;padding:16px}
 .r-label{font-size:11px;color:var(--muted);margin-bottom:3px}
-.r-case{font-size:17px;font-weight:800;color:var(--navy);word-break:keep-all}
+.r-case{font-size:17px;font-weight:800;color:var(--navy)}
 .next-btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;margin-top:14px;padding:15px 20px;background:var(--navy);color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;transition:background .15s}
 .next-btn:hover{background:var(--blue)}
 .next-btn.disabled{background:#b0bcc8;cursor:not-allowed}
 
 /* ── 공지 박스 ── */
-.ntc{border-radius:8px;padding:10px 12px;font-size:11px;line-height:1.6;margin-top:12px;word-break:keep-all}
+.ntc{border-radius:8px;padding:10px 12px;font-size:11px;line-height:1.6;margin-top:12px}
 .ntc.inf{background:#eef3ff;border:1px solid #c5d5f5;color:#2a4080}
+.ntc.warn{background:#fffbeb;border:1px solid #fde68a;color:#92400e}
+
+/* ── 취득세 계산기 ── */
+.tx-inputs{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+.tx-field label{display:block;font-size:12px;font-weight:600;color:var(--text);margin-bottom:5px}
+.tx-wrap{position:relative}
+.tx-wrap input{width:100%;padding:10px 40px 10px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;font-family:inherit;outline:none;transition:border-color .15s;background:#fff;color:var(--text)}
+.tx-wrap input:focus{border-color:var(--blue)}
+.tx-wrap input::placeholder{color:#b0bcc8}
+.tx-unit{position:absolute;right:11px;top:50%;transform:translateY(-50%);font-size:11px;color:var(--muted);pointer-events:none}
+.tx-result-box{margin-top:16px;background:#f8fafc;border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.tx-row{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;font-size:13px;border-bottom:1px solid var(--border)}
+.tx-row:last-child{border-bottom:none}
+.tx-row .l{color:var(--muted)}.tx-row .v{font-weight:600;color:var(--text)}
+.tx-total{display:flex;justify-content:space-between;align-items:center;padding:13px 14px;background:#eef3ff;border-top:1.5px solid #c5d5f5}
+.tx-total .l{font-size:14px;font-weight:700;color:var(--navy)}
+.tx-total .v{font-size:18px;font-weight:800;color:var(--navy)}
+.tx-ph{text-align:center;padding:22px;color:#b0bcc8;font-size:13px}
+.wetax-a{display:inline-flex;align-items:center;gap:4px;margin-top:10px;color:var(--blue);font-size:12px;font-weight:600;text-decoration:none}
+.wetax-a:hover{text-decoration:underline}
 
 /* ── FAQ ── */
 .faq-item{border-bottom:1px solid var(--border)}
 .faq-item:last-child{border-bottom:none}
-.faq-q{width:100%;display:flex;justify-content:space-between;align-items:center;padding:14px 0;font-size:13px;font-weight:600;color:var(--text);background:none;border:none;cursor:pointer;font-family:inherit;text-align:left;gap:8px;transition:color .12s;word-break:keep-all}
+.faq-q{width:100%;display:flex;justify-content:space-between;align-items:center;padding:14px 0;font-size:13px;font-weight:600;color:var(--text);background:none;border:none;cursor:pointer;font-family:inherit;text-align:left;gap:8px;transition:color .12s}
 .faq-q:hover{color:var(--blue)}
 .faq-q .ico{flex-shrink:0;font-size:18px;color:var(--muted);transition:transform .2s}
 .faq-q.open .ico{transform:rotate(45deg)}
-.faq-a{font-size:12px;color:var(--muted);line-height:1.7;padding:0 0 14px;display:none;word-break:keep-all}
+.faq-a{font-size:12px;color:var(--muted);line-height:1.7;padding:0 0 14px;display:none}
 .faq-a a{color:var(--blue)}
 
 /* ── 푸터 ── */
@@ -146,6 +158,7 @@ footer{background:var(--navy);margin-top:40px;padding:28px 20px}
   .steps{grid-template-columns:1fr}
   .cases{grid-template-columns:1fr}
   .opt-row{flex-direction:column}
+  .tx-inputs{grid-template-columns:1fr}
   .hero-btns{flex-direction:column;align-items:stretch}
   .btn-primary,.btn-ghost{justify-content:center}
 }
@@ -167,7 +180,7 @@ footer{background:var(--navy);margin-top:40px;padding:28px 20px}
 <!-- 히어로 -->
 <section class="hero">
   <div class="hero-eyebrow">법무사 수수료 최대 25만원 절약</div>
-  <h1>아파트 소유권이전,<br>직접 해도 됩니다</h1>
+  <h1>부동산 소유권이전,<br>직접 해도 됩니다</h1>
   <p class="hero-sub">잔금 납부 후 등기까지 — 서류 자동생성으로<br>법무사 없이 직접 완료하세요<br><br>셀프등기 관련 상세한 안내는 <a href="https://selfregi.tistory.com" target="_blank" rel="noopener" style="color:#f0d075;text-decoration:underline">블로그</a>를 확인하면 도움이 됩니다.</p>
   <div class="hero-btns">
     <a href="#start" class="btn-primary">서류 작성 시작하기 →</a>
