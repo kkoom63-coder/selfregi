@@ -387,6 +387,19 @@ main{max-width:720px;margin:0 auto;padding:24px 14px 110px;position:relative}
         </div>
         <div class="sc-body">
 
+          <!-- 서울·경기 외 지역 / 분할 관할 보조 안내 (경고를 먼저 보여줌) -->
+          <div class="pdf-helper" id="pdf-helper" style="display:none;margin-top:0;margin-bottom:12px">
+            <div class="pdf-helper-t">📄 이 지역은 자동 안내가 아직 준비중이에요</div>
+            <div class="pdf-helper-d">현재 서울·경기 지역만 등기소를 자동으로 찾아드리고 있습니다. 아래 전국 등기소 정보(법원 제공, 2025.11 기준)에서 주소의 '관할구역' 항목을 직접 확인해 주세요.</div>
+            <a class="pdf-helper-btn" href="전국등기소정보.pdf" target="_blank" rel="noopener" download>
+              ⬇ 전국 등기소 정보 PDF 다운로드
+            </a>
+          </div>
+
+          <a href="#" id="link-deunggi" class="btn-map" target="_blank" rel="noopener" style="margin-top:0;margin-bottom:16px">
+            🚕 네이버 지도로 <span class="dest-name" id="btn-deunggi-name">관할 등기소</span> 안내받기
+          </a>
+
           <!-- ★ 번호 릴레이 집계 + 신청서 미리보기 -->
           <div class="relay-hub">
             <div class="relay-hub-hd">📋 신청서 옮겨적기 (자동 집계)</div>
@@ -461,18 +474,6 @@ main{max-width:720px;margin:0 auto;padding:24px 14px 110px;position:relative}
                 <div class="action-desc">신청서, 취득세영수증, 수입인지, 위임장, 매매계약서, 인감증명서 등 모든 서류를 모아 제출하면 끝납니다! 🎉</div>
               </div>
             </div>
-          </div>
-          <a href="#" id="link-deunggi" class="btn-map" target="_blank" rel="noopener">
-            🚕 네이버 지도로 <span class="dest-name" id="btn-deunggi-name">관할 등기소</span> 안내받기
-          </a>
-
-          <!-- 서울·경기 외 지역 / 분할 관할 보조 안내 -->
-          <div class="pdf-helper" id="pdf-helper" style="display:none">
-            <div class="pdf-helper-t">📄 이 지역은 자동 안내가 아직 준비중이에요</div>
-            <div class="pdf-helper-d">현재 서울·경기 지역만 등기소를 자동으로 찾아드리고 있습니다. 아래 전국 등기소 정보(법원 제공, 2025.11 기준)에서 주소의 '관할구역' 항목을 직접 확인해 주세요.</div>
-            <a class="pdf-helper-btn" href="전국등기소정보.pdf" target="_blank" rel="noopener" download>
-              ⬇ 전국 등기소 정보 PDF 다운로드
-            </a>
           </div>
         </div>
       </div>
