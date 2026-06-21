@@ -652,20 +652,20 @@ function applyDynamicRouting(fullAddress){
 }
 
 /* =========================================================
-   주소 입력: URL 파라미터 우선 → localStorage 폴백 → 수동
-   ?addr=...  &price=...
+   주소 입력: URL 파라미터만 신뢰 (?addr=...&price=...)
+   ※ localStorage에 주소를 남기지 않음 — 새로고침/직접 접속 시
+     이전 테스트·다른 부동산 주소가 고정되어 보이는 문제 방지.
+     PC결제→모바일 등 기기 간 전달은 결제 후 발송되는
+     roadmap.html?addr=...&token=... 링크(URL 파라미터)로 처리.
    ========================================================= */
 function getParam(k){ return new URLSearchParams(location.search).get(k); }
 
 window.onload = () => {
   const urlAddr = getParam('addr');
   const urlPrice = getParam('price');
-  const savedAddr = (function(){ try{ return localStorage.getItem('targetAddress'); }catch(e){ return null; } })();
-  const addr = urlAddr || savedAddr;
 
-  if(addr){
-    try{ localStorage.setItem('targetAddress', addr); }catch(e){}
-    applyDynamicRouting(addr);
+  if(urlAddr){
+    applyDynamicRouting(urlAddr);
   } else {
     document.getElementById('display-full-address').textContent = '미확인';
     document.getElementById('addr-missing').style.display = 'block';
@@ -682,10 +682,10 @@ window.onload = () => {
 function applyManualAddr(){
   const v = document.getElementById('manual-addr').value.trim();
   if(!v){ showToast('주소를 입력해 주세요.'); return; }
-  try{ localStorage.setItem('targetAddress', v); }catch(e){}
+  // 세션 내(새로고침 전까지)만 유효 — localStorage 미저장
   document.getElementById('addr-missing').style.display = 'none';
   applyDynamicRouting(v);
-  showToast('주소를 적용했습니다.');
+  showToast('주소를 적용했습니다. (새로고침하면 다시 입력해야 합니다)');
 }
 
 /* =========================================================
