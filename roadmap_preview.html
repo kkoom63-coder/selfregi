@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>셀프등기 로드맵 미리보기 | 셀프등기24</title>
+<meta name="description" content="결제하면 받는 셀프등기 로드맵을 미리 확인하세요. 집→구청→은행→등기소 동선 순서로 정리된 인터랙티브 가이드.">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--navy:#1e3a5f;--blue:#2a5f9e;--gold:#b8952e;--bg:#f2f4f8;--card:#fff;--text:#1a1e2e;--muted:#6b7280;--border:#dde2ec;--radius:12px;--shadow:0 2px 12px rgba(30,58,95,.08)}
+body{font-family:'Noto Sans KR','Malgun Gothic',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;-webkit-tap-highlight-color:transparent}
+
+/* ── 네비게이션 (타 페이지 공통) ── */
+nav{background:var(--navy);position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(255,255,255,.06)}
+.nav-inner{max-width:560px;margin:0 auto;padding:0 18px;height:52px;display:flex;align-items:center;gap:6px}
+.nav-logo{font-size:16px;font-weight:700;color:#fff;text-decoration:none;margin-right:auto;letter-spacing:-.3px}
+.nav-logo span{display:inline-block;background:rgba(184,149,46,.3);color:#f0d075;font-size:9px;font-weight:700;letter-spacing:1.2px;padding:1px 6px;border-radius:10px;vertical-align:middle;margin-left:6px}
+.nav-a{color:rgba(255,255,255,.55);font-size:12px;padding:5px 11px;border-radius:7px;text-decoration:none;transition:all .15s;white-space:nowrap}
+.nav-a:hover{background:rgba(255,255,255,.1);color:#fff}
+
+/* ── 홈으로 back-bar (UI 컨벤션) ── */
+.backbar{background:#1a3252;height:32px;display:flex;align-items:center}
+.backbar-inner{max-width:560px;margin:0 auto;padding:0 18px;width:100%}
+.backbar a{color:rgba(255,255,255,.6);font-size:12px;text-decoration:none}
+.backbar a:hover{color:#fff}
+
+/* ── 헤더 ── */
+.head{background:var(--navy);padding:26px 18px 22px}
+.head-inner{max-width:560px;margin:0 auto}
+.head-badge{display:inline-block;background:rgba(184,149,46,.22);color:#f0d075;font-size:10px;font-weight:700;letter-spacing:.6px;padding:3px 11px;border-radius:20px;margin-bottom:11px}
+.head h1{font-size:21px;font-weight:700;color:#fff;line-height:1.4;margin-bottom:7px}
+.head p{font-size:12.5px;color:rgba(255,255,255,.6);line-height:1.6}
+
+/* ── 진행바 (동선) ── */
+.progress{background:#172f4e;padding:16px 18px 18px}
+.progress-inner{max-width:560px;margin:0 auto}
+.prog-track{display:flex;align-items:flex-start;justify-content:space-between;position:relative}
+.prog-track::before{content:'';position:absolute;top:15px;left:8%;right:8%;height:2px;background:rgba(255,255,255,.12);z-index:0}
+.prog-node{display:flex;flex-direction:column;align-items:center;gap:6px;z-index:1;flex:1}
+.prog-dot{width:32px;height:32px;border-radius:50%;background:#22436b;border:2px solid rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center;font-size:15px}
+.prog-dot.active{background:var(--gold);border-color:var(--gold)}
+.prog-label{font-size:10.5px;color:rgba(255,255,255,.55);text-align:center;line-height:1.3}
+.prog-label b{color:rgba(255,255,255,.9);font-weight:600}
+
+/* ── 본문 ── */
+main{max-width:560px;margin:0 auto;padding:18px 14px 120px}
+
+/* ── 단계 카드 ── */
+.stage{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);margin-bottom:14px;overflow:hidden}
+.stage-hd{display:flex;align-items:center;gap:11px;padding:15px 16px;border-bottom:1px solid var(--border)}
+.stage-emoji{width:38px;height:38px;border-radius:9px;background:#eef3ff;display:flex;align-items:center;justify-content:center;font-size:19px;flex-shrink:0}
+.stage-step{font-size:10px;font-weight:700;color:var(--blue);letter-spacing:.4px;margin-bottom:1px}
+.stage-title{font-size:15px;font-weight:700;color:var(--navy);line-height:1.3}
+.stage-place{font-size:11px;color:var(--muted);margin-top:1px}
+.stage-body{padding:14px 16px}
+
+/* ── 액션 행 ── */
+.act{display:flex;gap:10px;padding:10px 0;border-bottom:1px dashed var(--border)}
+.act:last-child{border-bottom:none}
+.act-check{width:18px;height:18px;border-radius:5px;border:1.5px solid var(--border);flex-shrink:0;margin-top:2px}
+.act-main{flex:1;min-width:0}
+.act-t{font-size:13px;font-weight:600;color:var(--text);line-height:1.5}
+.act-d{font-size:11.5px;color:var(--muted);line-height:1.6;margin-top:2px}
+
+/* ── 인터랙티브 위젯(잠금 대상) ── */
+.widget{margin-top:9px;background:#f8fafc;border:1px solid var(--border);border-radius:9px;padding:11px 12px}
+.widget-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.widget-label{font-size:11px;color:var(--muted)}
+.widget-val{font-size:14px;font-weight:700;color:var(--navy);font-variant-numeric:tabular-nums}
+.widget-btn{display:inline-flex;align-items:center;gap:5px;background:var(--blue);color:#fff;border:none;border-radius:7px;font-size:11.5px;font-weight:600;padding:7px 12px;cursor:pointer;font-family:inherit;white-space:nowrap;transition:background .15s}
+.widget-btn:hover{background:#1d4d85}
+.widget-btn.ghost{background:#fff;color:var(--blue);border:1.5px solid #c5d5f5}
+
+/* 네이버지도 딥링크 */
+.map-link{display:flex;align-items:center;gap:8px;margin-top:9px;background:#03c75a0d;border:1px solid #03c75a44;border-radius:9px;padding:11px 12px;text-decoration:none}
+.map-link .mi{width:26px;height:26px;border-radius:7px;background:#03c75a;color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0}
+.map-link .mt{flex:1}
+.map-link .mt b{display:block;font-size:12.5px;color:var(--navy);font-weight:700}
+.map-link .mt span{font-size:10.5px;color:var(--muted)}
+.map-link .ma{color:#03c75a;font-size:15px;font-weight:700}
+
+/* 현금/카드 뱃지 */
+.pay-badge{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:700;padding:2px 8px;border-radius:6px;margin-left:6px;vertical-align:middle}
+.pay-cash{background:#fff4e5;color:#b06a00}
+.pay-card{background:#e8f0ff;color:#2a5f9e}
+
+/* ── 번호 릴레이 (핵심 위젯) ── */
+.relay{background:linear-gradient(135deg,#1e3a5f,#2a5f9e);border-radius:var(--radius);padding:16px;color:#fff;margin-bottom:14px}
+.relay-hd{font-size:13px;font-weight:700;margin-bottom:3px}
+.relay-sub{font-size:11px;color:rgba(255,255,255,.65);line-height:1.6;margin-bottom:13px}
+.relay-list{display:flex;flex-direction:column;gap:8px}
+.relay-item{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.08);border-radius:8px;padding:10px 12px}
+.relay-n{width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.16);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0}
+.relay-tx{flex:1}
+.relay-tx .rl{font-size:11px;color:rgba(255,255,255,.6)}
+.relay-tx .rv{font-size:14px;font-weight:700;font-variant-numeric:tabular-nums}
+.relay-copy{background:rgba(255,255,255,.14);border:none;color:#fff;border-radius:6px;font-size:11px;font-weight:600;padding:6px 11px;cursor:pointer;font-family:inherit}
+
+/* ── 잠금 오버레이 ── */
+.lock-wrap{position:relative}
+.lock-wrap.locked .lock-content{filter:blur(5px);pointer-events:none;user-select:none;opacity:.65}
+.lock-badge{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;gap:6px;z-index:5}
+.lock-wrap.locked .lock-badge{display:flex}
+.lock-pill{display:inline-flex;align-items:center;gap:5px;background:var(--navy);color:#fff;font-size:11px;font-weight:700;padding:6px 13px;border-radius:20px;box-shadow:0 3px 10px rgba(30,58,95,.3)}
+
+/* ── 정보 박스 ── */
+.ntc{border-radius:9px;padding:11px 13px;font-size:11px;line-height:1.7;margin-top:13px}
+.ntc.inf{background:#eef3ff;border:1px solid #c5d5f5;color:#2a4080}
+.ntc.warn{background:#fffbeb;border:1px solid #fde68a;color:#92400e}
+
+/* ── 결제 CTA (sticky) ── */
+.cta-bar{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--border);box-shadow:0 -4px 16px rgba(30,58,95,.08);z-index:90;padding:12px 14px calc(12px + env(safe-area-inset-bottom))}
+.cta-inner{max-width:560px;margin:0 auto;display:flex;align-items:center;gap:12px}
+.cta-price{flex-shrink:0}
+.cta-price .pl{font-size:10px;color:var(--muted)}
+.cta-price .pv{font-size:19px;font-weight:800;color:var(--navy);line-height:1.1}
+.cta-price .pv small{font-size:12px;font-weight:600}
+.cta-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:7px;background:var(--navy);color:#fff;border:none;border-radius:11px;font-size:15px;font-weight:700;padding:15px;cursor:pointer;font-family:inherit;text-decoration:none;transition:background .15s}
+.cta-btn:hover{background:var(--blue)}
+
+/* 잠금해제(결제완료) 배너 */
+.unlocked-banner{display:none;background:#e9f7ef;border:1px solid #9ed9b8;border-radius:var(--radius);padding:13px 15px;margin-bottom:14px;align-items:center;gap:10px}
+.unlocked-banner.show{display:flex}
+.unlocked-banner .ui{width:30px;height:30px;border-radius:8px;background:#1a7a4a;color:#fff;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.unlocked-banner .ut b{font-size:13px;color:#176b41;display:block}
+.unlocked-banner .ut span{font-size:11px;color:#3a8a5f}
+
+footer{background:var(--navy);padding:22px 18px 30px}
+.foot-inner{max-width:560px;margin:0 auto}
+.foot-brand{font-size:13px;font-weight:700;color:rgba(255,255,255,.8);margin-bottom:7px}
+.foot-disc{font-size:10.5px;color:rgba(255,255,255,.4);line-height:1.7}
+
+.toast{position:fixed;bottom:84px;left:50%;transform:translateX(-50%) translateY(80px);background:#1a7a4a;color:#fff;padding:9px 18px;border-radius:8px;font-size:12px;font-weight:500;transition:transform .3s;z-index:999;white-space:nowrap}
+.toast.show{transform:translateX(-50%) translateY(0)}
+
+@media(max-width:400px){
+  .head h1{font-size:19px}
+  .prog-label{font-size:9.5px}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">셀프등기24 <span>BETA</span></a>
+    <a href="calculator.html" class="nav-a">취득세 계산기</a>
+    <a href="https://selfregi.tistory.com" target="_blank" rel="noopener" class="nav-a">블로그</a>
+  </div>
+</nav>
+
+<div class="backbar"><div class="backbar-inner"><a href="index.html">← 홈으로</a></div></div>
+
+<div class="head">
+  <div class="head-inner">
+    <div class="head-badge" id="head-badge">결제하면 받는 가이드 · 미리보기</div>
+    <h1 id="head-title">집 → 구청 → 은행 → 등기소<br>동선 순서로 끝내는 셀프등기</h1>
+    <p id="head-desc">서류 종류가 아니라 <b style="color:#f0d075">발로 움직이는 순서</b>대로 정리했습니다. 어디서 무엇을 받고, 다음에 어디로 갈지 길을 잃지 않게.</p>
+  </div>
+</div>
+
+<!-- 진행바 -->
+<div class="progress">
+  <div class="progress-inner">
+    <div class="prog-track">
+      <div class="prog-node"><div class="prog-dot active">🏠</div><div class="prog-label"><b>1. 집</b><br>서류 준비</div></div>
+      <div class="prog-node"><div class="prog-dot">🏛️</div><div class="prog-label"><b>2. 구청</b><br>취득세</div></div>
+      <div class="prog-node"><div class="prog-dot">🏦</div><div class="prog-label"><b>3. 은행</b><br>채권·수수료</div></div>
+      <div class="prog-node"><div class="prog-dot">📑</div><div class="prog-label"><b>4. 등기소</b><br>접수</div></div>
+    </div>
+  </div>
+</div>
+
+<main>
+
+  <!-- 결제완료 시 노출 -->
+  <div class="unlocked-banner" id="unlocked-banner">
+    <div class="ui">✓</div>
+    <div class="ut"><b>전체 로드맵이 열렸습니다</b><span>이 링크는 다른 기기(휴대폰)에서 열어도 그대로 유지됩니다.</span></div>
+  </div>
+
+  <!-- 1단계: 집 -->
+  <div class="stage">
+    <div class="stage-hd">
+      <div class="stage-emoji">🏠</div>
+      <div>
+        <div class="stage-step">STEP 1 · 집에서</div>
+        <div class="stage-title">서류 출력 & 날인</div>
+        <div class="stage-place">집 · 프린터</div>
+      </div>
+    </div>
+    <div class="stage-body">
+      <div class="act">
+        <div class="act-check"></div>
+        <div class="act-main">
+          <div class="act-t">위임장 출력 → 인감 날인</div>
+          <div class="act-d">발급받은 위임장을 인쇄하고, 빈칸(주민등록번호)은 자필 기재 후 인감 날인합니다.</div>
+        </div>
+      </div>
+      <div class="act">
+        <div class="act-check"></div>
+        <div class="act-main">
+          <div class="act-t">매수자 사전입력확인서 등록</div>
+          <div class="act-d">출발 전 <a href="https://www.iros.go.kr" target="_blank" rel="noopener" style="color:var(--blue);font-weight:600">인터넷등기소</a>에서 사전등록을 마쳐두면 등기소 현장 대기 시간을 줄일 수 있습니다.</div>
+        </div>
+      </div>
+      <div class="act">
+        <div class="act-check"></div>
+        <div class="act-main">
+          <div class="act-t">준비물 챙기기 <span class="pay-badge pay-cash">현금</span></div>
+          <div class="act-d">신분증 · 주민등록초본 · 인감증명서. 등기소 수입증지/인지는 현금이 안전합니다.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2단계: 구청 (시가표준액 위젯 — 잠금 대상) -->
+  <div class="stage">
+    <div class="stage-hd">
+      <div class="stage-emoji">🏛️</div>
+      <div>
+        <div class="stage-step">STEP 2 · 구청 / 위택스</div>
+        <div class="stage-title">취득세 납부</div>
+        <div class="stage-place">구청 세무과 또는 wetax.go.kr</div>
+      </div>
+    </div>
+    <div class="stage-body">
+      <!-- 관할 구청 네이버지도 안내 — 카드 맨 위 (가시성 우선) -->
+      <div class="lock-wrap locked" data-lock>
+        <div class="lock-content">
+          <a class="map-link" href="#" onclick="return false">
+            <div class="mi">N</div>
+            <div class="mt"><b>강남구청</b><span>내 부동산 주소 기준 자동 추출 · 탭하면 길찾기</span></div>
+            <div class="ma">→</div>
+          </a>
+        </div>
+        <div class="lock-badge"><span class="lock-pill">🔒 결제 후 관할 구청 자동 안내</span></div>
+      </div>
+
+      <div class="act">
+        <div class="act-check"></div>
+        <div class="act-main">
+          <div class="act-t">취득세 신고 → 납부 <span class="pay-badge pay-card">카드</span></div>
+          <div class="act-d">취득세 납부 후 받는 <b>납부확인서</b>가 등기 접수에 필요합니다.</div>
+
+          <!-- 잠금: 시가표준액 저장→복사 위젯 -->
+          <div class="lock-wrap locked" data-lock>
+            <div class="lock-content">
+              <div class="widget">
+                <div class="widget-row">
+                  <div><div class="widget-label">내 시가표준액 (저장됨)</div><div class="widget-val">312,000,000원</div></div>
+                  <button class="widget-btn" onclick="copyVal('312000000', this)">복사</button>
+                </div>
+              </div>
+            </div>
+            <div class="lock-badge"><span class="lock-pill">🔒 결제 후 입력값 자동 저장·복사</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="act">
+        <div class="act-check"></div>
+        <div class="act-main">
+          <div class="act-t">납부 후 → 취득세액 기록</div>
+          <div class="act-d">이 금액이 다음 단계(채권 매입 계산)와 등기신청서에 다시 쓰입니다.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3단계: 은행 (관할 딥링크 — 잠금) -->
+  <div class="stage">
+    <div class="stage-hd">
+      <div class="stage-emoji">🏦</div>
+      <div>
+        <div class="stage-step">STEP 3 · 은행</div>
+        <div class="stage-title">국민주택채권 매입 + 수수료</div>
+        <div class="stage-place">시중은행 또는 인터넷등기소</div>
+      </div>
+    </div>
+    <div class="stage-body">
+      <div class="act">
+        <div class="act-check"></div>
+        <div class="act-main">
+          <div class="act-t">국민주택채권 매입 → 즉시 매도 <span class="pay-badge pay-cash">현금</span></div>
+          <div class="act-d">매입 후 바로 매도하면 실부담금만 냅니다. 채권 매입 시 나오는 <b>채권번호</b>를 보관하세요.</div>
+        </div>
+      </div>
+      <div class="act">
+        <div class="act-check"></div>
+        <div class="act-main">
+          <div class="act-t">등기신청수수료 납부 → 납부번호 확보</div>
+          <div class="act-d">인터넷등기소에서 전자납부 후 <b>납부번호</b>를 받습니다.</div>
+
+          <!-- 잠금: 관할 등기소 자동추출 + 네이버지도 -->
+          <div class="lock-wrap locked" data-lock>
+            <div class="lock-content">
+              <a class="map-link" href="#" onclick="return false">
+                <div class="mi">N</div>
+                <div class="mt"><b>수원지방법원 화성등기소</b><span>내 부동산 주소 기준 자동 추출 · 탭하면 길찾기</span></div>
+                <div class="ma">→</div>
+              </a>
+            </div>
+            <div class="lock-badge"><span class="lock-pill">🔒 결제 후 관할 등기소 자동 안내</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 번호 릴레이 (핵심 차별화 위젯 — 잠금) -->
+  <div class="lock-wrap locked" data-lock>
+    <div class="lock-content">
+      <div class="relay">
+        <div class="relay-hd">번호 릴레이 · 등기소 신청화면에서 한 번에</div>
+        <div class="relay-sub">각 단계에서 받은 번호를 자동으로 모아둡니다. 등기소 PC 앞에서 영수증 뒤적이지 않게.</div>
+        <div class="relay-list">
+          <div class="relay-item"><div class="relay-n">1</div><div class="relay-tx"><div class="rl">취득세 납부번호</div><div class="rv">2025-1234-5678-90</div></div><button class="relay-copy" onclick="copyVal('2025123456789 0', this)">복사</button></div>
+          <div class="relay-item"><div class="relay-n">2</div><div class="relay-tx"><div class="rl">국민주택채권 번호</div><div class="rv">9876-543210</div></div><button class="relay-copy" onclick="copyVal('9876543210', this)">복사</button></div>
+          <div class="relay-item"><div class="relay-n">3</div><div class="relay-tx"><div class="rl">등기수수료 납부번호</div><div class="rv">25-00-01234567</div></div><button class="relay-copy" onclick="copyVal('250001234567', this)">복사</button></div>
+        </div>
+      </div>
+    </div>
+    <div class="lock-badge"><span class="lock-pill">🔒 핵심 기능 · 결제 후 잠금 해제</span></div>
+  </div>
+
+  <!-- 4단계: 등기소 -->
+  <div class="stage">
+    <div class="stage-hd">
+      <div class="stage-emoji">📑</div>
+      <div>
+        <div class="stage-step">STEP 4 · 등기소</div>
+        <div class="stage-title">등기신청서 작성 & 접수</div>
+        <div class="stage-place">관할 등기소 민원실</div>
+      </div>
+    </div>
+    <div class="stage-body">
+      <div class="act">
+        <div class="act-check"></div>
+        <div class="act-main">
+          <div class="act-t">신청서에 번호 옮겨 적기</div>
+          <div class="act-d">위 '번호 릴레이'의 3개 번호를 신청서 해당 칸에 그대로 옮기면 됩니다.</div>
+        </div>
+      </div>
+      <div class="act">
+        <div class="act-check"></div>
+        <div class="act-main">
+          <div class="act-t">서류 묶음 제출 → 접수증 수령</div>
+          <div class="act-d">접수증의 접수번호로 등기 진행 상태를 조회할 수 있습니다. 통상 며칠 내 완료됩니다.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ntc inf">
+    <strong>이 순서는 안내용입니다.</strong> 준비 서류·세액은 물건과 상황에 따라 달라질 수 있으며, 최종 확인은 관할 등기소 안내를 따르시기 바랍니다.
+  </div>
+
+</main>
+
+<!-- 결제 CTA (미리보기 모드에서만) -->
+<div class="cta-bar" id="cta-bar">
+  <div class="cta-inner">
+    <div class="cta-price">
+      <div class="pl">전체 로드맵 + 서류</div>
+      <div class="pv">7,000<small>원</small></div>
+    </div>
+    <a href="index.html#start" class="cta-btn">결제하고 전체 받기 →</a>
+  </div>
+</div>
+
+<footer>
+  <div class="foot-inner">
+    <div class="foot-brand">셀프등기24</div>
+    <div class="foot-disc">
+      개인정보를 별도로 저장하지 않습니다 · 본 서비스는 법률 자문을 제공하지 않으며, 등기 신청을 대행하지 않습니다.<br>
+      예시로 표시된 번호·금액은 실제 값이 아닌 화면 안내용 샘플입니다.
+    </div>
+  </div>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// =============================================
+// 모드 분기: ?full=1 또는 ?token=... 이면 전체 잠금해제
+//   - 미리보기(파라미터 없음): 핵심 위젯 블러 + 하단 결제 CTA 노출
+//   - 전체(결제 후 이메일 링크): 잠금 해제 + CTA 숨김 + 완료 배너
+//   ※ 상태를 URL에 담으므로 PC결제→모바일 열기 시 그대로 유지(localStorage 불필요)
+// =============================================
+(function () {
+  const params = new URLSearchParams(location.search);
+  const isFull = params.get('full') === '1' || !!params.get('token');
+
+  if (isFull) {
+    // 잠금 해제
+    document.querySelectorAll('[data-lock]').forEach(el => el.classList.remove('locked'));
+    // 결제 CTA 숨김
+    const cta = document.getElementById('cta-bar');
+    if (cta) cta.remove();
+    document.querySelector('main').style.paddingBottom = '40px';
+    // 헤더 문구 전환
+    document.getElementById('head-badge').textContent = '내 셀프등기 로드맵';
+    document.getElementById('unlocked-banner').classList.add('show');
+  }
+})();
+
+// 복사 (번호 릴레이 / 시가표준액 공통)
+function copyVal(text, btn) {
+  const clean = String(text).replace(/\s/g, '');
+  const done = () => {
+    const orig = btn.textContent;
+    btn.textContent = '복사됨';
+    showToast('클립보드에 복사했습니다');
+    setTimeout(() => { btn.textContent = orig; }, 1400);
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(clean).then(done).catch(() => fallbackCopy(clean, done));
+  } else {
+    fallbackCopy(clean, done);
+  }
+}
+function fallbackCopy(text, cb) {
+  const ta = document.createElement('textarea');
+  ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+  document.body.appendChild(ta); ta.select();
+  try { document.execCommand('copy'); cb(); } catch (e) {}
+  document.body.removeChild(ta);
+}
+
+// 체크 토글
+document.querySelectorAll('.act-check').forEach(c => {
+  c.addEventListener('click', () => {
+    const on = c.style.background === 'rgb(26, 122, 74)';
+    c.style.background = on ? '' : '#1a7a4a';
+    c.style.borderColor = on ? '' : '#1a7a4a';
+    c.innerHTML = on ? '' : '<span style="color:#fff;font-size:12px;display:flex;align-items:center;justify-content:center;height:100%">✓</span>';
+  });
+});
+
+let toastT;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  clearTimeout(toastT);
+  toastT = setTimeout(() => t.classList.remove('show'), 1600);
+}
+</script>
+</body>
+</html>

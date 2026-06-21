@@ -377,6 +377,17 @@ footer{text-align:center;padding:18px;font-size:11px;color:#a0aec0;max-width:720
   </div>
 </div>
 
+<!-- ⑨ 로드맵 네비게이션 (다운로드 후 다음 단계) -->
+<div class="card">
+  <button id="btn-roadmap" class="dbtn" onclick="goRoadmap()" style="width:100%;display:flex;flex-direction:row;align-items:center;justify-content:center;gap:12px;padding:18px 20px;background:var(--navy);color:#fff;border:none;border-radius:10px;cursor:pointer;font-family:inherit;transition:background .15s">
+    <div class="diw" style="font-size:22px;background:rgba(255,255,255,.15);border-radius:7px;display:flex;align-items:center;justify-content:center;width:36px;height:36px">🗺️</div>
+    <div style="text-align:left">
+      <div class="dn">준비서류 및 체크리스트 확인하기</div>
+      <div class="ds">동선 로드맵 · 관할 구청·등기소 자동 안내</div>
+    </div>
+  </button>
+</div>
+
 </main>
 <footer>
   셀프등기 서류 및 상세 절차 안내는 <a href="https://selfregi.tistory.com" target="_blank" rel="noopener" style="color:#7a8aa8;text-decoration:underline">블로그</a>를 참고하시기 바랍니다.<br>
@@ -655,6 +666,27 @@ async function downloadWimiOnly() {
     showToast('✅ 위임장 다운로드 완료!');
     sendConfirmEmail();
   } catch(e) { showToast('❌ ' + e.message, '#c0392b'); console.error(e); }
+}
+
+// =============================================
+// 로드맵 네비게이션
+// ※ 현재(무료 버전): 버튼 항상 활성 — 클릭 시 입력된 주소를 들고 roadmap.html로 이동
+// ※ 결제 연동 후: 기본 disabled 처리해두고, 결제 승인 콜백에서
+//    document.getElementById('btn-roadmap').disabled = false; 로 활성화하면 됨
+//    (버튼 자체 구조·goRoadmap() 로직은 그대로 재사용)
+// =============================================
+function goRoadmap() {
+  const jibun = gv('jibun-address');
+  const dong = gv('dong');
+  const ho = gv('ho');
+  let fullAddr = jibun;
+  if (dong && ho) fullAddr += ` ${dong}동 ${ho}호`;
+
+  const params = new URLSearchParams();
+  if (fullAddr.trim()) params.set('addr', fullAddr.trim());
+
+  const qs = params.toString();
+  window.location.href = 'roadmap.html' + (qs ? '?' + qs : '');
 }
 
 // =============================================

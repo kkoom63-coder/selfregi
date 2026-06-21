@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>나만의 셀프등기 로드맵 | 셀프등기24</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--navy:#1e3a5f;--blue:#2a5f9e;--gold:#b8952e;--bg:#f2f4f8;--card:#fff;--text:#1a1e2e;--muted:#6b7280;--border:#dde2ec;--radius:12px;--shadow:0 2px 12px rgba(30,58,95,.08)}
+html,body{overflow-x:hidden;touch-action:manipulation}
+body{font-family:'Noto Sans KR','Malgun Gothic',sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+
+nav{background:var(--navy);position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(255,255,255,.06)}
+.nav-inner{max-width:720px;margin:0 auto;padding:0 20px;height:52px;display:flex;align-items:center;gap:12px;overflow-x:auto;white-space:nowrap;-webkit-overflow-scrolling:touch}
+.nav-inner::-webkit-scrollbar{display:none}
+.nav-logo{flex-shrink:0;font-size:16px;font-weight:700;color:#fff;text-decoration:none;margin-right:auto;letter-spacing:-.3px}
+.nav-logo span{display:inline-block;background:rgba(184,149,46,.3);color:#f0d075;font-size:9px;font-weight:700;letter-spacing:1.2px;padding:1px 6px;border-radius:10px;vertical-align:middle;margin-left:6px}
+.nav-a{flex-shrink:0;color:rgba(255,255,255,.55);font-size:12px;padding:5px 11px;border-radius:7px;text-decoration:none;transition:all .15s}
+.nav-a:hover{background:rgba(255,255,255,.1);color:#fff}
+
+.back-bar{background:var(--navy);border-bottom:1px solid rgba(255,255,255,.06);padding:0 20px}
+.back-bar-inner{max-width:720px;margin:0 auto;height:32px;display:flex;align-items:center}
+.back-a{display:inline-flex;align-items:center;gap:4px;color:rgba(255,255,255,.45);font-size:11px;font-weight:500;text-decoration:none;transition:color .12s}
+.back-a:hover{color:#fff}
+
+.page-header{background:var(--navy);padding:36px 20px 32px;position:relative}
+.page-header-inner{max-width:720px;margin:0 auto}
+.page-eyebrow{display:inline-block;background:rgba(184,149,46,.25);color:#f0d075;font-size:10px;font-weight:700;letter-spacing:.8px;padding:3px 12px;border-radius:20px;margin-bottom:12px}
+.page-header h1{font-size:22px;font-weight:700;color:#fff;margin-bottom:6px;word-break:keep-all;line-height:1.4}
+.page-header p{font-size:13px;color:rgba(255,255,255,.55);word-break:keep-all;line-height:1.6}
+.target-address-box{background:rgba(0,0,0,.25);padding:14px 16px;border-radius:10px;margin-top:20px;font-size:12px;color:#fff;border:1px solid rgba(255,255,255,.1)}
+.target-address-box span{color:#f0d075;font-weight:700;display:block;margin-top:4px;font-size:14px;word-break:keep-all;line-height:1.4}
+.addr-missing{background:#fffbeb;border:1px solid #fde68a;color:#92400e;padding:12px 14px;border-radius:8px;margin-top:14px;font-size:12px;line-height:1.6}
+.addr-missing input{width:100%;margin-top:8px;padding:9px 11px;border:1px solid #d97706;border-radius:6px;font-size:13px;outline:none;font-family:inherit}
+.addr-missing button{margin-top:8px;padding:8px 16px;background:#d97706;color:#fff;border:none;border-radius:6px;font-weight:700;font-size:12px;cursor:pointer;font-family:inherit}
+
+main{max-width:720px;margin:0 auto;padding:24px 14px 110px;position:relative}
+.timeline{position:relative;padding-left:24px}
+.timeline::before{content:'';position:absolute;left:11px;top:24px;bottom:20px;width:2px;background:var(--border);border-radius:2px}
+
+.step{position:relative;margin-bottom:20px}
+.step-dot{position:absolute;left:-30px;top:16px;width:16px;height:16px;border-radius:50%;background:#fff;border:3px solid var(--border);z-index:2;transition:all .3s}
+.step.active .step-dot{border-color:var(--blue);background:var(--blue);box-shadow:0 0 0 4px rgba(42,95,158,.15)}
+.step.done .step-dot{border-color:#1a6b3c;background:#1a6b3c}
+
+.step-card{background:var(--card);border-radius:var(--radius);border:1px solid var(--border);box-shadow:var(--shadow);overflow:hidden;transition:all .3s}
+.step.active .step-card{border-color:var(--blue);box-shadow:0 6px 18px rgba(42,95,158,.12)}
+.sc-header{padding:18px 16px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;user-select:none}
+.sc-title-wrap{flex:1}
+.sc-num{font-size:11px;font-weight:700;color:var(--blue);margin-bottom:4px;letter-spacing:.5px}
+.step.done .sc-num{color:#1a6b3c}
+.sc-title{font-size:15px;font-weight:700;color:var(--navy);line-height:1.4}
+.sc-sub{font-size:12px;color:var(--muted);margin-top:3px}
+.sc-toggle{font-size:18px;color:var(--muted);transition:transform .3s}
+.step.active .sc-toggle{transform:rotate(180deg)}
+.sc-body{display:none;border-top:1px dashed var(--border);padding:16px;background:#fafbfd}
+.step.active .sc-body{display:block}
+
+.action-list{display:flex;flex-direction:column;gap:10px}
+.action-item{display:flex;align-items:flex-start;gap:10px;padding:12px;background:#fff;border:1px solid var(--border);border-radius:10px;transition:border-color .2s}
+.action-item:hover{border-color:#c5d5f5}
+.action-item input[type=checkbox]{margin-top:2px;width:18px;height:18px;accent-color:var(--blue);flex-shrink:0;cursor:pointer}
+.action-item.checked{background:#f8fafc;border-color:var(--border);opacity:.8}
+.action-item.checked label{text-decoration:line-through;color:var(--muted)}
+.action-text{flex:1;min-width:0}
+.action-text label{font-size:13px;font-weight:600;color:var(--text);display:block;cursor:pointer;word-break:keep-all;line-height:1.4}
+.action-desc{font-size:11px;color:var(--muted);margin-top:6px;line-height:1.6;word-break:keep-all}
+
+.tip-badge{display:inline-block;background:#fffbeb;border:1px solid #fde68a;color:#92400e;font-size:10px;font-weight:700;padding:2px 6px;border-radius:4px;margin-top:4px;margin-right:4px}
+.tip-badge.cash{background:#fff4e5;border-color:#fed7aa;color:#b06a00}
+.tip-badge.card{background:#e8f0ff;border-color:#c5d5f5;color:#2a5f9e}
+
+/* 인지세 자동계산 박스 */
+.stamp-box{background:#f0f9ff;border:1px solid #bae0fd;border-radius:8px;padding:11px 12px;margin-top:10px}
+.stamp-row{display:flex;align-items:center;gap:6px;margin-bottom:8px}
+.stamp-row input{flex:1;padding:9px 11px;border:1px solid #cbd5e1;border-radius:6px;font-size:14px;outline:none;font-family:inherit}
+.stamp-row input:focus{border-color:var(--blue)}
+.stamp-row span{font-size:12px;color:var(--muted);white-space:nowrap}
+.stamp-result{font-size:13px;color:var(--navy);font-weight:700;line-height:1.5}
+.stamp-result b{color:var(--blue);font-size:15px}
+.stamp-note{font-size:10.5px;color:var(--muted);margin-top:5px;line-height:1.5}
+
+/* 번호 릴레이 입력 */
+.relay-input{background:#f8fafc;border:1px dashed #cbd5e1;padding:12px;border-radius:8px;margin-top:10px;transition:all .2s}
+.relay-input.saved{border-color:#93c5fd;background:#f0f9ff;border-style:solid}
+.relay-input label{font-size:12px;font-weight:700;color:var(--navy);display:block;margin-bottom:8px}
+.relay-row{display:flex;gap:6px}
+.relay-row input{flex:1;padding:10px;border:1px solid #cbd5e1;border-radius:6px;font-size:14px;outline:none;font-family:inherit}
+.relay-row input:focus{border-color:var(--blue)}
+.relay-row button{background:var(--blue);color:#fff;border:none;padding:0 16px;border-radius:6px;font-weight:700;font-size:13px;cursor:pointer;font-family:inherit;white-space:nowrap;transition:background .2s}
+.relay-row button:hover{background:#1d4d85}
+.relay-desc{font-size:11px;color:var(--muted);margin-top:8px;word-break:keep-all;line-height:1.4}
+
+.btn-row{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.btn-preview{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;color:var(--blue);background:#eef3ff;padding:6px 12px;border-radius:6px;border:none;cursor:pointer;font-family:inherit;transition:background .2s}
+.btn-preview:hover{background:#dce8ff}
+
+.btn-map{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;padding:14px;background:#03c75a;color:#fff;font-size:14px;font-weight:700;border-radius:10px;text-decoration:none;margin-top:14px;border:none;cursor:pointer;transition:opacity .2s}
+.btn-map:hover{opacity:.9}
+.btn-map .dest-name{color:#ffffa0;text-decoration:underline}
+
+.pdf-helper{background:#fffbeb;border:1px solid #fde68a;border-radius:10px;padding:14px 15px;margin-top:10px}
+.pdf-helper-t{font-size:12.5px;font-weight:700;color:#92400e;margin-bottom:5px}
+.pdf-helper-d{font-size:11.5px;color:#92400e;line-height:1.7;word-break:keep-all;margin-bottom:10px}
+.pdf-helper-btn{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;padding:11px;background:#fff;color:#92400e;border:1.5px solid #d97706;border-radius:8px;font-size:12.5px;font-weight:700;text-decoration:none}
+.pdf-helper-btn:hover{background:#fff7ed}
+
+/* ── 번호 릴레이 집계 카드 (3단계 상단, 핵심) ── */
+.relay-hub{background:linear-gradient(135deg,#1e3a5f,#2a5f9e);border-radius:var(--radius);padding:16px;color:#fff;margin-bottom:16px;box-shadow:0 6px 18px rgba(30,58,95,.18)}
+.relay-hub-hd{font-size:14px;font-weight:700;margin-bottom:3px;display:flex;align-items:center;gap:6px}
+.relay-hub-sub{font-size:11px;color:rgba(255,255,255,.65);line-height:1.6;margin-bottom:13px;word-break:keep-all}
+.relay-hub-list{display:flex;flex-direction:column;gap:8px}
+.relay-hub-item{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.08);border-radius:8px;padding:10px 12px}
+.relay-hub-item.empty{opacity:.5}
+.rh-n{width:22px;height:22px;border-radius:6px;background:rgba(255,255,255,.16);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0}
+.rh-tx{flex:1;min-width:0}
+.rh-tx .rl{font-size:11px;color:rgba(255,255,255,.6)}
+.rh-tx .rv{font-size:14px;font-weight:700;word-break:break-all}
+.rh-tx .rv.muted{font-size:12px;font-weight:400;color:rgba(255,255,255,.4)}
+.rh-copy{background:rgba(255,255,255,.14);border:none;color:#fff;border-radius:6px;font-size:11px;font-weight:600;padding:7px 11px;cursor:pointer;font-family:inherit;white-space:nowrap}
+.rh-copy:disabled{opacity:.35;cursor:default}
+
+/* 신청서 미리보기 */
+.form-preview{background:#fff;border:1px solid var(--border);border-radius:10px;margin-top:12px;overflow:hidden}
+.fp-hd{background:#f0f4f8;padding:10px 14px;font-size:12px;font-weight:700;color:var(--navy);border-bottom:1px solid var(--border);text-align:center;letter-spacing:1px}
+.fp-body{padding:14px}
+.fp-row{display:flex;border-bottom:1px solid #eef1f5;font-size:12px}
+.fp-row:last-child{border-bottom:none}
+.fp-label{width:38%;padding:9px 8px;background:#fafbfd;color:var(--muted);font-weight:600;border-right:1px solid #eef1f5;word-break:keep-all}
+.fp-val{flex:1;padding:9px 10px;color:var(--text);word-break:break-all}
+.fp-val.filled{color:var(--blue);font-weight:700;background:#fffdf3}
+.fp-val.blank{color:#b0bcc8}
+.fp-note{font-size:10.5px;color:var(--muted);margin-top:10px;line-height:1.6;word-break:keep-all}
+
+.floating-bottom{position:fixed;bottom:0;left:0;right:0;padding:16px 20px 20px;background:rgba(255,255,255,.95);backdrop-filter:blur(8px);border-top:1px solid var(--border);box-shadow:0 -4px 16px rgba(0,0,0,.05);z-index:100;text-align:center}
+.fb-inner{max-width:720px;margin:0 auto}
+.progress-text{font-size:13px;font-weight:700;color:var(--navy);margin-bottom:8px;display:flex;justify-content:space-between;align-items:center}
+.progress-text span{font-size:11px;font-weight:600;color:var(--blue);background:#eef3ff;padding:2px 8px;border-radius:10px}
+.progress-bg{background:var(--border);height:8px;border-radius:4px;overflow:hidden}
+.progress-bar{background:var(--blue);height:100%;width:0%;transition:width .4s ease-out}
+
+.modal-overlay{position:fixed;inset:0;background:rgba(26,30,46,.85);z-index:999;display:none;justify-content:center;align-items:center;padding:20px;opacity:0;transition:opacity .2s}
+.modal-overlay.show{display:flex;opacity:1}
+.modal-content{background:#fff;width:100%;max-width:480px;max-height:85vh;border-radius:var(--radius);display:flex;flex-direction:column;overflow:hidden;position:relative;transform:translateY(20px);transition:transform .2s}
+.modal-overlay.show .modal-content{transform:translateY(0)}
+.modal-header{padding:16px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;background:#fff;z-index:10}
+.modal-title{font-size:15px;font-weight:700;color:var(--navy)}
+.btn-close{background:none;border:none;font-size:24px;cursor:pointer;color:var(--muted);padding:0 4px}
+.modal-body{padding:20px;overflow-y:auto;background:#f8fafc;-webkit-overflow-scrolling:touch}
+.guide-step{margin-bottom:24px;background:#fff;border:1px solid var(--border);border-radius:8px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.guide-step:last-child{margin-bottom:0}
+.guide-text{padding:14px 16px;font-size:13px;font-weight:600;color:var(--text);border-bottom:1px solid var(--border)}
+.guide-text span{color:var(--blue);font-weight:800;margin-right:4px}
+.guide-img-box{padding:12px;background:#f0f4f8;text-align:center}
+.guide-img{max-width:100%;height:auto;border:1px solid var(--border);border-radius:6px}
+.guide-sub{font-size:11px;color:var(--muted);margin-top:8px;text-align:left;line-height:1.5;word-break:keep-all}
+
+.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(20px);background:rgba(26,30,46,.9);color:#fff;padding:10px 20px;border-radius:8px;font-size:13px;font-weight:500;transition:all .3s;z-index:999;white-space:nowrap;opacity:0;visibility:hidden;box-shadow:0 4px 12px rgba(0,0,0,.15);max-width:90%;text-align:center}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1;visibility:visible}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">셀프등기24 <span>BETA</span></a>
+    <a href="index.html" class="nav-a">서류 만들기</a>
+    <a href="calculator.html" class="nav-a">취득세 계산기</a>
+    <a href="https://selfregi.tistory.com" target="_blank" rel="noopener" class="nav-a">블로그</a>
+  </div>
+</nav>
+
+<div class="back-bar">
+  <div class="back-bar-inner">
+    <a href="index.html" class="back-a">← 홈으로</a>
+  </div>
+</div>
+
+<div class="page-header">
+  <div class="page-header-inner">
+    <div class="page-eyebrow">결제 완료 • 서류 준비 완료</div>
+    <h1>나만의 셀프등기 로드맵</h1>
+    <p>이 화면을 켜두고 순서대로 방문하세요.<br>각 단계를 완수하면 체크박스를 눌러주세요.</p>
+
+    <div class="target-address-box">
+      📍 취득할 부동산(목적물) 소재지
+      <span id="display-full-address">주소를 불러오는 중...</span>
+    </div>
+
+    <div class="addr-missing" id="addr-missing" style="display:none">
+      <strong>부동산 주소가 전달되지 않았습니다.</strong> 관할 구청·등기소를 안내해 드리기 위해 취득할 부동산의 지번 주소를 입력해 주세요.
+      <input type="text" id="manual-addr" placeholder="예: 경기도 성남시 분당구 …  또는  서울특별시 강남구 …">
+      <button onclick="applyManualAddr()">적용</button>
+      <div style="margin-top:10px;padding-top:10px;border-top:1px dashed #d97706;font-size:11px">
+        직접 확인하시려면 <a href="전국등기소정보.pdf" target="_blank" rel="noopener" download style="color:#92400e;font-weight:700;text-decoration:underline">전국 등기소 정보 PDF</a>를 참고하세요.
+      </div>
+    </div>
+  </div>
+</div>
+
+<main>
+  <div class="timeline">
+
+    <!-- STEP 0 : 집 -->
+    <div class="step active" id="step0">
+      <div class="step-dot"></div>
+      <div class="step-card">
+        <div class="sc-header" onclick="toggleStep('step0')">
+          <div class="sc-title-wrap">
+            <div class="sc-num">출발 전 준비</div>
+            <div class="sc-title">서류 출력 및 도장 찍기</div>
+            <div class="sc-sub">🏠 자택 또는 프린터가 있는 곳</div>
+          </div>
+          <div class="sc-toggle">▼</div>
+        </div>
+        <div class="sc-body">
+          <div class="action-list">
+            <div class="action-item" id="item0_1">
+              <input type="checkbox" id="chk0_1" onchange="updateProgress('item0_1')">
+              <div class="action-text">
+                <label for="chk0_1">다운로드 받은 서류 인쇄하기</label>
+                <div class="action-desc">다운로드 폴더에서 위임장(및 신탁해지증서)을 찾아 A4용지에 단면으로 깨끗하게 인쇄하세요.</div>
+              </div>
+            </div>
+            <div class="action-item" id="item0_2">
+              <input type="checkbox" id="chk0_2" onchange="updateProgress('item0_2')">
+              <div class="action-text">
+                <label for="chk0_2">공란에 정보 수기 작성 및 인감 날인</label>
+                <div class="action-desc">위임장에 매도인/매수인의 주민번호를 펜으로 적고, 지정된 위치에 본인 인감도장을 선명하게 찍으세요.</div>
+                <div class="btn-row"><button class="btn-preview" onclick="openGuide('stamp')">🔍 날인 위치 가이드 보기</button></div>
+              </div>
+            </div>
+            <div class="action-item" id="item0_3">
+              <input type="checkbox" id="chk0_3" onchange="updateProgress('item0_3')">
+              <div class="action-text">
+                <label for="chk0_3">매수자 사전입력확인서 등록</label>
+                <div class="action-desc">출발 전, <a href="https://www.iros.go.kr" target="_blank" rel="noopener" style="color:var(--blue);font-weight:700;text-decoration:underline">인터넷등기소</a>에서 매수자 사전입력확인서를 꼭 사전등록하세요. 등기소 현장에서 등록하면 대기·반려 시간이 늘어날 수 있습니다.</div>
+                <div class="btn-row"><button class="btn-preview" onclick="openGuide('preinput')">🔍 사전입력 방법 가이드 보기</button></div>
+              </div>
+            </div>
+            <div class="action-item" id="item0_4">
+              <input type="checkbox" id="chk0_4" onchange="checkDeparture('item0_4')">
+              <div class="action-text">
+                <label for="chk0_4">신분증, 인감도장, 원본 서류 지참</label>
+                <div class="action-desc">나가기 전 신분증, 인감도장, 매매(분양)계약서 원본, 주민등록초본, 인감증명서를 가방에 꼭 챙기세요.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 1 : 구청 -->
+    <div class="step" id="step1">
+      <div class="step-dot"></div>
+      <div class="step-card">
+        <div class="sc-header" onclick="toggleStep('step1')">
+          <div class="sc-title-wrap">
+            <div class="sc-num">1번째 방문지</div>
+            <div class="sc-title">취득세 신고 및 납부</div>
+            <div class="sc-sub">🏛️ <span id="ui-gucheong" style="color:var(--blue);font-weight:600">관할 구청</span> (세무과)</div>
+          </div>
+          <div class="sc-toggle">▼</div>
+        </div>
+        <div class="sc-body">
+          <a href="#" id="link-gucheong" class="btn-map" target="_blank" rel="noopener" style="margin-top:0;margin-bottom:16px">
+            🚕 네이버 지도로 <span class="dest-name" id="btn-gucheong-name">구청</span> 안내받기
+          </a>
+          <div class="action-list">
+            <div class="action-item" id="item1_1">
+              <input type="checkbox" id="chk1_1" onchange="updateProgress('item1_1')">
+              <div class="action-text">
+                <label for="chk1_1">취득세 신고서 작성 및 제출</label>
+                <div class="action-desc">구청 세무과에 비치된 '취득세 신고서'를 작성하고 매매계약서 사본 등과 함께 창구에 제출하세요.</div>
+                <div class="btn-row"><button class="btn-preview" onclick="openGuide('tax')">🔍 신고서 작성 가이드</button></div>
+              </div>
+            </div>
+            <div class="action-item" id="item1_2">
+              <input type="checkbox" id="chk1_2" onchange="updateProgress('item1_2')">
+              <div class="action-text">
+                <label for="chk1_2">고지서 수령 후 취득세 납부</label>
+                <div class="action-desc">발급받은 고지서로 구청 내 ATM이나 은행 창구에서 납부하고 <strong>'납부확인서'</strong>를 반드시 챙기세요.</div>
+                <span class="tip-badge card">카드결제 가능</span>
+
+                <!-- 릴레이: 취득세액 -->
+                <div class="relay-input" id="relay-tax-box">
+                  <label>① 납부한 취득세액 기록 (선택)</label>
+                  <div class="relay-row">
+                    <input type="number" id="in-tax" placeholder="숫자만 (예: 5400000)">
+                    <button onclick="saveRelay('tax','in-tax')">저장</button>
+                  </div>
+                  <div class="relay-desc">마지막 등기소 신청서에 그대로 옮겨 적습니다. 저장해두면 3단계에서 자동으로 모입니다.</div>
+                </div>
+              </div>
+            </div>
+            <div class="action-item" id="item1_3">
+              <input type="checkbox" id="chk1_3" onchange="updateProgress('item1_3')">
+              <div class="action-text">
+                <label for="chk1_3">영수증의 '시가표준액' 기록 (선택)</label>
+                <div class="action-desc">은행(2단계) 채권 매입액 계산과 신청서 작성에 쓰입니다. 취득세 영수증의 <strong>시가표준액</strong>을 저장해두세요.</div>
+                <div class="relay-input" id="relay-siga-box">
+                  <label>② 시가표준액 입력</label>
+                  <div class="relay-row">
+                    <input type="number" id="in-siga" placeholder="숫자만 (예: 350000000)">
+                    <button onclick="saveRelay('siga','in-siga')">저장</button>
+                  </div>
+                  <div class="relay-desc">저장하면 2단계 은행에서 버튼 한 번에 복사할 수 있습니다.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 2 : 은행 -->
+    <div class="step" id="step2">
+      <div class="step-dot"></div>
+      <div class="step-card">
+        <div class="sc-header" onclick="toggleStep('step2')">
+          <div class="sc-title-wrap">
+            <div class="sc-num">2번째 방문지</div>
+            <div class="sc-title">국민주택채권 및 인지 구매</div>
+            <div class="sc-sub">🏦 시중은행 (보통 구청 내부에 위치)</div>
+          </div>
+          <div class="sc-toggle">▼</div>
+        </div>
+        <div class="sc-body">
+          <div class="action-list">
+            <div class="action-item" id="item2_1">
+              <input type="checkbox" id="chk2_1" onchange="updateProgress('item2_1')">
+              <div class="action-text">
+                <label for="chk2_1">국민주택채권 매입 (즉시 매도)</label>
+                <div class="action-desc">은행 창구 또는 앱으로 국민주택채권을 매입(할인)합니다. 매입 시 나오는 <strong>채권발행번호</strong>를 아래에 저장하세요.</div>
+                <div class="btn-row">
+                  <button class="btn-preview" onclick="openGuide('bond')">🔍 매입요청서 작성법</button>
+                  <button class="btn-preview" id="btn-copy-siga" onclick="copyRelay('siga')">📋 내 시가표준액 복사</button>
+                </div>
+                <span class="tip-badge cash">현금(이체)만 가능</span>
+
+                <!-- 릴레이: 채권발행번호 -->
+                <div class="relay-input" id="relay-bond-box">
+                  <label>③ 채권발행번호 기록 (선택)</label>
+                  <div class="relay-row">
+                    <input type="text" id="in-bond" placeholder="영수증의 채권발행번호">
+                    <button onclick="saveRelay('bond','in-bond')">저장</button>
+                  </div>
+                  <div class="relay-desc">3단계 신청서 채권란에 옮겨 적습니다.</div>
+                </div>
+              </div>
+            </div>
+            <div class="action-item" id="item2_2">
+              <input type="checkbox" id="chk2_2" onchange="updateProgress('item2_2')">
+              <div class="action-text">
+                <label for="chk2_2">정부 수입인지 구매</label>
+                <div class="action-desc">매매가에 따라 인지세가 달라집니다. 아래에서 자동 계산된 금액만큼 전자수입인지를 구매하세요. (은행·우체국·e수입인지 사이트)</div>
+                <span class="tip-badge cash">현금만 가능</span>
+
+                <!-- 인지세 자동계산 -->
+                <div class="stamp-box">
+                  <div class="stamp-row">
+                    <input type="number" id="in-price" placeholder="매매가 입력 (예: 850000000)" oninput="calcStamp()">
+                    <span>원</span>
+                  </div>
+                  <div class="stamp-result" id="stamp-result">매매가를 입력하면 인지세가 계산됩니다.</div>
+                  <div class="stamp-note">주택 기준: 1억 이하 비과세 · 1억 초과~10억 15만원 · 10억 초과 35만원 (인지세법 제3·6조). 비주택은 별도 구간 적용.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 3 : 등기소 -->
+    <div class="step" id="step3">
+      <div class="step-dot"></div>
+      <div class="step-card">
+        <div class="sc-header" onclick="toggleStep('step3')">
+          <div class="sc-title-wrap">
+            <div class="sc-num">마지막 방문지</div>
+            <div class="sc-title">서류 최종 제출 및 접수</div>
+            <div class="sc-sub">⚖️ <span id="ui-deunggi" style="color:var(--blue);font-weight:600">관할 등기소</span></div>
+          </div>
+          <div class="sc-toggle">▼</div>
+        </div>
+        <div class="sc-body">
+
+          <!-- ★ 번호 릴레이 집계 + 신청서 미리보기 -->
+          <div class="relay-hub">
+            <div class="relay-hub-hd">📋 신청서 옮겨적기 (자동 집계)</div>
+            <div class="relay-hub-sub">앞 단계에서 저장한 번호가 여기 모여 있습니다. 영수증을 뒤질 필요 없이, 신청서 칸에 아래 값을 그대로 옮겨 적으세요.</div>
+            <div class="relay-hub-list">
+              <div class="relay-hub-item empty" id="hub-tax">
+                <div class="rh-n">1</div>
+                <div class="rh-tx"><div class="rl">취득세액 (구청)</div><div class="rv muted" id="hub-tax-v">미입력</div></div>
+                <button class="rh-copy" id="hub-tax-c" onclick="copyRelay('tax')" disabled>복사</button>
+              </div>
+              <div class="relay-hub-item empty" id="hub-siga">
+                <div class="rh-n">2</div>
+                <div class="rh-tx"><div class="rl">시가표준액 (구청)</div><div class="rv muted" id="hub-siga-v">미입력</div></div>
+                <button class="rh-copy" id="hub-siga-c" onclick="copyRelay('siga')" disabled>복사</button>
+              </div>
+              <div class="relay-hub-item empty" id="hub-bond">
+                <div class="rh-n">3</div>
+                <div class="rh-tx"><div class="rl">채권발행번호 (은행)</div><div class="rv muted" id="hub-bond-v">미입력</div></div>
+                <button class="rh-copy" id="hub-bond-c" onclick="copyRelay('bond')" disabled>복사</button>
+              </div>
+              <div class="relay-hub-item empty" id="hub-fee">
+                <div class="rh-n">4</div>
+                <div class="rh-tx"><div class="rl">등기수수료 납부번호 (등기소)</div><div class="rv muted" id="hub-fee-v">아래에서 입력</div></div>
+                <button class="rh-copy" id="hub-fee-c" onclick="copyRelay('fee')" disabled>복사</button>
+              </div>
+            </div>
+
+            <!-- 신청서 미리보기 -->
+            <div class="form-preview">
+              <div class="fp-hd">소유권이전등기신청서 (옮겨적기 예시)</div>
+              <div class="fp-body">
+                <div class="fp-row"><div class="fp-label">부동산의 표시</div><div class="fp-val" id="fp-addr">—</div></div>
+                <div class="fp-row"><div class="fp-label">시가표준액</div><div class="fp-val blank" id="fp-siga">2단계에서 입력</div></div>
+                <div class="fp-row"><div class="fp-label">국민주택채권 발행번호</div><div class="fp-val blank" id="fp-bond">2단계에서 입력</div></div>
+                <div class="fp-row"><div class="fp-label">취득세(등록면허세)</div><div class="fp-val blank" id="fp-tax">1단계에서 입력</div></div>
+                <div class="fp-row"><div class="fp-label">등기신청수수료</div><div class="fp-val blank" id="fp-fee">아래에서 입력</div></div>
+                <div class="fp-row"><div class="fp-label">등기의무자 / 권리자</div><div class="fp-val blank">현장에서 직접 기재</div></div>
+              </div>
+              <div style="padding:0 14px 12px"><div class="fp-note">금색으로 채워진 칸은 저장한 값입니다. 나머지 인적사항은 신청서 양식에 직접 적으시면 됩니다. 칸 위치·명칭은 등기소 양식에 따라 다를 수 있어요.</div></div>
+            </div>
+          </div>
+
+          <div class="action-list">
+            <div class="action-item" id="item3_1">
+              <input type="checkbox" id="chk3_1" onchange="updateProgress('item3_1')">
+              <div class="action-text">
+                <label for="chk3_1">등기신청수수료 납부 (15,000원)</label>
+                <div class="action-desc">등기소 내 무인발급기나 은행 창구에서 서면방문용 수수료(1.5만원) 납부 후 영수증을 챙기세요.</div>
+                <!-- 릴레이: 수수료 납부번호 -->
+                <div class="relay-input" id="relay-fee-box">
+                  <label>④ 수수료 납부번호 기록 (선택)</label>
+                  <div class="relay-row">
+                    <input type="text" id="in-fee" placeholder="영수증의 납부번호">
+                    <button onclick="saveRelay('fee','in-fee')">저장</button>
+                  </div>
+                  <div class="relay-desc">위 집계와 신청서 미리보기에 바로 반영됩니다.</div>
+                </div>
+              </div>
+            </div>
+            <div class="action-item" id="item3_2">
+              <input type="checkbox" id="chk3_2" onchange="updateProgress('item3_2')">
+              <div class="action-text">
+                <label for="chk3_2">소유권이전등기 신청서 작성</label>
+                <div class="action-desc">등기소 비치 양식에 위 집계의 번호들을 옮겨 적습니다.</div>
+                <div class="btn-row"><button class="btn-preview" onclick="openGuide('app')">🔍 신청서 종합 작성법</button></div>
+              </div>
+            </div>
+            <div class="action-item" id="item3_3">
+              <input type="checkbox" id="chk3_3" onchange="updateProgress('item3_3')">
+              <div class="action-text">
+                <label for="chk3_3">서류 편철 후 접수창구 제출</label>
+                <div class="action-desc">신청서, 취득세영수증, 수입인지, 위임장, 매매계약서, 인감증명서 등 모든 서류를 모아 제출하면 끝납니다! 🎉</div>
+              </div>
+            </div>
+          </div>
+          <a href="#" id="link-deunggi" class="btn-map" target="_blank" rel="noopener">
+            🚕 네이버 지도로 <span class="dest-name" id="btn-deunggi-name">관할 등기소</span> 안내받기
+          </a>
+
+          <!-- 서울·경기 외 지역 / 분할 관할 보조 안내 -->
+          <div class="pdf-helper" id="pdf-helper" style="display:none">
+            <div class="pdf-helper-t">📄 이 지역은 자동 안내가 아직 준비중이에요</div>
+            <div class="pdf-helper-d">현재 서울·경기 지역만 등기소를 자동으로 찾아드리고 있습니다. 아래 전국 등기소 정보(법원 제공, 2025.11 기준)에서 주소의 '관할구역' 항목을 직접 확인해 주세요.</div>
+            <a class="pdf-helper-btn" href="전국등기소정보.pdf" target="_blank" rel="noopener" download>
+              ⬇ 전국 등기소 정보 PDF 다운로드
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<div class="floating-bottom">
+  <div class="fb-inner">
+    <div class="progress-text">진행률 <span id="progressText">0 / 11 완료</span></div>
+    <div class="progress-bg"><div id="progressBar" class="progress-bar"></div></div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="guideModal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <div class="modal-title" id="modalTitle">작성 가이드</div>
+      <button class="btn-close" onclick="closeModal()">×</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* =========================================================
+   관할 매핑 (서울·경기 — 전국등기소정보 PDF 2025.11.03 기준)
+   ========================================================= */
+const SEOUL_COURT = {
+  '강남구':{n:'서울중앙지방법원 등기국',a:'서울 서초구 법원로3길 14'},
+  '관악구':{n:'서울중앙지방법원 등기국',a:'서울 서초구 법원로3길 14'},
+  '동작구':{n:'서울중앙지방법원 등기국',a:'서울 서초구 법원로3길 14'},
+  '서초구':{n:'서울중앙지방법원 등기국',a:'서울 서초구 법원로3길 14'},
+  '종로구':{n:'서울중앙지방법원 중부등기소',a:'서울 중구 서소문로11길 34'},
+  '중구':{n:'서울중앙지방법원 중부등기소',a:'서울 중구 서소문로11길 34'},
+  '양천구':{n:'서울남부지방법원 등기국',a:'서울 영등포구 경인로 772'},
+  '영등포구':{n:'서울남부지방법원 등기국',a:'서울 영등포구 경인로 772'},
+  '강서구':{n:'서울남부지방법원 등기국',a:'서울 영등포구 경인로 772'},
+  '구로구':{n:'서울남부지방법원 등기국',a:'서울 영등포구 경인로 772'},
+  '금천구':{n:'서울남부지방법원 등기국',a:'서울 영등포구 경인로 772'},
+  '강동구':{n:'서울동부지방법원 등기국',a:'서울 송파구 법원로 101'},
+  '광진구':{n:'서울동부지방법원 등기국',a:'서울 송파구 법원로 101'},
+  '성동구':{n:'서울동부지방법원 등기국',a:'서울 송파구 법원로 101'},
+  '송파구':{n:'서울동부지방법원 등기국',a:'서울 송파구 법원로 101'},
+  '노원구':{n:'서울북부지방법원 등기국',a:'서울 도봉구 노해로 325'},
+  '중랑구':{n:'서울북부지방법원 등기국',a:'서울 도봉구 노해로 325'},
+  '동대문구':{n:'서울북부지방법원 등기국',a:'서울 도봉구 노해로 325'},
+  '성북구':{n:'서울북부지방법원 등기국',a:'서울 도봉구 노해로 325'},
+  '도봉구':{n:'서울북부지방법원 등기국',a:'서울 도봉구 노해로 325'},
+  '강북구':{n:'서울북부지방법원 등기국',a:'서울 도봉구 노해로 325'},
+  '마포구':{n:'서울서부지방법원 등기국',a:'서울 마포구 마포대로 199'},
+  '서대문구':{n:'서울서부지방법원 등기국',a:'서울 마포구 마포대로 199'},
+  '은평구':{n:'서울서부지방법원 등기국',a:'서울 마포구 마포대로 199'},
+  '용산구':{n:'서울서부지방법원 등기국',a:'서울 마포구 마포대로 199'},
+};
+const GG_COURT = {
+  '수원시':{n:'수원지방법원 등기국',a:'경기 수원시 영통구 매영로345번길 49'},
+  '화성시':{n:'수원지방법원 등기국',a:'경기 수원시 영통구 매영로345번길 49'},
+  '안성시':{n:'수원지방법원 안성등기소',a:'경기 안성시 안성맞춤대로 1188'},
+  '안양시':{n:'수원지방법원 안양등기소',a:'경기 안양시 동안구 관평로212번길 69'},
+  '군포시':{n:'수원지방법원 안양등기소',a:'경기 안양시 동안구 관평로212번길 69'},
+  '의왕시':{n:'수원지방법원 안양등기소',a:'경기 안양시 동안구 관평로212번길 69'},
+  '과천시':{n:'수원지방법원 안양등기소',a:'경기 안양시 동안구 관평로212번길 69'},
+  '양평군':{n:'수원지방법원 양평등기소',a:'경기 양평군 양평읍 양근로 154'},
+  '용인시':{n:'수원지방법원 용인등기소',a:'경기 용인시 처인구 성산로 7'},
+  '이천시':{n:'수원지방법원 이천등기소',a:'경기 이천시 구만리로 308'},
+  '오산시':{n:'수원지방법원 오산등기소',a:'경기 오산시 법원로 65'},
+  '광주시':{n:'수원지방법원 성남지원 광주등기소',a:'경기 광주시 행정타운로 49-15'},
+  '하남시':{n:'수원지방법원 성남지원 하남등기소',a:'경기 하남시 검단로 15'},
+  '광명시':{n:'수원지방법원 안산지원 광명등기소',a:'경기 광명시 철산로 3-16'},
+  '안산시':{n:'수원지방법원 안산지원 등기과',a:'경기 안산시 단원구 광덕서로 75'},
+  '시흥시':{n:'수원지방법원 안산지원 시흥등기소',a:'경기 시흥시 연성로 31'},
+  '여주시':{n:'수원지방법원 여주지원 등기계',a:'경기 여주시 현암로 21-12'},
+  '고양시':{n:'의정부지방법원 고양지원 고양등기소',a:'경기 고양시 일산동구 중앙로1275번길 38-30'},
+  '파주시':{n:'의정부지방법원 고양지원 파주등기소',a:'경기 파주시 금바위로 40'},
+  '가평군':{n:'의정부지방법원 남양주지원 가평등기소',a:'경기 가평군 가평읍 가화로 180'},
+  '남양주시':{n:'의정부지방법원 남양주지원 등기과',a:'경기 남양주시 다산중앙로82번안길 161'},
+  '구리시':{n:'의정부지방법원 남양주지원 등기과',a:'경기 남양주시 다산중앙로82번안길 161'},
+  '동두천시':{n:'의정부지방법원 동두천등기소',a:'경기 동두천시 지행로 97'},
+  '의정부시':{n:'의정부지방법원 의정부등기소',a:'경기 의정부시 범골로146번길 13'},
+  '양주시':{n:'의정부지방법원 의정부등기소',a:'경기 의정부시 범골로146번길 13'},
+  '연천군':{n:'의정부지방법원 연천등기소',a:'경기 연천군 연천읍 연천로 376'},
+  '포천시':{n:'의정부지방법원 포천등기소',a:'경기 포천시 중앙로 27'},
+  '김포시':{n:'인천지방법원 부천지원 김포등기소',a:'경기 김포시 봉화로 16'},
+  '부천시':{n:'인천지방법원 부천지원 등기과',a:'경기 부천시 상일로 129'},
+};
+// 분할 케이스
+const SEONGNAM_BUNDANG = {n:'수원지방법원 성남지원 분당등기소',a:'경기 성남시 분당구 불정로406번길 21'};
+const SEONGNAM_ETC     = {n:'수원지방법원 성남지원 등기과',a:'경기 성남시 수정구 산성대로 451'};
+const PYEONGTAEK = {ambiguous:true, opts:[
+  {n:'수원지방법원 송탄등기소',a:'경기 평택시 경기대로 1351'},
+  {n:'수원지방법원 평택지원 등기과',a:'경기 평택시 평남로 1036'},
+]};
+const METRO_RE = /^(서울|부산|대구|인천|광주|대전|울산)/;
+
+function tokens(addr){ return (addr||'').trim().split(/\s+/); }
+
+// 취득세 신고지 (구청/시청/군청)
+function findTaxOffice(addr){
+  const p = tokens(addr);
+  const gu = p.find(x=>x.endsWith('구'));
+  const si = p.find(x=>x.endsWith('시'));
+  const gun = p.find(x=>x.endsWith('군'));
+  if(METRO_RE.test(addr) && gu) return gu+'청';   // 특별·광역시 자치구 → 구청
+  if(si) return si+'청';                           // 도 지역 → 시청 (행정구 무시)
+  if(gun) return gun+'청';
+  if(gu) return gu+'청';
+  return '관할 시·군·구청';
+}
+
+// 관할 등기소
+function findCourt(addr){
+  const p = tokens(addr);
+  if(addr.startsWith('서울')){
+    const gu = p.find(x=>x.endsWith('구'));
+    return SEOUL_COURT[gu] || null;
+  }
+  if(addr.startsWith('경기')){
+    const si = p.find(x=>x.endsWith('시'));
+    const gun = p.find(x=>x.endsWith('군'));
+    const key = si || gun;
+    if(key==='성남시') return /분당/.test(addr) ? SEONGNAM_BUNDANG : SEONGNAM_ETC;
+    if(key==='평택시') return PYEONGTAEK;
+    return GG_COURT[key] || null;
+  }
+  return null; // 서울·경기 외 → 폴백
+}
+
+const naverSearch = q => 'https://map.naver.com/v5/search/' + encodeURIComponent(q);
+
+function showPdfHelper(){
+  const el = document.getElementById('pdf-helper');
+  if(el) el.style.display = 'block';
+}
+
+function applyDynamicRouting(fullAddress){
+  document.getElementById('display-full-address').textContent = fullAddress;
+  const pdfEl = document.getElementById('pdf-helper');
+  if(pdfEl) pdfEl.style.display = 'none';
+
+  // 취득세 (구청/시청/군청)
+  const taxOffice = findTaxOffice(fullAddress);
+  document.getElementById('ui-gucheong').textContent = taxOffice;
+  document.getElementById('btn-gucheong-name').textContent = taxOffice;
+  document.getElementById('link-gucheong').href = naverSearch(taxOffice);
+
+  // 등기소
+  const court = findCourt(fullAddress);
+  const uiD = document.getElementById('ui-deunggi');
+  const btnD = document.getElementById('btn-deunggi-name');
+  const linkD = document.getElementById('link-deunggi');
+
+  if(court && court.ambiguous){
+    const names = court.opts.map(o=>o.n.replace('수원지방법원 ','')).join(' / ');
+    uiD.textContent = '관할 확인 필요 ('+names+')';
+    btnD.textContent = court.opts[0].n;
+    linkD.href = naverSearch(court.opts[0].a);
+    showPdfHelper();
+  } else if(court){
+    uiD.textContent = court.n;
+    btnD.textContent = court.n;
+    linkD.href = naverSearch(court.a);   // 실주소로 검색이 더 정확
+  } else {
+    // 서울·경기 외 — 안전 폴백
+    uiD.textContent = '관할 등기소 (직접 확인)';
+    btnD.textContent = '인터넷등기소 관할 찾기';
+    linkD.href = 'https://www.iros.go.kr';
+    showPdfHelper();
+  }
+
+  // 신청서 미리보기 주소 채우기
+  setFP('fp-addr', fullAddress, true);
+}
+
+/* =========================================================
+   주소 입력: URL 파라미터 우선 → localStorage 폴백 → 수동
+   ?addr=...  &price=...
+   ========================================================= */
+function getParam(k){ return new URLSearchParams(location.search).get(k); }
+
+window.onload = () => {
+  const urlAddr = getParam('addr');
+  const urlPrice = getParam('price');
+  const savedAddr = (function(){ try{ return localStorage.getItem('targetAddress'); }catch(e){ return null; } })();
+  const addr = urlAddr || savedAddr;
+
+  if(addr){
+    try{ localStorage.setItem('targetAddress', addr); }catch(e){}
+    applyDynamicRouting(addr);
+  } else {
+    document.getElementById('display-full-address').textContent = '미확인';
+    document.getElementById('addr-missing').style.display = 'block';
+  }
+
+  if(urlPrice){
+    const el = document.getElementById('in-price');
+    el.value = urlPrice;
+    calcStamp();
+  }
+  restoreRelay();
+};
+
+function applyManualAddr(){
+  const v = document.getElementById('manual-addr').value.trim();
+  if(!v){ showToast('주소를 입력해 주세요.'); return; }
+  try{ localStorage.setItem('targetAddress', v); }catch(e){}
+  document.getElementById('addr-missing').style.display = 'none';
+  applyDynamicRouting(v);
+  showToast('주소를 적용했습니다.');
+}
+
+/* =========================================================
+   인지세 자동계산 (주택 기준 · 인지세법 제3·6조)
+   ========================================================= */
+function calcStamp(){
+  const price = parseFloat(document.getElementById('in-price').value);
+  const out = document.getElementById('stamp-result');
+  if(!price || price<=0){ out.textContent='매매가를 입력하면 인지세가 계산됩니다.'; return; }
+  let amt, label;
+  if(price <= 100000000){ amt=0; label='비과세 (1억원 이하 주택)'; }
+  else if(price <= 1000000000){ amt=150000; label='1억 초과~10억 이하'; }
+  else { amt=350000; label='10억 초과'; }
+  out.innerHTML = amt===0
+    ? `구매할 인지세: <b>0원</b> <span style="font-size:11px;color:var(--muted)">(${label})</span>`
+    : `구매할 인지세: <b>${amt.toLocaleString('ko-KR')}원</b> <span style="font-size:11px;color:var(--muted)">(${label})</span>`;
+}
+
+/* =========================================================
+   번호 릴레이 (siga / tax / bond / fee)
+   ========================================================= */
+const RELAY = { siga:'', tax:'', bond:'', fee:'' };
+const RELAY_META = {
+  siga:{ box:'relay-siga-box', chk:'chk1_3', item:'item1_3', hub:'hub-siga', fp:'fp-siga', label:'시가표준액', fmt:true },
+  tax :{ box:'relay-tax-box',  chk:'chk1_2', item:'item1_2', hub:'hub-tax',  fp:'fp-tax',  label:'취득세액',  fmt:true },
+  bond:{ box:'relay-bond-box', chk:'chk2_1', item:'item2_1', hub:'hub-bond', fp:'fp-bond', label:'채권발행번호', fmt:false },
+  fee :{ box:'relay-fee-box',  chk:'chk3_1', item:'item3_1', hub:'hub-fee',  fp:'fp-fee',  label:'납부번호',   fmt:false },
+};
+
+function fmtNum(v){ const n=Number(String(v).replace(/[^\d]/g,'')); return isNaN(n)?v:n.toLocaleString('ko-KR'); }
+
+function saveRelay(key, inputId){
+  const v = document.getElementById(inputId).value.trim();
+  if(!v){ showToast('값을 입력해 주세요.'); return; }
+  RELAY[key] = v;
+  persistRelay();
+  renderRelay(key);
+  const m = RELAY_META[key];
+  // 해당 액션 체크 + 진행률
+  const chk = document.getElementById(m.chk);
+  if(chk && !chk.checked){ chk.checked = true; updateProgress(m.item); }
+  showToast('저장 완료! 3단계 신청서 집계에 반영됩니다.');
+}
+
+function renderRelay(key){
+  const m = RELAY_META[key];
+  const val = RELAY[key];
+  const shown = m.fmt ? fmtNum(val)+'원' : val;
+  // 입력박스 saved 표시
+  const box = document.getElementById(m.box); if(box) box.classList.add('saved');
+  // 허브 집계
+  const hub = document.getElementById(m.hub);
+  const hubV = document.getElementById(m.hub+'-v');
+  const hubC = document.getElementById(m.hub+'-c');
+  if(hubV){ hubV.textContent = shown; hubV.classList.remove('muted'); }
+  if(hub) hub.classList.remove('empty');
+  if(hubC) hubC.disabled = false;
+  // 신청서 미리보기
+  setFP(m.fp, shown, true);
+  // 시가표준액 복사 버튼(2단계) 라벨 갱신
+  if(key==='siga'){
+    const b = document.getElementById('btn-copy-siga');
+    if(b) b.innerHTML = `📋 시가표준액 ${shown} 복사`;
+  }
+}
+
+function setFP(id, text, filled){
+  const el = document.getElementById(id); if(!el) return;
+  el.textContent = text;
+  el.classList.toggle('filled', !!filled);
+  el.classList.toggle('blank', !filled);
+}
+
+function copyRelay(key){
+  const val = RELAY[key];
+  if(!val){
+    showToast('먼저 해당 단계에서 값을 저장해 주세요.');
+    // 입력 위치로 스크롤
+    const m = RELAY_META[key];
+    const step = document.getElementById(m.item).closest('.step');
+    if(step){ if(!step.classList.contains('active')) step.classList.add('active'); step.scrollIntoView({behavior:'smooth',block:'center'}); }
+    return;
+  }
+  copyText(String(val).replace(/\s/g,''));
+}
+
+function persistRelay(){ try{ localStorage.setItem('relayData', JSON.stringify(RELAY)); }catch(e){} }
+function restoreRelay(){
+  let data; try{ data = JSON.parse(localStorage.getItem('relayData')||'{}'); }catch(e){ data={}; }
+  Object.keys(RELAY).forEach(k=>{
+    if(data[k]){
+      RELAY[k]=data[k];
+      const inp=document.getElementById('in-'+k); if(inp) inp.value=data[k];
+      renderRelay(k);
+      const m=RELAY_META[k]; const chk=document.getElementById(m.chk);
+      if(chk && !chk.checked){ chk.checked=true; document.getElementById(m.item).classList.add('checked'); }
+    }
+  });
+  recountProgress();
+}
+
+/* =========================================================
+   진행/토글/모달/토스트
+   ========================================================= */
+function toggleStep(stepId){ document.getElementById(stepId).classList.toggle('active'); }
+
+function showToast(msg){
+  const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show');
+  clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove('show'),2600);
+}
+
+function copyText(text){
+  const done=()=>showToast('클립보드에 복사했습니다. 신청서에 붙여넣으세요.');
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(done).catch(()=>fallbackCopy(text,done));
+  } else fallbackCopy(text,done);
+}
+function fallbackCopy(text,cb){
+  const ta=document.createElement('textarea'); ta.value=text; ta.style.position='fixed'; ta.style.opacity='0';
+  document.body.appendChild(ta); ta.select();
+  try{ document.execCommand('copy'); cb(); }catch(e){}
+  document.body.removeChild(ta);
+}
+
+function checkDeparture(itemId){
+  if(document.getElementById('chk0_3').checked) showToast('🚨 최종 점검: 신분증·인감도장을 가방에 넣었는지 확인하세요!');
+  updateProgress(itemId);
+}
+
+function updateProgress(itemId){
+  const item=document.getElementById(itemId);
+  const chk=item.querySelector('input[type=checkbox]');
+  item.classList.toggle('checked', chk.checked);
+  recountProgress();
+
+  if(chk.checked){
+    const total=document.querySelectorAll('.action-item input[type=checkbox]').length;
+    const checked=document.querySelectorAll('.action-item input[type=checkbox]:checked').length;
+    if(checked===total){
+      setTimeout(()=>alert('🎉 축하합니다! 등기소 제출까지 완료하셨습니다. 접수증을 꼭 챙기시고, 며칠 뒤 인터넷등기소에서 등기완료를 확인하세요.'),300);
+    }
+  }
+}
+
+function recountProgress(){
+  const total=document.querySelectorAll('.action-item input[type=checkbox]').length;
+  const checked=document.querySelectorAll('.action-item input[type=checkbox]:checked').length;
+  document.getElementById('progressText').textContent=`${checked} / ${total} 완료`;
+  document.getElementById('progressBar').style.width=`${total?(checked/total)*100:0}%`;
+  document.querySelectorAll('.step').forEach(step=>{
+    const boxes=step.querySelectorAll('input[type=checkbox]');
+    const cb=step.querySelectorAll('input[type=checkbox]:checked');
+    step.classList.toggle('done', boxes.length>0 && boxes.length===cb.length);
+  });
+}
+
+const GUIDES = {
+  'preinput':[
+    {text:"1. 인터넷등기소 접속 → 로그인", img:"https://placehold.co/400x220/eef3ff/2a5f9e?text=iros.go.kr+Login", desc:"인터넷등기소(www.iros.go.kr)에 접속해 공동인증서 또는 간편인증으로 로그인합니다."},
+    {text:"2. '확인서비스 신청' 메뉴 진입", img:"https://placehold.co/400x220/eef3ff/2a5f9e?text=Pre-input+Menu", desc:"상단 메뉴에서 '등기신청 → 확인서비스 신청 → 매수자 사전입력확인서'를 찾아 들어갑니다."},
+    {text:"3. 매수인·부동산 정보 입력 후 등록", img:"https://placehold.co/400x250/fffbeb/92400e?text=Submit+Pre-input", desc:"매수인 인적사항과 부동산 표시를 입력하고 등록을 완료하면 확인번호가 발급됩니다. 이 번호는 등기소 제출 서류와 함께 보관하세요."}
+  ],
+  'stamp':[
+    {text:"1. 매도인 인감 날인 확인", img:"https://placehold.co/400x200/eef3ff/2a5f9e?text=Seller+Stamp+Area", desc:"매도인 이름 옆 도장이 인감증명서 상의 도장과 일치하는지 확인하세요. 깨지거나 다르면 반려될 수 있습니다."},
+    {text:"2. 매수인(본인) 인감 날인", img:"https://placehold.co/400x200/fffbeb/92400e?text=Buyer+Stamp+Area", desc:"위임장 하단 매수인 란 이름 옆에 본인 인감 도장을 선명하게 찍으세요."}
+  ],
+  'tax':[
+    {text:"1. 취득세 신고서 상단", img:"https://placehold.co/400x250/eef3ff/2a5f9e?text=Tax+Form+Top", desc:"신고인 난에 본인(매수인) 인적사항, 전소유자 난에 매도인 정보를 적습니다."},
+    {text:"2. 취득물건 및 과세표준", img:"https://placehold.co/400x250/eef3ff/2a5f9e?text=Tax+Form+Middle", desc:"소재지에 아파트 전체 주소, 취득일은 '잔금지급일', 과세표준액은 실제 '매매대금'을 적습니다."}
+  ],
+  'bond':[
+    {text:"1. 채권 매입요청서 작성", img:"https://placehold.co/400x300/eef3ff/2a5f9e?text=Bond+Form", desc:"은행 비치 '국민주택채권 매입요청서'에 매입자명·매입금액을 적습니다. 매입액은 시가표준액 기준으로 계산됩니다."},
+    {text:"2. 즉시 매도 체크", img:"https://placehold.co/400x150/fffbeb/92400e?text=Check+Sell+Immediately", desc:"가장 중요합니다. '즉시매도'에 V표시하세요. 그래야 본인부담금(할인액)만 내고 처리됩니다."}
+  ],
+  'app':[
+    {text:"1. 신청서 번호 기재", img:"https://placehold.co/400x300/eef3ff/2a5f9e?text=Application+Form", desc:"1) 구청 취득세액 2) 은행 채권발행번호 3) 등기소 수수료 납부번호를 각 칸에 옮겨 적습니다. 위쪽 '신청서 옮겨적기' 집계를 그대로 보고 적으면 됩니다."}
+  ]
+};
+
+function openGuide(key){
+  const data=GUIDES[key]; if(!data) return;
+  const titles={preinput:'매수자 사전입력확인서 가이드',stamp:'도장 날인 가이드',tax:'취득세 신고서 가이드',bond:'국민주택채권 매입 가이드',app:'신청서 종합 작성법'};
+  document.getElementById('modalTitle').textContent = titles[key]||'작성 가이드';
+  let html='';
+  data.forEach(s=>{
+    html+=`<div class="guide-step"><div class="guide-text"><span>${s.text.charAt(0)}</span>${s.text.substring(2)}</div>
+      <div class="guide-img-box"><img src="${s.img}" alt="${s.text}" class="guide-img"></div>
+      <div class="guide-text" style="border-bottom:none;padding-top:8px"><div class="guide-sub">${s.desc}</div></div></div>`;
+  });
+  document.getElementById('modalBody').innerHTML=html;
+  const m=document.getElementById('guideModal'); m.style.display='flex'; setTimeout(()=>m.classList.add('show'),10);
+}
+function closeModal(){ const m=document.getElementById('guideModal'); m.classList.remove('show'); setTimeout(()=>m.style.display='none',200); }
+document.getElementById('guideModal').addEventListener('click',function(e){ if(e.target===this) closeModal(); });
+</script>
+</body>
+</html>
