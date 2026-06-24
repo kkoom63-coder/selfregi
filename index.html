@@ -7,21 +7,22 @@
 </script>
 <script defer src="/_vercel/insights/script.js"></script>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>셀프등기24 | 소유권이전등기, 직접 하는 사람들을 위한 서류 자동생성</title>
 <meta name="description" content="아파트 소유권이전등기, 법무사 없이 직접 하세요. 셀프등기가 왜 늘고 있는지, 무엇을 준비해야 하는지부터 서류 자동생성·동선 로드맵까지.">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{--navy:#1e3a5f;--blue:#2a5f9e;--gold:#b8952e;--bg:#f2f4f8;--card:#fff;--text:#1a1e2e;--muted:#6b7280;--border:#dde2ec;--radius:12px;--shadow:0 2px 12px rgba(30,58,95,.08)}
-body{font-family:'Noto Sans KR','Malgun Gothic',sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+body{font-family:'Noto Sans KR','Malgun Gothic',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden;touch-action:manipulation}
 
 /* ── 네비게이션 ── */
 nav{background:var(--navy);position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(255,255,255,.06)}
-.nav-inner{max-width:720px;margin:0 auto;padding:0 20px;height:52px;display:flex;align-items:center;gap:6px}
-.nav-logo{font-size:16px;font-weight:700;color:#fff;text-decoration:none;margin-right:auto;letter-spacing:-.3px}
+.nav-inner{max-width:720px;margin:0 auto;padding:0 20px;height:52px;display:flex;align-items:center;gap:12px;overflow-x:auto;white-space:nowrap;-webkit-overflow-scrolling:touch}
+.nav-inner::-webkit-scrollbar{display:none}
+.nav-logo{flex-shrink:0;font-size:16px;font-weight:700;color:#fff;text-decoration:none;margin-right:auto;letter-spacing:-.3px}
 .nav-logo span{display:inline-block;background:rgba(184,149,46,.3);color:#f0d075;font-size:9px;font-weight:700;letter-spacing:1.2px;padding:1px 6px;border-radius:10px;vertical-align:middle;margin-left:6px}
-.nav-a{color:rgba(255,255,255,.55);font-size:12px;padding:5px 11px;border-radius:7px;text-decoration:none;transition:all .15s;white-space:nowrap}
+.nav-a{flex-shrink:0;color:rgba(255,255,255,.55);font-size:12px;padding:5px 11px;border-radius:7px;text-decoration:none;transition:all .15s;white-space:nowrap}
 .nav-a:hover{background:rgba(255,255,255,.1);color:#fff}
 .nav-a.cta{background:rgba(255,255,255,.12);color:#fff;font-weight:600}
 .nav-a.cta:hover{background:rgba(255,255,255,.2)}
@@ -42,8 +43,8 @@ nav{background:var(--navy);position:sticky;top:0;z-index:100;border-bottom:1px s
 .section{max-width:720px;margin:0 auto;padding:38px 14px 0}
 .sec-label{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;color:var(--blue);letter-spacing:.6px;margin-bottom:10px}
 .sec-label::before{content:'';display:block;width:3px;height:12px;background:var(--blue);border-radius:2px}
-.sec-title{font-size:21px;font-weight:700;color:var(--navy);margin-bottom:8px;line-height:1.45}
-.sec-sub{font-size:13.5px;color:var(--muted);line-height:1.8;margin-bottom:20px}
+.sec-title{font-size:21px;font-weight:700;color:var(--navy);margin-bottom:8px;line-height:1.45;word-break:keep-all}
+.sec-sub{font-size:13.5px;color:var(--muted);line-height:1.8;margin-bottom:20px;word-break:keep-all}
 
 /* ── WHY: 비용 vs 발품 비교 ── */
 .compare{display:grid;grid-template-columns:1fr 1fr;gap:12px}
@@ -86,7 +87,7 @@ nav{background:var(--navy);position:sticky;top:0;z-index:100;border-bottom:1px s
 .step-box{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:18px 16px;box-shadow:var(--shadow)}
 .step-n{font-size:11px;font-weight:700;color:var(--blue);margin-bottom:8px}
 .step-t{font-size:13px;font-weight:700;color:var(--navy);margin-bottom:5px;line-height:1.4}
-.step-d{font-size:11px;color:var(--muted);line-height:1.5}
+.step-d{font-size:11px;color:var(--muted);line-height:1.5;word-break:keep-all}
 
 /* ── 구분선 ── */
 .div-line{max-width:720px;margin:34px auto 0 auto;padding:0 14px}
@@ -101,8 +102,8 @@ main{max-width:720px;margin:0 auto;padding:16px 14px 20px}
 .cs{font-size:11px;color:var(--muted);margin-top:1px}
 
 .wizard-q{background:#f8fafc;border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:12px}
-.q-text{font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px}
-.q-hint{font-size:11px;color:var(--blue);margin-bottom:12px;display:block}
+.q-text{font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px;word-break:keep-all}
+.q-hint{font-size:11px;color:var(--blue);margin-bottom:12px;display:block;word-break:keep-all}
 .opt-row{display:flex;gap:8px}
 .opt-btn{flex:1;padding:10px;border:1.5px solid var(--border);background:#fff;border-radius:8px;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;transition:all .15s;font-family:inherit}
 .opt-btn:hover{border-color:var(--blue);color:var(--blue)}
@@ -117,20 +118,20 @@ main{max-width:720px;margin:0 auto;padding:16px 14px 20px}
 .case-card.selected{border-color:var(--blue);background:#f0f5ff}
 .case-card.recommended::after{content:"추천";position:absolute;top:-10px;right:14px;background:var(--blue);color:#fff;font-size:10px;font-weight:700;padding:2px 9px;border-radius:10px}
 .c-icon-box{width:36px;height:36px;background:#eef3fb;border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--navy);font-size:14px;font-weight:900;margin-bottom:10px}
-.c-title{font-size:14px;font-weight:700;color:var(--navy);margin-bottom:5px;line-height:1.4}
-.c-desc{font-size:12px;color:var(--muted);line-height:1.5}
+.c-title{font-size:14px;font-weight:700;color:var(--navy);margin-bottom:5px;line-height:1.4;word-break:keep-all}
+.c-desc{font-size:12px;color:var(--muted);line-height:1.5;word-break:keep-all}
 .c-when{margin-top:10px;padding-top:10px;border-top:1px dashed var(--border);font-size:11px;color:var(--blue);font-weight:500}
 .soon-badge{display:inline-block;background:#f0f4f8;color:#9aa5b1;font-size:10px;font-weight:700;padding:2px 8px;border-radius:6px;margin-left:6px;vertical-align:middle}
 
 #result{display:none}
 .result-box{background:#f0f5ff;border:1.5px solid #c5d5f5;border-radius:10px;padding:16px}
 .r-label{font-size:11px;color:var(--muted);margin-bottom:3px}
-.r-case{font-size:17px;font-weight:800;color:var(--navy)}
+.r-case{font-size:17px;font-weight:800;color:var(--navy);word-break:keep-all}
 .next-btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;margin-top:14px;padding:15px 20px;background:var(--navy);color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;transition:background .15s}
 .next-btn:hover{background:var(--blue)}
 .next-btn.disabled{background:#b0bcc8;cursor:not-allowed}
 
-.ntc{border-radius:8px;padding:10px 12px;font-size:11px;line-height:1.6;margin-top:12px}
+.ntc{border-radius:8px;padding:10px 12px;font-size:11px;line-height:1.6;margin-top:12px;word-break:keep-all}
 .ntc.inf{background:#eef3ff;border:1px solid #c5d5f5;color:#2a4080}
 
 /* ── FAQ ── */
@@ -139,7 +140,7 @@ main{max-width:720px;margin:0 auto;padding:16px 14px 20px}
 .faq-q{width:100%;display:flex;justify-content:space-between;align-items:center;gap:12px;background:none;border:none;padding:15px 0;font-size:13.5px;font-weight:600;color:var(--navy);cursor:pointer;font-family:inherit;text-align:left;line-height:1.5}
 .faq-q .ico{font-size:18px;color:var(--muted);transition:transform .2s;flex-shrink:0}
 .faq-q.open .ico{transform:rotate(45deg)}
-.faq-a{display:none;font-size:12.5px;color:var(--muted);line-height:1.8;padding:0 0 16px}
+.faq-a{display:none;font-size:12.5px;color:var(--muted);line-height:1.8;padding:0 0 16px;word-break:keep-all}
 .faq-a strong{color:var(--text)}
 
 /* ── 푸터 ── */
@@ -341,15 +342,15 @@ footer{background:var(--navy);margin-top:40px;padding:28px 20px}
     <div class="cases">
       <div class="case-card" data-case="general" onclick="selectCase('general')">
         <div class="c-icon-box">A</div>
-        <div class="c-title">분양 아파트<br>소유권이전</div>
-        <div class="c-desc">분양받은 아파트의 잔금을 치르고 소유권을 이전받는 가장 일반적인 경우</div>
-        <div class="c-when">→ 위임장 + 신탁일부해지증서</div>
+        <div class="c-title">매매계약에 따른<br>소유권이전</div>
+        <div class="c-desc">매매계약 체결 후 잔금 납부 이후 소유권을 이전 받는 가장 일반적인 경우</div>
+        <div class="c-when">→ 위임장(및 해지증서)</div>
       </div>
       <div class="case-card" data-case="landShare" onclick="selectCase('landShare')">
         <div class="c-icon-box">B</div>
         <div class="c-title">대지지분 별도등기</div>
-        <div class="c-desc">택지지구·도시개발사업 등으로 토지(대지권)를 추가로 등기해야 하는 경우</div>
-        <div class="c-when">→ 위임장 + 신탁일부해지증서(대지)</div>
+        <div class="c-desc">현재 부동산등기부 상 건축물에 '대지지분'이 없는 경우로 대지권 등기를 진행해야 하는 경우</div>
+        <div class="c-when">→ 위임장(및 대지지분 포기증서)</div>
       </div>
     </div>
     <div class="ntc inf" style="margin-top:14px">
@@ -406,7 +407,7 @@ footer{background:var(--navy);margin-top:40px;padding:28px 20px}
       <button class="faq-q" onclick="toggleFaq(this)">
         케이스 A와 B의 차이가 뭔가요?<span class="ico">+</span>
       </button>
-      <div class="faq-a">케이스 A는 분양 아파트의 일반적인 소유권이전 케이스입니다. 케이스 B는 도시개발사업 지구처럼 건물 준공 후 토지(대지권) 등기가 별도로 남아있는 경우입니다. 등기부등본 표제부에 <strong>'별도등기 있음'</strong> 표시가 있다면 케이스 B에 해당합니다. 최종 판단이 어려우면 관할 등기소에 확인하시는 것이 가장 정확합니다.</div>
+      <div class="faq-a">케이스 A는 일반적인 소유권이전 케이스로 매매계약 체결 후 잔금납부 이후의 일반적인 경우입니다. 케이스 B는 현재 건축물에 대지 지분(대지권)이 등기되어 있지 않아 대지권 등기를 진행해야 하는 경우입니다.</div>
     </div>
   </div>
 </main>
@@ -433,7 +434,7 @@ footer{background:var(--navy);margin-top:40px;padding:28px 20px}
 <script>
 /* ===== 케이스 선택 ===== */
 const CASES = {
-  general:   { label:'분양 아파트 소유권이전 (케이스 A)', url:'normal_form.html' },
+  general:   { label:'매매계약에 따른 소유권이전 (케이스 A)', url:'normal_form.html' },
   landShare: { label:'대지지분 별도등기 (케이스 B)',      url:'land_form.html' }
 };
 let answers = {q1:null,q2:null};
