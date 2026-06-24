@@ -254,8 +254,8 @@ main{max-width:720px;margin:0 auto;padding:24px 14px 110px;position:relative}
             <div class="action-item" id="item0_3">
               <input type="checkbox" id="chk0_3" onchange="updateProgress('item0_3')">
               <div class="action-text">
-                <label for="chk0_3">매수자 사전입력확인서 등록</label>
-                <div class="action-desc">출발 전, <a href="https://www.iros.go.kr" target="_blank" rel="noopener" style="color:var(--blue);font-weight:700;text-decoration:underline">인터넷등기소</a>에서 매수자 사전입력확인서를 꼭 사전등록하세요. 등기소 현장에서 등록하면 대기·반려 시간이 늘어날 수 있습니다.</div>
+                <label for="chk0_3">매수자 사전입력확인서 등록(분양물건의 경우)</label>
+                <div class="action-desc">출발 전, <a href="https://www.iros.go.kr" target="_blank" rel="noopener" style="color:var(--blue);font-weight:700;text-decoration:underline">인터넷등기소</a>에서 매수자 사전입력확인서를 꼭 사전등록하세요. 등기소 현장에서 등록하면 대기·반려 시간이 늘어날 수 있습니다. 분양물건이 아닌 경우 이 절차는 생략하시기 바랍니다.</div>
                 <div class="btn-row"><button class="btn-preview" onclick="openGuide('preinput')">🔍 사전입력 방법 가이드 보기</button></div>
               </div>
             </div>
@@ -867,9 +867,10 @@ function recountProgress(){
 
 const GUIDES = {
   'preinput':[
-    {text:"1. 인터넷등기소 접속 → 로그인", img:"https://placehold.co/400x220/eef3ff/2a5f9e?text=iros.go.kr+Login", desc:"인터넷등기소(www.iros.go.kr)에 접속해 공동인증서 또는 간편인증으로 로그인합니다."},
-    {text:"2. '확인서비스 신청' 메뉴 진입", img:"https://placehold.co/400x220/eef3ff/2a5f9e?text=Pre-input+Menu", desc:"상단 메뉴에서 '등기신청 → 확인서비스 신청 → 매수자 사전입력확인서'를 찾아 들어갑니다."},
-    {text:"3. 매수인·부동산 정보 입력 후 등록", img:"https://placehold.co/400x250/fffbeb/92400e?text=Submit+Pre-input", desc:"매수인 인적사항과 부동산 표시를 입력하고 등록을 완료하면 확인번호가 발급됩니다. 이 번호는 등기소 제출 서류와 함께 보관하세요."}
+    {text:"1단계. 인터넷등기소 접속 후 로그인", img:"iros_1.jpg", desc:"www.iros.go.kr에 접속한 뒤 우측 상단 '로그인'을 클릭합니다. 공동인증서(구 공인인증서) 또는 간편인증으로 로그인하세요."},
+    {text:"2단계. 열람·발급 → 법인 → 매도용 매수자 등록", img:"iros_2.jpg", desc:"상단 메뉴에서 '열람·발급 → 법인 → 법인인감증명서 발급지원 → 매도용 매수자 등록'을 선택합니다."},
+    {text:"3단계. 등기상호 검색", img:"iros_3.jpg", desc:"'등기상호검색' 탭에서 검색 조건을 전체로 두고, 시행사(분양회사)의 등기상호명을 입력한 후 검색합니다. 결과 목록에서 해당 법인을 선택하세요."},
+    {text:"4단계. 매수자 정보 입력 후 추가·수정", img:"iros_4.jpg", desc:"매수형태(개별·공동매수)와 용도(부동산매도용)를 선택하고, 매수자명·주민등록번호·주소·신청통수를 입력합니다. 입력 완료 후 우측 하단 '추가·수정' 버튼을 눌러 등록을 완료하세요."}
   ],
   'stamp':[
     {text:"1. 날인 위치 확인", img:"normal_case1(위임장).JPG", desc:"빨간 박스 위치(매도인·매수인 각 칸)에 인감 도장을 선명하게 찍으세요. 도장이 깨지거나 인감증명서 도장과 다르면 반려될 수 있습니다."}
@@ -889,7 +890,7 @@ const GUIDES = {
 
 function openGuide(key){
   const data=GUIDES[key]; if(!data) return;
-  const titles={preinput:'매수자 사전입력확인서 가이드',stamp:'도장 날인 가이드',tax:'취득세 신고서 가이드',bond:'국민주택채권 매입 가이드',app:'신청서 종합 작성법'};
+  const titles={preinput:'매수자 사전입력 등록 방법',stamp:'도장 날인 가이드',tax:'취득세 신고서 가이드',bond:'국민주택채권 매입 가이드',app:'신청서 종합 작성법'};
   document.getElementById('modalTitle').textContent = titles[key]||'작성 가이드';
   let html='';
   data.forEach(s=>{
