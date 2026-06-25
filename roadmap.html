@@ -37,6 +37,8 @@ nav{background:var(--navy);position:sticky;top:0;z-index:100;border-bottom:1px s
 .quick-nav a{display:flex;align-items:center;justify-content:center;gap:5px;padding:11px 8px;background:#03c75a;color:#fff;font-size:12px;font-weight:700;border-radius:8px;text-decoration:none;text-align:center;word-break:keep-all;transition:opacity .2s}
 .quick-nav a:hover{opacity:.88}
 .quick-nav a .qn-name{color:#ffffa0;font-size:11px;display:block;font-weight:600}
+.jurisdiction-pdf{margin-top:10px;font-size:11px;color:rgba(255,255,255,.55);line-height:1.7;word-break:keep-all;text-align:center}
+.jurisdiction-pdf a{color:#f0d075;font-weight:700;text-decoration:underline}
 .addr-missing{background:#fffbeb;border:1px solid #fde68a;color:#92400e;padding:12px 14px;border-radius:8px;margin-top:14px;font-size:12px;line-height:1.6}
 .addr-missing input{width:100%;margin-top:8px;padding:9px 11px;border:1px solid #d97706;border-radius:6px;font-size:13px;outline:none;font-family:inherit}
 .addr-missing button{margin-top:8px;padding:8px 16px;background:#d97706;color:#fff;border:none;border-radius:6px;font-weight:700;font-size:12px;cursor:pointer;font-family:inherit}
@@ -92,9 +94,10 @@ main{max-width:720px;margin:0 auto;padding:24px 14px 110px;position:relative}
 .relay-input.saved{border-color:#93c5fd;background:#f0f9ff;border-style:solid}
 .relay-input label{font-size:12px;font-weight:700;color:var(--navy);display:block;margin-bottom:8px}
 .relay-row{display:flex;gap:6px}
-.relay-row input{flex:1;padding:10px;border:1px solid #cbd5e1;border-radius:6px;font-size:14px;outline:none;font-family:inherit}
+.relay-row input{flex:1;min-width:0;width:100%;padding:10px;border:1px solid #cbd5e1;border-radius:6px;font-size:14px;outline:none;font-family:inherit;-moz-appearance:textfield}
+.relay-row input::-webkit-outer-spin-button,.relay-row input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
 .relay-row input:focus{border-color:var(--blue)}
-.relay-row button{background:var(--blue);color:#fff;border:none;padding:0 16px;border-radius:6px;font-weight:700;font-size:13px;cursor:pointer;font-family:inherit;white-space:nowrap;transition:background .2s}
+.relay-row button{flex:0 0 auto;background:var(--blue);color:#fff;border:none;padding:0 16px;border-radius:6px;font-weight:700;font-size:13px;cursor:pointer;font-family:inherit;white-space:nowrap;transition:background .2s}
 .relay-row button:hover{background:#1d4d85}
 .relay-desc{font-size:11px;color:var(--muted);margin-top:8px;word-break:keep-all;line-height:1.4}
 
@@ -174,6 +177,14 @@ main{max-width:720px;margin:0 auto;padding:24px 14px 110px;position:relative}
 
 .toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(20px);background:rgba(26,30,46,.9);color:#fff;padding:10px 20px;border-radius:8px;font-size:13px;font-weight:500;transition:all .3s;z-index:999;white-space:nowrap;opacity:0;visibility:hidden;box-shadow:0 4px 12px rgba(0,0,0,.15);max-width:90%;text-align:center}
 .toast.show{transform:translateX(-50%) translateY(0);opacity:1;visibility:visible}
+@media (max-width:400px){
+  .sc-body{padding:12px}
+  .action-item{padding:10px}
+  .relay-input{padding:10px}
+  .relay-row button{padding:0 12px;font-size:12px}
+  .relay-row input{font-size:13px;padding:9px}
+  .quick-nav a{font-size:11px;padding:10px 6px}
+}
 </style>
 </head>
 <body>
@@ -216,6 +227,10 @@ main{max-width:720px;margin:0 auto;padding:24px 14px 110px;position:relative}
       <a href="#" id="qn-deunggi" target="_blank" rel="noopener">
         ⚖️ 네이버 지도로<br><span class="qn-name" id="qn-deunggi-name">관할 등기소</span> 안내받기
       </a>
+    </div>
+
+    <div class="jurisdiction-pdf" id="jurisdiction-pdf" style="display:none">
+      안내된 관할이 실제와 다른 경우, <a href="전국등기소정보.pdf" target="_blank" rel="noopener" download>전국 등기소 정보 PDF</a>에서 직접 확인하실 수 있습니다. 최종 관할은 관할 등기소를 통해 확인하시기 바랍니다.
     </div>
 
     <div class="addr-missing" id="addr-missing" style="display:none">
@@ -684,6 +699,7 @@ function applyDynamicRouting(fullAddress){
   qnG.href = naverSearch(taxOffice);
   qnD.href = courtHref;
   document.getElementById('quick-nav').style.display = 'grid';
+  document.getElementById('jurisdiction-pdf').style.display = 'block';
 
   // 신청서 미리보기 주소 채우기
   setFP('fp-addr', fullAddress, true);
