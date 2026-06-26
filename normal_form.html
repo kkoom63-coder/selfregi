@@ -40,6 +40,8 @@ main{max-width:720px;margin:0 auto;padding:20px 14px 60px}
 label{font-size:11px;font-weight:500;color:#374151}
 .req{color:#e53e3e;margin-left:2px}
 .hint{color:var(--muted);font-weight:400;margin-left:3px}
+.addr-tip{font-size:11px;color:var(--muted);line-height:1.6;margin-top:6px;padding:7px 10px;background:#f4f6fb;border-radius:6px;border-left:3px solid var(--blue)}
+.addr-tip b{color:var(--navy)}
 input[type=text],input[type=number],input[type=email],select{height:38px;border:1px solid var(--border);border-radius:8px;padding:0 10px;font-size:13px;font-family:inherit;color:var(--text);background:#fafbfd;outline:none;transition:border-color .15s,box-shadow .15s;width:100%}
 input:focus,select:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(42,95,158,.12);background:#fff}
 input::placeholder{color:#c0c8d8;font-size:12px}
@@ -143,6 +145,12 @@ footer{text-align:center;padding:18px;font-size:11px;color:#a0aec0;max-width:720
   <div class="fg s1"><div class="f">
     <label>지번 주소 <span class="req">*</span></label>
     <input type="text" id="jibun-address" placeholder="예: 경기도 화성시 반월동 974">
+    <div class="addr-tip">
+      <b>등기사항전부증명서(등기부등본)의 표제부 기재 지번</b>을 입력해 주세요.<br>
+      위임장·신청서의 부동산 표시는 등기부 기준으로 작성해야 합니다(부동산등기규칙 제43조).<br>
+      매매계약서 주소와 다를 수 있으니 반드시 등기부등본을 먼저 확인하세요.<br>
+      또한 <b>시·군까지 반드시 포함</b>해 입력해 주세요. (예: '분당구' ✕ → '성남시 분당구' ○)
+    </div>
   </div></div>
   <div class="divider"></div>
   <div class="fg">
