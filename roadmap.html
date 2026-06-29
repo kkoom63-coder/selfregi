@@ -177,6 +177,15 @@ main{max-width:720px;margin:0 auto;padding:24px 14px 110px;position:relative}
 
 .toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(20px);background:rgba(26,30,46,.9);color:#fff;padding:10px 20px;border-radius:8px;font-size:13px;font-weight:500;transition:all .3s;z-index:999;white-space:nowrap;opacity:0;visibility:hidden;box-shadow:0 4px 12px rgba(0,0,0,.15);max-width:90%;text-align:center}
 .toast.show{transform:translateX(-50%) translateY(0);opacity:1;visibility:visible}
+/* ── 트랙 토글 ── */
+.track-toggle{display:grid;grid-template-columns:1fr 1fr;gap:0;margin-top:18px;border-radius:10px;overflow:hidden;border:1.5px solid rgba(255,255,255,.18);background:rgba(0,0,0,.18)}
+.track-btn{padding:11px 8px;border:none;background:transparent;color:rgba(255,255,255,.55);font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .2s;line-height:1.4;text-align:center;word-break:keep-all}
+.track-btn small{display:block;font-size:10px;font-weight:400;margin-top:2px;opacity:.8}
+.track-btn.active{background:rgba(255,255,255,.15);color:#fff}
+.track-badge{display:inline-block;font-size:9px;font-weight:700;letter-spacing:.6px;padding:1px 6px;border-radius:8px;margin-left:5px;vertical-align:middle}
+.track-badge.online{background:rgba(42,95,158,.45);color:#93c5fd}
+.track-badge.visit{background:rgba(184,149,46,.35);color:#f0d075}
+
 @media (max-width:400px){
   .sc-body{padding:12px}
   .action-item{padding:10px}
@@ -209,6 +218,18 @@ main{max-width:720px;margin:0 auto;padding:24px 14px 110px;position:relative}
     <div class="page-eyebrow">결제 완료 • 서류 준비 완료</div>
     <h1>나만의 셀프등기 로드맵</h1>
     <p>이 화면을 켜두고 순서대로 방문하세요.<br>각 단계를 완수하면 체크박스를 눌러주세요.</p>
+
+    <!-- 트랙 선택 -->
+    <div class="track-toggle">
+      <button class="track-btn active" id="btn-track-online" onclick="setTrack('online')">
+        💻 온라인으로 처리 <span class="track-badge online">추천</span>
+        <small>집에서 납부 → 등기소 1회</small>
+      </button>
+      <button class="track-btn" id="btn-track-visit" onclick="setTrack('visit')">
+        🚶 직접 방문 <span class="track-badge visit">전통 방식</span>
+        <small>구청 → 은행 → 등기소</small>
+      </button>
+    </div>
 
     <div class="target-address-box">
       📍 취득할 부동산(목적물) 소재지
@@ -296,8 +317,114 @@ main{max-width:720px;margin:0 auto;padding:24px 14px 110px;position:relative}
       </div>
     </div>
 
-    <!-- STEP 1 : 구청 -->
-    <div class="step" id="step1">
+    <!-- STEP O : 온라인 일괄 납부 (온라인 트랙) -->
+    <div class="step" id="stepO" data-track="online" style="display:none">
+      <div class="step-dot"></div>
+      <div class="step-card">
+        <div class="sc-header" onclick="toggleStep('stepO')">
+          <div class="sc-title-wrap">
+            <div class="sc-num">온라인 납부 (집에서 일괄)</div>
+            <div class="sc-title">취득세·채권·인지·등기수수료</div>
+            <div class="sc-sub">💻 위택스 · 은행앱 · 전자수입인지 · 인터넷등기소</div>
+          </div>
+          <div class="sc-toggle">▼</div>
+        </div>
+        <div class="sc-body">
+          <div class="action-list">
+
+            <!-- O-1: 취득세 (위택스) -->
+            <div class="action-item" id="itemO_1">
+              <input type="checkbox" id="chkO_1" onchange="updateProgress('itemO_1')">
+              <div class="action-text">
+                <label for="chkO_1">취득세 신고·납부 (위택스)</label>
+                <div class="action-desc"><a href="https://www.wetax.go.kr" target="_blank" rel="noopener" style="color:var(--blue);font-weight:700;text-decoration:underline">wetax.go.kr</a>에 로그인 → 신고하기 → 취득세 → 유상취득(매매) → 신고·납부. 납부확인서를 PDF로 저장하거나 인쇄하세요.</div>
+                <div class="btn-row"><button class="btn-preview" onclick="openGuide('tax')">🔍 위택스 신고 가이드</button></div>
+                <div class="relay-input" data-relay="tax" style="margin-top:10px">
+                  <label>① 납부한 취득세액 기록 (선택)</label>
+                  <div class="relay-row">
+                    <input type="number" class="relay-in" placeholder="숫자만 (예: 5400000)">
+                    <button onclick="saveRelay(this)">저장</button>
+                  </div>
+                  <div class="relay-desc">3단계 신청서 집계에 자동 반영됩니다.</div>
+                </div>
+                <div class="relay-input" data-relay="siga" style="margin-top:8px">
+                  <label>② 시가표준액 기록 (선택)</label>
+                  <div class="relay-row">
+                    <input type="number" class="relay-in" placeholder="숫자만 (예: 350000000)">
+                    <button onclick="saveRelay(this)">저장</button>
+                  </div>
+                  <div class="relay-desc">납부확인서의 시가표준액을 저장하면 아래 채권 매입 때 복사해 쓸 수 있습니다.</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- O-2: 채권 (은행앱) -->
+            <div class="action-item" id="itemO_2">
+              <input type="checkbox" id="chkO_2" onchange="updateProgress('itemO_2')">
+              <div class="action-text">
+                <label for="chkO_2">국민주택채권 매입 (은행앱 · 즉시매도)</label>
+                <div class="action-desc">KB국민·NH농협·신한·우리·하나 앱에서 '국민주택채권 매입' 메뉴 → 즉시매도 선택. 시가표준액 기준 매입액 자동 계산. 채권발행번호를 저장하세요.</div>
+                <div class="btn-row">
+                  <button class="btn-preview" onclick="openGuide('bond')">🔍 채권 매입 가이드</button>
+                  <button class="btn-preview" id="btn-copy-siga-o" onclick="copyRelay('siga')">📋 내 시가표준액 복사</button>
+                </div>
+                <span class="tip-badge cash">이체만 가능</span>
+                <div class="relay-input" data-relay="bond" style="margin-top:10px">
+                  <label>③ 채권발행번호 기록 (선택)</label>
+                  <div class="relay-row">
+                    <input type="text" class="relay-in" placeholder="앱 화면의 채권발행번호">
+                    <button onclick="saveRelay(this)">저장</button>
+                  </div>
+                  <div class="relay-desc">3단계 신청서 집계에 자동 반영됩니다.</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- O-3: 수입인지 (전자수입인지 포털) -->
+            <div class="action-item" id="itemO_3">
+              <input type="checkbox" id="chkO_3" onchange="updateProgress('itemO_3')">
+              <div class="action-text">
+                <label for="chkO_3">전자수입인지 구매 및 출력</label>
+                <div class="action-desc"><a href="https://www.e-revenuestamp.or.kr" target="_blank" rel="noopener" style="color:var(--blue);font-weight:700;text-decoration:underline">e-revenuestamp.or.kr</a> → 부동산 소유권이전 → 매매가 입력 → 구매. 출력된 전자수입인지를 A4에 인쇄해 등기소에 제출하세요.</div>
+                <span class="tip-badge card">카드결제 가능</span>
+                <!-- 인지세 계산기 재사용 -->
+                <div class="stamp-box" style="margin-top:10px">
+                  <div class="stamp-row">
+                    <input type="number" id="in-price-o" placeholder="매매가 입력 (예: 850000000)" oninput="calcStampO()">
+                    <span>원</span>
+                  </div>
+                  <div class="stamp-result" id="stamp-result-o">매매가를 입력하면 인지세가 계산됩니다.</div>
+                  <div class="stamp-note">주택 기준: 1억 이하 비과세 · 1억 초과~10억 15만원 · 10억 초과 35만원 (인지세법 제3·6조)</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- O-4: 등기수수료 (인터넷등기소) -->
+            <div class="action-item" id="itemO_4">
+              <input type="checkbox" id="chkO_4" onchange="updateProgress('itemO_4')">
+              <div class="action-text">
+                <label for="chkO_4">등기신청수수료 납부 (인터넷등기소 · 13,000원)</label>
+                <div class="action-desc"><a href="https://www.iros.go.kr" target="_blank" rel="noopener" style="color:var(--blue);font-weight:700;text-decoration:underline">iros.go.kr</a> → 전자납부 → 부동산 등기수수료 → e-Form(전자양식) 선택 시 13,000원. 납부번호를 저장하세요.
+                  <br><span style="font-size:10.5px;color:var(--muted)">※ 서면 방문 제출은 15,000원, e-Form 활용 시 2,000원 할인</span>
+                </div>
+                <div class="relay-input" data-relay="fee" style="margin-top:10px">
+                  <label>④ 수수료 납부번호 기록 (선택)</label>
+                  <div class="relay-row">
+                    <input type="text" class="relay-in" placeholder="납부 후 발급되는 납부번호">
+                    <button onclick="saveRelay(this)">저장</button>
+                  </div>
+                  <div class="relay-desc">3단계 신청서 집계에 자동 반영됩니다.</div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 1 : 구청 (방문 트랙) -->
+    <div class="step" id="step1" data-track="visit">
       <div class="step-dot"></div>
       <div class="step-card">
         <div class="sc-header" onclick="toggleStep('step1')">
@@ -356,8 +483,8 @@ main{max-width:720px;margin:0 auto;padding:24px 14px 110px;position:relative}
       </div>
     </div>
 
-    <!-- STEP 2 : 은행 -->
-    <div class="step" id="step2">
+    <!-- STEP 2 : 은행 (방문 트랙) -->
+    <div class="step" id="step2" data-track="visit">
       <div class="step-dot"></div>
       <div class="step-card">
         <div class="sc-header" onclick="toggleStep('step2')">
@@ -750,6 +877,7 @@ function getParam(k){ return new URLSearchParams(location.search).get(k); }
 window.onload = () => {
   const urlAddr = getParam('addr');
   const urlPrice = getParam('price');
+  const urlTrack = getParam('track') || localStorage.getItem('trackPref') || 'online';
 
   if(urlAddr){
     applyDynamicRouting(urlAddr);
@@ -760,9 +888,11 @@ window.onload = () => {
 
   if(urlPrice){
     const el = document.getElementById('in-price');
-    el.value = urlPrice;
-    calcStamp();
+    if(el){ el.value = urlPrice; calcStamp(); }
+    const elO = document.getElementById('in-price-o');
+    if(elO){ elO.value = urlPrice; calcStampO(); }
   }
+  setTrack(urlTrack);
   restoreRelay();
 };
 
@@ -892,6 +1022,40 @@ function restoreRelay(){
 /* =========================================================
    진행/토글/모달/토스트
    ========================================================= */
+/* =========================================================
+   트랙 전환 (online / visit)
+   ========================================================= */
+function setTrack(t){
+  const tracks = ['online','visit'];
+  tracks.forEach(track=>{
+    document.querySelectorAll(`[data-track="${track}"]`).forEach(el=>{
+      el.style.display = (track===t) ? '' : 'none';
+    });
+    const btn = document.getElementById(`btn-track-${track}`);
+    if(btn) btn.classList.toggle('active', track===t);
+  });
+  // URL + localStorage 영속
+  try{
+    const u=new URL(location); u.searchParams.set('track',t); history.replaceState(null,'',u);
+    localStorage.setItem('trackPref',t);
+  }catch(e){}
+  recountProgress();
+}
+
+/* 온라인 트랙 인지세 계산기 (방문 트랙과 독립) */
+function calcStampO(){
+  const price = parseFloat(document.getElementById('in-price-o').value);
+  const out = document.getElementById('stamp-result-o');
+  if(!price || price<=0){ out.textContent='매매가를 입력하면 인지세가 계산됩니다.'; return; }
+  let amt, label;
+  if(price <= 100000000){ amt=0; label='비과세 (1억원 이하 주택)'; }
+  else if(price <= 1000000000){ amt=150000; label='1억 초과~10억 이하'; }
+  else { amt=350000; label='10억 초과'; }
+  out.innerHTML = amt===0
+    ? `구매할 인지세: <b>0원</b> <span style="font-size:11px;color:var(--muted)">(${label})</span>`
+    : `구매할 인지세: <b>${amt.toLocaleString('ko-KR')}원</b> <span style="font-size:11px;color:var(--muted)">(${label})</span>`;
+}
+
 function toggleStep(stepId){ document.getElementById(stepId).classList.toggle('active'); }
 
 function showToast(msg){
@@ -932,12 +1096,18 @@ function updateProgress(itemId){
   }
 }
 
+function visibleCheckboxes(){
+  return [...document.querySelectorAll('.action-item input[type=checkbox]')]
+    .filter(el=>el.closest('[data-track]') ? el.closest('[data-track]').style.display!=='none' : true);
+}
 function recountProgress(){
-  const total=document.querySelectorAll('.action-item input[type=checkbox]').length;
-  const checked=document.querySelectorAll('.action-item input[type=checkbox]:checked').length;
+  const all=visibleCheckboxes();
+  const total=all.length;
+  const checked=all.filter(el=>el.checked).length;
   document.getElementById('progressText').textContent=`${checked} / ${total} 완료`;
   document.getElementById('progressBar').style.width=`${total?(checked/total)*100:0}%`;
   document.querySelectorAll('.step').forEach(step=>{
+    if(step.style.display==='none') return;
     const boxes=step.querySelectorAll('input[type=checkbox]');
     const cb=step.querySelectorAll('input[type=checkbox]:checked');
     step.classList.toggle('done', boxes.length>0 && boxes.length===cb.length);
