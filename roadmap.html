@@ -877,7 +877,7 @@ function getParam(k){ return new URLSearchParams(location.search).get(k); }
 window.onload = () => {
   const urlAddr = getParam('addr');
   const urlPrice = getParam('price');
-  const urlTrack = getParam('track') || localStorage.getItem('trackPref') || 'online';
+  const urlTrack = getParam('track') || 'online'; // 베타: 트랙 선택 미저장
 
   if(urlAddr){
     applyDynamicRouting(urlAddr);
@@ -1002,22 +1002,8 @@ function copyRelay(key){
   copyText(String(val).replace(/\s/g,''));
 }
 
-function persistRelay(){ try{ localStorage.setItem('relayData', JSON.stringify(RELAY)); }catch(e){} }
-function restoreRelay(){
-  let data; try{ data = JSON.parse(localStorage.getItem('relayData')||'{}'); }catch(e){ data={}; }
-  Object.keys(RELAY).forEach(k=>{
-    if(data[k]){
-      RELAY[k]=data[k];
-      renderRelay(k); // 입력값·허브·미리보기 모두 복원
-      // 동일 릴레이가 든 작업 아이템 체크 표시
-      relayBoxes(k).forEach(box=>{
-        const item=box.closest('.action-item');
-        if(item){ const chk=item.querySelector('input[type=checkbox]'); if(chk && !chk.checked){ chk.checked=true; item.classList.add('checked'); } }
-      });
-    }
-  });
-  recountProgress();
-}
+function persistRelay(){} // 베타: localStorage 미사용
+function restoreRelay(){ recountProgress(); } // 베타: 세션 내에서만 유지
 
 /* =========================================================
    진행/토글/모달/토스트
@@ -1037,7 +1023,6 @@ function setTrack(t){
   // URL + localStorage 영속
   try{
     const u=new URL(location); u.searchParams.set('track',t); history.replaceState(null,'',u);
-    localStorage.setItem('trackPref',t);
   }catch(e){}
   recountProgress();
 }
