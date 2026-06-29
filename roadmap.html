@@ -326,11 +326,11 @@ main{max-width:720px;margin:0 auto;padding:24px 14px 110px;position:relative}
                 <span class="tip-badge card">카드결제 가능</span>
 
                 <!-- 릴레이: 취득세액 -->
-                <div class="relay-input" id="relay-tax-box">
+                <div class="relay-input" data-relay="tax">
                   <label>① 납부한 취득세액 기록 (선택)</label>
                   <div class="relay-row">
-                    <input type="number" id="in-tax" placeholder="숫자만 (예: 5400000)">
-                    <button onclick="saveRelay('tax','in-tax')">저장</button>
+                    <input type="number" class="relay-in" placeholder="숫자만 (예: 5400000)">
+                    <button onclick="saveRelay(this)">저장</button>
                   </div>
                   <div class="relay-desc">마지막 등기소 신청서에 그대로 옮겨 적습니다. 저장해두면 3단계에서 자동으로 모입니다.</div>
                 </div>
@@ -341,11 +341,11 @@ main{max-width:720px;margin:0 auto;padding:24px 14px 110px;position:relative}
               <div class="action-text">
                 <label for="chk1_3">영수증의 '시가표준액' 기록 (선택)</label>
                 <div class="action-desc">은행(2단계) 채권 매입액 계산과 신청서 작성에 쓰입니다. 취득세 영수증의 <strong>시가표준액</strong>을 저장해두세요.</div>
-                <div class="relay-input" id="relay-siga-box">
+                <div class="relay-input" data-relay="siga">
                   <label>② 시가표준액 입력</label>
                   <div class="relay-row">
-                    <input type="number" id="in-siga" placeholder="숫자만 (예: 350000000)">
-                    <button onclick="saveRelay('siga','in-siga')">저장</button>
+                    <input type="number" class="relay-in" placeholder="숫자만 (예: 350000000)">
+                    <button onclick="saveRelay(this)">저장</button>
                   </div>
                   <div class="relay-desc">저장하면 2단계 은행에서 버튼 한 번에 복사할 수 있습니다.</div>
                 </div>
@@ -382,11 +382,11 @@ main{max-width:720px;margin:0 auto;padding:24px 14px 110px;position:relative}
                 <span class="tip-badge cash">현금(이체)만 가능</span>
 
                 <!-- 릴레이: 채권발행번호 -->
-                <div class="relay-input" id="relay-bond-box">
+                <div class="relay-input" data-relay="bond">
                   <label>③ 채권발행번호 기록 (선택)</label>
                   <div class="relay-row">
-                    <input type="text" id="in-bond" placeholder="영수증의 채권발행번호">
-                    <button onclick="saveRelay('bond','in-bond')">저장</button>
+                    <input type="text" class="relay-in" placeholder="영수증의 채권발행번호">
+                    <button onclick="saveRelay(this)">저장</button>
                   </div>
                   <div class="relay-desc">3단계 신청서 채권란에 옮겨 적습니다.</div>
                 </div>
@@ -487,11 +487,11 @@ main{max-width:720px;margin:0 auto;padding:24px 14px 110px;position:relative}
                 <label for="chk3_1">등기신청수수료 납부 (15,000원)</label>
                 <div class="action-desc">등기소 내 무인발급기나 은행 창구에서 서면방문용 수수료(1.5만원) 납부 후 영수증을 챙기세요.</div>
                 <!-- 릴레이: 수수료 납부번호 -->
-                <div class="relay-input" id="relay-fee-box">
+                <div class="relay-input" data-relay="fee">
                   <label>④ 수수료 납부번호 기록 (선택)</label>
                   <div class="relay-row">
-                    <input type="text" id="in-fee" placeholder="영수증의 납부번호">
-                    <button onclick="saveRelay('fee','in-fee')">저장</button>
+                    <input type="text" class="relay-in" placeholder="영수증의 납부번호">
+                    <button onclick="saveRelay(this)">저장</button>
                   </div>
                   <div class="relay-desc">위 집계와 신청서 미리보기에 바로 반영됩니다.</div>
                 </div>
@@ -796,24 +796,33 @@ function calcStamp(){
    ========================================================= */
 const RELAY = { siga:'', tax:'', bond:'', fee:'' };
 const RELAY_META = {
-  siga:{ box:'relay-siga-box', chk:'chk1_3', item:'item1_3', hub:'hub-siga', fp:'fp-siga', label:'시가표준액', fmt:true },
-  tax :{ box:'relay-tax-box',  chk:'chk1_2', item:'item1_2', hub:'hub-tax',  fp:'fp-tax',  label:'취득세액',  fmt:true },
-  bond:{ box:'relay-bond-box', chk:'chk2_1', item:'item2_1', hub:'hub-bond', fp:'fp-bond', label:'채권발행번호', fmt:false },
-  fee :{ box:'relay-fee-box',  chk:'chk3_1', item:'item3_1', hub:'hub-fee',  fp:'fp-fee',  label:'납부번호',   fmt:false },
+  siga:{ hub:'hub-siga', fp:'fp-siga', label:'시가표준액', fmt:true },
+  tax :{ hub:'hub-tax',  fp:'fp-tax',  label:'취득세액',  fmt:true },
+  bond:{ hub:'hub-bond', fp:'fp-bond', label:'채권발행번호', fmt:false },
+  fee :{ hub:'hub-fee',  fp:'fp-fee',  label:'납부번호',   fmt:false },
 };
+// 같은 data-relay 박스를 모두 찾는다(트랙별 중복 대비). 화면에 보이는 것 우선.
+function relayBoxes(key){ return [...document.querySelectorAll(`.relay-input[data-relay="${key}"]`)]; }
+function visibleRelayBox(key){ const a=relayBoxes(key); return a.find(b=>b.offsetParent!==null) || a[0] || null; }
 
 function fmtNum(v){ const n=Number(String(v).replace(/[^\d]/g,'')); return isNaN(n)?v:n.toLocaleString('ko-KR'); }
 
-function saveRelay(key, inputId){
-  const v = document.getElementById(inputId).value.trim();
+function saveRelay(btn){
+  const box = btn.closest('.relay-input[data-relay]');
+  if(!box) return;
+  const key = box.dataset.relay;
+  const input = box.querySelector('.relay-in');
+  const v = (input ? input.value : '').trim();
   if(!v){ showToast('값을 입력해 주세요.'); return; }
   RELAY[key] = v;
   persistRelay();
   renderRelay(key);
-  const m = RELAY_META[key];
-  // 해당 액션 체크 + 진행률
-  const chk = document.getElementById(m.chk);
-  if(chk && !chk.checked){ chk.checked = true; updateProgress(m.item); }
+  // 이 릴레이가 들어있는 작업 아이템을 체크 + 진행률 (트랙 무관, DOM에서 도출)
+  const item = box.closest('.action-item');
+  if(item){
+    const chk = item.querySelector('input[type=checkbox]');
+    if(chk && !chk.checked){ chk.checked = true; updateProgress(item.id); }
+  }
   showToast('저장 완료! 3단계 신청서 집계에 반영됩니다.');
 }
 
@@ -821,9 +830,13 @@ function renderRelay(key){
   const m = RELAY_META[key];
   const val = RELAY[key];
   const shown = m.fmt ? fmtNum(val)+'원' : val;
-  // 입력박스 saved 표시
-  const box = document.getElementById(m.box); if(box) box.classList.add('saved');
-  // 허브 집계
+  // 모든 트랙의 동일 릴레이 박스: saved 표시 + 입력값 채우기
+  relayBoxes(key).forEach(box=>{
+    box.classList.add('saved');
+    const inp = box.querySelector('.relay-in');
+    if(inp && !inp.value) inp.value = val;
+  });
+  // 허브 집계 (공통, step3)
   const hub = document.getElementById(m.hub);
   const hubV = document.getElementById(m.hub+'-v');
   const hubC = document.getElementById(m.hub+'-c');
@@ -850,9 +863,9 @@ function copyRelay(key){
   const val = RELAY[key];
   if(!val){
     showToast('먼저 해당 단계에서 값을 저장해 주세요.');
-    // 입력 위치로 스크롤
-    const m = RELAY_META[key];
-    const step = document.getElementById(m.item).closest('.step');
+    // 입력 위치로 스크롤 (보이는 트랙의 박스)
+    const box = visibleRelayBox(key);
+    const step = box && box.closest('.step');
     if(step){ if(!step.classList.contains('active')) step.classList.add('active'); step.scrollIntoView({behavior:'smooth',block:'center'}); }
     return;
   }
@@ -865,10 +878,12 @@ function restoreRelay(){
   Object.keys(RELAY).forEach(k=>{
     if(data[k]){
       RELAY[k]=data[k];
-      const inp=document.getElementById('in-'+k); if(inp) inp.value=data[k];
-      renderRelay(k);
-      const m=RELAY_META[k]; const chk=document.getElementById(m.chk);
-      if(chk && !chk.checked){ chk.checked=true; document.getElementById(m.item).classList.add('checked'); }
+      renderRelay(k); // 입력값·허브·미리보기 모두 복원
+      // 동일 릴레이가 든 작업 아이템 체크 표시
+      relayBoxes(k).forEach(box=>{
+        const item=box.closest('.action-item');
+        if(item){ const chk=item.querySelector('input[type=checkbox]'); if(chk && !chk.checked){ chk.checked=true; item.classList.add('checked'); } }
+      });
     }
   });
   recountProgress();
