@@ -403,8 +403,10 @@ main{max-width:720px;margin:0 auto;padding:24px 14px 110px;position:relative}
             <div class="action-item" id="itemO_4">
               <input type="checkbox" id="chkO_4" onchange="updateProgress('itemO_4')">
               <div class="action-text">
-                <label for="chkO_4">등기신청수수료 납부 (인터넷등기소 · 15,000원)</label>
-                <div class="action-desc"><a href="https://www.iros.go.kr" target="_blank" rel="noopener" style="color:var(--blue);font-weight:700;text-decoration:underline">iros.go.kr</a> → 전자납부 → 부동산 등기신청수수료 → 15,000원(서면방문 제출용) 결제. 출력된 <strong>영수필확인서</strong>를 등기소 제출 서류에 함께 첨부하세요. 납부번호를 저장하면 신청서 집계에 반영됩니다.
+                <label for="chkO_4">등기신청수수료 납부 (인터넷등기소 · 13,000원)</label>
+                <div class="action-desc"><a href="https://www.iros.go.kr" target="_blank" rel="noopener" style="color:var(--blue);font-weight:700;text-decoration:underline">iros.go.kr</a> → 전자납부 → 부동산 등기수수료 → e-Form(전자양식) 선택 시 13,000원. 납부번호를 저장하세요.
+                  <br><span style="font-size:10.5px;color:var(--muted)">※ 서면 방문 제출은 15,000원, e-Form 활용 시 2,000원 할인</span>
+                </div>
                 <div class="relay-input" data-relay="fee" style="margin-top:10px">
                   <label>④ 수수료 납부번호 기록 (선택)</label>
                   <div class="relay-row">
@@ -440,7 +442,9 @@ main{max-width:720px;margin:0 auto;padding:24px 14px 110px;position:relative}
               <div class="action-text">
                 <label for="chk1_1">취득세 신고서 작성 및 제출</label>
                 <div class="action-desc">구청 세무과에 비치된 '취득세 신고서'를 작성하고 매매계약서 사본 등과 함께 창구에 제출하세요.</div>
-                <div class="btn-row"><button class="btn-preview" onclick="openGuide('tax')">🔍 신고서 작성 가이드</button></div>
+                <div class="btn-row">
+                  <button class="btn-preview" onclick="openGuide('paper')">🔍 서면 신고서 작성 가이드</button>
+                </div>
               </div>
             </div>
             <div class="action-item" id="item1_2">
@@ -1107,15 +1111,15 @@ const GUIDES = {
   'stamp':[
     {text:"1. 날인 위치 확인", img:"normal_case1(위임장).JPG", desc:"빨간 박스 위치(매도인·매수인 각 칸)에 인감 도장을 선명하게 찍으세요. 도장이 깨지거나 인감증명서 도장과 다르면 반려될 수 있습니다."}
   ],
+  'paper':[
+    {text:"1. 신고인 작성 (취득자·전 소유자·매도자와의 관계)", img:"paper_1.png", desc:"빨간 박스 영역을 작성합니다. ① 취득자(신고자): 매수인 이름·주민등록번호·주소·전화번호를 적습니다. ② 전 소유자: 매도인 이름·주민등록번호·주소를 적습니다. ③ 매도자와의 관계: 해당하는 항목에 체크합니다. 일반 매매는 맨 아래 '특수관계인이 아닌 경우'에 체크하세요."},
+    {text:"2. 취득물건 내역 작성", img:"paper_2.jpg", desc:"빨간 박스 영역을 작성합니다. 소재지에 아파트(부동산) 전체 주소를 적고, 취득물건은 '부동산(아파트)', 취득일은 잔금지급일 또는 등기일 중 빠른 날, 면적은 전용면적, 종류·용도는 '주거용', 취득원인은 '매매', 취득가액은 실제 매매가격을 적습니다."},
+    {text:"3. 신고세액 확인 (구청이 계산해 줍니다)", img:"paper_3.jpg", desc:"빨간 박스의 신고세액 부분은 구청 담당자가 직접 계산해서 채워주는 경우가 많습니다. 미리 계산한 취득세액을 참고로 적어도 되고, 창구 제출 후 담당자 확인을 받으면 됩니다. 납부고지서를 받은 뒤 취득세액·시가표준액을 로드맵에 저장해두세요."},
+    {text:"4. 신고일 기재 및 첨부서류 확인", img:"paper_4.jpg", desc:"빨간 박스 영역입니다. 신고일(년·월·일)과 신고인(매수인 이름)을 기재하고 서명 또는 인감도장을 찍습니다. 첨부서류(매매계약서 사본 등)를 함께 제출하세요. 대리인이 신고할 경우 위임장(하단)도 함께 작성합니다."}
+  ],
   'tax':[
-    {text:"1. 위택스 로그인", img:"wetax_1.jpg", desc:"위택스(wetax.go.kr)에 접속해 우측 상단 '로그인'을 누릅니다. 공동인증서 또는 간편인증으로 로그인하세요. 관할 자치단체가 서울이면 서울 이택스(etax.seoul.go.kr)에서 신고합니다."},
-    {text:"2. 취득세 신고 메뉴 진입", img:"wetax_2.jpg", desc:"상단 메뉴에서 '신고 → 취득세 → 취득세 신고'를 차례로 클릭합니다."},
-    {text:"3. 신고인·납세자 입력", img:"tax_3.svg", desc:"신고인 정보는 로그인 정보로 자동 입력됩니다. 납세자가 본인이면 '신고인과 동일'에 체크하면 그대로 채워집니다. 주소만 '주소검색'으로 입력하세요. (재현 이미지)"},
-    {text:"4. 신고유형 선택", img:"tax_4.svg", desc:"물건종류 '부동산' → 물건상세종류 '건물'(또는 '토지(농지외)') → 취득원인 '유상취득'을 차례로 선택합니다. 매매는 유상취득에 해당합니다. (재현 이미지)"},
-    {text:"5. 신고내용 (거래정보 조회)", img:"tax_5.svg", desc:"'부동산 거래정보 조회'를 누르면 매매 거래내역이 불러와집니다. 물건내용·매도/매수인·취득정보(계약일·취득일·취득가액)가 자동으로 채워져, 매매계약서를 따로 제출하지 않아도 됩니다. 매수인이 여럿이면 지분을 확인하세요. (재현 이미지)"},
-    {text:"6. 산출세액 확인", img:"tax_6.svg", desc:"입력한 내용으로 계산된 취득세·지방교육세·농어촌특별세가 표시됩니다. 금액을 확인하고 '다음'을 누릅니다. 감면 대상이 아니면 감면신청 단계는 건너뜁니다. (재현 이미지)"},
-    {text:"7. 신고서 제출", img:"tax_7.svg", desc:"신고인·취득물건·세액을 최종 확인한 뒤 '제출'을 누릅니다. 직전 구비서류 등록 단계에서 매매계약서 등 필요한 서류를 첨부합니다. (재현 이미지)"},
-    {text:"8. 납부 및 납부서 출력", img:"tax_8.svg", desc:"'납부서출력'으로 납부확인서를 출력하고 '즉시납부'로 취득세를 냅니다. 출력한 납부확인서는 등기소 제출 서류에 첨부하세요. 화면의 취득세액과 시가표준액은 로드맵 ①②칸에 입력해 두면 신청서 집계에 자동 반영됩니다. (재현 이미지)"}
+    {text:"1. 취득세 신고서 상단", img:"https://placehold.co/400x250/eef3ff/2a5f9e?text=Tax+Form+Top", desc:"신고인 난에 본인(매수인) 인적사항, 전소유자 난에 매도인 정보를 적습니다."},
+    {text:"2. 취득물건 및 과세표준", img:"https://placehold.co/400x250/eef3ff/2a5f9e?text=Tax+Form+Middle", desc:"소재지에 아파트 전체 주소, 취득일은 '잔금지급일', 과세표준액은 실제 '매매대금'을 적습니다."}
   ],
   'bond':[
     {text:"1. 채권 매입요청서 작성", img:"https://placehold.co/400x300/eef3ff/2a5f9e?text=Bond+Form", desc:"은행 비치 '국민주택채권 매입요청서'에 매입자명·매입금액을 적습니다. 매입액은 시가표준액 기준으로 계산됩니다."},
@@ -1130,7 +1134,7 @@ let _guideData=[], _guidePage=0;
 
 function openGuide(key){
   const data=GUIDES[key]; if(!data) return;
-  const titles={preinput:'매수자 사전입력 등록 방법',stamp:'도장 날인 가이드',tax:'취득세 신고서 가이드',bond:'국민주택채권 매입 가이드',app:'신청서 종합 작성법'};
+  const titles={preinput:'매수자 사전입력 등록 방법',stamp:'도장 날인 가이드',paper:'취득세 신고서 작성 가이드 (서면)',tax:'취득세 신고서 가이드 (위택스)',bond:'국민주택채권 매입 가이드',app:'신청서 종합 작성법'};
   document.getElementById('modalTitle').textContent = titles[key]||'작성 가이드';
 
   _guideData = data;
