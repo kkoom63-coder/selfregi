@@ -560,8 +560,8 @@ main{max-width:720px;margin:0 auto;padding:24px 14px 110px;position:relative}
 
           <!-- 서울·경기 외 지역 / 분할 관할 보조 안내 (경고를 먼저 보여줌) -->
           <div class="pdf-helper" id="pdf-helper" style="display:none;margin-top:0;margin-bottom:12px">
-            <div class="pdf-helper-t">📄 이 지역은 자동 안내가 아직 준비중이에요</div>
-            <div class="pdf-helper-d">현재 서울·경기·부산·광주 지역만 등기소를 자동으로 찾아드리고 있습니다. 아래 전국 등기소 정보(법원 제공, 2025.11 기준)에서 주소의 '관할구역' 항목을 직접 확인해 주세요.</div>
+            <div class="pdf-helper-t">📄 이 지역은 PDF에서 직접 확인해 주세요</div>
+            <div class="pdf-helper-d">현재 서울·부산·대구·인천·광주·대전·울산·세종·강원·제주·경기 지역 등기소를 자동으로 찾아드리고 있습니다. 이외 지역은 아래 전국 등기소 정보(법원 제공, 2025.11 기준)에서 주소의 '관할구역' 항목을 직접 확인해 주세요.</div>
             <a class="pdf-helper-btn" href="전국등기소정보.pdf" target="_blank" rel="noopener" download>
               ⬇ 전국 등기소 정보 PDF 다운로드
             </a>
@@ -760,6 +760,77 @@ const BUSAN_COURT = {
 };
 // 광주광역시 전역 단일
 const GWANGJU_COURT_ALL = {n:'광주지방법원 등기국',a:'광주 서구 시청로 106'};
+
+// 대구광역시 (PDF 2025.11 기준)
+const DAEGU_COURT = {
+  // 본원 등기국 (대구 동구 동부로212 화폐동382-4)
+  '동구' :{n:'대구지방법원 등기국',a:'대구 동구 동부로 212'},
+  '중구' :{n:'대구지방법원 등기국',a:'대구 동구 동부로 212'},
+  '남구' :{n:'대구지방법원 등기국',a:'대구 동구 동부로 212'},
+  '북구' :{n:'대구지방법원 등기국',a:'대구 동구 동부로 212'},
+  '수성구':{n:'대구지방법원 등기국',a:'대구 동구 동부로 212'},
+  // 서부지원 등기과 (대구 달서구 장산남로30 용산동230)
+  '서구' :{n:'대구지방법원 서부지원 등기과',a:'대구 달서구 장산남로 30'},
+  '달서구':{n:'대구지방법원 서부지원 등기과',a:'대구 달서구 장산남로 30'},
+  '달성군':{n:'대구지방법원 서부지원 등기과',a:'대구 달서구 장산남로 30'},
+};
+
+// 인천광역시 (PDF 2025.11 기준) — 본원 등기국 단일 (강화는 별도 경기지역 처리)
+const INCHEON_COURT = {
+  '중구'  :{n:'인천지방법원 등기국',a:'인천 미추홀구 경원대로 881'},
+  '동구'  :{n:'인천지방법원 등기국',a:'인천 미추홀구 경원대로 881'},
+  '미추홀구':{n:'인천지방법원 등기국',a:'인천 미추홀구 경원대로 881'},
+  '연수구':{n:'인천지방법원 등기국',a:'인천 미추홀구 경원대로 881'},
+  '남동구':{n:'인천지방법원 등기국',a:'인천 미추홀구 경원대로 881'},
+  '부평구':{n:'인천지방법원 등기국',a:'인천 미추홀구 경원대로 881'},
+  '계양구':{n:'인천지방법원 등기국',a:'인천 미추홀구 경원대로 881'},
+  '서구'  :{n:'인천지방법원 등기국',a:'인천 미추홀구 경원대로 881'},
+  '옹진군':{n:'인천지방법원 등기국',a:'인천 미추홀구 경원대로 881'},
+  // 부천지원 관할 (경기 김포·부천)은 GG_COURT에서 처리 — 강화군은 GG_COURT 강화등기소
+};
+
+// 대전광역시 (전국등기소정보 PDF 2025.11 기준) — 본원 등기국 단일
+const DAEJEON_COURT = {
+  '동구' :{n:'대전지방법원 등기국',a:'대전 유성구 은하수로 649'},
+  '서구' :{n:'대전지방법원 등기국',a:'대전 유성구 은하수로 649'},
+  '중구' :{n:'대전지방법원 등기국',a:'대전 유성구 은하수로 649'},
+  '대덕구':{n:'대전지방법원 등기국',a:'대전 유성구 은하수로 649'},
+  '유성구':{n:'대전지방법원 등기국',a:'대전 유성구 은하수로 649'},
+};
+
+// 울산광역시 (전국등기소정보 PDF 2025.11 기준) — 본원 등기과 단일
+const ULSAN_COURT_ALL = {n:'울산지방법원 등기과',a:'울산 남구 법대로 55'};
+
+// 세종특별자치시 (전국등기소정보 PDF 2025.11 기준) — 세종등기소 단일
+const SEJONG_COURT_ALL = {n:'대전지방법원 세종등기소',a:'세종 조치원읍 새내16길 8'};
+
+// 강원특별자치도 (전국등기소정보 PDF 2025.11 기준)
+const GANGWON_COURT = {
+  '춘천시':{n:'춘천지방법원 등기과',a:'강원 춘천시 공지로 284'},
+  '강릉시':{n:'춘천지방법원 강릉지원 등기과',a:'강원 강릉시 동해대로 3288-18'},
+  '고성군':{n:'춘천지방법원 강릉지원 고성등기소',a:'강원 고성군 간성읍 간성로 84'},
+  '동해시':{n:'춘천지방법원 동해등기소',a:'강원 동해시 해안로 217'},
+  '삼척시':{n:'춘천지방법원 삼척등기소',a:'강원 삼척시 청석로3길 16-17'},
+  '양구군':{n:'춘천지방법원 양구등기소',a:'강원 양구군 양구읍 관공서로 30'},
+  '양양군':{n:'춘천지방법원 양양등기소',a:'강원 양양군 양양읍 양양로 93'},
+  '인제군':{n:'춘천지방법원 인제등기소',a:'강원 인제군 인제읍 인제로187번길 14'},
+  '정선군':{n:'춘천지방법원 정선등기소',a:'강원 정선군 정선읍 봉양7길 7'},
+  '태백시':{n:'춘천지방법원 태백등기소',a:'강원 태백시 문화로1길 25'},
+  '평창군':{n:'춘천지방법원 평창등기소',a:'강원 평창군 평창읍 백오로 153'},
+  '홍천군':{n:'춘천지방법원 홍천등기소',a:'강원 홍천군 홍천읍 홍천로5길 8'},
+  '화천군':{n:'춘천지방법원 화천등기소',a:'강원 화천군 화천읍 화상로 102'},
+  '횡성군':{n:'춘천지방법원 횡성등기소',a:'강원 횡성군 횡성읍 읍상로 36'},
+  '속초시':{n:'춘천지방법원 속초지원 등기계',a:'강원 속초시 법대로 15'},
+  '영월군':{n:'춘천지방법원 영월지원 등기계',a:'강원 영월군 영월읍 영월향교1길 53'},
+  '원주시':{n:'춘천지방법원 원주지원 등기과',a:'강원 원주시 시청로 149'},
+};
+
+// 제주특별자치도 (전국등기소정보 PDF 2025.11 기준)
+const JEJU_COURT = {
+  '제주시'  :{n:'제주지방법원 등기과',a:'제주 제주시 남령북5길 9'},
+  '서귀포시':{n:'제주지방법원 서귀포등기소',a:'제주 서귀포시 일주동로 8690'},
+};
+
 // 분할 케이스
 const SEONGNAM_BUNDANG = {n:'수원지방법원 성남지원 분당등기소',a:'경기 성남시 분당구 불정로406번길 21'};
 const SEONGNAM_ETC     = {n:'수원지방법원 성남지원 등기과',a:'경기 성남시 수정구 산성대로 451'};
@@ -796,8 +867,37 @@ function findCourt(addr){
     const gun = p.find(x=>x.endsWith('군'));
     return BUSAN_COURT[gu || gun] || null;
   }
+  if(addr.startsWith('대구')){
+    const gu  = p.find(x=>x.endsWith('구'));
+    const gun = p.find(x=>x.endsWith('군'));
+    return DAEGU_COURT[gu || gun] || null;
+  }
+  if(addr.startsWith('인천')){
+    const gu  = p.find(x=>x.endsWith('구'));
+    const gun = p.find(x=>x.endsWith('군'));
+    return INCHEON_COURT[gu || gun] || null;
+  }
   if(addr.startsWith('광주')){
-    return GWANGJU_COURT_ALL; // 광주 5개구 전역 단일 등기국
+    return GWANGJU_COURT_ALL; // 광주광역시 5개구 전역 단일 등기국
+  }
+  if(addr.startsWith('대전')){
+    const gu = p.find(x=>x.endsWith('구'));
+    return DAEJEON_COURT[gu] || null;
+  }
+  if(addr.startsWith('울산')){
+    return ULSAN_COURT_ALL; // 울산광역시 전역 단일 등기과
+  }
+  if(addr.startsWith('세종')){
+    return SEJONG_COURT_ALL; // 세종특별자치시 전역 단일
+  }
+  if(addr.startsWith('강원')){
+    const si  = p.find(x=>x.endsWith('시'));
+    const gun = p.find(x=>x.endsWith('군'));
+    return GANGWON_COURT[si || gun] || null;
+  }
+  if(addr.startsWith('제주')){
+    const si = p.find(x=>x.endsWith('시'));
+    return JEJU_COURT[si] || null;
   }
   if(addr.startsWith('경기')){
     const si = p.find(x=>x.endsWith('시'));
@@ -807,7 +907,7 @@ function findCourt(addr){
     if(key==='평택시') return PYEONGTAEK;
     return GG_COURT[key] || null;
   }
-  return null; // 서울·경기 외 → 폴백
+  return null; // 미지원 지역 → PDF 폴백
 }
 
 const naverSearch = q => 'https://map.naver.com/v5/search/' + encodeURIComponent(q);
