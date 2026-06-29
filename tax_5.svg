@@ -1,0 +1,152 @@
+<svg viewBox="0 0 780 642" xmlns="http://www.w3.org/2000/svg" font-family="'Malgun Gothic','Noto Sans KR',sans-serif">
+  <defs>
+    <linearGradient id="btnBlue" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3d83dd"/><stop offset="1" stop-color="#2a6fc9"/>
+    </linearGradient>
+  </defs>
+
+  <!-- 바깥 카드 -->
+  <rect x="2" y="2" width="776" height="638" rx="4" fill="#ffffff" stroke="#cfd5df" stroke-width="1.5"/>
+
+  <!-- 타이틀 -->
+  <text x="390" y="30" text-anchor="middle" font-size="17" font-weight="700" fill="#1d5fb0">취득세(부동산 유상취득)</text>
+  <text x="762" y="50" text-anchor="end" font-size="9" fill="#e0392b">※ ★ : 필수 입력 항목 입니다.</text>
+
+  <!-- ===== 좌측 신고대상 스텝퍼 ===== -->
+  <text x="22" y="56" font-size="12" font-weight="700" fill="#2c3550">신고대상</text>
+  <rect x="18" y="66" width="150" height="356" rx="3" fill="#ffffff" stroke="#dfe3ea"/>
+  <!-- 스텝 8개 -->
+  <g font-size="9.5" fill="#555">
+    <!-- 1 -->
+    <circle cx="40" cy="92" r="9" fill="#2c3550"/><text x="40" y="95.5" text-anchor="middle" font-size="9" font-weight="700" fill="#fff">1</text>
+    <text x="56" y="95.5">신고인</text>
+    <!-- 2 -->
+    <circle cx="40" cy="126" r="9" fill="#2c3550"/><text x="40" y="129.5" text-anchor="middle" font-size="9" font-weight="700" fill="#fff">2</text>
+    <text x="56" y="129.5">신고유형</text>
+    <!-- 3 active -->
+    <circle cx="40" cy="160" r="9" fill="#1d6fd0"/><text x="40" y="163.5" text-anchor="middle" font-size="9" font-weight="700" fill="#fff">3</text>
+    <text x="56" y="163.5" font-weight="700" fill="#1d6fd0">신고내용</text>
+    <text x="150" y="164" font-size="11" fill="#1d6fd0">&#9654;</text>
+    <!-- 4 -->
+    <circle cx="40" cy="194" r="9" fill="#2c3550"/><text x="40" y="197.5" text-anchor="middle" font-size="9" font-weight="700" fill="#fff">4</text>
+    <text x="56" y="197.5">감면신청</text>
+    <!-- 5 -->
+    <circle cx="40" cy="228" r="9" fill="#2c3550"/><text x="40" y="231.5" text-anchor="middle" font-size="9" font-weight="700" fill="#fff">5</text>
+    <text x="56" y="231.5">산출세액확인</text>
+    <!-- 6 -->
+    <circle cx="40" cy="262" r="9" fill="#2c3550"/><text x="40" y="265.5" text-anchor="middle" font-size="9" font-weight="700" fill="#fff">6</text>
+    <text x="56" y="265.5">구비서류등록</text>
+    <!-- 7 -->
+    <circle cx="40" cy="296" r="9" fill="#2c3550"/><text x="40" y="299.5" text-anchor="middle" font-size="9" font-weight="700" fill="#fff">7</text>
+    <text x="56" y="299.5">신고서제출</text>
+    <!-- 8 -->
+    <circle cx="40" cy="330" r="9" fill="#2c3550"/><text x="40" y="333.5" text-anchor="middle" font-size="9" font-weight="700" fill="#fff">8</text>
+    <text x="56" y="333.5">납부</text>
+  </g>
+
+  <!-- ===== 메인 영역 ===== -->
+  <!-- 납세자 -->
+  <text x="190" y="84" font-size="9.5" font-weight="700" fill="#444">납세자</text>
+  <text x="240" y="84" font-size="9.5" fill="#444">:</text>
+  <text x="258" y="85" font-size="11" fill="#333" letter-spacing="1">&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;</text>
+
+  <!-- 물건내용 헤더 -->
+  <rect x="185" y="96" width="577" height="24" fill="#3a4664"/>
+  <text x="196" y="112" font-size="11" font-weight="700" fill="#fff">물건내용</text>
+
+  <!-- 취득물건유형 + 거래정보조회 버튼 -->
+  <text x="196" y="140" font-size="10" font-weight="700" fill="#333">취득물건유형</text>
+  <!-- ★ 핵심 버튼 -->
+  <rect x="650" y="128" width="108" height="20" rx="2" fill="url(#btnBlue)"/>
+  <text x="704" y="141.5" text-anchor="middle" font-size="9" font-weight="700" fill="#fff">부동산 거래정보 조회</text>
+
+  <!-- 취득물건유형 표 -->
+  <rect x="196" y="150" width="566" height="22" fill="#f5f6f9" stroke="#e2e5ec"/>
+  <line x1="295" y1="150" x2="295" y2="172" stroke="#e2e5ec"/>
+  <line x1="480" y1="150" x2="480" y2="172" stroke="#e2e5ec"/>
+  <line x1="575" y1="150" x2="575" y2="172" stroke="#e2e5ec"/>
+  <text x="210" y="165" font-size="9" font-weight="700" fill="#555">취득물건</text>
+  <text x="310" y="165" font-size="9" fill="#333">부동산</text>
+  <text x="490" y="165" font-size="9" font-weight="700" fill="#555">취득원인</text>
+  <text x="590" y="165" font-size="9" fill="#333">유상취득</text>
+
+  <!-- 취득물건상세 -->
+  <text x="196" y="190" font-size="10" font-weight="700" fill="#333">취득물건상세</text>
+  <rect x="196" y="198" width="120" height="18" fill="#f5f6f9" stroke="#e2e5ec"/>
+  <text x="206" y="211" font-size="8.5" font-weight="700" fill="#555">물건소재지</text>
+  <!-- 표 헤더 -->
+  <rect x="196" y="216" width="566" height="18" fill="#f5f6f9" stroke="#e2e5ec"/>
+  <g font-size="8.5" font-weight="700" fill="#555" text-anchor="middle">
+    <text x="240" y="228">구분</text><text x="350" y="228">면적</text><text x="470" y="228">종류</text><text x="560" y="228">용도</text><text x="690" y="228">물건금액</text>
+  </g>
+  <line x1="288" y1="216" x2="288" y2="270" stroke="#e2e5ec"/>
+  <line x1="412" y1="216" x2="412" y2="270" stroke="#e2e5ec"/>
+  <line x1="528" y1="216" x2="528" y2="270" stroke="#e2e5ec"/>
+  <line x1="600" y1="216" x2="600" y2="270" stroke="#e2e5ec"/>
+  <rect x="196" y="234" width="566" height="36" fill="#ffffff" stroke="#e2e5ec"/>
+  <line x1="196" y1="252" x2="762" y2="252" stroke="#eef0f3"/>
+  <g font-size="8.5" fill="#444" text-anchor="middle">
+    <text x="240" y="246">건물</text><text x="350" y="246">84.59 m&#178;</text><text x="560" y="246">아파트</text><text x="748" y="246" text-anchor="end">1,100,000,000 원</text>
+    <text x="240" y="264">토지</text><text x="350" y="264">2.61 m&#178;</text><text x="748" y="264" text-anchor="end">0 원</text>
+  </g>
+
+  <!-- ===== 매도/매수인 ===== -->
+  <rect x="185" y="284" width="577" height="24" fill="#3a4664"/>
+  <text x="196" y="300" font-size="11" font-weight="700" fill="#fff">매도/매수인</text>
+
+  <text x="196" y="326" font-size="10" font-weight="700" fill="#333">매도인</text>
+  <rect x="196" y="332" width="566" height="18" fill="#f5f6f9" stroke="#e2e5ec"/>
+  <g font-size="8.5" font-weight="700" fill="#555" text-anchor="middle">
+    <text x="226" y="344">순번</text><text x="300" y="344">성명</text><text x="420" y="344">주민등록번호</text><text x="600" y="344">주소</text>
+  </g>
+  <rect x="196" y="350" width="566" height="20" fill="#fff" stroke="#e2e5ec"/>
+  <line x1="256" y1="332" x2="256" y2="370" stroke="#e2e5ec"/>
+  <line x1="350" y1="332" x2="350" y2="370" stroke="#e2e5ec"/>
+  <line x1="500" y1="332" x2="500" y2="370" stroke="#e2e5ec"/>
+  <text x="226" y="363" font-size="8.5" fill="#444" text-anchor="middle">1</text>
+  <text x="420" y="364" font-size="10" fill="#333" text-anchor="middle" letter-spacing="1">&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;</text>
+
+  <text x="196" y="390" font-size="10" font-weight="700" fill="#333">매수인</text>
+  <rect x="196" y="396" width="566" height="18" fill="#f5f6f9" stroke="#e2e5ec"/>
+  <g font-size="8.5" font-weight="700" fill="#555" text-anchor="middle">
+    <text x="222" y="408">순번</text><text x="280" y="408">성명</text><text x="370" y="408">주민등록번호</text><text x="500" y="408">주소</text><text x="640" y="408">매도자와의 관계</text><text x="725" y="408">지분</text>
+  </g>
+  <text x="681" y="406" font-size="7" fill="#e0392b">★</text>
+  <rect x="196" y="414" width="566" height="40" fill="#fff" stroke="#e2e5ec"/>
+  <line x1="196" y1="434" x2="762" y2="434" stroke="#eef0f3"/>
+  <line x1="248" y1="396" x2="248" y2="454" stroke="#e2e5ec"/>
+  <line x1="322" y1="396" x2="322" y2="454" stroke="#e2e5ec"/>
+  <line x1="430" y1="396" x2="430" y2="454" stroke="#e2e5ec"/>
+  <line x1="582" y1="396" x2="582" y2="454" stroke="#e2e5ec"/>
+  <line x1="700" y1="396" x2="700" y2="454" stroke="#e2e5ec"/>
+  <g font-size="8.5" fill="#444" text-anchor="middle">
+    <text x="222" y="428">1</text><text x="376" y="429" font-size="10" letter-spacing="1">&#9679;&#9679;&#9679;&#9679;&#9679;</text>
+    <text x="222" y="448">2</text><text x="376" y="449" font-size="10" letter-spacing="1">&#9679;&#9679;&#9679;&#9679;&#9679;</text>
+  </g>
+  <!-- 관계 드롭다운 -->
+  <rect x="592" y="420" width="98" height="14" rx="2" fill="#fff" stroke="#ccd2dc"/><text x="600" y="430" font-size="8" fill="#888">선택</text><text x="683" y="430" font-size="7" fill="#888">&#9660;</text>
+  <rect x="592" y="440" width="98" height="14" rx="2" fill="#fff" stroke="#ccd2dc"/><text x="600" y="450" font-size="8" fill="#888">선택</text><text x="683" y="450" font-size="7" fill="#888">&#9660;</text>
+  <text x="730" y="428" font-size="8.5" fill="#444" text-anchor="middle">1/2</text>
+  <text x="730" y="448" font-size="8.5" fill="#444" text-anchor="middle">1/2</text>
+
+  <!-- ===== 취득정보 ===== -->
+  <rect x="185" y="468" width="577" height="24" fill="#3a4664"/>
+  <text x="196" y="484" font-size="11" font-weight="700" fill="#fff">취득정보</text>
+
+  <text x="210" y="514" font-size="9.5" font-weight="700" fill="#444">계약일자</text><text x="252" y="511" font-size="7" fill="#e0392b">★</text>
+  <rect x="270" y="504" width="110" height="16" rx="2" fill="#fff" stroke="#ccd2dc"/><text x="278" y="515" font-size="8.5" fill="#333">2023-04-01</text>
+  <text x="470" y="514" font-size="9.5" font-weight="700" fill="#444">취득일자</text><text x="512" y="511" font-size="7" fill="#e0392b">★</text>
+  <rect x="530" y="504" width="110" height="16" rx="2" fill="#fff" stroke="#ccd2dc"/><text x="538" y="515" font-size="8.5" fill="#333">2023-07-01</text>
+  <text x="210" y="540" font-size="9.5" font-weight="700" fill="#444">취득가액</text>
+  <text x="278" y="540" font-size="9" fill="#333">1,100,000,000 원</text>
+
+  <!-- ===== 하단 버튼 바 ===== -->
+  <rect x="2" y="600" width="776" height="40" fill="#eef0f4"/>
+  <rect x="16" y="610" width="64" height="22" rx="3" fill="#fff" stroke="#9aa3b4"/><text x="48" y="625" text-anchor="middle" font-size="9" fill="#445">임시저장</text>
+  <rect x="86" y="610" width="64" height="22" rx="3" fill="#fff" stroke="#9aa3b4"/><text x="118" y="625" text-anchor="middle" font-size="9" fill="#445">신고취소</text>
+  <rect x="676" y="610" width="86" height="22" rx="3" fill="url(#btnBlue)"/><text x="713" y="625" text-anchor="middle" font-size="9.5" font-weight="700" fill="#fff">다음 &#8594;</text>
+
+  <!-- ===== 빨간 강조: 거래정보 조회 ===== -->
+  <rect x="642" y="122" width="124" height="32" rx="3" fill="none" stroke="#e0392b" stroke-width="2" stroke-dasharray="5 3"/>
+  <circle cx="642" cy="122" r="11" fill="#e0392b"/><text x="642" y="126" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">1</text>
+</svg>
