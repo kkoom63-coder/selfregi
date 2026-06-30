@@ -1,0 +1,66 @@
+<svg viewBox="0 0 780 470" xmlns="http://www.w3.org/2000/svg" font-family="'Malgun Gothic','Noto Sans KR',sans-serif"><defs><linearGradient id="btnBlue" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3d83dd"/><stop offset="1" stop-color="#2a6fc9"/></linearGradient></defs><rect x="2" y="2" width="776" height="466" rx="4" fill="#ffffff" stroke="#cfd5df" stroke-width="1.5"/><text x="482" y="30" text-anchor="middle" font-size="16" font-weight="700" fill="#1d5fb0">취득세 신고(부동산 유상취득) - 주택명세서</text><text x="762" y="50" text-anchor="end" font-size="9" fill="#e0392b">※ &#9679; : 필수 입력 항목 입니다.</text>
+<text x="22" y="56" font-size="12" font-weight="700" fill="#2c3550">신고대상</text>
+<rect x="18" y="66" width="150" height="364" rx="3" fill="#ffffff" stroke="#dfe3ea"/>
+<circle cx="40" cy="92" r="9" fill="#b9c0cc"/>
+<path d="M36,92 l3,3 l5,-6" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="56" y="95.5" font-size="9.5" fill="#9aa3b2">신고인</text>
+<circle cx="40" cy="126" r="9" fill="#b9c0cc"/>
+<path d="M36,126 l3,3 l5,-6" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="56" y="129.5" font-size="9.5" fill="#9aa3b2">신고유형</text>
+<circle cx="40" cy="160" r="9" fill="#b9c0cc"/>
+<path d="M36,160 l3,3 l5,-6" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="56" y="163.5" font-size="9.5" fill="#9aa3b2">신고내용</text>
+<circle cx="40" cy="194" r="9" fill="#1d6fd0"/>
+<text x="40" y="197.5" text-anchor="middle" font-size="9" font-weight="700" fill="#fff">4</text>
+<text x="56" y="197.5" font-size="9.5" font-weight="700" fill="#1d6fd0">주택명세서</text>
+<text x="156" y="198" font-size="11" fill="#1d6fd0">&#9654;</text>
+<circle cx="40" cy="228" r="9" fill="#2c3550"/>
+<text x="40" y="231.5" text-anchor="middle" font-size="9" font-weight="700" fill="#fff">5</text>
+<text x="56" y="231.5" font-size="9.5" fill="#555">중과세확인</text>
+<circle cx="40" cy="262" r="9" fill="#2c3550"/>
+<text x="40" y="265.5" text-anchor="middle" font-size="9" font-weight="700" fill="#fff">6</text>
+<text x="56" y="265.5" font-size="9.5" fill="#555">감면신청</text>
+<circle cx="40" cy="296" r="9" fill="#2c3550"/>
+<text x="40" y="299.5" text-anchor="middle" font-size="9" font-weight="700" fill="#fff">7</text>
+<text x="56" y="299.5" font-size="9.5" fill="#555">산출세액확인</text>
+<circle cx="40" cy="330" r="9" fill="#2c3550"/>
+<text x="40" y="333.5" text-anchor="middle" font-size="9" font-weight="700" fill="#fff">8</text>
+<text x="56" y="333.5" font-size="9.5" fill="#555">구비서류등록</text>
+<circle cx="40" cy="364" r="9" fill="#2c3550"/>
+<text x="40" y="367.5" text-anchor="middle" font-size="9" font-weight="700" fill="#fff">9</text>
+<text x="56" y="367.5" font-size="9.5" fill="#555">신고서제출</text>
+<circle cx="40" cy="398" r="9" fill="#2c3550"/>
+<text x="40" y="401.5" text-anchor="middle" font-size="9" font-weight="700" fill="#fff">10</text>
+<text x="56" y="401.5" font-size="9.5" fill="#555">납부</text>
+<rect x="185" y="68" width="577" height="24" fill="#3a4664"/><text x="196" y="84" font-size="11" font-weight="700" fill="#fff">1세대 소유주택 현황</text>
+<text x="196" y="106" font-size="9.5" font-weight="700" fill="#333">소유주택수</text>
+<circle cx="275" cy="103" r="6" fill="#fff" stroke="#1d6fd0" stroke-width="1.5"/><circle cx="275" cy="103" r="3" fill="#1d6fd0"/>
+<text x="286" y="106" font-size="9" fill="#333">1주택</text>
+<circle cx="326" cy="103" r="6" fill="#fff" stroke="#9aa3b4" stroke-width="1.5"/>
+<text x="337" y="106" font-size="9" fill="#333">일시적 2주택</text>
+<circle cx="413" cy="103" r="6" fill="#fff" stroke="#9aa3b4" stroke-width="1.5"/>
+<text x="424" y="106" font-size="9" fill="#333">2주택</text>
+<circle cx="464" cy="103" r="6" fill="#fff" stroke="#9aa3b4" stroke-width="1.5"/>
+<text x="475" y="106" font-size="9" fill="#333">3주택</text>
+<circle cx="515" cy="103" r="6" fill="#fff" stroke="#9aa3b4" stroke-width="1.5"/>
+<text x="526" y="106" font-size="9" fill="#333">4주택이상</text>
+<rect x="658" y="94" width="104" height="20" rx="2" fill="url(#btnBlue)"/><text x="710.0" y="107.5" text-anchor="middle" font-size="8.5" font-weight="700" fill="#fff">소유주택 조회</text>
+<rect x="196" y="132" width="555" height="20" fill="#f5f6f9" stroke="#e2e5ec"/>
+<text x="225" y="145" text-anchor="middle" font-size="7.6" font-weight="700" fill="#555">유형</text>
+<text x="285" y="145" text-anchor="middle" font-size="7.6" font-weight="700" fill="#555">소유자명</text>
+<text x="370" y="145" text-anchor="middle" font-size="7.6" font-weight="700" fill="#555">소유자 주민번호</text>
+<text x="485" y="145" text-anchor="middle" font-size="7.6" font-weight="700" fill="#555">소재지 주소</text>
+<text x="575" y="145" text-anchor="middle" font-size="7.6" font-weight="700" fill="#555">취득일</text>
+<text x="630" y="145" text-anchor="middle" font-size="7.6" font-weight="700" fill="#555">산정포함</text>
+<text x="695" y="145" text-anchor="middle" font-size="7.6" font-weight="700" fill="#555">산정제외사유</text>
+<text x="745" y="145" text-anchor="middle" font-size="7.6" font-weight="700" fill="#555">삭제</text>
+<rect x="196" y="152" width="555" height="24" fill="#fff" stroke="#e2e5ec"/>
+<text x="462" y="167" text-anchor="middle" font-size="8.5" fill="#aaa">데이터가 없습니다</text>
+<rect x="658" y="184" width="104" height="20" rx="2" fill="url(#btnBlue)"/><text x="710.0" y="197.5" text-anchor="middle" font-size="9" font-weight="700" fill="#fff">+ 소유주택 추가</text>
+<rect x="196" y="212" width="555" height="67" rx="3" fill="#fff8ed" stroke="#f0dcb0"/>
+<text x="208" y="231" font-size="8.6" fill="#8a6420">[소유주택 조회]로 보유 주택을 불러오거나, 조회되지 않으면 직접 추가합니다.</text>
+<text x="208" y="248" font-size="8.6" fill="#8a6420">신규 취득 주택을 포함한 보유 주택 수에 맞게 '소유주택수'를 선택하세요(세율 결정).</text>
+<text x="208" y="265" font-size="8.6" fill="#8a6420">보유 주택의 등기권리증으로 소재지·취득일을 미리 확인해두면 빠릅니다.</text>
+<rect x="263" y="92" width="389" height="24" rx="3" fill="none" stroke="#e0392b" stroke-width="2" stroke-dasharray="5 3"/><circle cx="263" cy="92" r="11" fill="#e0392b"/><text x="263" y="96" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">2</text>
+<rect x="2" y="430" width="776" height="40" fill="#eef0f4"/><rect x="16" y="440" width="64" height="22" rx="3" fill="#fff" stroke="#9aa3b4"/><text x="48" y="455" text-anchor="middle" font-size="9" fill="#445">임시저장</text><rect x="86" y="440" width="64" height="22" rx="3" fill="#fff" stroke="#9aa3b4"/><text x="118" y="455" text-anchor="middle" font-size="9" fill="#445">신고취소</text><rect x="676" y="440" width="86" height="22" rx="3" fill="url(#btnBlue)"/><text x="719" y="455" text-anchor="middle" font-size="9.5" font-weight="700" fill="#fff">다음 &#8594;</text>
+<text x="482" y="420" text-anchor="middle" font-size="8.5" fill="#999">(이해를 돕기 위한 재현 이미지)</text></svg>

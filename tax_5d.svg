@@ -1,0 +1,34 @@
+<svg viewBox="0 0 720 470" xmlns="http://www.w3.org/2000/svg" font-family="'Malgun Gothic','Noto Sans KR',sans-serif"><defs><linearGradient id="btnBlue" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3d83dd"/><stop offset="1" stop-color="#2a6fc9"/></linearGradient></defs><rect x="0" y="0" width="720" height="470" fill="#e7e9ee"/><rect x="20" y="20" width="680" height="430" rx="6" fill="#fff" stroke="#cfd5df" stroke-width="1.5"/>
+<rect x="20" y="20" width="680" height="44" rx="6" fill="#2c3550"/><rect x="20" y="48" width="680" height="16" fill="#2c3550"/>
+<text x="42" y="48" font-size="14" font-weight="700" fill="#fff">감면사유 목록 조회</text>
+<line x1="674" y1="36" x2="686" y2="48" stroke="#cfd5df" stroke-width="1.8"/><line x1="686" y1="36" x2="674" y2="48" stroke="#cfd5df" stroke-width="1.8"/>
+<text x="42" y="96" font-size="11" font-weight="700" fill="#333">감면 및 비과세사유 목록</text>
+<rect x="42" y="112" width="636" height="40" rx="3" fill="#f5f6f9" stroke="#e6e9ee"/>
+<text x="120" y="136" text-anchor="end" font-size="9.5" font-weight="700" fill="#444">감면 및 비과세사유</text>
+<rect x="140" y="122" width="320" height="20" rx="2" fill="#fff" stroke="#ccd2dc"/><text x="150" y="136" font-size="9" fill="#333">생애최초</text>
+<rect x="470" y="122" width="56" height="20" rx="2" fill="url(#btnBlue)"/><text x="498" y="136" text-anchor="middle" font-size="9" font-weight="700" fill="#fff">검색</text>
+<text x="42" y="178" font-size="10" font-weight="700" fill="#333">검색 결과 <tspan fill="#1d6fd0">3건</tspan></text>
+<rect x="42" y="188" width="636" height="22" fill="#f5f6f9" stroke="#e2e5ec"/>
+<text x="75" y="202" text-anchor="middle" font-size="8.7" font-weight="700" fill="#555">선택</text>
+<text x="125" y="202" text-anchor="middle" font-size="8.7" font-weight="700" fill="#555">구분</text>
+<text x="330" y="202" text-anchor="middle" font-size="8.7" font-weight="700" fill="#555">적용사유</text>
+<text x="640" y="202" text-anchor="middle" font-size="8.7" font-weight="700" fill="#555">적용율</text>
+<rect x="42" y="210" width="636" height="30" fill="#fff" stroke="#e2e5ec"/>
+<circle cx="75" cy="225" r="6" fill="#fff" stroke="#9aa3b4" stroke-width="1.5"/>
+<text x="125" y="229" text-anchor="middle" font-size="8.5" fill="#333">감면</text>
+<text x="165" y="229" font-size="8" fill="#444">(취득세 100% 경기) 주거 취약 가족의 주택 생애최초 유상 취득(취득가액 4억원 이하)</text>
+<text x="640" y="229" text-anchor="middle" font-size="8.5" fill="#333">100%</text>
+<rect x="42" y="240" width="636" height="30" fill="#fff" stroke="#e2e5ec"/>
+<circle cx="75" cy="255" r="6" fill="#fff" stroke="#9aa3b4" stroke-width="1.5"/>
+<text x="125" y="259" text-anchor="middle" font-size="8.5" fill="#333">감면</text>
+<text x="165" y="259" font-size="8" fill="#444">(취득세 100%) 생애최초 주택 취득(취득당시가액 12억원 이하)_200만원 한도</text>
+<text x="640" y="259" text-anchor="middle" font-size="8.5" fill="#333">100%</text>
+<rect x="42" y="270" width="636" height="30" fill="#fff" stroke="#e2e5ec"/>
+<circle cx="75" cy="285" r="6" fill="#fff" stroke="#1d6fd0" stroke-width="1.5"/><circle cx="75" cy="285" r="3" fill="#1d6fd0"/>
+<text x="125" y="289" text-anchor="middle" font-size="8.5" fill="#333">감면</text>
+<text x="165" y="289" font-size="8" fill="#444">(취득세 100%) 생애최초 주택 취득(취득당시가액 3억원(수도권 6억원) 이하)_300만원…</text>
+<text x="640" y="289" text-anchor="middle" font-size="8.5" fill="#333">100%</text>
+<rect x="348" y="308" width="24" height="20" rx="2" fill="#2c3550"/><text x="360" y="322" text-anchor="middle" font-size="9" fill="#fff">1</text>
+<rect x="270" y="340" width="80" height="26" rx="3" fill="url(#btnBlue)"/><text x="310" y="357" text-anchor="middle" font-size="10" font-weight="700" fill="#fff">확인</text>
+<rect x="370" y="340" width="80" height="26" rx="3" fill="#fff" stroke="#9aa3b4"/><text x="410" y="357" text-anchor="middle" font-size="10" fill="#445">닫기</text>
+<text x="360" y="456" text-anchor="middle" font-size="8.5" fill="#999">(이해를 돕기 위한 재현 이미지)</text></svg>

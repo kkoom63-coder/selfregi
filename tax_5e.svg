@@ -1,0 +1,134 @@
+<svg viewBox="0 0 820 470" xmlns="http://www.w3.org/2000/svg" font-family="'Malgun Gothic','Noto Sans KR',sans-serif"><defs><linearGradient id="btnBlue" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3d83dd"/><stop offset="1" stop-color="#2a6fc9"/></linearGradient></defs><rect x="2" y="2" width="816" height="466" rx="4" fill="#ffffff" stroke="#cfd5df" stroke-width="1.5"/><text x="502" y="30" text-anchor="middle" font-size="16" font-weight="700" fill="#1d5fb0">취득세 신고(부동산 유상취득)</text><text x="802" y="50" text-anchor="end" font-size="9" fill="#e0392b">※ &#9679; : 필수 입력 항목 입니다.</text>
+<text x="22" y="56" font-size="12" font-weight="700" fill="#2c3550">신고대상</text>
+<rect x="18" y="66" width="150" height="364" rx="3" fill="#ffffff" stroke="#dfe3ea"/>
+<circle cx="40" cy="92" r="9" fill="#b9c0cc"/>
+<path d="M36,92 l3,3 l5,-6" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="56" y="95.5" font-size="9.5" fill="#9aa3b2">신고인</text>
+<circle cx="40" cy="126" r="9" fill="#b9c0cc"/>
+<path d="M36,126 l3,3 l5,-6" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="56" y="129.5" font-size="9.5" fill="#9aa3b2">신고유형</text>
+<circle cx="40" cy="160" r="9" fill="#b9c0cc"/>
+<path d="M36,160 l3,3 l5,-6" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="56" y="163.5" font-size="9.5" fill="#9aa3b2">신고내용</text>
+<circle cx="40" cy="194" r="9" fill="#b9c0cc"/>
+<path d="M36,194 l3,3 l5,-6" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="56" y="197.5" font-size="9.5" fill="#9aa3b2">주택명세서</text>
+<circle cx="40" cy="228" r="9" fill="#b9c0cc"/>
+<path d="M36,228 l3,3 l5,-6" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="56" y="231.5" font-size="9.5" fill="#9aa3b2">중과세확인</text>
+<circle cx="40" cy="262" r="9" fill="#b9c0cc"/>
+<path d="M36,262 l3,3 l5,-6" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="56" y="265.5" font-size="9.5" fill="#9aa3b2">감면신청</text>
+<circle cx="40" cy="296" r="9" fill="#1d6fd0"/>
+<text x="40" y="299.5" text-anchor="middle" font-size="9" font-weight="700" fill="#fff">7</text>
+<text x="56" y="299.5" font-size="9.5" font-weight="700" fill="#1d6fd0">산출세액확인</text>
+<text x="156" y="300" font-size="11" fill="#1d6fd0">&#9654;</text>
+<circle cx="40" cy="330" r="9" fill="#2c3550"/>
+<text x="40" y="333.5" text-anchor="middle" font-size="9" font-weight="700" fill="#fff">8</text>
+<text x="56" y="333.5" font-size="9.5" fill="#555">구비서류등록</text>
+<circle cx="40" cy="364" r="9" fill="#2c3550"/>
+<text x="40" y="367.5" text-anchor="middle" font-size="9" font-weight="700" fill="#fff">9</text>
+<text x="56" y="367.5" font-size="9.5" fill="#555">신고서제출</text>
+<circle cx="40" cy="398" r="9" fill="#2c3550"/>
+<text x="40" y="401.5" text-anchor="middle" font-size="9" font-weight="700" fill="#fff">10</text>
+<text x="56" y="401.5" font-size="9.5" fill="#555">납부</text>
+<rect x="185" y="66" width="617" height="26" rx="3" fill="#f1f2f5"/><text x="199" y="83" font-size="10" font-weight="700" fill="#555">납세자</text><text x="255" y="84" font-size="10" fill="#888" letter-spacing="1">&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;</text>
+<text x="185" y="116" font-size="11" font-weight="700" fill="#2c3550">납부할 세액</text>
+<text x="802" y="115" text-anchor="end" font-size="8" fill="#e0392b">&#9679; 승인신고로 진행한 경우 담당자 확인 후 산출세액이 변경될 수 있습니다.</text>
+<rect x="185" y="124" width="617" height="26" fill="#f5f6f9" stroke="#dfe3ea"/>
+<text x="220.0" y="140" text-anchor="middle" font-size="8.5" font-weight="700" fill="#555">구분</text>
+<text x="330.0" y="140" text-anchor="middle" font-size="8.5" font-weight="700" fill="#555">계산내용</text>
+<text x="452.5" y="140" text-anchor="middle" font-size="8.5" font-weight="700" fill="#555">취득세</text>
+<text x="545.0" y="140" text-anchor="middle" font-size="8.5" font-weight="700" fill="#555">지방교육세</text>
+<text x="637.5" y="140" text-anchor="middle" font-size="8.5" font-weight="700" fill="#555">농특세 부과분</text>
+<text x="727.5" y="140" text-anchor="middle" font-size="8.5" font-weight="700" fill="#555">농특세 감면분</text>
+<rect x="185" y="150" width="617" height="40" fill="#fff" stroke="#e6e9ee"/>
+<text x="220.0" y="173.0" text-anchor="middle" font-size="8.3" fill="#333">① 과세표준</text>
+<text x="265" y="173.0" text-anchor="start" font-size="8.3" fill="#333">취득가액 300,000,000<tspan x='0' dy='0'></tspan></text>
+<text x="492" y="173.0" text-anchor="end" font-size="8.3" fill="#333">300,000,000 원</text>
+<text x="582" y="173.0" text-anchor="end" font-size="8.3" fill="#333">1,500,000 원</text>
+<text x="677" y="173.0" text-anchor="end" font-size="8.3" fill="#333">6,000,000 원</text>
+<text x="762" y="173.0" text-anchor="end" font-size="8.3" fill="#333">0 원</text>
+<line x1="255" y1="150" x2="255" y2="190" stroke="#eef0f3"/>
+<line x1="405" y1="150" x2="405" y2="190" stroke="#eef0f3"/>
+<line x1="500" y1="150" x2="500" y2="190" stroke="#eef0f3"/>
+<line x1="590" y1="150" x2="590" y2="190" stroke="#eef0f3"/>
+<line x1="685" y1="150" x2="685" y2="190" stroke="#eef0f3"/>
+<text x="265" y="180" font-size="8" fill="#666">시가표준액 193,000,000</text>
+<rect x="185" y="190" width="617" height="24" fill="#fff" stroke="#e6e9ee"/>
+<text x="220.0" y="205.0" text-anchor="middle" font-size="8.3" fill="#333">② 세율</text>
+<text x="330.0" y="205.0" text-anchor="middle" font-size="8.3" fill="#333">표준세율</text>
+<text x="492" y="205.0" text-anchor="end" font-size="8.3" fill="#333">1 %</text>
+<text x="582" y="205.0" text-anchor="end" font-size="8.3" fill="#333">20 %</text>
+<text x="677" y="205.0" text-anchor="end" font-size="8.3" fill="#333">10 %</text>
+<text x="762" y="205.0" text-anchor="end" font-size="8.3" fill="#333">20 %</text>
+<line x1="255" y1="190" x2="255" y2="214" stroke="#eef0f3"/>
+<line x1="405" y1="190" x2="405" y2="214" stroke="#eef0f3"/>
+<line x1="500" y1="190" x2="500" y2="214" stroke="#eef0f3"/>
+<line x1="590" y1="190" x2="590" y2="214" stroke="#eef0f3"/>
+<line x1="685" y1="190" x2="685" y2="214" stroke="#eef0f3"/>
+<rect x="185" y="214" width="617" height="24" fill="#fff" stroke="#e6e9ee"/>
+<text x="220.0" y="229.0" text-anchor="middle" font-size="8.3" fill="#333">③ 산출세액(①x②)</text>
+<text x="330.0" y="229.0" text-anchor="middle" font-size="8.3" fill="#333">-</text>
+<text x="492" y="229.0" text-anchor="end" font-size="8.3" fill="#333">3,000,000 원</text>
+<text x="582" y="229.0" text-anchor="end" font-size="8.3" fill="#333">300,000 원</text>
+<text x="677" y="229.0" text-anchor="end" font-size="8.3" fill="#333">600,000 원</text>
+<text x="762" y="229.0" text-anchor="end" font-size="8.3" fill="#333">0 원</text>
+<line x1="255" y1="214" x2="255" y2="238" stroke="#eef0f3"/>
+<line x1="405" y1="214" x2="405" y2="238" stroke="#eef0f3"/>
+<line x1="500" y1="214" x2="500" y2="238" stroke="#eef0f3"/>
+<line x1="590" y1="214" x2="590" y2="238" stroke="#eef0f3"/>
+<line x1="685" y1="214" x2="685" y2="238" stroke="#eef0f3"/>
+<rect x="185" y="238" width="617" height="24" fill="#fff" stroke="#e6e9ee"/>
+<text x="220.0" y="253.0" text-anchor="middle" font-size="8.3" fill="#333">④ 감면세액</text>
+<text x="330.0" y="253.0" text-anchor="middle" font-size="8.3" fill="#333">-</text>
+<text x="492" y="253.0" text-anchor="end" font-size="8.3" fill="#333">0 원</text>
+<text x="582" y="253.0" text-anchor="end" font-size="8.3" fill="#333">0 원</text>
+<text x="677" y="253.0" text-anchor="end" font-size="8.3" fill="#333">600,000 원</text>
+<text x="762" y="253.0" text-anchor="end" font-size="8.3" fill="#333">0 원</text>
+<line x1="255" y1="238" x2="255" y2="262" stroke="#eef0f3"/>
+<line x1="405" y1="238" x2="405" y2="262" stroke="#eef0f3"/>
+<line x1="500" y1="238" x2="500" y2="262" stroke="#eef0f3"/>
+<line x1="590" y1="238" x2="590" y2="262" stroke="#eef0f3"/>
+<line x1="685" y1="238" x2="685" y2="262" stroke="#eef0f3"/>
+<rect x="185" y="262" width="617" height="24" fill="#fff" stroke="#e6e9ee"/>
+<text x="220.0" y="277.0" text-anchor="middle" font-size="8.3" fill="#333">⑤ 기납부세액</text>
+<text x="330.0" y="277.0" text-anchor="middle" font-size="8.3" fill="#333">-</text>
+<text x="492" y="277.0" text-anchor="end" font-size="8.3" fill="#333">0 원</text>
+<text x="582" y="277.0" text-anchor="end" font-size="8.3" fill="#333">0 원</text>
+<text x="677" y="277.0" text-anchor="end" font-size="8.3" fill="#333">0 원</text>
+<text x="762" y="277.0" text-anchor="end" font-size="8.3" fill="#333">0 원</text>
+<line x1="255" y1="262" x2="255" y2="286" stroke="#eef0f3"/>
+<line x1="405" y1="262" x2="405" y2="286" stroke="#eef0f3"/>
+<line x1="500" y1="262" x2="500" y2="286" stroke="#eef0f3"/>
+<line x1="590" y1="262" x2="590" y2="286" stroke="#eef0f3"/>
+<line x1="685" y1="262" x2="685" y2="286" stroke="#eef0f3"/>
+<rect x="185" y="286" width="617" height="34" fill="#fff" stroke="#e6e9ee"/>
+<text x="220.0" y="306.0" text-anchor="middle" font-size="8.3" fill="#333">⑥ 가산세</text>
+<text x="330.0" y="306.0" text-anchor="middle" font-size="8.3" fill="#333">무신고 0% / 납부지연 0일</text>
+<text x="492" y="306.0" text-anchor="end" font-size="8.3" fill="#333">0 원</text>
+<text x="582" y="306.0" text-anchor="end" font-size="8.3" fill="#333">0 원</text>
+<text x="677" y="306.0" text-anchor="end" font-size="8.3" fill="#333">0 원</text>
+<text x="762" y="306.0" text-anchor="end" font-size="8.3" fill="#333">0 원</text>
+<line x1="255" y1="286" x2="255" y2="320" stroke="#eef0f3"/>
+<line x1="405" y1="286" x2="405" y2="320" stroke="#eef0f3"/>
+<line x1="500" y1="286" x2="500" y2="320" stroke="#eef0f3"/>
+<line x1="590" y1="286" x2="590" y2="320" stroke="#eef0f3"/>
+<line x1="685" y1="286" x2="685" y2="320" stroke="#eef0f3"/>
+<rect x="185" y="320" width="617" height="26" fill="#fbfcfe" stroke="#e6e9ee"/>
+<text x="220.0" y="336.0" text-anchor="middle" font-size="8.3" fill="#333" font-weight="700">⑦ 신고세액합계</text>
+<text x="397" y="336.0" text-anchor="end" font-size="8.3" fill="#333" font-weight="700">3,300,000 원</text>
+<text x="492" y="336.0" text-anchor="end" font-size="8.3" fill="#333" font-weight="700">3,000,000 원</text>
+<text x="582" y="336.0" text-anchor="end" font-size="8.3" fill="#333" font-weight="700">300,000 원</text>
+<text x="677" y="336.0" text-anchor="end" font-size="8.3" fill="#333" font-weight="700">0 원</text>
+<text x="762" y="336.0" text-anchor="end" font-size="8.3" fill="#333" font-weight="700">0 원</text>
+<line x1="255" y1="320" x2="255" y2="346" stroke="#eef0f3"/>
+<line x1="405" y1="320" x2="405" y2="346" stroke="#eef0f3"/>
+<line x1="500" y1="320" x2="500" y2="346" stroke="#eef0f3"/>
+<line x1="590" y1="320" x2="590" y2="346" stroke="#eef0f3"/>
+<line x1="685" y1="320" x2="685" y2="346" stroke="#eef0f3"/>
+<rect x="185" y="346" width="617" height="26" fill="#3a4664"/>
+<text x="197" y="363" font-size="10" font-weight="700" fill="#fff">납부할 세액</text>
+<text x="790" y="363" text-anchor="end" font-size="11" font-weight="700" fill="#fff">3,300,000 원</text>
+<rect x="2" y="430" width="816" height="40" fill="#eef0f4"/><rect x="16" y="440" width="64" height="22" rx="3" fill="#fff" stroke="#9aa3b4"/><text x="48" y="455" text-anchor="middle" font-size="9" fill="#445">임시저장</text><rect x="86" y="440" width="64" height="22" rx="3" fill="#fff" stroke="#9aa3b4"/><text x="118" y="455" text-anchor="middle" font-size="9" fill="#445">신고취소</text><rect x="716" y="440" width="86" height="22" rx="3" fill="url(#btnBlue)"/><text x="759" y="455" text-anchor="middle" font-size="9.5" font-weight="700" fill="#fff">다음 &#8594;</text>
+<text x="502" y="420" text-anchor="middle" font-size="8.5" fill="#999">(이해를 돕기 위한 재현 이미지)</text></svg>
