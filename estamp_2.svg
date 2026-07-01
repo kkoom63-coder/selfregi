@@ -1,4 +1,4 @@
-<svg viewBox="0 0 780 520" xmlns="http://www.w3.org/2000/svg" font-family="'Malgun Gothic','Noto Sans KR',sans-serif">
+<svg viewBox="0 0 780 560" xmlns="http://www.w3.org/2000/svg" font-family="'Malgun Gothic','Noto Sans KR',sans-serif">
 <defs>
   <linearGradient id="hdrGrad" x1="0" y1="0" x2="1" y2="0">
     <stop offset="0" stop-color="#1155a5"/><stop offset="1" stop-color="#1a4ca0"/>
@@ -12,52 +12,8 @@
   <linearGradient id="btnGreen" x1="0" y1="0" x2="0" y2="1">
     <stop offset="0" stop-color="#3eb87c"/><stop offset="1" stop-color="#2a9a65"/>
   </linearGradient>
-  <linearGradient id="step1Grad" x1="0" y1="0" x2="1" y2="0">
-    <stop offset="0" stop-color="#e0e5ee"/><stop offset="1" stop-color="#c5cce0"/>
-  </linearGradient>
   <linearGradient id="step2Grad" x1="0" y1="0" x2="1" y2="0">
     <stop offset="0" stop-color="#1a6dc0"/><stop offset="1" stop-color="#2a83e0"/>
   </linearGradient>
 </defs>
-<rect x="0" y="0" width="780" height="520" fill="#e8ecf4"/>
-<rect x="10" y="10" width="760" height="500" fill="#fff"/>
-<rect x="10" y="10" width="760" height="52" fill="url(#hdrGrad)"/><text x="26" y="33" font-size="16" font-weight="900" fill="#fff" letter-spacing="-0.5">전자수입인지</text><text x="26" y="50" font-size="8.5" fill="#93b8e8">전자수입인지.kr</text><circle cx="655" cy="36" r="12" fill="#003478"/><path d="M643,36 A12,12 0 0,1 667,36 A6.0,6.0 0 0,0 655,36 A6.0,6.0 0 0,0 643,36 Z" fill="#C60C30"/><circle cx="655" cy="36" r="12" fill="none" stroke="#ffffff50" stroke-width="1"/><text x="672" y="33" font-size="9.5" font-weight="700" fill="#fff">재정경제부</text>
-<rect x="10" y="62" width="140" height="448" fill="#2c3550"/><rect x="10" y="62" width="140" height="38" fill="#1e2a40"/><text x="22" y="78" font-size="10" font-weight="700" fill="#fff">구매자용</text><text x="22" y="92" font-size="8" fill="#7a90b8">Customer use</text><rect x="10" y="113" width="140" height="24" fill="#2c3550"/><text x="24" y="129" font-size="9" fill="#a0b4d0">구매</text><rect x="10" y="138" width="140" height="24" fill="#2c3550"/><text x="24" y="154" font-size="9" fill="#a0b4d0">조회</text><rect x="10" y="163" width="140" height="24" fill="#2c3550"/><text x="24" y="179" font-size="9" fill="#a0b4d0">발급내역</text><rect x="10" y="188" width="140" height="24" fill="#2c3550"/><text x="24" y="204" font-size="9" fill="#a0b4d0">소인</text><rect x="10" y="213" width="140" height="24" fill="#2c3550"/><text x="24" y="229" font-size="9" fill="#a0b4d0">전자수입인지 정보 입력</text><rect x="10" y="238" width="140" height="24" fill="#2c3550"/><text x="24" y="254" font-size="9" fill="#a0b4d0">분할 구매내역 조회 소인</text><rect x="18" y="430" width="124" height="26" rx="3" fill="#1e2a40" stroke="#3a4a60"/><text x="24" y="446" font-size="8.2" fill="#7a90b8">🔵 사이트 이용방법 안내</text><rect x="18" y="462" width="124" height="26" rx="3" fill="#1e2a40" stroke="#3a4a60"/><text x="24" y="478" font-size="8.2" fill="#7a90b8">🔒 인증서 등록 안내</text>
-<rect x="158" y="70" width="608" height="432" fill="#fff" stroke="#dde1eb"/>
-<text x="174" y="100" font-size="17" font-weight="700" fill="#1a3a6a">로그인</text>
-<line x1="174" y1="108" x2="750" y2="108" stroke="#1a3a6a" stroke-width="1.5"/>
-<text x="174" y="122" font-size="9" fill="#333">회원이 아니신 분은 회원 가입 후 이용하여 주시기 바랍니다.</text>
-<text x="676" y="122" text-anchor="end" font-size="9" fill="#1d6fd0" text-decoration="underline">회원가입</text>
-<text x="174" y="140" font-size="9" fill="#333">아이디/비밀번호를 잊어버리신 경우 확인 후 이용하여 주시기 바랍니다.</text>
-<text x="646" y="140" text-anchor="end" font-size="9" fill="#1d6fd0" text-decoration="underline">아이디/비밀번호찾기</text>
-<text x="174" y="158" font-size="9" fill="#333">한 번만 구매하는 경우 비회원 서비스를 이용할 수 있습니다.</text>
-<rect x="474" y="144" width="74" height="18" rx="2" fill="#fff" stroke="#1d6fd0"/>
-<text x="511" y="156" text-anchor="middle" font-size="8.5" fill="#1d6fd0">비회원 서비스</text>
-<rect x="472" y="142" width="78" height="22" rx="3" fill="none" stroke="#e0392b" stroke-width="2" stroke-dasharray="5 3"/><circle cx="472" cy="142" r="11" fill="#e0392b"/><text x="472" y="146" text-anchor="middle" font-size="10" font-weight="700" fill="#fff">1</text>
-<rect x="174" y="184" width="576" height="110" rx="3" fill="#f7f9fc" stroke="#dde1eb"/>
-<text x="188" y="204" font-size="9" fill="#666">아이디/비밀번호 로그인</text>
-<line x1="174" y1="210" x2="750" y2="210" stroke="#e0e4ec" stroke-width="1"/>
-<text x="188" y="235" font-size="9" fill="#444">아이디</text>
-<rect x="248" y="223" width="408" height="20" rx="2" fill="#fff" stroke="#c0c8d8"/>
-<text x="188" y="267" font-size="9" fill="#444">비밀번호</text>
-<rect x="248" y="255" width="408" height="20" rx="2" fill="#fff" stroke="#c0c8d8"/>
-<rect x="656" y="224" width="70" height="22" rx="3" fill="url(#btnBlue)"/><text x="691" y="239" text-anchor="middle" font-size="9" font-weight="700" fill="#fff">  로그인</text>
-<text x="188" y="284" font-size="8" fill="#555">아이디저장</text>
-<rect x="178" y="273" width="9" height="9" rx="1" fill="#fff" stroke="#9aa3b4"/>
-<text x="174" y="304" font-size="9" fill="#666">인증서 로그인</text>
-<line x1="174" y1="310" x2="750" y2="310" stroke="#e0e4ec" stroke-width="1"/>
-<rect x="178" y="318" width="176" height="52" rx="4" fill="#1d6fd0"/>
-<text x="188" y="335" font-size="7.5" fill="#fff">🔒</text>
-<text x="266" y="337" text-anchor="middle" font-size="7.8" fill="#fff">금융인증서</text>
-<text x="266" y="350" text-anchor="middle" font-size="7.8" fill="#fff">(개인/개인사업자)</text>
-<rect x="366" y="318" width="176" height="52" rx="4" fill="#1d6fd0"/>
-<text x="376" y="335" font-size="7.5" fill="#fff">🔒</text>
-<text x="454" y="337" text-anchor="middle" font-size="7.8" fill="#fff">금융인증서</text>
-<text x="454" y="350" text-anchor="middle" font-size="7.8" fill="#fff">(법인기업)</text>
-<rect x="554" y="318" width="176" height="52" rx="4" fill="#555"/>
-<text x="564" y="335" font-size="7.5" fill="#fff">🔒</text>
-<text x="642" y="337" text-anchor="middle" font-size="7.8" fill="#fff">공동인증서</text>
-<text x="642" y="350" text-anchor="middle" font-size="7.8" fill="#fff">(개인/개인사업자,</text>
-<text x="642" y="363" text-anchor="middle" font-size="7.8" fill="#fff"> 법인기업)</text>
-<text x="390" y="512" text-anchor="middle" font-size="8" fill="#c0c5d0">(이해를 돕기 위한 재현 이미지)</text>
-</svg>
+<rect x="0" y="0" width="780" height="560" fill="#e8ecf4"/><rect x="10" y="10" width="760" height="540" fill="#fff" stroke="#c5ccd8"/><rect x="10" y="10" width="760" height="44" fill="#fff" stroke="#e8eaef"/><text x="26" y="30" font-size="14" font-weight="900" fill="#1a3a6a" letter-spacing="-0.5">전자수입인지</text><text x="26" y="44" font-size="7.5" fill="#8a95a8">전자수입인지.kr</text><text x="300" y="32" font-size="9.5" fill="#3a3a3a">구매</text><text x="340" y="32" font-size="9.5" fill="#3a3a3a">조회</text><text x="380" y="32" font-size="9.5" fill="#3a3a3a">발급내역</text><text x="440" y="32" font-size="9.5" fill="#3a3a3a">소인</text><text x="480" y="32" font-size="9.5" fill="#3a3a3a">서비스안내</text><text x="550" y="32" font-size="9.5" fill="#3a3a3a">고객센터</text><circle cx="700" cy="32" r="11" fill="#003478"/><path d="M689,32 A11,11 0 0,1 711,32 A5.5,5.5 0 0,0 700,32 A5.5,5.5 0 0,0 689,32 Z" fill="#C60C30"/><circle cx="700" cy="32" r="11" fill="none" stroke="#ffffff50" stroke-width="1"/><text x="717" y="29" font-size="9" font-weight="700" fill="#1a3a6a">재정경제부</text><line x1="10" y1="54" x2="770" y2="54" stroke="#1a3a6a" stroke-width="2"/><rect x="20" y="70" width="240" height="196" fill="url(#btnBlue)"/><circle cx="140" cy="122" r="26" fill="#ffffff25"/><text x="140" y="130" text-anchor="middle" font-size="20" fill="#fff">💳</text><text x="140" y="176" text-anchor="middle" font-size="15" font-weight="900" fill="#fff">구매</text><text x="42" y="200" font-size="8.3" fill="#eaf2ff">계좌이체와 신용카드를</text><text x="42" y="214" font-size="8.3" fill="#eaf2ff">이용하여 전자수입인지를</text><text x="42" y="228" font-size="8.3" fill="#eaf2ff">구매할 수 있습니다.</text><rect x="270" y="70" width="240" height="196" fill="url(#btnGreen)"/><circle cx="390" cy="122" r="26" fill="#ffffff25"/><text x="390" y="130" text-anchor="middle" font-size="20" fill="#fff">🖨</text><text x="390" y="176" text-anchor="middle" font-size="15" font-weight="900" fill="#fff">발급</text><text x="292" y="200" font-size="8.3" fill="#eafff2">구매한 전자수입인지를</text><text x="292" y="214" font-size="8.3" fill="#eafff2">출력할 수 있습니다.</text><rect x="520" y="70" width="240" height="196" fill="url(#bannerGrad)"/><text x="536" y="102" font-size="9" font-weight="700" fill="#fff">안전하고 편리한</text><text x="536" y="120" font-size="13" font-weight="900" fill="#fff">전자수입인지</text><text x="536" y="136" font-size="13" font-weight="900" fill="#fff">납부서비스</text><text x="536" y="152" font-size="8" fill="#a8c8ef">금융결제원이 함께합니다</text><rect x="536" y="176" width="190" height="24" rx="3" fill="#ffffff18"/><text x="546" y="192" font-size="8" fill="#fff">행정기관용</text><rect x="536" y="206" width="190" height="24" rx="3" fill="#ffffff18"/><text x="546" y="222" font-size="8" fill="#fff">판매인용</text><rect x="536" y="236" width="190" height="24" rx="3" fill="#ffffff18"/><text x="546" y="252" font-size="8" fill="#fff">금융회사사용</text><rect x="20" y="282" width="240" height="90" fill="#eef2f9" stroke="#dde1eb"/><rect x="20" y="282" width="240" height="30" fill="#2c3550"/><text x="34" y="302" font-size="9" font-weight="700" fill="#fff">🔒 로그인</text><text x="34" y="326" font-size="8" fill="#555">· 회원가입</text><text x="34" y="342" font-size="8" fill="#555">· 아이디/비밀번호 찾기</text><text x="34" y="358" font-size="8" fill="#555">· 인증서 등록/안내</text><rect x="270" y="282" width="300" height="90" fill="#fff" stroke="#dde1eb"/><text x="284" y="300" font-size="9" font-weight="700" fill="#333">공지사항</text><line x1="270" y1="308" x2="570" y2="308" stroke="#eee"/><text x="284" y="324" font-size="7.6" fill="#666">· 전자수입인지 통합보안프로그램 설치 안내</text><text x="284" y="339" font-size="7.6" fill="#666">· 우리카드(우리BC카드 포함) 이용 고객 안내</text><text x="284" y="354" font-size="7.6" fill="#666">· 인지세(가산세 포함) 납부 관련 안내</text><rect x="580" y="282" width="180" height="90" fill="#f7f9fc" stroke="#dde1eb"/><text x="594" y="300" font-size="8.5" font-weight="700" fill="#333">구매가능 시간</text><text x="594" y="318" font-size="9" font-weight="700" fill="#1d6fd0">365일</text><text x="594" y="334" font-size="9" font-weight="700" fill="#1d6fd0">00:30 ~ 22:00</text><text x="594" y="354" font-size="7.5" fill="#888">인지세 과세문서별</text><text x="594" y="366" font-size="7.5" fill="#888">발급금액 안내 ›</text><line x1="20" y1="388" x2="760" y2="388" stroke="#e0e4ec"/><text x="20" y="404" font-size="7.5" fill="#999">패밀리사이트 | 금융결제원 · Internet GIRO · yessign · K-CASH · BANKPAY · KFTCVAN · CMS지로EDI</text><text x="20" y="420" font-size="7.5" fill="#999">회사소개 | 이용약관 | 개인정보처리방침 | 오시는 길 | 고객서비스현장 | 저작권정책</text><text x="20" y="440" font-size="7.3" fill="#aaa">전자수입인지 업무대행기관: 금융결제원 (우)04631 서울특별시 중구 퇴계로 110 (회현동3가)</text><text x="20" y="454" font-size="7.3" fill="#aaa">Copyright(C) 2013 KFTC(Korea Financial Telecommunications &amp; Clearings institute) All rights reserved.</text><rect x="20" y="70" width="240" height="196" rx="3" fill="none" stroke="#e0392b" stroke-width="2" stroke-dasharray="5 3"/><circle cx="20" cy="70" r="11" fill="#e0392b"/><text x="20" y="74" text-anchor="middle" font-size="10" font-weight="700" fill="#fff">1</text><text x="390.0" y="548" text-anchor="middle" font-size="8" fill="#c0c5d0">(이해를 돕기 위한 재현 이미지)</text></svg>
