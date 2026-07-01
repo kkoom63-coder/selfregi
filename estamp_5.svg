@@ -1,0 +1,52 @@
+<svg viewBox="0 0 780 450" xmlns="http://www.w3.org/2000/svg" font-family="'Malgun Gothic','Noto Sans KR',sans-serif">
+<defs>
+  <linearGradient id="hdrGrad" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#1155a5"/><stop offset="1" stop-color="#1a4ca0"/>
+  </linearGradient>
+  <linearGradient id="bannerGrad" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#0d3f8a"/><stop offset="1" stop-color="#1a6dc0"/>
+  </linearGradient>
+  <linearGradient id="btnBlue" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#3d83dd"/><stop offset="1" stop-color="#2a6fc9"/>
+  </linearGradient>
+  <linearGradient id="btnGreen" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#3eb87c"/><stop offset="1" stop-color="#2a9a65"/>
+  </linearGradient>
+  <linearGradient id="step1Grad" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#e0e5ee"/><stop offset="1" stop-color="#c5cce0"/>
+  </linearGradient>
+  <linearGradient id="step2Grad" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#1a6dc0"/><stop offset="1" stop-color="#2a83e0"/>
+  </linearGradient>
+</defs>
+<rect x="0" y="0" width="780" height="450" fill="#e8ecf4"/>
+<rect x="10" y="10" width="760" height="430" fill="#fff" stroke="#c5ccd8"/>
+<rect x="10" y="10" width="760" height="28" rx="0" fill="#f5f7fa" stroke="#dde1eb"/>
+<circle cx="26" cy="24" r="7" fill="#f39c12"/>
+<text x="26" y="28" text-anchor="middle" font-size="8" font-weight="700" fill="#fff">&#9679;</text>
+<text x="40" y="27" font-size="11" font-weight="700" fill="#2c3550">전자수입인지 구매 결과</text>
+<rect x="18" y="46" width="744" height="60" rx="4" fill="#ecf5ff" stroke="#b8d8f8"/>
+<circle cx="58" cy="76" r="22" fill="#1d6fd0" opacity="0.12"/>
+<circle cx="58" cy="76" r="15" fill="#1d6fd0" opacity="0.2"/>
+<text x="58" y="82" text-anchor="middle" font-size="18" fill="#1d6fd0">✱</text>
+<text x="96" y="68" font-size="15" font-weight="900" fill="#1d6fd0">정상처리</text>
+<text x="96" y="86" font-size="9.5" fill="#444">● 정상판매처리 되었습니다.</text>
+<text x="96" y="100" font-size="9.5" fill="#444">● 전자수입인지를 발급하시기 바랍니다.</text>
+<rect x="18" y="116" width="744" height="18" fill="#f5f7fa" stroke="#dde1eb"/>
+<circle cx="28" cy="125" r="6" fill="#f39c12"/>
+<text x="28" y="129" text-anchor="middle" font-size="7" font-weight="700" fill="#fff">&#9679;</text>
+<text x="40" y="129" font-size="10.5" font-weight="700" fill="#1a3a6a">전자수입인지 정보</text>
+<line x1="18" y1="134" x2="762" y2="134" stroke="#1a4ca0" stroke-width="1.5"/>
+<rect x="18" y="136" width="200" height="28" fill="#f3f5f9" stroke="#dde1eb"/><text x="28" y="153" font-size="8.8" font-weight="600" fill="#444">고유번호</text><rect x="218" y="136" width="544" height="28" fill="#fff" stroke="#dde1eb"/><text x="228" y="153" font-size="8.8" fill="#333">(구매 완료 후 표시)</text>
+<rect x="18" y="162" width="200" height="28" fill="#f3f5f9" stroke="#dde1eb"/><text x="28" y="179" font-size="8.8" font-weight="600" fill="#444">금액</text><rect x="218" y="162" width="544" height="28" fill="#fff" stroke="#dde1eb"/><text x="228" y="179" font-size="8.8" fill="#333">150,000 원</text>
+<rect x="18" y="188" width="200" height="28" fill="#f3f5f9" stroke="#dde1eb"/><text x="28" y="205" font-size="8.8" font-weight="600" fill="#444">구매자성명</text><rect x="218" y="188" width="544" height="28" fill="#fff" stroke="#dde1eb"/><text x="228" y="205" font-size="8.8" fill="#333"></text>
+<rect x="18" y="214" width="200" height="28" fill="#f3f5f9" stroke="#dde1eb"/><text x="28" y="231" font-size="8.8" font-weight="600" fill="#444">구매자주민(사업자)번호</text><rect x="218" y="214" width="544" height="28" fill="#fff" stroke="#dde1eb"/><text x="228" y="231" font-size="8.8" fill="#333"></text>
+<rect x="18" y="240" width="200" height="28" fill="#f3f5f9" stroke="#dde1eb"/><text x="28" y="257" font-size="8.8" font-weight="600" fill="#444">용도</text><rect x="218" y="240" width="544" height="28" fill="#fff" stroke="#dde1eb"/><text x="228" y="257" font-size="8.8" fill="#333">인지세 납부</text>
+<rect x="18" y="266" width="200" height="28" fill="#f3f5f9" stroke="#dde1eb"/><text x="28" y="283" font-size="8.8" font-weight="600" fill="#444">발급일</text><rect x="218" y="266" width="544" height="28" fill="#fff" stroke="#dde1eb"/><text x="228" y="283" font-size="8.8" fill="#333">(발급 후 표시)</text>
+<rect x="18" y="292" width="200" height="28" fill="#f3f5f9" stroke="#dde1eb"/><text x="28" y="309" font-size="8.8" font-weight="600" fill="#444">발급처</text><rect x="218" y="292" width="544" height="28" fill="#fff" stroke="#dde1eb"/><text x="228" y="309" font-size="8.8" fill="#333">인터넷 / ●●●●</text>
+<text x="28" y="330" font-size="8.5" fill="#555">● 전자수입인지는 1회에 한하여 발급되므로 프린터 상태 확인 및 테스트 출력을 반드시 하신 후 출력(발급)하시기 바랍니다.</text>
+<rect x="310" y="344" width="70" height="28" rx="3" fill="url(#btnBlue)"/><text x="345" y="362" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">출력</text>
+<rect x="400" y="344" width="60" height="28" rx="3" fill="#7a8595"/><text x="430" y="362" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">확인</text>
+<rect x="308" y="342" width="74" height="32" rx="3" fill="none" stroke="#e0392b" stroke-width="2" stroke-dasharray="5 3"/><circle cx="308" cy="342" r="11" fill="#e0392b"/><text x="308" y="346" text-anchor="middle" font-size="10" font-weight="700" fill="#fff">1</text>
+<text x="390" y="442" text-anchor="middle" font-size="8" fill="#c0c5d0">(이해를 돕기 위한 재현 이미지)</text>
+</svg>

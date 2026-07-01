@@ -1,0 +1,63 @@
+<svg viewBox="0 0 780 520" xmlns="http://www.w3.org/2000/svg" font-family="'Malgun Gothic','Noto Sans KR',sans-serif">
+<defs>
+  <linearGradient id="hdrGrad" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#1155a5"/><stop offset="1" stop-color="#1a4ca0"/>
+  </linearGradient>
+  <linearGradient id="bannerGrad" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#0d3f8a"/><stop offset="1" stop-color="#1a6dc0"/>
+  </linearGradient>
+  <linearGradient id="btnBlue" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#3d83dd"/><stop offset="1" stop-color="#2a6fc9"/>
+  </linearGradient>
+  <linearGradient id="btnGreen" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#3eb87c"/><stop offset="1" stop-color="#2a9a65"/>
+  </linearGradient>
+  <linearGradient id="step1Grad" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#e0e5ee"/><stop offset="1" stop-color="#c5cce0"/>
+  </linearGradient>
+  <linearGradient id="step2Grad" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#1a6dc0"/><stop offset="1" stop-color="#2a83e0"/>
+  </linearGradient>
+</defs>
+<rect x="0" y="0" width="780" height="520" fill="#e8ecf4"/>
+<rect x="10" y="10" width="760" height="500" fill="#fff"/>
+<rect x="10" y="10" width="760" height="52" fill="url(#hdrGrad)"/><text x="26" y="33" font-size="16" font-weight="900" fill="#fff" letter-spacing="-0.5">전자수입인지</text><text x="26" y="50" font-size="8.5" fill="#93b8e8">전자수입인지.kr</text><circle cx="655" cy="36" r="12" fill="#003478"/><path d="M643,36 A12,12 0 0,1 667,36 A6.0,6.0 0 0,0 655,36 A6.0,6.0 0 0,0 643,36 Z" fill="#C60C30"/><circle cx="655" cy="36" r="12" fill="none" stroke="#ffffff50" stroke-width="1"/><text x="672" y="33" font-size="9.5" font-weight="700" fill="#fff">재정경제부</text>
+<rect x="10" y="62" width="140" height="448" fill="#2c3550"/><rect x="10" y="62" width="140" height="38" fill="#1e2a40"/><text x="22" y="78" font-size="10" font-weight="700" fill="#fff">구매자용</text><text x="22" y="92" font-size="8" fill="#7a90b8">Customer use</text><rect x="10" y="113" width="140" height="24" fill="#2c3550"/><text x="24" y="129" font-size="9" fill="#a0b4d0">구매</text><rect x="10" y="138" width="140" height="24" fill="#2c3550"/><text x="24" y="154" font-size="9" fill="#a0b4d0">조회</text><rect x="10" y="163" width="140" height="24" fill="#2c3550"/><text x="24" y="179" font-size="9" fill="#a0b4d0">발급내역</text><rect x="10" y="188" width="140" height="24" fill="#2c3550"/><text x="24" y="204" font-size="9" fill="#a0b4d0">소인</text><rect x="10" y="213" width="140" height="24" fill="#2c3550"/><text x="24" y="229" font-size="9" fill="#a0b4d0">전자수입인지 정보 입력</text><rect x="10" y="238" width="140" height="24" fill="#2c3550"/><text x="24" y="254" font-size="9" fill="#a0b4d0">분할 구매내역 조회 소인</text><rect x="18" y="430" width="124" height="26" rx="3" fill="#1e2a40" stroke="#3a4a60"/><text x="24" y="446" font-size="8.2" fill="#7a90b8">🔵 사이트 이용방법 안내</text><rect x="18" y="462" width="124" height="26" rx="3" fill="#1e2a40" stroke="#3a4a60"/><text x="24" y="478" font-size="8.2" fill="#7a90b8">🔒 인증서 등록 안내</text>
+<rect x="158" y="70" width="608" height="432" fill="#fff" stroke="#dde1eb"/>
+<text x="174" y="100" font-size="17" font-weight="700" fill="#1a3a6a">로그인</text>
+<line x1="174" y1="108" x2="750" y2="108" stroke="#1a3a6a" stroke-width="1.5"/>
+<text x="174" y="122" font-size="9" fill="#333">회원이 아니신 분은 회원 가입 후 이용하여 주시기 바랍니다.</text>
+<text x="676" y="122" text-anchor="end" font-size="9" fill="#1d6fd0" text-decoration="underline">회원가입</text>
+<text x="174" y="140" font-size="9" fill="#333">아이디/비밀번호를 잊어버리신 경우 확인 후 이용하여 주시기 바랍니다.</text>
+<text x="646" y="140" text-anchor="end" font-size="9" fill="#1d6fd0" text-decoration="underline">아이디/비밀번호찾기</text>
+<text x="174" y="158" font-size="9" fill="#333">한 번만 구매하는 경우 비회원 서비스를 이용할 수 있습니다.</text>
+<rect x="474" y="144" width="74" height="18" rx="2" fill="#fff" stroke="#1d6fd0"/>
+<text x="511" y="156" text-anchor="middle" font-size="8.5" fill="#1d6fd0">비회원 서비스</text>
+<rect x="472" y="142" width="78" height="22" rx="3" fill="none" stroke="#e0392b" stroke-width="2" stroke-dasharray="5 3"/><circle cx="472" cy="142" r="11" fill="#e0392b"/><text x="472" y="146" text-anchor="middle" font-size="10" font-weight="700" fill="#fff">1</text>
+<rect x="174" y="184" width="576" height="110" rx="3" fill="#f7f9fc" stroke="#dde1eb"/>
+<text x="188" y="204" font-size="9" fill="#666">아이디/비밀번호 로그인</text>
+<line x1="174" y1="210" x2="750" y2="210" stroke="#e0e4ec" stroke-width="1"/>
+<text x="188" y="235" font-size="9" fill="#444">아이디</text>
+<rect x="248" y="223" width="408" height="20" rx="2" fill="#fff" stroke="#c0c8d8"/>
+<text x="188" y="267" font-size="9" fill="#444">비밀번호</text>
+<rect x="248" y="255" width="408" height="20" rx="2" fill="#fff" stroke="#c0c8d8"/>
+<rect x="656" y="224" width="70" height="22" rx="3" fill="url(#btnBlue)"/><text x="691" y="239" text-anchor="middle" font-size="9" font-weight="700" fill="#fff">  로그인</text>
+<text x="188" y="284" font-size="8" fill="#555">아이디저장</text>
+<rect x="178" y="273" width="9" height="9" rx="1" fill="#fff" stroke="#9aa3b4"/>
+<text x="174" y="304" font-size="9" fill="#666">인증서 로그인</text>
+<line x1="174" y1="310" x2="750" y2="310" stroke="#e0e4ec" stroke-width="1"/>
+<rect x="178" y="318" width="176" height="52" rx="4" fill="#1d6fd0"/>
+<text x="188" y="335" font-size="7.5" fill="#fff">🔒</text>
+<text x="266" y="337" text-anchor="middle" font-size="7.8" fill="#fff">금융인증서</text>
+<text x="266" y="350" text-anchor="middle" font-size="7.8" fill="#fff">(개인/개인사업자)</text>
+<rect x="366" y="318" width="176" height="52" rx="4" fill="#1d6fd0"/>
+<text x="376" y="335" font-size="7.5" fill="#fff">🔒</text>
+<text x="454" y="337" text-anchor="middle" font-size="7.8" fill="#fff">금융인증서</text>
+<text x="454" y="350" text-anchor="middle" font-size="7.8" fill="#fff">(법인기업)</text>
+<rect x="554" y="318" width="176" height="52" rx="4" fill="#555"/>
+<text x="564" y="335" font-size="7.5" fill="#fff">🔒</text>
+<text x="642" y="337" text-anchor="middle" font-size="7.8" fill="#fff">공동인증서</text>
+<text x="642" y="350" text-anchor="middle" font-size="7.8" fill="#fff">(개인/개인사업자,</text>
+<text x="642" y="363" text-anchor="middle" font-size="7.8" fill="#fff"> 법인기업)</text>
+<text x="390" y="512" text-anchor="middle" font-size="8" fill="#c0c5d0">(이해를 돕기 위한 재현 이미지)</text>
+</svg>

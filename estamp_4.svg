@@ -1,0 +1,68 @@
+<svg viewBox="0 0 780 520" xmlns="http://www.w3.org/2000/svg" font-family="'Malgun Gothic','Noto Sans KR',sans-serif">
+<defs>
+  <linearGradient id="hdrGrad" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#1155a5"/><stop offset="1" stop-color="#1a4ca0"/>
+  </linearGradient>
+  <linearGradient id="bannerGrad" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#0d3f8a"/><stop offset="1" stop-color="#1a6dc0"/>
+  </linearGradient>
+  <linearGradient id="btnBlue" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#3d83dd"/><stop offset="1" stop-color="#2a6fc9"/>
+  </linearGradient>
+  <linearGradient id="btnGreen" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#3eb87c"/><stop offset="1" stop-color="#2a9a65"/>
+  </linearGradient>
+  <linearGradient id="step1Grad" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#e0e5ee"/><stop offset="1" stop-color="#c5cce0"/>
+  </linearGradient>
+  <linearGradient id="step2Grad" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#1a6dc0"/><stop offset="1" stop-color="#2a83e0"/>
+  </linearGradient>
+</defs>
+<rect x="0" y="0" width="780" height="520" fill="#e8ecf4"/>
+<rect x="10" y="10" width="760" height="500" fill="#fff"/>
+<rect x="10" y="10" width="760" height="38" rx="4" fill="#f0f2f7"/><rect x="14" y="14" width="250" height="30" rx="3" fill="#d8dde8"/><text x="139" y="34" text-anchor="middle" font-size="9" fill="#888">1  납부정보입력</text><text x="265" y="33" font-size="11" fill="#9aa3b4">&#9654;</text><rect x="264" y="14" width="250" height="30" rx="3" fill="url(#step2Grad)"/><text x="389" y="34" text-anchor="middle" font-size="9.5" font-weight="700" fill="#fff">2  입력정보확인</text><text x="515" y="33" font-size="11" fill="#9aa3b4">&#9654;</text><rect x="515" y="14" width="250" height="30" rx="3" fill="#d8dde8"/><text x="640" y="34" text-anchor="middle" font-size="9" fill="#888">3  구매결과확인 및 발급</text>
+<text x="22" y="72" font-size="10.5" font-weight="700" fill="#1a3a6a">인지세 과세문서 및 세액을 알려드립니다.</text>
+<text x="758" y="72" text-anchor="end" font-size="8.5" fill="#1d6fd0">인지세 과세문서 안내</text>
+<text x="22" y="88" font-size="8" fill="#e0392b">전자수입인지는 구매 후 취소가 허용되지 않습니다.</text>
+<text x="22" y="102" font-size="8" fill="#e0392b">계좌이체 일괄(다건) 구매는 최대 10건까지 가능합니다. 다만 SC은행 계좌의 경우 최대 5건까지 가능합니다.</text>
+<text x="22" y="116" font-size="8" fill="#e0392b">신용카드 일괄(다건) 구매는 최대 20건까지 가능합니다.</text>
+<text x="22" y="130" font-size="8" fill="#e0392b">전자수입인지는 구매 후 취소가 허용되지 않습니다.</text>
+<text x="22" y="144" font-size="8" fill="#e0392b">구매 후 사용하지 아니한 전자수입인지는 우체국, 금융회사(은행 등)를 통해 환매가 가능합니다(환매수수료: 구매금액의 3% 이내).</text>
+<text x="22" y="158" font-size="8" fill="#e0392b">전자수입인지는 건당 구매하여 서류에 첨부하여야 하니 주의하시기 바랍니다.</text>
+<text x="22" y="178" font-size="9" fill="#333">최종 결제전 프린터 출력 가능 여부를 확인하시기 바랍니다.</text>
+<rect x="668" y="166" width="90" height="22" rx="3" fill="#7a8595"/><text x="713" y="181" text-anchor="middle" font-size="8.5" font-weight="700" fill="#fff">테스트출력</text>
+<text x="22" y="198" font-size="11" font-weight="700" fill="#333">납부정보</text>
+<line x1="22" y1="210" x2="758" y2="210" stroke="#3a4a6a" stroke-width="1.5"/>
+<rect x="22" y="212" width="120" height="28" fill="#f3f5f9" stroke="#dde1eb"/><text x="32" y="229" font-size="8.8" font-weight="600" fill="#444">총 건수</text><rect x="142" y="212" width="616" height="28" fill="#fff" stroke="#dde1eb"/><text x="152" y="229" font-size="8.8" fill="#333">1 건</text>
+<text x="402" y="229" font-size="8.8" font-weight="600" fill="#444">총 금액</text>
+<text x="472" y="229" font-size="8.8" fill="#333">150,000 원</text>
+<rect x="22" y="240" width="120" height="28" fill="#f3f5f9" stroke="#dde1eb"/><text x="32" y="257" font-size="8.8" font-weight="600" fill="#444">결제수단</text><rect x="142" y="240" width="616" height="28" fill="#fff" stroke="#dde1eb"/><text x="152" y="257" font-size="8.8" fill="#333"></text>
+<circle cx="160" cy="254" r="6" fill="#fff" stroke="#1d6fd0" stroke-width="1.5"/><circle cx="160" cy="254" r="3" fill="#1d6fd0"/><text x="172" y="258" font-size="9" fill="#333">계좌이체</text>
+<circle cx="225" cy="254" r="6" fill="#fff" stroke="#9aa3b4" stroke-width="1.5"/><text x="237" y="258" font-size="9" fill="#333">신용카드</text>
+<rect x="147" y="242" width="150" height="24" rx="3" fill="none" stroke="#e0392b" stroke-width="2" stroke-dasharray="5 3"/><circle cx="147" cy="242" r="11" fill="#e0392b"/><text x="147" y="246" text-anchor="middle" font-size="10" font-weight="700" fill="#fff">1</text>
+<text x="22" y="284" font-size="11" font-weight="700" fill="#333">납무계좌 선택</text>
+<line x1="22" y1="290" x2="758" y2="290" stroke="#dde1eb" stroke-width="1"/>
+<text x="30" y="315" font-size="9" font-weight="600" fill="#444">통신상태</text>
+<text x="110" y="315" font-size="9" font-weight="600" fill="#444">은행</text>
+<text x="260" y="315" font-size="9" font-weight="600" fill="#444">납무계좌번호</text>
+<text x="450" y="315" font-size="9" font-weight="600" fill="#444">계좌비밀번호</text>
+<line x1="22" y1="320" x2="758" y2="320" stroke="#dde1eb" stroke-width="1"/>
+<rect x="106" y="326" width="140" height="22" rx="2" fill="#f5f8ff" stroke="#b0bcd4"/><text x="114" y="340" font-size="8.5" fill="#555">은행 선택</text><text x="232" y="341" font-size="8" fill="#666">▼</text>
+<rect x="254" y="326" width="180" height="22" rx="2" fill="#fff" stroke="#c0c8d8"/>
+<rect x="442" y="326" width="140" height="22" rx="2" fill="#fff" stroke="#c0c8d8"/>
+<text x="22" y="364" font-size="8.5" fill="#2aa060" text-decoration="underline">구매자(결제자) 본인명의의 계좌만 이용 가능합니다.</text>
+<text x="22" y="386" font-size="11" font-weight="700" fill="#333">구매자 정보</text>
+<line x1="22" y1="398" x2="758" y2="398" stroke="#dde1eb" stroke-width="1"/>
+<text x="30" y="420" font-size="9" font-weight="600" fill="#444">구매자 성명(상호)</text>
+<rect x="200" y="408" width="280" height="22" rx="2" fill="#fff" stroke="#c0c8d8"/>
+<text x="30" y="450" font-size="9" font-weight="600" fill="#444">구매자 주민(사업자)등록번호</text>
+<rect x="200" y="438" width="280" height="22" rx="2" fill="#fff" stroke="#c0c8d8"/>
+<text x="30" y="480" font-size="9" font-weight="600" fill="#444">구매자 연락처</text>
+<rect x="200" y="468" width="280" height="22" rx="2" fill="#fff" stroke="#c0c8d8"/>
+<rect x="22" y="400" width="736" height="94" rx="3" fill="none" stroke="#e0392b" stroke-width="2" stroke-dasharray="5 3"/><circle cx="22" cy="400" r="11" fill="#e0392b"/><text x="22" y="404" text-anchor="middle" font-size="10" font-weight="700" fill="#fff">2</text>
+<rect x="320" y="502" width="60" height="26" rx="3" fill="url(#btnBlue)"/><text x="350" y="519" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">납무</text>
+<rect x="400" y="502" width="60" height="26" rx="3" fill="#fff" stroke="#9aa3b4"/><text x="430" y="519" text-anchor="middle" font-size="11" font-weight="700" fill="#444">취소</text>
+<rect x="318" y="500" width="64" height="30" rx="3" fill="none" stroke="#e0392b" stroke-width="2" stroke-dasharray="5 3"/><circle cx="318" cy="500" r="11" fill="#e0392b"/><text x="318" y="504" text-anchor="middle" font-size="10" font-weight="700" fill="#fff">3</text>
+<text x="390" y="512" text-anchor="middle" font-size="8" fill="#c0c5d0">(이해를 돕기 위한 재현 이미지)</text>
+</svg>
