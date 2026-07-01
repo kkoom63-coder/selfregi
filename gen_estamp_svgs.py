@@ -77,3 +77,18 @@ def field(x, y, w, h, val="", placeholder=False, label=None):
     if val:
         out += f'<text x="{x+8}" y="{y+h/2+3.5}" font-size="8.8" fill="#333">{val}</text>'
     return out
+
+def select_box(x, y, w, h, val="", placeholder=False, fs=8.8):
+    """실제 브라우저 네이티브 <select> 드롭박스 재현: 흰 배경 + 얇은 회색 테두리
+    + 오른쪽 분리된 화살표 버튼 영역(연회색 그라디언트)."""
+    arrow_w = min(18, w * 0.22)
+    txt_col = "#999" if placeholder else "#333"
+    out = f'<rect x="{x}" y="{y}" width="{w}" height="{h}" fill="#fff" stroke="#a8afc0" stroke-width="1"/>'
+    out += f'<text x="{x+6}" y="{y+h/2+3}" font-size="{fs}" fill="{txt_col}">{val}</text>'
+    ax = x + w - arrow_w
+    out += f'<line x1="{ax}" y1="{y+2}" x2="{ax}" y2="{y+h-2}" stroke="#d0d4de"/>'
+    out += f'<rect x="{ax}" y="{y+1}" width="{arrow_w-1}" height="{h-2}" fill="#f2f3f6"/>'
+    cxm = ax + arrow_w / 2
+    cym = y + h / 2
+    out += f'<path d="M{cxm-4},{cym-2} L{cxm+4},{cym-2} L{cxm},{cym+3} Z" fill="#5a6172"/>'
+    return out
