@@ -391,17 +391,17 @@ main{max-width:720px;margin:0 auto;padding:24px 14px 110px;position:relative}
             <div class="action-item" id="itemO_2">
               <input type="checkbox" id="chkO_2" onchange="updateProgress('itemO_2')">
               <div class="action-text">
-                <label for="chkO_2">국민주택채권 매입 (은행앱 · 즉시매도)</label>
-                <div class="action-desc">KB국민·NH농협·신한·우리·하나 앱에서 '국민주택채권 매입' 메뉴 → 즉시매도 선택. 시가표준액 기준 매입액 자동 계산. 채권발행번호를 저장하세요.</div>
+                <label for="chkO_2">국민주택채권 매입 (주택도시기금 · 은행)</label>
+                <div class="action-desc">주택도시기금 사이트에서 정확한 매입금액을 확인한 뒤, 지정 은행(하나, 국민, 신한, 우리, 기업, 농협 등) 홈페이지를 통해 '즉시매도'로 구입합니다.</div>
                 <div class="btn-row">
-                  <button class="btn-preview" onclick="openGuide('bond')">🔍 채권 매입 가이드</button>
+                  <button class="btn-preview" onclick="openGuide('bond_online')">🔍 온라인 채권 매입 가이드</button>
                   <button class="btn-preview" id="btn-copy-siga-o" onclick="copyRelay('siga')">📋 내 시가표준액 복사</button>
                 </div>
-                <span class="tip-badge cash">이체만 가능</span>
+                <span class="tip-badge cash">즉시매도 필수</span>
                 <div class="relay-input" data-relay="bond" style="margin-top:10px">
                   <label>③ 채권발행번호 기록 (선택)</label>
                   <div class="relay-row">
-                    <input type="text" class="relay-in" placeholder="앱 화면의 채권발행번호">
+                    <input type="text" class="relay-in" placeholder="은행 영수증 화면의 채권발행번호">
                     <button onclick="saveRelay(this)">저장</button>
                   </div>
                   <div class="relay-desc">3단계 신청서 집계에 자동 반영됩니다.</div>
@@ -704,7 +704,7 @@ main{max-width:720px;margin:0 auto;padding:24px 14px 110px;position:relative}
   </div>
 </div>
 
-<!-- [요청] 가이드 이미지 확대(줌) 오버레이 -->
+<!-- 가이드 이미지 확대(줌) 오버레이 -->
 <div class="zoom-overlay" id="zoomOverlay">
   <div class="zoom-bar">
     <div class="zoom-hint">↔ 드래그(스크롤)로 이동 · 버튼으로 확대/축소</div>
@@ -804,25 +804,18 @@ const BUSAN_COURT = {
   '강서구':{n:'부산지방법원 서부지원 등기과',a:'부산 강서구 명지국제7로 77'},
   '사하구':{n:'부산지방법원 서부지원 등기과',a:'부산 강서구 명지국제7로 77'},
 };
-// 광주광역시 전역 단일
 const GWANGJU_COURT_ALL = {n:'광주지방법원 등기국',a:'광주 서구 시청로 106'};
-
-// 대구광역시 (PDF 2025.11 기준)
 const DAEGU_COURT = {
-  // 본원 등기국 (대구 동구 동부로212 화폐동382-4)
   '동구' :{n:'대구지방법원 등기국',a:'대구 동구 동부로 212'},
   '중구' :{n:'대구지방법원 등기국',a:'대구 동구 동부로 212'},
   '남구' :{n:'대구지방법원 등기국',a:'대구 동구 동부로 212'},
   '북구' :{n:'대구지방법원 등기국',a:'대구 동구 동부로 212'},
   '수성구':{n:'대구지방법원 등기국',a:'대구 동구 동부로 212'},
-  // 서부지원 등기과 (대구 달서구 장산남로30 용산동230)
   '서구' :{n:'대구지방법원 서부지원 등기과',a:'대구 달서구 장산남로 30'},
   '달서구':{n:'대구지방법원 서부지원 등기과',a:'대구 달서구 장산남로 30'},
   '달성군':{n:'대구지방법원 서부지원 등기과',a:'대구 달서구 장산남로 30'},
-  '군위군':{n:'대구지방법원 군위등기소',a:'대구 군위군 군위읍 도군로 2734'}, // [오류수정] 2023년 대구광역시 편입 지역, 종전 미매핑
+  '군위군':{n:'대구지방법원 군위등기소',a:'대구 군위군 군위읍 도군로 2734'},
 };
-
-// 인천광역시 (PDF 2025.11 기준) — 본원 등기국 단일 (강화는 별도 경기지역 처리)
 const INCHEON_COURT = {
   '중구'  :{n:'인천지방법원 등기국',a:'인천 미추홀구 경원대로 881'},
   '동구'  :{n:'인천지방법원 등기국',a:'인천 미추홀구 경원대로 881'},
@@ -833,11 +826,8 @@ const INCHEON_COURT = {
   '계양구':{n:'인천지방법원 등기국',a:'인천 미추홀구 경원대로 881'},
   '서구'  :{n:'인천지방법원 등기국',a:'인천 미추홀구 경원대로 881'},
   '옹진군':{n:'인천지방법원 등기국',a:'인천 미추홀구 경원대로 881'},
-  '강화군':{n:'인천지방법원 강화등기소',a:'인천 강화군 강화읍 강화대로 300'}, // [오류수정] 종전 "GG_COURT에서 처리"라는 주석뿐 실제 항목 없어 미매핑 상태였음 → 인천지방법원 본원 직속 강화등기소로 정정 (전국등기소정보.pdf 2025.11 확인)
-  // 부천지원 관할(경기 김포·부천)은 GG_COURT에서 처리
+  '강화군':{n:'인천지방법원 강화등기소',a:'인천 강화군 강화읍 강화대로 300'},
 };
-
-// 대전광역시 (전국등기소정보 PDF 2025.11 기준) — 본원 등기국 단일
 const DAEJEON_COURT = {
   '동구' :{n:'대전지방법원 등기국',a:'대전 유성구 은하수로 649'},
   '서구' :{n:'대전지방법원 등기국',a:'대전 유성구 은하수로 649'},
@@ -845,14 +835,8 @@ const DAEJEON_COURT = {
   '대덕구':{n:'대전지방법원 등기국',a:'대전 유성구 은하수로 649'},
   '유성구':{n:'대전지방법원 등기국',a:'대전 유성구 은하수로 649'},
 };
-
-// 울산광역시 (전국등기소정보 PDF 2025.11 기준) — 본원 등기과 단일
 const ULSAN_COURT_ALL = {n:'울산지방법원 등기과',a:'울산 남구 법대로 55'};
-
-// 세종특별자치시 (전국등기소정보 PDF 2025.11 기준) — 세종등기소 단일
 const SEJONG_COURT_ALL = {n:'대전지방법원 세종등기소',a:'세종 조치원읍 새내16길 8'};
-
-// 강원특별자치도 (전국등기소정보 PDF 2025.11 기준)
 const GANGWON_COURT = {
   '춘천시':{n:'춘천지방법원 등기과',a:'강원 춘천시 공지로 284'},
   '강릉시':{n:'춘천지방법원 강릉지원 등기과',a:'강원 강릉시 동해대로 3288-18'},
@@ -871,16 +855,12 @@ const GANGWON_COURT = {
   '속초시':{n:'춘천지방법원 속초지원 등기계',a:'강원 속초시 법대로 15'},
   '영월군':{n:'춘천지방법원 영월지원 등기계',a:'강원 영월군 영월읍 영월향교1길 53'},
   '원주시':{n:'춘천지방법원 원주지원 등기과',a:'강원 원주시 시청로 149'},
-  '철원군':{n:'의정부지방법원 철원등기소',a:'강원 철원군 갈말읍 삽사연로 59'}, // [오류수정] 종전 미매핑(18개 시군 중 유일한 누락) — 의정부지방법원 관할
+  '철원군':{n:'의정부지방법원 철원등기소',a:'강원 철원군 갈말읍 삽사연로 59'},
 };
-
-// 제주특별자치도 (전국등기소정보 PDF 2025.11 기준)
 const JEJU_COURT = {
   '제주시'  :{n:'제주지방법원 등기과',a:'제주 제주시 남령북5길 9'},
   '서귀포시':{n:'제주지방법원 서귀포등기소',a:'제주 서귀포시 일주동로 8690'},
 };
-
-// 충청남도 (전국등기소정보 PDF 2025.11 기준, 대전지방법원)
 const CHUNGNAM_COURT = {
   '공주시':{n:'대전지방법원 공주지원 등기계',a:'충남 공주시 한적2길 34-15'},
   '논산시':{n:'대전지방법원 논산지원 등기과',a:'충남 논산시 강경읍 계백로 99'},
@@ -898,8 +878,6 @@ const CHUNGNAM_COURT = {
   '아산시':{n:'대전지방법원 천안지원 아산등기소',a:'충남 아산시 흥화로76번길 7'},
   '홍성군':{n:'대전지방법원 홍성지원 등기계',a:'충남 홍성군 홍성읍 법원로 38'},
 };
-
-// 충청북도 (전국등기소정보 PDF 2025.11 기준, 청주지방법원)
 const CHUNGBUK_COURT = {
   '괴산군':{n:'청주지방법원 괴산등기소',a:'충북 괴산군 괴산읍 읍내로5길 20'},
   '증평군':{n:'청주지방법원 괴산등기소',a:'충북 괴산군 괴산읍 읍내로5길 20'},
@@ -913,8 +891,6 @@ const CHUNGBUK_COURT = {
   '제천시':{n:'청주지방법원 제천지원 등기계',a:'충북 제천시 칠성로 53'},
   '충주시':{n:'청주지방법원 충주지원 등기계',a:'충북 충주시 계명대로 103'},
 };
-
-// 전북특별자치도 (전국등기소정보 PDF 2025.11 기준, 전주지방법원)
 const JEONBUK_COURT = {
   '군산시':{n:'전주지방법원 군산지원 등기과',a:'전북 군산시 법원로 8'},
   '남원시':{n:'전주지방법원 남원지원 등기계',a:'전북 남원시 용성로 59'},
@@ -931,8 +907,6 @@ const JEONBUK_COURT = {
   '진안군':{n:'전주지방법원 진안등기소',a:'전북 진안군 진안읍 우화산길 4'},
   '정읍시':{n:'전주지방법원 정읍지원 등기계',a:'전북 정읍시 수성로 29'},
 };
-
-// 전라남도 (전국등기소정보 PDF 2025.11 기준, 광주지방법원)
 const JEONNAM_COURT = {
   '목포시':{n:'광주지방법원 목포지원 등기과',a:'전남 목포시 정의로 29'},
   '신안군':{n:'광주지방법원 목포지원 등기과',a:'전남 목포시 정의로 29'},
@@ -957,8 +931,6 @@ const JEONNAM_COURT = {
   '장흥군':{n:'광주지방법원 장흥지원 등기계',a:'전남 장흥군 장흥읍 읍성로 121'},
   '해남군':{n:'광주지방법원 해남지원 등기계',a:'전남 해남군 해남읍 중앙1로 330'},
 };
-
-// 경상북도 (전국등기소정보 PDF 2025.11 기준, 대구지방법원 — 군위군은 DAEGU_COURT에서 처리)
 const GYEONGBUK_COURT = {
   '경주시':{n:'대구지방법원 경주지원 등기계',a:'경북 경주시 화랑로 89'},
   '김천시':{n:'대구지방법원 김천지원 등기계',a:'경북 김천시 물망골길 39'},
@@ -983,8 +955,6 @@ const GYEONGBUK_COURT = {
   '의성군':{n:'대구지방법원 의성지원 등기계',a:'경북 의성군 의성읍 군청길 67'},
   '포항시':{n:'대구지방법원 포항지원 등기과',a:'경북 포항시 북구 법원로 181'},
 };
-
-// 경상남도 (전국등기소정보 PDF 2025.11 기준, 창원지방법원 — 양산시는 울산지방법원 관할)
 const GYEONGNAM_COURT = {
   '거창군':{n:'창원지방법원 거창지원 등기계',a:'경남 거창군 거창읍 죽전길 31'},
   '밀양시':{n:'창원지방법원 밀양지원 등기계',a:'경남 밀양시 밀양대로 1993-20'},
@@ -1006,10 +976,9 @@ const GYEONGNAM_COURT = {
   '합천군':{n:'창원지방법원 합천등기소',a:'경남 합천군 합천읍 동서로 105'},
   '진주시':{n:'창원지방법원 진주지원 등기과',a:'경남 진주시 진양호로 303'},
   '통영시':{n:'창원지방법원 통영지원 등기계',a:'경남 통영시 용남면 동달길 67'},
-  '양산시':{n:'울산지방법원 양산등기소',a:'경남 양산시 북안남5길 12'}, // 창원지방법원이 아닌 울산지방법원 관할(예외)
+  '양산시':{n:'울산지방법원 양산등기소',a:'경남 양산시 북안남5길 12'}, 
 };
 
-// 분할 케이스
 const SEONGNAM_BUNDANG = {n:'수원지방법원 성남지원 분당등기소',a:'경기 성남시 분당구 불정로406번길 21'};
 const SEONGNAM_ETC     = {n:'수원지방법원 성남지원 등기과',a:'경기 성남시 수정구 산성대로 451'};
 const PYEONGTAEK = {ambiguous:true, opts:[
@@ -1020,20 +989,18 @@ const METRO_RE = /^(서울|부산|대구|인천|광주|대전|울산)/;
 
 function tokens(addr){ return (addr||'').trim().split(/\s+/); }
 
-// 취득세 신고지 (구청/시청/군청)
 function findTaxOffice(addr){
   const p = tokens(addr);
   const gu = p.find(x=>x.endsWith('구'));
   const si = p.find(x=>x.endsWith('시'));
   const gun = p.find(x=>x.endsWith('군'));
-  if(METRO_RE.test(addr) && gu) return gu+'청';   // 특별·광역시 자치구 → 구청
-  if(si) return si+'청';                           // 도 지역 → 시청 (행정구 무시)
+  if(METRO_RE.test(addr) && gu) return gu+'청';
+  if(si) return si+'청';
   if(gun) return gun+'청';
   if(gu) return gu+'청';
   return '관할 시·군·구청';
 }
 
-// 관할 등기소
 function findCourt(addr){
   const p = tokens(addr);
   if(addr.startsWith('서울')){
@@ -1046,9 +1013,6 @@ function findCourt(addr){
     return BUSAN_COURT[gu || gun] || null;
   }
   if(addr.startsWith('대구')){
-    // [오류수정] p[0]('대구' 자체)가 endsWith('구')에 걸려 항상 먼저 매칭되던 버그.
-    // 예: '대구 수성구 ...' → 종전 gu='대구'(오매칭) → DAEGU_COURT['대구'] undefined → null(PDF폴백).
-    // 즉 그동안 대구 전 지역이 실제로는 자동매핑되지 않고 있었음 → 시/도명 토큰 제외 후 검색으로 정정.
     const rest = p.slice(1);
     const gu  = rest.find(x=>x.endsWith('구'));
     const gun = rest.find(x=>x.endsWith('군'));
@@ -1060,17 +1024,17 @@ function findCourt(addr){
     return INCHEON_COURT[gu || gun] || null;
   }
   if(addr.startsWith('광주')){
-    return GWANGJU_COURT_ALL; // 광주광역시 5개구 전역 단일 등기국
+    return GWANGJU_COURT_ALL;
   }
   if(addr.startsWith('대전')){
     const gu = p.find(x=>x.endsWith('구'));
     return DAEJEON_COURT[gu] || null;
   }
   if(addr.startsWith('울산')){
-    return ULSAN_COURT_ALL; // 울산광역시 전역 단일 등기과
+    return ULSAN_COURT_ALL;
   }
   if(addr.startsWith('세종')){
-    return SEJONG_COURT_ALL; // 세종특별자치시 전역 단일
+    return SEJONG_COURT_ALL;
   }
   if(addr.startsWith('강원')){
     const si  = p.find(x=>x.endsWith('시'));
@@ -1117,11 +1081,11 @@ function findCourt(addr){
   if(addr.startsWith('경남')||addr.startsWith('경상남도')){
     const si  = p.find(x=>x.endsWith('시'));
     const gun = p.find(x=>x.endsWith('군'));
-    const gu  = p.find(x=>x.endsWith('구')); // 창원시 의창/성산/마산합포/마산회원/진해구
+    const gu  = p.find(x=>x.endsWith('구'));
     if(si==='창원시' && gu) return GYEONGNAM_COURT[gu] || GYEONGNAM_COURT[si];
     return GYEONGNAM_COURT[si || gun] || null;
   }
-  return null; // 미지원 지역 → PDF 폴백
+  return null;
 }
 
 const naverSearch = q => 'https://map.naver.com/v5/search/' + encodeURIComponent(q);
@@ -1136,11 +1100,9 @@ function applyDynamicRouting(fullAddress){
   const pdfEl = document.getElementById('pdf-helper');
   if(pdfEl) pdfEl.style.display = 'none';
 
-  // 취득세 (구청/시청/군청)
   const taxOffice = findTaxOffice(fullAddress);
   document.getElementById('ui-gucheong').textContent = taxOffice;
 
-  // 등기소
   const court = findCourt(fullAddress);
   const uiD = document.getElementById('ui-deunggi');
 
@@ -1162,12 +1124,10 @@ function applyDynamicRouting(fullAddress){
     showPdfHelper();
   }
 
-  // ── 헤더 관할 안내문 ──
   document.getElementById('ji-gucheong').textContent = taxOffice;
   document.getElementById('ji-deunggi').textContent = courtName;
   document.getElementById('jurisdiction-info').style.display = 'block';
 
-  // ── 헤더 quick-nav 버튼 ──
   const qnG = document.getElementById('qn-gucheong');
   const qnD = document.getElementById('qn-deunggi');
   document.getElementById('qn-gucheong-name').textContent = taxOffice;
@@ -1177,23 +1137,15 @@ function applyDynamicRouting(fullAddress){
   document.getElementById('quick-nav').style.display = 'grid';
   document.getElementById('jurisdiction-pdf').style.display = 'block';
 
-  // 신청서 미리보기 주소 채우기
   setFP('fp-addr', fullAddress, true);
 }
 
-/* =========================================================
-   주소 입력: URL 파라미터만 신뢰 (?addr=...&price=...)
-   ※ localStorage에 주소를 남기지 않음 — 새로고침/직접 접속 시
-     이전 테스트·다른 부동산 주소가 고정되어 보이는 문제 방지.
-     PC결제→모바일 등 기기 간 전달은 결제 후 발송되는
-     roadmap.html?addr=...&token=... 링크(URL 파라미터)로 처리.
-   ========================================================= */
 function getParam(k){ return new URLSearchParams(location.search).get(k); }
 
 window.onload = () => {
   const urlAddr = getParam('addr');
   const urlPrice = getParam('price');
-  const urlTrack = getParam('track') || 'online'; // 베타: 트랙 선택 미저장
+  const urlTrack = getParam('track') || 'online';
 
   if(urlAddr){
     applyDynamicRouting(urlAddr);
@@ -1215,15 +1167,11 @@ window.onload = () => {
 function applyManualAddr(){
   const v = document.getElementById('manual-addr').value.trim();
   if(!v){ showToast('주소를 입력해 주세요.'); return; }
-  // 세션 내(새로고침 전까지)만 유효 — localStorage 미저장
   document.getElementById('addr-missing').style.display = 'none';
   applyDynamicRouting(v);
   showToast('주소를 적용했습니다. (새로고침하면 다시 입력해야 합니다)');
 }
 
-/* =========================================================
-   인지세 자동계산 (주택 기준 · 인지세법 제3·6조)
-   ========================================================= */
 function calcStamp(){
   const price = parseFloat(document.getElementById('in-price').value);
   const out = document.getElementById('stamp-result');
@@ -1237,9 +1185,6 @@ function calcStamp(){
     : `구매할 인지세: <b>${amt.toLocaleString('ko-KR')}원</b> <span style="font-size:11px;color:var(--muted)">(${label})</span>`;
 }
 
-/* =========================================================
-   번호 릴레이 (siga / tax / bond / fee)
-   ========================================================= */
 const RELAY = { siga:'', tax:'', bond:'', fee:'' };
 const RELAY_META = {
   siga:{ hub:'hub-siga', fp:'fp-siga', label:'시가표준액', fmt:true },
@@ -1247,10 +1192,8 @@ const RELAY_META = {
   bond:{ hub:'hub-bond', fp:'fp-bond', label:'채권발행번호', fmt:false },
   fee :{ hub:'hub-fee',  fp:'fp-fee',  label:'납부번호',   fmt:false },
 };
-// 같은 data-relay 박스를 모두 찾는다(트랙별 중복 대비). 화면에 보이는 것 우선.
 function relayBoxes(key){ return [...document.querySelectorAll(`.relay-input[data-relay="${key}"]`)]; }
 function visibleRelayBox(key){ const a=relayBoxes(key); return a.find(b=>b.offsetParent!==null) || a[0] || null; }
-
 function fmtNum(v){ const n=Number(String(v).replace(/[^\d]/g,'')); return isNaN(n)?v:n.toLocaleString('ko-KR'); }
 
 function saveRelay(btn){
@@ -1263,7 +1206,6 @@ function saveRelay(btn){
   RELAY[key] = v;
   persistRelay();
   renderRelay(key);
-  // 이 릴레이가 들어있는 작업 아이템을 체크 + 진행률 (트랙 무관, DOM에서 도출)
   const item = box.closest('.action-item');
   if(item){
     const chk = item.querySelector('input[type=checkbox]');
@@ -1276,22 +1218,18 @@ function renderRelay(key){
   const m = RELAY_META[key];
   const val = RELAY[key];
   const shown = m.fmt ? fmtNum(val)+'원' : val;
-  // 모든 트랙의 동일 릴레이 박스: saved 표시 + 입력값 채우기
   relayBoxes(key).forEach(box=>{
     box.classList.add('saved');
     const inp = box.querySelector('.relay-in');
     if(inp && !inp.value) inp.value = val;
   });
-  // 허브 집계 (공통, step3)
   const hub = document.getElementById(m.hub);
   const hubV = document.getElementById(m.hub+'-v');
   const hubC = document.getElementById(m.hub+'-c');
   if(hubV){ hubV.textContent = shown; hubV.classList.remove('muted'); }
   if(hub) hub.classList.remove('empty');
   if(hubC) hubC.disabled = false;
-  // 신청서 미리보기
   setFP(m.fp, shown, true);
-  // 시가표준액 복사 버튼(2단계) 라벨 갱신
   if(key==='siga'){
     const b = document.getElementById('btn-copy-siga');
     if(b) b.innerHTML = `📋 시가표준액 ${shown} 복사`;
@@ -1309,7 +1247,6 @@ function copyRelay(key){
   const val = RELAY[key];
   if(!val){
     showToast('먼저 해당 단계에서 값을 저장해 주세요.');
-    // 입력 위치로 스크롤 (보이는 트랙의 박스)
     const box = visibleRelayBox(key);
     const step = box && box.closest('.step');
     if(step){ if(!step.classList.contains('active')) step.classList.add('active'); step.scrollIntoView({behavior:'smooth',block:'center'}); }
@@ -1318,15 +1255,9 @@ function copyRelay(key){
   copyText(String(val).replace(/\s/g,''));
 }
 
-function persistRelay(){} // 베타: localStorage 미사용
-function restoreRelay(){ recountProgress(); } // 베타: 세션 내에서만 유지
+function persistRelay(){} 
+function restoreRelay(){ recountProgress(); }
 
-/* =========================================================
-   진행/토글/모달/토스트
-   ========================================================= */
-/* =========================================================
-   트랙 전환 (online / visit)
-   ========================================================= */
 function setTrack(t){
   const tracks = ['online','visit'];
   tracks.forEach(track=>{
@@ -1336,14 +1267,12 @@ function setTrack(t){
     const btn = document.getElementById(`btn-track-${track}`);
     if(btn) btn.classList.toggle('active', track===t);
   });
-  // URL + localStorage 영속
   try{
     const u=new URL(location); u.searchParams.set('track',t); history.replaceState(null,'',u);
   }catch(e){}
   recountProgress();
 }
 
-/* 온라인 트랙 인지세 계산기 (방문 트랙과 독립) */
 function calcStampO(){
   const price = parseFloat(document.getElementById('in-price-o').value);
   const out = document.getElementById('stamp-result-o');
@@ -1472,6 +1401,18 @@ const GUIDES = {
     {text:"1. 채권 매입요청서 작성", img:"https://placehold.co/400x300/eef3ff/2a5f9e?text=Bond+Form", desc:"은행 비치 '국민주택채권 매입요청서'에 매입자명·매입금액을 적습니다. 매입액은 시가표준액 기준으로 계산됩니다."},
     {text:"2. 즉시 매도 체크", img:"https://placehold.co/400x150/fffbeb/92400e?text=Check+Sell+Immediately", desc:"가장 중요합니다. '즉시매도'에 V표시하세요. 그래야 본인부담금(할인액)만 내고 처리됩니다."}
   ],
+  'bond_online':[
+    {text:"1. 주택도시기금 사이트 접속", img:"gigum_1.jpg", desc:"채권 매입 금액을 정확히 산출하기 위해 주택도시기금(nhuf.molit.go.kr)에 접속합니다. 상단 메뉴에서 '청약/채권 > 제1종국민주택채권 > 국민주택채권매입'을 클릭하세요."},
+    {text:"2. 매입대상금액 조회 - 용도 선택", img:"gigum_2a.jpg", desc:"좌측 메뉴에서 '매입대상금액조회'를 누르고, 매입용도를 '부동산 소유권등기(주택, 아파트, 연립)'으로 선택합니다."},
+    {text:"3. 시가표준액 입력 및 채권금액 확인", img:"gigum_2b.jpg", desc:"대상물건지역을 선택하고, 미리 확인해둔 '건물분 시가표준액'을 입력 후 조회를 누릅니다. 하단에 계산된 '채권매입금액'을 꼭 메모해두세요. (신청서에 적을 금액입니다)"},
+    {text:"4. (선택) 즉시매도시 본인부담금 확인", img:"gigum_3.jpg", desc:"좌측 '고객부담금조회' 메뉴에서 방금 메모한 발행금액(채권매입금액)을 입력하면, 채권을 즉시 매도할 때 실제로 내가 은행에 지불해야 할 할인된 금액(본인부담금)을 미리 확인할 수 있습니다."},
+    {text:"5. 매입할 은행 선택 (하나은행 예시)", img:"gigum_4.jpg", desc:"금액을 확인했으면 '국민주택채권매입' 메뉴로 돌아와 본인이 이용할 은행을 선택합니다. 여기서는 '하나은행'을 기준으로 설명합니다."},
+    {text:"6. 하나은행 홈페이지 검색창 이용", img:"gigum_5.jpg", desc:"하나은행 홈페이지에 로그인 후, 우측 상단 돋보기(검색) 아이콘을 누르고 '국민주택채권매입'을 검색합니다."},
+    {text:"7. 채권 매입 메뉴로 이동", img:"gigum_6.jpg", desc:"검색 결과 중 '개인뱅킹 > 주택도시기금 > 국민주택채권 매입' 메뉴를 찾아 클릭하여 진입합니다."},
+    {text:"8. 매입자 정보 및 즉시매도 선택 (업데이트 예정)", img:"https://placehold.co/760x450/f0f4f8/6b7280?text=Step+8:+Enter+Details+and+Select+Instant+Sell", desc:"본인 매입 여부를 체크하고, 앞서 주택도시기금에서 계산해둔 '채권매입금액'을 정확히 입력합니다. 가장 중요한 것은 무조건 **'즉시매도'를 선택**하는 것입니다. (상세 사진은 영업시간에 맞추어 업데이트 예정입니다)"},
+    {text:"9. 본인부담금 결제 및 인증 (업데이트 예정)", img:"https://placehold.co/760x450/f0f4f8/6b7280?text=Step+9:+Payment+and+Authentication", desc:"수수료 등이 포함된 최종 '본인부담금'을 확인하고, 하나은행 출금 계좌 비밀번호 및 공인/금융인증서 암호를 입력하여 결제를 진행합니다. (상세 사진 업데이트 예정)"},
+    {text:"10. 채권발행번호 확인 및 저장 (업데이트 예정)", img:"https://placehold.co/760x450/f0f4f8/6b7280?text=Step+10:+Confirm+Bond+Issue+Number", desc:"결제가 완료되면 매입 영수증이 나타납니다. 영수증에 적힌 14자리 **'채권발행번호'**를 복사하거나 메모하여, 로드맵 3단계 신청서 집계란에 잊지 말고 저장해두세요! (상세 사진 업데이트 예정)"}
+  ],
   'app':[
     {text:"1. 신청서 번호 기재", img:"https://placehold.co/400x300/eef3ff/2a5f9e?text=Application+Form", desc:"1) 구청 취득세액 2) 은행 채권발행번호 3) 등기소 수수료 납부번호를 각 칸에 옮겨 적습니다. 위쪽 '신청서 옮겨적기' 집계를 그대로 보고 적으면 됩니다."}
   ]
@@ -1479,19 +1420,18 @@ const GUIDES = {
 
 let _guideData=[], _guidePage=0, _guideKey='';
 
-// [요청2] 가로형 브라우저 목업(SVG) 가이드 목록 — 세로 실사진(stamp/paper)은 제외
-const WIDE_GUIDES = new Set(['gov24docs','preinput','tax','estamp','bond','app']);
+// 모바일 가이드 화면에서 고정 폭(가로 스크롤)으로 볼 항목에 'bond_online' 추가
+const WIDE_GUIDES = new Set(['gov24docs','preinput','tax','estamp','bond_online','app']);
 
 function openGuide(key){
   const data=GUIDES[key]; if(!data) return;
-  const titles={gov24docs:'정부24 필요서류 발급 가이드',preinput:'매수자 사전입력 등록 방법',stamp:'도장 날인 가이드',paper:'취득세 신고서 작성 가이드 (서면)',tax:'취득세 신고서 가이드 (위택스)',bond:'국민주택채권 매입 가이드',app:'신청서 종합 작성법',estamp:'전자수입인지 구매·출력 가이드'};
+  const titles={gov24docs:'정부24 필요서류 발급 가이드',preinput:'매수자 사전입력 등록 방법',stamp:'도장 날인 가이드',paper:'취득세 신고서 작성 가이드 (서면)',tax:'취득세 신고서 가이드 (위택스)',bond:'국민주택채권 매입 가이드',bond_online:'국민주택채권 매입 가이드 (하나은행)',app:'신청서 종합 작성법',estamp:'전자수입인지 구매·출력 가이드'};
   document.getElementById('modalTitle').textContent = titles[key]||'작성 가이드';
 
   _guideData = data;
   _guidePage = 0;
   _guideKey = key;
 
-  // 페이지 인디케이터(점) 생성
   const dots = document.getElementById('mfDots');
   const footer = document.getElementById('modalFooter');
   footer.style.display='flex';
@@ -1519,7 +1459,6 @@ function renderGuidePage(){
       ${isWide?'<div class="guide-scroll-hint">↔ 좌우로 밀어서 전체를 확인하거나, 이미지를 눌러 확대해 보세요</div>':'<div class="guide-scroll-hint">이미지를 눌러 확대해 볼 수 있습니다</div>'}
       <div class="guide-text" style="border-bottom:none;padding-top:10px"><div class="guide-sub">${s.desc}</div></div></div>`;
 
-  // 푸터 상태 갱신
   const total=_guideData.length;
   document.getElementById('mfPrev').disabled = _guidePage===0;
   const nextBtn=document.getElementById('mfNext');
@@ -1543,11 +1482,6 @@ function guidePage(dir){
 function closeModal(){ const m=document.getElementById('guideModal'); m.classList.remove('show'); setTimeout(()=>m.style.display='none',200); }
 document.getElementById('guideModal').addEventListener('click',function(e){ if(e.target===this) closeModal(); });
 
-/* ── 가이드 이미지 확대(줌) ──
-   [정리] 기존엔 이미지마다 시작 배율이 제각각(자연폭>화면폭일 때만 축소, 아니면 100%)이라
-   화면을 꽉 채우는 이미지와 작게 뜨는 이미지가 뒤섞여 보였음(배율 중구난방).
-   → '기본' 배율을 항상 '화면 폭에 맞추기'로 통일. +는 기본의 1.8배 확대로 한 번에 이동하고
-   이미 확대 상태면 더 커지지 않으며, -는 한 번에 기본으로 복귀(더 눌러도 그대로) — 2단계 토글. */
 let _zoomNaturalW=0, _zoomFitScale=1, _zoomedIn=false;
 const ZOOM_IN_MULT=1.8;
 function openZoom(src){
@@ -1556,7 +1490,7 @@ function openZoom(src){
   img.onload=()=>{
     _zoomNaturalW = img.naturalWidth || 800;
     const stageW = document.getElementById('zoomStage').clientWidth - 20;
-    _zoomFitScale = stageW / _zoomNaturalW; // 항상 화면 폭 기준으로 통일
+    _zoomFitScale = stageW / _zoomNaturalW; 
     _zoomedIn = false;
     applyZoom();
   };
@@ -1585,7 +1519,6 @@ document.addEventListener('keydown',function(e){
     else if(document.getElementById('guideModal').classList.contains('show')) closeModal();
     return;
   }
-  // [요청] 방향키로 가이드 페이지 이동 — 줌 화면이 켜져 있을 땐 이미지 확인에 집중하도록 비활성
   if(document.getElementById('zoomOverlay').classList.contains('show')) return;
   if(!document.getElementById('guideModal').classList.contains('show')) return;
   if(e.key==='ArrowLeft'){ e.preventDefault(); guidePage(-1); }
