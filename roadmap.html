@@ -161,7 +161,7 @@ main{max-width:720px;margin:0 auto;padding:24px 14px 110px;position:relative}
 .guide-text{padding:14px 16px;font-size:14px;font-weight:600;color:var(--text);border-bottom:1px solid var(--border)}
 .guide-text span{color:var(--blue);font-weight:800;margin-right:4px}
 .guide-img-box{padding:12px;background:#f0f4f8;text-align:center;overflow-x:auto;-webkit-overflow-scrolling:touch}
-.guide-img{width:100%;max-width:100%;height:auto;border:1px solid var(--border);border-radius:6px}
+.guide-img{width:100%;max-width:680px;height:auto;border:1px solid var(--border);border-radius:6px}
 /* [요청2] 가로형 브라우저 목업(SVG) 가이드는 좁은 모바일 폭에 맞춰 축소되면 글자가 너무 작아짐 →
    고정폭으로 확대 표시하고 좌우 스크롤(또는 핀치줌)로 보게 함. 세로 실사진 가이드(stamp/paper)는 기존 100% 유지 */
 .guide-img.wide{width:600px;max-width:600px}
@@ -202,6 +202,49 @@ main{max-width:720px;margin:0 auto;padding:24px 14px 110px;position:relative}
   .relay-row button{padding:0 12px;font-size:12px}
   .relay-row input{font-size:13px;padding:9px}
   .quick-nav a{font-size:11px;padding:10px 6px}
+}
+
+/* ── PC/태블릿 사이즈업 ──
+   기존 720px 고정폭은 모바일 기준 설계라 큰 모니터에서 화면 가운데 좁고
+   작게 보이는 문제가 있었음. 모바일(아래 규칙 미적용 구간)은 그대로 두고,
+   화면이 넓어질 때만 컨테이너·폰트·이미지를 단계적으로 확대한다.
+   이미지 자료는 실제 원본 해상도를 확인해 화질 저하 없는 범위로만 확대했다:
+   - 위택스/전자수입인지/정부24 스크린샷: 1400px대 원본 → 800px까지 확대해도 선명
+   - 전자수입인지 SVG(tax_*, estamp_*): 벡터라 확대해도 화질 저하 없음
+   - 위임장 날인 사진: 원본 677px로 상대적으로 낮아 680px 캡을 유지(과확대 방지) */
+@media (min-width:860px){
+  body{font-size:15.5px}
+  .nav-inner,.back-bar-inner,.page-header-inner,main,.fb-inner{max-width:880px}
+  .page-header{padding:44px 20px 40px}
+  .page-header h1{font-size:26px}
+  .page-header p{font-size:14.5px}
+  .sc-header{padding:20px 18px}
+  .sc-title{font-size:16.5px}
+  .sc-sub{font-size:13px}
+  .sc-body{padding:20px}
+  .action-item{padding:14px}
+  .action-text label{font-size:14px}
+  .action-desc{font-size:12.5px}
+  .btn-preview{font-size:12px;padding:8px 14px}
+  .modal-content{max-width:820px}
+  .modal-title{font-size:16.5px}
+  .guide-text{font-size:15px}
+  .guide-sub{font-size:13.5px}
+  .guide-img.wide{width:720px;max-width:720px}
+}
+@media (min-width:1200px){
+  body{font-size:16.5px}
+  .nav-inner,.back-bar-inner,.page-header-inner,main,.fb-inner{max-width:980px}
+  .page-header h1{font-size:29px}
+  .page-header p{font-size:15.5px}
+  .sc-title{font-size:18px}
+  .sc-sub{font-size:13.5px}
+  .action-text label{font-size:15px}
+  .action-desc{font-size:13.5px}
+  .modal-content{max-width:920px}
+  .guide-text{font-size:16px}
+  .guide-sub{font-size:14.5px}
+  .guide-img.wide{width:820px;max-width:820px}
 }
 </style>
 </head>
