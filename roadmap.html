@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
 <title>나만의 셀프등기 로드맵 | 셀프등기24</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
 <style>
@@ -151,7 +151,7 @@ main{max-width:720px;margin:0 auto;padding:24px 14px 110px;position:relative}
 
 .modal-overlay{position:fixed;inset:0;background:rgba(26,30,46,.85);z-index:999;display:none;justify-content:center;align-items:center;padding:20px;opacity:0;transition:opacity .2s}
 .modal-overlay.show{display:flex;opacity:1}
-.modal-content{background:#fff;width:100%;max-width:720px;max-height:90vh;border-radius:var(--radius);display:flex;flex-direction:column;overflow:hidden;position:relative;transform:translateY(20px);transition:transform .2s}
+.modal-content{background:#fff;width:100%;max-width:760px;max-height:92vh;border-radius:var(--radius);display:flex;flex-direction:column;overflow:hidden;position:relative;transform:translateY(20px);transition:transform .2s}
 .modal-overlay.show .modal-content{transform:translateY(0)}
 .modal-header{padding:16px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;background:#fff;z-index:10;flex-shrink:0}
 .modal-title{font-size:15px;font-weight:700;color:var(--navy)}
@@ -160,8 +160,17 @@ main{max-width:720px;margin:0 auto;padding:24px 14px 110px;position:relative}
 .guide-step{background:#fff;border:1px solid var(--border);border-radius:8px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.04)}
 .guide-text{padding:14px 16px;font-size:14px;font-weight:600;color:var(--text);border-bottom:1px solid var(--border)}
 .guide-text span{color:var(--blue);font-weight:800;margin-right:4px}
-.guide-img-box{padding:12px;background:#f0f4f8;text-align:center}
+.guide-img-box{padding:12px;background:#f0f4f8;text-align:center;overflow-x:auto;-webkit-overflow-scrolling:touch}
 .guide-img{width:100%;max-width:100%;height:auto;border:1px solid var(--border);border-radius:6px}
+/* [요청2] 가로형 브라우저 목업(SVG) 가이드는 좁은 모바일 폭에 맞춰 축소되면 글자가 너무 작아짐 →
+   고정폭으로 확대 표시하고 좌우 스크롤(또는 핀치줌)로 보게 함. 세로 실사진 가이드(stamp/paper)는 기존 100% 유지 */
+.guide-img.wide{width:600px;max-width:600px}
+.guide-scroll-hint{font-size:11px;color:var(--muted);margin-top:6px;text-align:center}
+@media (max-width:480px){
+  .modal-overlay{padding:8px}
+  .modal-body{padding:10px}
+  .guide-img-box{padding:8px}
+}
 .guide-sub{font-size:12.5px;color:var(--muted);text-align:left;line-height:1.7;word-break:keep-all}
 /* 페이지네이션 푸터 */
 .modal-footer{flex-shrink:0;border-top:1px solid var(--border);background:#fff;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:10px}
@@ -1438,7 +1447,10 @@ const GUIDES = {
   ]
 };
 
-let _guideData=[], _guidePage=0;
+let _guideData=[], _guidePage=0, _guideKey='';
+
+// [요청2] 가로형 브라우저 목업(SVG) 가이드 목록 — 세로 실사진(stamp/paper)은 제외
+const WIDE_GUIDES = new Set(['gov24docs','preinput','tax','estamp','bond','app']);
 
 function openGuide(key){
   const data=GUIDES[key]; if(!data) return;
@@ -1447,6 +1459,7 @@ function openGuide(key){
 
   _guideData = data;
   _guidePage = 0;
+  _guideKey = key;
 
   // 페이지 인디케이터(점) 생성
   const dots = document.getElementById('mfDots');
@@ -1469,9 +1482,11 @@ function openGuide(key){
 
 function renderGuidePage(){
   const s=_guideData[_guidePage];
+  const isWide = WIDE_GUIDES.has(_guideKey);
   document.getElementById('modalBody').innerHTML =
     `<div class="guide-step"><div class="guide-text"><span>${s.text.split('.')[0]}.</span>${s.text.substring(s.text.indexOf('.')+1).trim()}</div>
-      <div class="guide-img-box"><img src="${s.img}" alt="${s.text}" class="guide-img"></div>
+      <div class="guide-img-box"><img src="${s.img}" alt="${s.text}" class="guide-img${isWide?' wide':''}"></div>
+      ${isWide?'<div class="guide-scroll-hint">↔ 좌우로 밀어서 전체를 확인하거나, 손가락으로 확대해 보세요</div>':''}
       <div class="guide-text" style="border-bottom:none;padding-top:10px"><div class="guide-sub">${s.desc}</div></div></div>`;
 
   // 푸터 상태 갱신
