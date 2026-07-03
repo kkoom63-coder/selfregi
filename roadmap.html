@@ -223,6 +223,45 @@ main{max-width:720px;margin:0 auto;padding:24px 14px 110px;position:relative}
   .relay-row input{font-size:13px;padding:9px}
   .quick-nav a{font-size:11px;padding:10px 6px}
 }
+
+/* ── [묶음1] 준비물 점검 안내 문구 (STEP0 상단) ── */
+.step-intro{background:#eef3ff;border:1px solid #cdddf5;border-left:3px solid var(--blue);border-radius:8px;padding:10px 12px;margin-bottom:12px;font-size:12px;color:var(--navy);line-height:1.6}
+.step-intro b{color:var(--blue)}
+
+/* ── [묶음1] 필수 준비서류 목록 (인라인 아코디언) ── */
+.prep-toggle{margin-top:10px}
+.prep-list{margin-top:10px;border:1px solid var(--border);border-radius:8px;overflow:hidden;background:#fff}
+.prep-group{border-bottom:1px solid var(--border)}
+.prep-group:last-child{border-bottom:none}
+.prep-group-hd{padding:9px 12px;background:#f4f7fb;font-size:12px;font-weight:800;color:var(--navy);display:flex;align-items:center;gap:6px}
+.prep-group-hd .pg-side{margin-left:auto;font-size:10.5px;font-weight:600;color:var(--muted)}
+.prep-item{display:flex;align-items:flex-start;gap:8px;padding:8px 12px;font-size:12.5px;color:var(--text);line-height:1.5;border-top:1px dashed #eef1f5;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.prep-item:first-child{border-top:none}
+.prep-item .pi-box{flex:0 0 auto;width:16px;height:16px;border:1.5px solid #c3ccd8;border-radius:4px;margin-top:1px;font-size:11px;line-height:14px;text-align:center;color:#fff;transition:all .15s}
+.prep-item.done .pi-box{background:var(--blue);border-color:var(--blue)}
+.prep-item.done .pi-box::after{content:'✓'}
+.prep-item.done .pi-tx{text-decoration:line-through;color:var(--muted)}
+.prep-item .pi-tx{flex:1}
+.prep-item .pi-tx small{display:block;color:var(--muted);font-size:11px;font-weight:400;margin-top:1px}
+.prep-star{color:#dc2626;font-weight:800;margin-right:3px}
+.prep-badge{display:inline-block;font-size:9.5px;font-weight:700;padding:1px 6px;border-radius:6px;margin-left:4px;vertical-align:middle;white-space:nowrap}
+.prep-badge.gov{background:#e5f0ff;color:var(--blue)}
+.prep-badge.hard{background:#fde8e8;color:#dc2626}
+.prep-badge.gen{background:#f1f5f9;color:#64748b}
+.prep-note{padding:9px 12px;font-size:11px;color:var(--muted);background:#fbfcfe;line-height:1.6;border-top:1px dashed #eef1f5}
+.prep-legend{display:flex;flex-wrap:wrap;gap:10px;padding:8px 12px;background:#fbfcfe;font-size:10.5px;color:var(--muted);border-top:1px solid var(--border)}
+.prep-legend span{display:inline-flex;align-items:center;gap:3px}
+
+/* ── [묶음1] 서류 편철 순서 박스 (STEP3) ── */
+.fold-box{margin-top:6px;border:1px solid #d9e2ef;border-radius:10px;overflow:hidden;background:#fff}
+.fold-hd{background:var(--navy);color:#fff;padding:9px 12px;font-size:12.5px;font-weight:800;display:flex;align-items:center;gap:6px}
+.fold-hd .fh-sub{margin-left:auto;font-size:10px;font-weight:500;opacity:.8}
+.fold-list{list-style:none;margin:0;padding:0;counter-reset:fold}
+.fold-list li{counter-increment:fold;display:flex;align-items:flex-start;gap:9px;padding:8px 12px;font-size:12.5px;color:var(--text);line-height:1.45;border-top:1px dashed #eef1f5}
+.fold-list li:first-child{border-top:none}
+.fold-list li::before{content:counter(fold);flex:0 0 auto;width:19px;height:19px;background:#eef3ff;color:var(--blue);border-radius:50%;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;margin-top:1px}
+.fold-list li small{color:var(--muted);font-weight:400;font-size:11px}
+.fold-foot{padding:9px 12px;font-size:11px;color:var(--muted);background:#fbfcfe;border-top:1px solid var(--border);line-height:1.6}
 </style>
 </head>
 <body>
@@ -310,12 +349,39 @@ main{max-width:720px;margin:0 auto;padding:24px 14px 110px;position:relative}
           <div class="sc-toggle">▼</div>
         </div>
         <div class="sc-body">
+          <div class="step-intro">아래 항목을 하나씩 확인하며, <b>준비가 끝난 항목은 체크박스를 눌러</b> 완료 표시(취소선)하세요. 빠진 서류가 있으면 등기소에서 되돌아와야 할 수 있어, 출발 전 점검이 가장 중요합니다.</div>
           <div class="action-list">
             <div class="action-item" id="item0_1">
               <input type="checkbox" id="chk0_1" onchange="updateProgress('item0_1')">
               <div class="action-text">
-                <label for="chk0_1">다운로드 받은 서류 인쇄하기</label>
-                <div class="action-desc">다운로드 폴더에서 위임장(및 신탁해지증서)을 찾아 A4용지에 단면으로 깨끗하게 인쇄하세요.</div>
+                <label for="chk0_1">셀프등기 신청 전 필수 준비서류 확인하기</label>
+                <div class="action-desc">본격적인 절차를 시작하기 전에, 매수인(본인)이 직접 준비할 서류와 매도인에게 받아야 할 서류를 먼저 점검하세요. 다운로드한 신청서·위임장은 A4 단면으로 인쇄해 함께 준비합니다. 아래 목록을 펼쳐 하나씩 확인할 수 있습니다.</div>
+                <div class="btn-row prep-toggle"><button class="btn-preview" onclick="togglePrepList(this)">📋 매수인·매도인 준비서류 목록 펼치기</button></div>
+
+                <div class="prep-list" style="display:none">
+                  <div class="prep-group">
+                    <div class="prep-group-hd">매수인(본인)이 직접 준비<span class="pg-side">눌러서 체크</span></div>
+                    <div class="prep-item" onclick="togglePrep(this)"><div class="pi-box"></div><div class="pi-tx">소유권이전등기신청서 (매매)<small>본 서비스에서 생성 → A4 인쇄</small></div></div>
+                    <div class="prep-item" onclick="togglePrep(this)"><div class="pi-box"></div><div class="pi-tx">위임장<small>본 서비스에서 생성 → A4 인쇄, 매도인 인감 날인</small></div></div>
+                    <div class="prep-item" onclick="togglePrep(this)"><div class="pi-box"></div><div class="pi-tx"><span class="prep-star">★</span>취득세(등록면허세) 납부확인서<span class="prep-badge hard">난이도 높음</span><small>위택스 온라인 신고·납부 후 출력 (가장 손이 많이 가는 단계)</small></div></div>
+                    <div class="prep-item" onclick="togglePrep(this)"><div class="pi-box"></div><div class="pi-tx">주민등록등본 (주민번호 뒷자리 포함)<span class="prep-badge gov">정부24</span></div></div>
+                    <div class="prep-item" onclick="togglePrep(this)"><div class="pi-box"></div><div class="pi-tx">건축물대장 (집합, 전유부)<span class="prep-badge gov">정부24</span></div></div>
+                    <div class="prep-item" onclick="togglePrep(this)"><div class="pi-box"></div><div class="pi-tx">토지대장 (대지권등록부)<span class="prep-badge gov">정부24</span></div></div>
+                    <div class="prep-item" onclick="togglePrep(this)"><div class="pi-box"></div><div class="pi-tx">가족관계증명서<span class="prep-badge gov">정부24</span><small>취득세 신고용 (등기신청 시에는 제출하지 않음)</small></div></div>
+                    <div class="prep-item" onclick="togglePrep(this)"><div class="pi-box"></div><div class="pi-tx">국민주택채권 매입 확인서<small>은행·온라인 매입 (타인 매입 가능)</small></div></div>
+                    <div class="prep-item" onclick="togglePrep(this)"><div class="pi-box"></div><div class="pi-tx">정부수입인지<small>전자수입인지 구입 (타인 구입 가능)</small></div></div>
+                    <div class="prep-item" onclick="togglePrep(this)"><div class="pi-box"></div><div class="pi-tx">등기신청수수료 영수필확인서<small>인터넷등기소 전자납부 (타인 납부 가능)</small></div></div>
+                    <div class="prep-item" onclick="togglePrep(this)"><div class="pi-box"></div><div class="pi-tx">부동산 거래계약신고필증 · 등기부등본 · 매매계약서 원본<span class="prep-badge gen">중개사</span><small>공인중개사에게 받으면 편리합니다 (잔금 당일 기준 등기부등본 권장)</small></div></div>
+                  </div>
+                  <div class="prep-group">
+                    <div class="prep-group-hd">매도인에게 받아야 하는 서류<span class="pg-side">잔금일에 확인</span></div>
+                    <div class="prep-item" onclick="togglePrep(this)"><div class="pi-box"></div><div class="pi-tx">매도용 인감증명서<small>매수인 성명·주소·주민번호가 기입됐는지, 인감도장과 인감증명서가 일치하는지 확인</small></div></div>
+                    <div class="prep-item" onclick="togglePrep(this)"><div class="pi-box"></div><div class="pi-tx">주민등록초본<small>주민번호 뒷자리·전(前)주소 이력 포함</small></div></div>
+                    <div class="prep-item" onclick="togglePrep(this)"><div class="pi-box"></div><div class="pi-tx">등기권리증(등기필정보)<small>일련번호·비밀번호가 있는 스티커를 사진으로 확보</small></div></div>
+                  </div>
+                  <div class="prep-note"><b>날인 안내</b> — 매수인(본인)이 작성한 위임장에 매도인의 인감도장을 찍고, 소유권이전등기신청서에는 간인(間印)을 합니다.</div>
+                  <div class="prep-legend"><span><span class="prep-star">★</span> 준비 난이도 높음</span><span><span class="prep-badge gov">정부24</span> 정부24에서 모두 발급</span><span><span class="prep-badge gen">중개사</span> 중개사 수령 편리</span></div>
+                </div>
               </div>
             </div>
             <div class="action-item" id="item0_2">
@@ -443,10 +509,11 @@ main{max-width:720px;margin:0 auto;padding:24px 14px 110px;position:relative}
             <div class="action-item" id="itemO_4">
               <input type="checkbox" id="chkO_4" onchange="updateProgress('itemO_4')">
               <div class="action-text">
-                <label for="chkO_4">등기신청수수료 납부 (인터넷등기소 · 13,000원)</label>
-                <div class="action-desc"><a href="https://www.iros.go.kr" target="_blank" rel="noopener" style="color:var(--blue);font-weight:700;text-decoration:underline">iros.go.kr</a> → 전자납부 → 부동산 등기수수료 → e-Form(전자양식) 선택 시 13,000원. 납부번호를 저장하세요.
-                  <br><span style="font-size:10.5px;color:var(--muted)">※ 서면 방문 제출은 15,000원, e-Form 활용 시 2,000원 할인</span>
+                <label for="chkO_4">등기신청수수료 납부 (인터넷등기소 · 18,000원)</label>
+                <div class="action-desc"><a href="https://www.iros.go.kr" target="_blank" rel="noopener" style="color:var(--blue);font-weight:700;text-decoration:underline">iros.go.kr</a> → 전자납부 → 부동산 등기수수료. 본 서비스가 만든 신청서(서면방문 신청)로 제출하므로 소유권이전등기 기준 <strong>18,000원</strong>을 납부하고 납부번호를 저장하세요.
+                  <br><span style="font-size:10.5px;color:var(--muted)">※ 2025.8.1 인상 기준. 인터넷등기소 e-Form으로 옮겨 작성·출력해 제출하면 15,000원(2,000원 절약)</span>
                 </div>
+                <div class="btn-row"><button class="btn-preview" onclick="openGuide('fee')">🔍 등기신청수수료 납부 가이드</button></div>
                 <div class="relay-input" data-relay="fee" style="margin-top:10px">
                   <label>④ 수수료 납부번호 기록 (선택)</label>
                   <div class="relay-row">
@@ -630,7 +697,7 @@ main{max-width:720px;margin:0 auto;padding:24px 14px 110px;position:relative}
               </div>
               <div class="relay-hub-item empty" id="hub-fee">
                 <div class="rh-n">4</div>
-                <div class="rh-tx"><div class="rl">등기수수료 납부번호 (등기소)</div><div class="rv muted" id="hub-fee-v">아래에서 입력</div></div>
+                <div class="rh-tx"><div class="rl">등기수수료 납부번호 (등기소)</div><div class="rv muted" id="hub-fee-v">납부 후 입력</div></div>
                 <button class="rh-copy" id="hub-fee-c" onclick="copyRelay('fee')" disabled>복사</button>
               </div>
             </div>
@@ -643,7 +710,7 @@ main{max-width:720px;margin:0 auto;padding:24px 14px 110px;position:relative}
                 <div class="fp-row"><div class="fp-label">시가표준액</div><div class="fp-val blank" id="fp-siga">2단계에서 입력</div></div>
                 <div class="fp-row"><div class="fp-label">국민주택채권 발행번호</div><div class="fp-val blank" id="fp-bond">2단계에서 입력</div></div>
                 <div class="fp-row"><div class="fp-label">취득세(등록면허세)</div><div class="fp-val blank" id="fp-tax">1단계에서 입력</div></div>
-                <div class="fp-row"><div class="fp-label">등기신청수수료</div><div class="fp-val blank" id="fp-fee">아래에서 입력</div></div>
+                <div class="fp-row"><div class="fp-label">등기신청수수료</div><div class="fp-val blank" id="fp-fee">납부 후 입력</div></div>
                 <div class="fp-row"><div class="fp-label">등기의무자 / 권리자</div><div class="fp-val blank">현장에서 직접 기재</div></div>
               </div>
               <div style="padding:0 14px 12px"><div class="fp-note">금색으로 채워진 칸은 저장한 값입니다. 나머지 인적사항은 신청서 양식에 직접 적으시면 됩니다. 칸 위치·명칭은 등기소 양식에 따라 다를 수 있어요.</div></div>
@@ -651,11 +718,11 @@ main{max-width:720px;margin:0 auto;padding:24px 14px 110px;position:relative}
           </div>
 
           <div class="action-list">
-            <div class="action-item" id="item3_1">
+            <div class="action-item" id="item3_1" data-track="visit">
               <input type="checkbox" id="chk3_1" onchange="updateProgress('item3_1')">
               <div class="action-text">
-                <label for="chk3_1">등기신청수수료 납부 (15,000원)</label>
-                <div class="action-desc">등기소 내 무인발급기나 은행 창구에서 서면방문용 수수료(1.5만원) 납부 후 영수증을 챙기세요.</div>
+                <label for="chk3_1">등기신청수수료 납부 (18,000원)</label>
+                <div class="action-desc">등기소 내 무인발급기나 은행 창구에서 서면방문용 수수료(1.8만원)를 납부한 뒤 영수필확인서를 챙기세요. <span style="font-size:10.5px;color:var(--muted)">※ 2025.8.1 인상 기준</span></div>
                 <!-- 릴레이: 수수료 납부번호 -->
                 <div class="relay-input" data-relay="fee">
                   <label>④ 수수료 납부번호 기록 (선택)</label>
@@ -679,7 +746,26 @@ main{max-width:720px;margin:0 auto;padding:24px 14px 110px;position:relative}
               <input type="checkbox" id="chk3_3" onchange="updateProgress('item3_3')">
               <div class="action-text">
                 <label for="chk3_3">서류 편철 후 접수창구 제출</label>
-                <div class="action-desc">신청서, 취득세영수증, 수입인지, 위임장, 매매계약서, 인감증명서 등 모든 서류를 모아 제출하면 끝납니다! 🎉</div>
+                <div class="action-desc">아래 순서로 서류를 위에서부터 겹쳐(편철) 접수창구에 제출하면 끝납니다! 🎉</div>
+                <div class="fold-box">
+                  <div class="fold-hd">📎 서류 편철 순서 <span class="fh-sub">위 → 아래</span></div>
+                  <ol class="fold-list">
+                    <li>소유권이전등기신청서</li>
+                    <li>취득세(등록면허세) 납부확인서</li>
+                    <li>등기신청수수료 영수필확인서</li>
+                    <li>국민주택채권 매입 확인서</li>
+                    <li>위임장</li>
+                    <li>매도용 인감증명서 <small>(매수인 성명·주민번호·주소 기재)</small></li>
+                    <li>매도인 주민등록초본 <small>(주민번호 뒷자리·전주소 이력 포함)</small></li>
+                    <li>매수인 주민등록등본 <small>(주민번호 뒷자리 포함)</small></li>
+                    <li>토지대장(대지권등록부)</li>
+                    <li>건축물대장(집합, 전유부)</li>
+                    <li>부동산거래계약신고필증</li>
+                    <li>정부수입인지</li>
+                    <li>매매계약서 원본</li>
+                  </ol>
+                  <div class="fold-foot">편철 순서는 등기소·담당자에 따라 다소 다를 수 있습니다. 접수 전 <b>관할 등기소 안내데스크</b>에서 최종 확인하시면 가장 정확합니다.</div>
+                </div>
               </div>
             </div>
           </div>
@@ -1296,6 +1382,16 @@ function calcStampO(){
 
 function toggleStep(stepId){ document.getElementById(stepId).classList.toggle('active'); }
 
+// [묶음1] 필수 준비서류 목록 펼치기/접기 + 개별 항목 체크(취소선) — 진행률 카운터와 무관한 로컬 토글
+function togglePrepList(btn){
+  const list = btn.closest('.action-text').querySelector('.prep-list');
+  if(!list) return;
+  const open = list.style.display !== 'none';
+  list.style.display = open ? 'none' : 'block';
+  btn.textContent = open ? '📋 매수인·매도인 준비서류 목록 펼치기' : '📋 준비서류 목록 접기';
+}
+function togglePrep(row){ row.classList.toggle('done'); }
+
 function showToast(msg){
   const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show');
   clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove('show'),2600);
@@ -1423,17 +1519,26 @@ const GUIDES = {
   ],
   'app':[
     {text:"1. 신청서 번호 기재", img:"https://placehold.co/400x300/eef3ff/2a5f9e?text=Application+Form", desc:"1) 구청 취득세액 2) 은행 채권발행번호 3) 등기소 수수료 납부번호를 각 칸에 옮겨 적습니다. 위쪽 '신청서 옮겨적기' 집계를 그대로 보고 적으면 됩니다."}
+  ],
+  'fee':[
+    {text:"1. 인터넷등기소 로그인", img:"https://placehold.co/760x420/eef3ff/2a5f9e?text=Step+1:+iros.go.kr+Login", desc:"인터넷등기소(iros.go.kr)에 접속해 로그인합니다. 공동인증서 또는 간편인증으로 로그인하세요. (초안 이미지 — 실제 화면 캡처 반영 예정)"},
+    {text:"2. 전자납부 → 등기신청수수료 전자납부 선택", img:"https://placehold.co/760x420/eef3ff/2a5f9e?text=Step+2:+Select+Fee+Payment", desc:"상단 메뉴 '전자납부'를 클릭한 뒤, '부동산' 항목의 '등기신청수수료 전자납부'를 선택합니다. (초안 이미지)"},
+    {text:"3. 납부정보 작성 - 신규 클릭", img:"https://placehold.co/760x420/fffbeb/92400e?text=Step+3:+Click+New", desc:"'납부정보 작성중' 탭에서 우측 하단 '신규'를 클릭해 새 납부건을 만듭니다. (초안 이미지)"},
+    {text:"4. 등기소 선택 및 납부금액 입력", img:"https://placehold.co/760x420/fffbeb/92400e?text=Step+4:+Fee+18%2C000won", desc:"'전체 등기소 검색'으로 관할 등기소를 선택하고, 납부금액에 <strong>18,000원</strong>(서면방문 신청 기준, 2025.8.1 인상 반영)을 입력합니다. 로그인 상태면 납부의무자란은 자동으로 채워집니다. (초안 이미지 — 실제 화면에서는 금액이 다를 수 있으니 최신 수수료표를 함께 확인하세요)"},
+    {text:"5. 결제방법 선택 및 이용동의", img:"https://placehold.co/760x420/eef3ff/2a5f9e?text=Step+5:+Payment+Method", desc:"신용카드결제·금융기관 계좌이체·간편결제 중 하나를 선택합니다. 개인정보 수집·이용, 결제대행 서비스 약관에 모두 동의 체크 후 '결제'를 누르세요. (초안 이미지)"},
+    {text:"6. 결제성공 확인", img:"https://placehold.co/760x420/eef3ff/2a5f9e?text=Step+6:+Payment+Success", desc:"결제 승인이 완료되면 거래번호·거래일시·결제금액이 표시됩니다. '확인'을 누르면 납부정보 목록으로 돌아갑니다. (초안 이미지)"},
+    {text:"7. 등기소제출용 출력", img:"https://placehold.co/760x420/fffbeb/92400e?text=Step+7:+Print+Receipt", desc:"결제 완료된 납부정보를 체크한 뒤 '등기소제출용 출력'을 클릭해 영수필확인서를 인쇄합니다. ★ 이 확인서는 발급일로부터 약 2~3주 내에만 사용할 수 있으니, 등기소 방문 일정에 맞춰 미리 출력해두세요. (초안 이미지 — 유효기간은 발급 시점 화면에서 꼭 재확인)"}
   ]
 };
 
 let _guideData=[], _guidePage=0, _guideKey='';
 
 // 모바일 가이드 화면에서 고정 폭(가로 스크롤)으로 볼 항목에 'bond_online' 추가
-const WIDE_GUIDES = new Set(['gov24docs','preinput','tax','estamp','bond_online','app']);
+const WIDE_GUIDES = new Set(['gov24docs','preinput','tax','estamp','bond_online','app','fee']);
 
 function openGuide(key){
   const data=GUIDES[key]; if(!data) return;
-  const titles={gov24docs:'정부24 필요서류 발급 가이드',preinput:'매수자 사전입력 등록 방법',stamp:'도장 날인 가이드',paper:'취득세 신고서 작성 가이드 (서면)',tax:'취득세 신고서 가이드 (위택스)',bond:'국민주택채권 매입 가이드',bond_online:'국민주택채권 매입 가이드 (하나은행)',app:'신청서 종합 작성법',estamp:'전자수입인지 구매·출력 가이드'};
+  const titles={gov24docs:'정부24 필요서류 발급 가이드',preinput:'매수자 사전입력 등록 방법',stamp:'도장 날인 가이드',paper:'취득세 신고서 작성 가이드 (서면)',tax:'취득세 신고서 가이드 (위택스)',bond:'국민주택채권 매입 가이드',bond_online:'국민주택채권 매입 가이드 (하나은행)',app:'신청서 종합 작성법',estamp:'전자수입인지 구매·출력 가이드',fee:'등기신청수수료 납부 가이드 (인터넷등기소)'};
   document.getElementById('modalTitle').textContent = titles[key]||'작성 가이드';
 
   _guideData = data;
@@ -1497,8 +1602,12 @@ function openZoom(src){
   const img=document.getElementById('zoomImg');
   img.onload=()=>{
     _zoomNaturalW = img.naturalWidth || 800;
-    const stageW = document.getElementById('zoomStage').clientWidth - 20;
-    _zoomFitScale = stageW / _zoomNaturalW; 
+    const natH = img.naturalHeight || 600;
+    const stage = document.getElementById('zoomStage');
+    const stageW = stage.clientWidth - 20;
+    const stageH = stage.clientHeight - 20;
+    // contain: 가로·세로를 모두 화면 안에 맞춰, 비율이 다른 이미지도 균일한 크기로 열리게 함
+    _zoomFitScale = Math.min(stageW / _zoomNaturalW, stageH / natH);
     _zoomedIn = false;
     applyZoom();
   };
