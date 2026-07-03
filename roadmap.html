@@ -739,7 +739,7 @@ main{max-width:720px;margin:0 auto;padding:24px 14px 110px;position:relative}
               <div class="action-text">
                 <label for="chk3_2">소유권이전등기 신청서 작성</label>
                 <div class="action-desc">등기소 비치 양식에 위 집계의 번호들을 옮겨 적습니다.</div>
-                <div class="btn-row"><button class="btn-preview" onclick="openGuide('app')">🔍 신청서 종합 작성법</button></div>
+                <div class="btn-row"><button class="btn-preview" onclick="openGuide('app')">🔍 신청서 종합 작성 가이드</button></div>
               </div>
             </div>
             <div class="action-item" id="item3_3">
@@ -748,21 +748,20 @@ main{max-width:720px;margin:0 auto;padding:24px 14px 110px;position:relative}
                 <label for="chk3_3">서류 편철 후 접수창구 제출</label>
                 <div class="action-desc">아래 순서로 서류를 위에서부터 겹쳐(편철) 접수창구에 제출하면 끝납니다! 🎉</div>
                 <div class="fold-box">
-                  <div class="fold-hd">📎 서류 편철 순서 <span class="fh-sub">위 → 아래</span></div>
+                  <div class="fold-hd">📎 서류 편철 순서</div>
                   <ol class="fold-list">
                     <li>소유권이전등기신청서</li>
-                    <li>취득세(등록면허세) 납부확인서</li>
+                    <li>취득세(등록면허세) 영수필확인서</li>
                     <li>등기신청수수료 영수필확인서</li>
-                    <li>국민주택채권 매입 확인서</li>
+                    <li>매매목록 <small>(부동산 2개 이상 또는 다수 당사자인 경우에만)</small></li>
                     <li>위임장</li>
-                    <li>매도용 인감증명서 <small>(매수인 성명·주민번호·주소 기재)</small></li>
-                    <li>매도인 주민등록초본 <small>(주민번호 뒷자리·전주소 이력 포함)</small></li>
-                    <li>매수인 주민등록등본 <small>(주민번호 뒷자리 포함)</small></li>
-                    <li>토지대장(대지권등록부)</li>
-                    <li>건축물대장(집합, 전유부)</li>
+                    <li>자격자대리인 자필서명정보 <small>(법무사 등 대리 신청 시에만 · 셀프등기는 해당 없음)</small></li>
+                    <li>매도용 인감증명서 <small>(매수인 성명·주민번호·주소 오기재 확인 필수)</small></li>
+                    <li>주민등록표초본(등본) <small>(매도인·매수인 각 · 주소 변동 시 전주소 이력 포함)</small></li>
+                    <li>토지·집합건축물대장등본</li>
                     <li>부동산거래계약신고필증</li>
-                    <li>정부수입인지</li>
-                    <li>매매계약서 원본</li>
+                    <li>매매계약서 <small>(전자수입인지 첨부)</small></li>
+                    <li>등기필증(등기권리증)</li>
                   </ol>
                   <div class="fold-foot">편철 순서는 등기소·담당자에 따라 다소 다를 수 있습니다. 접수 전 <b>관할 등기소 안내데스크</b>에서 최종 확인하시면 가장 정확합니다.</div>
                 </div>
@@ -1518,7 +1517,17 @@ const GUIDES = {
     {text:"10. 채권발행번호 확인 및 저장 (업데이트 예정)", img:"https://placehold.co/760x450/f0f4f8/6b7280?text=Step+10:+Confirm+Bond+Issue+Number", desc:"결제가 완료되면 매입 영수증이 나타납니다. 영수증에 적힌 14자리 **'채권발행번호'**를 복사하거나 메모하여, 로드맵 3단계 신청서 집계란에 잊지 말고 저장해두세요! (상세 사진 업데이트 예정)"}
   ],
   'app':[
-    {text:"1. 신청서 번호 기재", img:"https://placehold.co/400x300/eef3ff/2a5f9e?text=Application+Form", desc:"1) 구청 취득세액 2) 은행 채권발행번호 3) 등기소 수수료 납부번호를 각 칸에 옮겨 적습니다. 위쪽 '신청서 옮겨적기' 집계를 그대로 보고 적으면 됩니다."}
+    {text:"1. 부동산의 표시 (구분건물)", img:"https://placehold.co/760x460/eef3ff/2a5f9e?text=1.+Property+Description", desc:"신청서 맨 위 '부동산의 표시'란은 <strong>등기기록(표제부)과 100% 일치</strong>해야 합니다. 구분건물(아파트 등)은 ①1동 건물의 표시(소재·지번·건물명칭·도로명주소) ②전유부분(건물번호·구조·면적) ③대지권의 표시(토지 표시·대지권 종류·비율)를 차례로 적고, 하단에 부동산거래계약신고필증의 <strong>거래신고관리번호와 거래가액</strong>을 기재합니다. (예: 서울특별시 서초구 서초동 100 · 샛별아파트 가동 · 1-101 · 86.03㎡ · 대지권 3,000분의 500) ★ 등기기록과 대장의 표시가 다르면 먼저 부동산표시변경등기부터 해야 합니다. (작성 예시 이미지는 준비 후 교체 예정)"},
+    {text:"2. 등기원인과 그 연월일", img:"https://placehold.co/760x460/eef3ff/2a5f9e?text=2.+Cause+%26+Date", desc:"등기원인은 <strong>'매매'</strong>로, 연월일은 <strong>매매계약서상 계약일</strong>을 적습니다. (예: 2017년 4월 3일 매매) ★ 잔금일이 아니라 계약일입니다. (작성 예시 이미지는 준비 후 교체 예정)"},
+    {text:"3. 등기의 목적", img:"https://placehold.co/760x460/eef3ff/2a5f9e?text=3.+Purpose", desc:"소유권 전부를 이전하는 일반 매매는 <strong>'소유권이전'</strong>으로 적습니다. (지분 일부이전·공유지분 이전은 '소유권 일부이전' 또는 '갑구 ○번 □□□지분 전부이전' 등으로 다르게 적습니다) (작성 예시 이미지는 준비 후 교체 예정)"},
+    {text:"4. 이전할 지분", img:"https://placehold.co/760x460/eef3ff/2a5f9e?text=4.+Share+to+Transfer", desc:"소유권 <strong>전부이전이면 비워둡니다.</strong> 일부이전(공유지분 이전 포함)일 때만 '공유자 지분 ○분의 ○'처럼 부동산 전체에 대한 지분을 적습니다. (작성 예시 이미지는 준비 후 교체 예정)"},
+    {text:"5. 등기의무자(매도인) · 등기권리자(매수인)", img:"https://placehold.co/760x460/eef3ff/2a5f9e?text=5.+Seller+%26+Buyer", desc:"등기의무자란에 <strong>매도인</strong>의 성명·주민등록번호·주소를, 등기권리자란에 <strong>매수인</strong>의 성명·주민등록번호·주소를 적습니다. ★ 매도인 표시는 <strong>등기기록상 소유자 표시와 일치</strong>해야 하고, 매수인 주소는 주민등록등(초)본과 일치해야 합니다. (작성 예시 이미지는 준비 후 교체 예정)"},
+    {text:"6. 시가표준액 · 국민주택채권 매입금액 · 발행번호", img:"https://placehold.co/760x460/fffbeb/92400e?text=6.+Std+Value+%26+Bond", desc:"부동산별 시가표준액은 <strong>취득세(등록면허세) 납부서(OCR)에 적힌 시가표준액</strong>을 그대로 옮겨 적고, 그 옆에 국민주택채권 매입금액을 적은 뒤 매입총액을 기재합니다. 국민주택채권 발행번호는 채권 매입 시 은행에서 받은 번호를 적습니다. ★ 로드맵 3단계 <strong>'신청서 옮겨적기' 집계</strong>에 저장해둔 시가표준액·채권발행번호를 그대로 보고 적으면 됩니다. 하나의 신청사건에는 하나의 발행번호만 기재합니다. (작성 예시 이미지는 준비 후 교체 예정)"},
+    {text:"7. 취득세·지방교육세·농어촌특별세 및 세액합계", img:"https://placehold.co/760x460/fffbeb/92400e?text=7.+Tax+Amounts", desc:"취득세(등록면허세) <strong>영수필확인서</strong>에 적힌 금액을 보고 취득세·지방교육세·농어촌특별세를 각 기재하고, 세액합계란에 합계를 적습니다. 농어촌특별세는 납부액이 없으면 비워둡니다. (작성 예시 이미지는 준비 후 교체 예정)"},
+    {text:"8. 등기신청수수료", img:"https://placehold.co/760x460/fffbeb/92400e?text=8.+Registration+Fee", desc:"부동산 1개당 <strong>18,000원</strong>(서면방문 신청 기준)을 적고, 로드맵에 저장한 <strong>납부번호</strong>를 기재합니다. 영수필확인서를 신청서에 첨부합니다. ★ 여러 건을 은행 현금으로 일괄납부한 경우에만 '일괄납부' 칸을 씁니다. (작성 예시 이미지는 준비 후 교체 예정)"},
+    {text:"9. 등기의무자의 등기필정보", img:"https://placehold.co/760x460/eef3ff/2a5f9e?text=9.+Seller+Reg.+Info", desc:"매도인이 소유권 취득 시 <strong>'등기필정보 및 등기완료통지서'</strong>(보안스티커 부착)를 받은 경우, 거기 적힌 부동산고유번호·성명·일련번호·비밀번호를 각 기재합니다(원본을 제출하는 것이 아니며, 한번 쓴 비밀번호는 재사용 불가). 반대로 예전 <strong>'등기필증'</strong>을 받은 경우에는 이 란을 비우고 등기필증 원본을 제출합니다. (작성 예시 이미지는 준비 후 교체 예정)"},
+    {text:"10. 첨부서면", img:"https://placehold.co/760x460/eef3ff/2a5f9e?text=10.+Attachments", desc:"신청서에 첨부하는 서면과 각 통수를 적습니다(매매계약서·취득세영수필확인서·등기신청수수료 영수필확인서·인감증명서·주민등록표초본·토지/집합건축물대장등본·부동산거래계약신고필증·위임장 등). (작성 예시 이미지는 준비 후 교체 예정)"},
+    {text:"11. 신청인 및 제출 법원", img:"https://placehold.co/760x460/eef3ff/2a5f9e?text=11.+Applicant+%26+Court", desc:"작성 날짜를 적고, 신청인(매도인·매수인)의 성명·전화번호를 기재한 뒤 <strong>매도인은 인감도장을 날인</strong>(또는 본인서명사실확인서 서명), 매수인은 도장 날인 또는 서명합니다. 맨 아래 <strong>관할 지방법원(등기국/등기과·소)</strong> 이름을 적고 '귀중'으로 마무리합니다. ★ 신청서가 여러 장이면 장 사이에 간인(또는 각 장 서명)을 합니다. (작성 예시 이미지는 준비 후 교체 예정)"}
   ],
   'fee':[
     {text:"1. 인터넷등기소 로그인", img:"https://placehold.co/760x420/eef3ff/2a5f9e?text=Step+1:+iros.go.kr+Login", desc:"인터넷등기소(iros.go.kr)에 접속해 로그인합니다. 공동인증서 또는 간편인증으로 로그인하세요. (초안 이미지 — 실제 화면 캡처 반영 예정)"},
@@ -1538,7 +1547,7 @@ const WIDE_GUIDES = new Set(['gov24docs','preinput','tax','estamp','bond_online'
 
 function openGuide(key){
   const data=GUIDES[key]; if(!data) return;
-  const titles={gov24docs:'정부24 필요서류 발급 가이드',preinput:'매수자 사전입력 등록 방법',stamp:'도장 날인 가이드',paper:'취득세 신고서 작성 가이드 (서면)',tax:'취득세 신고서 가이드 (위택스)',bond:'국민주택채권 매입 가이드',bond_online:'국민주택채권 매입 가이드 (하나은행)',app:'신청서 종합 작성법',estamp:'전자수입인지 구매·출력 가이드',fee:'등기신청수수료 납부 가이드 (인터넷등기소)'};
+  const titles={gov24docs:'정부24 필요서류 발급 가이드',preinput:'매수자 사전입력 등록 방법',stamp:'도장 날인 가이드',paper:'취득세 신고서 작성 가이드 (서면)',tax:'취득세 신고서 가이드 (위택스)',bond:'국민주택채권 매입 가이드',bond_online:'국민주택채권 매입 가이드 (하나은행)',app:'신청서 종합 작성 가이드',estamp:'전자수입인지 구매·출력 가이드',fee:'등기신청수수료 납부 가이드 (인터넷등기소)'};
   document.getElementById('modalTitle').textContent = titles[key]||'작성 가이드';
 
   _guideData = data;
