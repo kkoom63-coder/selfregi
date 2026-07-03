@@ -164,7 +164,15 @@ main{max-width:720px;margin:0 auto;padding:24px 14px 110px;position:relative}
 .guide-img{width:100%;max-width:680px;height:auto;border:1px solid var(--border);border-radius:6px;cursor:zoom-in}
 /* [요청2] 가로형 브라우저 목업(SVG) 가이드는 좁은 모바일 폭에 맞춰 축소되면 글자가 너무 작아짐 →
    고정폭으로 확대 표시하고 좌우 스크롤(또는 핀치줌)로 보게 함. 세로 실사진 가이드(stamp/paper)는 기존 100% 유지 */
-.guide-img.wide{width:760px;max-width:760px}
+/* 모바일(기본): 화면폭 맞춤 — 상세 글자는 이미지 탭 → 줌 오버레이로 확인 */
+.guide-img.wide{width:100%;max-width:680px}
+/* PC/태블릿(768px+): 고정폭 확대 표시로 가독성 확보 */
+@media (min-width:768px){
+  .guide-img.wide{width:760px;max-width:760px}
+}
+/* 안내 문구 화면별 분기 */
+.hint-mo{display:inline}.hint-pc{display:none}
+@media (min-width:768px){.hint-mo{display:none}.hint-pc{display:inline}}
 .guide-scroll-hint{font-size:11px;color:var(--muted);margin-top:6px;text-align:center}
 
 /* [요청] 가이드 이미지 클릭 시 전체화면 확대(줌) 오버레이 */
@@ -1456,7 +1464,7 @@ function renderGuidePage(){
   document.getElementById('modalBody').innerHTML =
     `<div class="guide-step"><div class="guide-text"><span>${s.text.split('.')[0]}.</span>${s.text.substring(s.text.indexOf('.')+1).trim()}</div>
       <div class="guide-img-box"><img src="${s.img}" alt="${s.text}" class="guide-img${isWide?' wide':''}" onclick="openZoom('${s.img}')"></div>
-      ${isWide?'<div class="guide-scroll-hint">↔ 좌우로 밀어서 전체를 확인하거나, 이미지를 눌러 확대해 보세요</div>':'<div class="guide-scroll-hint">이미지를 눌러 확대해 볼 수 있습니다</div>'}
+      ${isWide?'<div class="guide-scroll-hint"><span class="hint-pc">↔ 좌우로 밀어서 전체를 확인하거나, 이미지를 눌러 확대해 보세요</span><span class="hint-mo">이미지를 눌러 확대해 볼 수 있습니다</span></div>':'<div class="guide-scroll-hint">이미지를 눌러 확대해 볼 수 있습니다</div>'}
       <div class="guide-text" style="border-bottom:none;padding-top:10px"><div class="guide-sub">${s.desc}</div></div></div>`;
 
   const total=_guideData.length;
