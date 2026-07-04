@@ -360,6 +360,12 @@ main{max-width:720px;margin:0 auto;padding:24px 14px 110px;position:relative}
 
                 <div class="prep-list" style="display:none">
                   <div class="prep-group">
+                    <div class="prep-group-hd">매도인에게 받아야 하는 서류<span class="pg-side">잔금일에 확인</span></div>
+                    <div class="prep-item" onclick="togglePrep(this)"><div class="pi-box"></div><div class="pi-tx">매도용 인감증명서<small>매수인 성명·주소·주민번호가 기입됐는지, 인감도장과 인감증명서가 일치하는지 확인</small></div></div>
+                    <div class="prep-item" onclick="togglePrep(this)"><div class="pi-box"></div><div class="pi-tx">주민등록초본<small>주민번호 뒷자리·전(前)주소 이력 포함</small></div></div>
+                    <div class="prep-item" onclick="togglePrep(this)"><div class="pi-box"></div><div class="pi-tx">등기권리증(등기필정보)<small>일련번호·비밀번호가 있는 스티커를 사진으로 확보</small></div></div>
+                  </div>
+                  <div class="prep-group">
                     <div class="prep-group-hd">매수인(본인)이 직접 준비<span class="pg-side">눌러서 체크</span></div>
                     <div class="prep-item" onclick="togglePrep(this)"><div class="pi-box"></div><div class="pi-tx">소유권이전등기신청서 (매매)<small>본 서비스에서 생성 → A4 인쇄</small></div></div>
                     <div class="prep-item" onclick="togglePrep(this)"><div class="pi-box"></div><div class="pi-tx">위임장<small>본 서비스에서 생성 → A4 인쇄, 매도인 인감 날인</small></div></div>
@@ -372,12 +378,6 @@ main{max-width:720px;margin:0 auto;padding:24px 14px 110px;position:relative}
                     <div class="prep-item" onclick="togglePrep(this)"><div class="pi-box"></div><div class="pi-tx">정부수입인지<small>전자수입인지 구입 (타인 구입 가능)</small></div></div>
                     <div class="prep-item" onclick="togglePrep(this)"><div class="pi-box"></div><div class="pi-tx">등기신청수수료 영수필확인서<small>인터넷등기소 전자납부 (타인 납부 가능)</small></div></div>
                     <div class="prep-item" onclick="togglePrep(this)"><div class="pi-box"></div><div class="pi-tx">부동산 거래계약신고필증 · 등기부등본 · 매매계약서 원본<span class="prep-badge gen">중개사</span><small>공인중개사에게 받으면 편리합니다 (잔금 당일 기준 등기부등본 권장)</small></div></div>
-                  </div>
-                  <div class="prep-group">
-                    <div class="prep-group-hd">매도인에게 받아야 하는 서류<span class="pg-side">잔금일에 확인</span></div>
-                    <div class="prep-item" onclick="togglePrep(this)"><div class="pi-box"></div><div class="pi-tx">매도용 인감증명서<small>매수인 성명·주소·주민번호가 기입됐는지, 인감도장과 인감증명서가 일치하는지 확인</small></div></div>
-                    <div class="prep-item" onclick="togglePrep(this)"><div class="pi-box"></div><div class="pi-tx">주민등록초본<small>주민번호 뒷자리·전(前)주소 이력 포함</small></div></div>
-                    <div class="prep-item" onclick="togglePrep(this)"><div class="pi-box"></div><div class="pi-tx">등기권리증(등기필정보)<small>일련번호·비밀번호가 있는 스티커를 사진으로 확보</small></div></div>
                   </div>
                   <div class="prep-note"><b>날인 안내</b> — 매수인(본인)이 작성한 위임장에 매도인의 인감도장을 찍고, 소유권이전등기신청서에는 간인(間印)을 합니다.</div>
                   <div class="prep-legend"><span><span class="prep-star">★</span> 준비 난이도 높음</span><span><span class="prep-badge gov">정부24</span> 정부24에서 모두 발급</span><span><span class="prep-badge gen">중개사</span> 중개사 수령 편리</span></div>
@@ -515,12 +515,12 @@ main{max-width:720px;margin:0 auto;padding:24px 14px 110px;position:relative}
                 </div>
                 <div class="btn-row"><button class="btn-preview" onclick="openGuide('fee')">🔍 등기신청수수료 납부 가이드</button></div>
                 <div class="relay-input" data-relay="fee" style="margin-top:10px">
-                  <label>④ 수수료 납부번호 기록 (선택)</label>
+                  <label>④ 수수료 납부번호 기록 (필수)</label>
                   <div class="relay-row">
                     <input type="text" class="relay-in" placeholder="납부 후 발급되는 납부번호">
                     <button onclick="saveRelay(this)">저장</button>
                   </div>
-                  <div class="relay-desc">3단계 신청서 집계에 자동 반영됩니다.</div>
+                  <div class="relay-desc">3단계 소유권이전 신청서 반영을 위해 기재하여 주시기 바랍니다.</div>
                 </div>
               </div>
             </div>
@@ -725,12 +725,12 @@ main{max-width:720px;margin:0 auto;padding:24px 14px 110px;position:relative}
                 <div class="action-desc">등기소 내 무인발급기나 은행 창구에서 서면방문용 수수료(1.8만원)를 납부한 뒤 영수필확인서를 챙기세요. <span style="font-size:10.5px;color:var(--muted)">※ 2025.8.1 인상 기준</span></div>
                 <!-- 릴레이: 수수료 납부번호 -->
                 <div class="relay-input" data-relay="fee">
-                  <label>④ 수수료 납부번호 기록 (선택)</label>
+                  <label>④ 수수료 납부번호 기록 (필수)</label>
                   <div class="relay-row">
                     <input type="text" class="relay-in" placeholder="영수증의 납부번호">
                     <button onclick="saveRelay(this)">저장</button>
                   </div>
-                  <div class="relay-desc">위 집계와 신청서 미리보기에 바로 반영됩니다.</div>
+                  <div class="relay-desc">3단계 소유권이전 신청서 반영을 위해 기재하여 주시기 바랍니다.</div>
                 </div>
               </div>
             </div>
@@ -1299,11 +1299,7 @@ function saveRelay(btn){
   RELAY[key] = v;
   persistRelay();
   renderRelay(key);
-  const item = box.closest('.action-item');
-  if(item){
-    const chk = item.querySelector('input[type=checkbox]');
-    if(chk && !chk.checked){ chk.checked = true; updateProgress(item.id); }
-  }
+  // [요청4] 저장 버튼은 값 저장만 담당 — 체크박스(취소선)는 사용자가 직접 눌렀을 때만 반응하도록 자동 체크 로직 제거
   showToast('저장 완료! 3단계 신청서 집계에 반영됩니다.');
 }
 
@@ -1530,13 +1526,14 @@ const GUIDES = {
     {text:"11. 신청인 및 제출 법원", img:"https://placehold.co/760x460/eef3ff/2a5f9e?text=11.+Applicant+%26+Court", desc:"작성 날짜를 적고, 신청인(매도인·매수인)의 성명·전화번호를 기재한 뒤 <strong>매도인은 인감도장을 날인</strong>(또는 본인서명사실확인서 서명), 매수인은 도장 날인 또는 서명합니다. 맨 아래 <strong>관할 지방법원(등기국/등기과·소)</strong> 이름을 적고 '귀중'으로 마무리합니다. ★ 신청서가 여러 장이면 장 사이에 간인(또는 각 장 서명)을 합니다. (작성 예시 이미지는 준비 후 교체 예정)"}
   ],
   'fee':[
-    {text:"1. 인터넷등기소 로그인", img:"https://placehold.co/760x420/eef3ff/2a5f9e?text=Step+1:+iros.go.kr+Login", desc:"인터넷등기소(iros.go.kr)에 접속해 로그인합니다. 공동인증서 또는 간편인증으로 로그인하세요. (초안 이미지 — 실제 화면 캡처 반영 예정)"},
-    {text:"2. 전자납부 → 등기신청수수료 전자납부 선택", img:"https://placehold.co/760x420/eef3ff/2a5f9e?text=Step+2:+Select+Fee+Payment", desc:"상단 메뉴 '전자납부'를 클릭한 뒤, '부동산' 항목의 '등기신청수수료 전자납부'를 선택합니다. (초안 이미지)"},
-    {text:"3. 납부정보 작성 - 신규 클릭", img:"https://placehold.co/760x420/fffbeb/92400e?text=Step+3:+Click+New", desc:"'납부정보 작성중' 탭에서 우측 하단 '신규'를 클릭해 새 납부건을 만듭니다. (초안 이미지)"},
-    {text:"4. 등기소 선택 및 납부금액 입력", img:"https://placehold.co/760x420/fffbeb/92400e?text=Step+4:+Fee+18%2C000won", desc:"'전체 등기소 검색'으로 관할 등기소를 선택하고, 납부금액에 <strong>18,000원</strong>(서면방문 신청 기준, 2025.8.1 인상 반영)을 입력합니다. 로그인 상태면 납부의무자란은 자동으로 채워집니다. (초안 이미지 — 실제 화면에서는 금액이 다를 수 있으니 최신 수수료표를 함께 확인하세요)"},
-    {text:"5. 결제방법 선택 및 이용동의", img:"https://placehold.co/760x420/eef3ff/2a5f9e?text=Step+5:+Payment+Method", desc:"신용카드결제·금융기관 계좌이체·간편결제 중 하나를 선택합니다. 개인정보 수집·이용, 결제대행 서비스 약관에 모두 동의 체크 후 '결제'를 누르세요. (초안 이미지)"},
-    {text:"6. 결제성공 확인", img:"https://placehold.co/760x420/eef3ff/2a5f9e?text=Step+6:+Payment+Success", desc:"결제 승인이 완료되면 거래번호·거래일시·결제금액이 표시됩니다. '확인'을 누르면 납부정보 목록으로 돌아갑니다. (초안 이미지)"},
-    {text:"7. 등기소제출용 출력", img:"https://placehold.co/760x420/fffbeb/92400e?text=Step+7:+Print+Receipt", desc:"결제 완료된 납부정보를 체크한 뒤 '등기소제출용 출력'을 클릭해 영수필확인서를 인쇄합니다. ★ 이 확인서는 발급일로부터 약 2~3주 내에만 사용할 수 있으니, 등기소 방문 일정에 맞춰 미리 출력해두세요. (초안 이미지 — 유효기간은 발급 시점 화면에서 꼭 재확인)"}
+    {text:"1. 인터넷등기소 로그인", img:"irosfee_1.jpg", desc:"인터넷등기소(iros.go.kr)에 접속해 우측 상단 '로그인'을 클릭합니다. 공동인증서(구 공인인증서) 또는 간편인증으로 로그인하세요. (실제 화면)"},
+    {text:"2. 등기지원 서비스 → 부동산등기 신청수수료", img:"irosfee_2.jpg", desc:"상단 메뉴 '등기지원 서비스'를 클릭하면 나오는 메뉴에서 '전자납부' 항목의 '부동산등기 신청수수료'를 선택합니다. (실제 화면)"},
+    {text:"3. 납부 신규작성", img:"irosfee_3.jpg", desc:"'납부작성현황' 화면입니다. 업무구분이 '부동산등기'인지 확인하고, 우측 하단 '납부신규작성'을 클릭해 새 납부건을 만듭니다. (실제 화면)"},
+    {text:"4. 등기소 선택 및 납부금액 입력", img:"irosfee_4.jpg", desc:"'전체등기소 검색'으로 관할 등기소를 선택하고, 납부금액(건별)에 <strong>18,000원</strong>(서면방문 신청 기준, 2025.8.1 인상 반영)을 입력합니다. 납부의무자(납부인)·(주민)등록번호를 입력한 뒤 우측 하단 '저장 후 결제'를 누릅니다. (실제 화면)"},
+    {text:"5. 결제방법 선택", img:"irosfee_5.jpg", desc:"결제 요약정보와 결제요청 목록을 확인한 뒤, 신용카드결제·금융기관계좌이체·선불전자지급수단·간편결제 중 하나를 선택합니다. (실제 화면)"},
+    {text:"6. 카드종류 선택 및 이용동의", img:"irosfee_6.jpg", desc:"카드사를 선택하고, 하단 '이용동의(필수동의)'에서 '전체동의'에 체크한 뒤 '결제'를 누릅니다. (실제 화면)"},
+    {text:"7. 납부완료 후 영수필확인서 출력", img:"irosfee_7.jpg", desc:"결제가 완료되면 '납부완료현황' 탭에서 방금 결제한 내역을 확인할 수 있습니다. 해당 건을 체크하고 우측 하단 '영수필확인서 출력'을 눌러 인쇄하세요. ★ 이 확인서는 발급일로부터 약 2~3주 내에만 사용할 수 있으니, 등기소 방문 일정에 맞춰 미리 출력해두세요."},
+    {text:"8. 영수필확인서 확인 및 납부번호 기재", img:"fee_receipt.svg", desc:"출력된 영수필확인서(법원제출용)에는 등기소명·납부금액과 함께 <strong>납부번호</strong>가 적혀 있습니다. 이 납부번호는 <strong>소유권이전등기 신청서 3단계(등기신청수수료란)</strong>에 그대로 옮겨 적어야 하므로, 아래 로드맵의 '수수료 납부번호 기록'에 저장해두면 신청서 집계에 자동 반영됩니다. (재현 이미지 — 실제 서식을 단순화해 재구성)"}
   ]
 };
 
@@ -1611,12 +1608,11 @@ function openZoom(src){
   const img=document.getElementById('zoomImg');
   img.onload=()=>{
     _zoomNaturalW = img.naturalWidth || 800;
-    const natH = img.naturalHeight || 600;
     const stage = document.getElementById('zoomStage');
     const stageW = stage.clientWidth - 20;
-    const stageH = stage.clientHeight - 20;
-    // contain: 가로·세로를 모두 화면 안에 맞춰, 비율이 다른 이미지도 균일한 크기로 열리게 함
-    _zoomFitScale = Math.min(stageW / _zoomNaturalW, stageH / natH);
+    // fit-to-width: 이미지 원본 해상도·종횡비와 무관하게 항상 같은 폭으로 열어
+    // 모든 가이드라인 모달의 확대 사이즈를 통일함. 세로가 긴 이미지는 위아래로 스크롤해서 봄.
+    _zoomFitScale = stageW / _zoomNaturalW;
     _zoomedIn = false;
     applyZoom();
   };

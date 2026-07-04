@@ -1,0 +1,95 @@
+<svg viewBox="0 0 760 560" xmlns="http://www.w3.org/2000/svg" font-family="'Noto Sans KR','Malgun Gothic',sans-serif">
+  <rect x="0" y="0" width="760" height="560" fill="#eef2f6"/>
+
+  <!-- 예시 워터마크 -->
+  <text x="700" y="26" text-anchor="end" font-size="11" fill="#9aa5b1" font-weight="700">예시(재현) 이미지</text>
+
+  <!-- 문서 카드 -->
+  <rect x="40" y="36" width="680" height="470" rx="6" fill="#ffffff" stroke="#d1d9e6" stroke-width="1.5"/>
+
+  <!-- 헤더 -->
+  <text x="66" y="66" font-size="12" fill="#6b7280" font-weight="600">대한민국 법원 인터넷등기소</text>
+  <text x="66" y="90" font-size="17" fill="#1e3a5f" font-weight="800">등기신청수수료 등 전자납부 영수필확인서</text>
+  <text x="66" y="110" font-size="13" fill="#2a5f9e" font-weight="700">(법원제출용)</text>
+  <line x1="66" y1="122" x2="694" y2="122" stroke="#e2e8f0" stroke-width="1.5"/>
+
+  <!-- 표 -->
+  <g font-size="13">
+    <!-- Row 1 : 등기소명 / 관서계좌 -->
+    <rect x="66" y="140" width="628" height="44" fill="none" stroke="#d1d9e6" stroke-width="1"/>
+    <line x1="176" y1="140" x2="176" y2="184" stroke="#d1d9e6"/>
+    <line x1="396" y1="140" x2="396" y2="184" stroke="#d1d9e6"/>
+    <line x1="506" y1="140" x2="506" y2="184" stroke="#d1d9e6"/>
+    <rect x="66" y="140" width="110" height="44" fill="#f5f7fa"/>
+    <rect x="396" y="140" width="110" height="44" fill="#f5f7fa"/>
+    <text x="86" y="167" fill="#374151" font-weight="700">등기소명</text>
+    <text x="196" y="167" fill="#111827">○○지방법원 등기국</text>
+    <text x="416" y="167" fill="#374151" font-weight="700">관서계좌</text>
+    <text x="518" y="167" fill="#111827">00-000-0000</text>
+
+    <!-- Row 2 : 납부금액 / 납부번호 (납부번호 강조) -->
+    <rect x="66" y="184" width="628" height="44" fill="none" stroke="#d1d9e6" stroke-width="1"/>
+    <line x1="176" y1="184" x2="176" y2="228" stroke="#d1d9e6"/>
+    <line x1="396" y1="184" x2="396" y2="228" stroke="#d1d9e6"/>
+    <line x1="506" y1="184" x2="506" y2="228" stroke="#d1d9e6"/>
+    <rect x="66" y="184" width="110" height="44" fill="#f5f7fa"/>
+    <rect x="396" y="184" width="110" height="44" fill="#f5f7fa"/>
+    <text x="86" y="211" fill="#374151" font-weight="700">납부금액</text>
+    <text x="196" y="211" fill="#111827" font-weight="700">18,000원</text>
+    <text x="416" y="211" fill="#374151" font-weight="700">납부번호</text>
+    <text x="518" y="211" fill="#111827" font-weight="700">1234-06-1234567</text>
+
+    <!-- 납부번호 셀 강조 박스 -->
+    <rect x="398" y="186" width="292" height="40" rx="4" fill="none" stroke="#e02424" stroke-width="2"/>
+    <text x="398" y="246" fill="#e02424" font-size="11.5" font-weight="700">★ 이 번호를 신청서 3단계 등기신청수수료란에 옮겨 적으세요</text>
+
+    <!-- Row 3 : 납부의무자 성명 / 등록번호 -->
+    <rect x="66" y="256" width="628" height="44" fill="none" stroke="#d1d9e6" stroke-width="1"/>
+    <line x1="176" y1="256" x2="176" y2="300" stroke="#d1d9e6"/>
+    <line x1="396" y1="256" x2="396" y2="300" stroke="#d1d9e6"/>
+    <line x1="506" y1="256" x2="506" y2="300" stroke="#d1d9e6"/>
+    <rect x="66" y="256" width="110" height="44" fill="#f5f7fa"/>
+    <rect x="396" y="256" width="110" height="44" fill="#f5f7fa"/>
+    <text x="86" y="277" fill="#374151" font-weight="700" font-size="11.5">납부의무자</text>
+    <text x="86" y="291" fill="#374151" font-weight="700" font-size="11.5">(납부인) 성명</text>
+    <text x="196" y="283" fill="#111827">홍길동 (예시)</text>
+    <text x="416" y="277" fill="#374151" font-weight="700" font-size="11.5">(주민)</text>
+    <text x="416" y="291" fill="#374151" font-weight="700" font-size="11.5">등록번호</text>
+    <text x="518" y="283" fill="#111827">9○○○○○-1○○○○○○</text>
+
+    <!-- Row 4 : 결제유형 -->
+    <rect x="66" y="300" width="628" height="40" fill="none" stroke="#d1d9e6" stroke-width="1"/>
+    <rect x="66" y="300" width="110" height="40" fill="#f5f7fa"/>
+    <text x="86" y="325" fill="#374151" font-weight="700">결제유형</text>
+    <text x="196" y="325" fill="#111827">신용카드</text>
+  </g>
+
+  <!-- 바코드 + 문의처 -->
+  <g>
+    <rect x="66" y="356" width="2" height="30" fill="#1f2937"/>
+    <rect x="70" y="356" width="4" height="30" fill="#1f2937"/>
+    <rect x="76" y="356" width="2" height="30" fill="#1f2937"/>
+    <rect x="80" y="356" width="3" height="30" fill="#1f2937"/>
+    <rect x="86" y="356" width="2" height="30" fill="#1f2937"/>
+    <rect x="90" y="356" width="5" height="30" fill="#1f2937"/>
+    <rect x="98" y="356" width="2" height="30" fill="#1f2937"/>
+    <rect x="103" y="356" width="3" height="30" fill="#1f2937"/>
+    <rect x="109" y="356" width="2" height="30" fill="#1f2937"/>
+    <rect x="114" y="356" width="4" height="30" fill="#1f2937"/>
+    <rect x="121" y="356" width="2" height="30" fill="#1f2937"/>
+    <rect x="126" y="356" width="3" height="30" fill="#1f2937"/>
+    <rect x="133" y="356" width="2" height="30" fill="#1f2937"/>
+    <rect x="138" y="356" width="5" height="30" fill="#1f2937"/>
+    <rect x="146" y="356" width="2" height="30" fill="#1f2937"/>
+    <text x="66" y="400" font-size="12" fill="#374151" font-weight="700">대한민국 법원 인터넷등기소 (1544-0770)</text>
+  </g>
+
+  <!-- 절취선 -->
+  <line x1="66" y1="418" x2="694" y2="418" stroke="#9aa5b1" stroke-width="1.2" stroke-dasharray="6,5"/>
+  <text x="380" y="436" text-anchor="middle" font-size="10.5" fill="#9aa5b1">— 절취선 —</text>
+  <text x="380" y="456" text-anchor="middle" font-size="11.5" fill="#6b7280">아래에 동일한 서식의 '납부자보관용' 사본이 이어집니다</text>
+
+  <!-- 유효기간 안내 박스 -->
+  <rect x="66" y="466" width="628" height="30" rx="6" fill="#fffbeb" stroke="#f0d075" stroke-width="1.3"/>
+  <text x="380" y="486" text-anchor="middle" font-size="12" fill="#92400e" font-weight="700">이 영수필확인서는 발급 화면에 표시된 유효기간(통상 2~3주) 내에만 사용할 수 있습니다.</text>
+</svg>
