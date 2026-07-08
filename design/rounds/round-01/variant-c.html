@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>셀프등기24 — 법무사 없이 직접 소유권이전등기</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@latest/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<!-- variant-c : 히어로 진단위젯 중심 / 다크 없음 / 근거=연도별 카운터 / 로드맵=카드 스택+블러 / gold=CTA 버튼만 / 압축(Cantor8) 여백 -->
+<style>
+  :root{
+    --navy:#1e3a5f; --blue:#2a5f9e; --gold:#b8952e;
+    --ink:#16233a; --muted:#5b6b82; --line:#e6eaf0; --bg:#ffffff; --soft:#f6f8fb; --max:1080px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,system-ui,sans-serif;color:var(--ink);background:var(--bg);font-weight:400;line-height:1.55;-webkit-font-smoothing:antialiased;letter-spacing:-.01em}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:var(--max);margin:0 auto;padding:0 22px}
+  .eyebrow{font-size:.78rem;font-weight:800;letter-spacing:.08em;color:rgba(30,58,95,.6);text-transform:uppercase;margin-bottom:12px}
+  .disp{font-weight:900;letter-spacing:-.035em;line-height:1.07}
+  section{padding:76px 0}         /* 압축 밀도 */
+  .foot-note{font-size:.75rem;color:var(--muted);margin-top:12px}
+  .btn{display:inline-flex;align-items:center;gap:8px;font-weight:800;background:var(--gold);color:#231a00;padding:14px 24px;border-radius:9px;font-size:1rem;transition:.18s;letter-spacing:-.01em}
+  .btn:hover{background:#a9871f;color:#fff}
+  .btn-ghost{background:transparent;color:var(--navy);border:1px solid var(--line);padding:13px 20px;font-weight:800;border-radius:9px}
+  .btn-ghost:hover{border-color:var(--navy)}
+  :focus-visible{outline:3px solid var(--blue);outline-offset:3px;border-radius:6px}
+  .sec-head{margin-bottom:26px}
+  .sec-head h2{font-size:1.9rem}
+  @media(min-width:820px){.sec-head h2{font-size:2.5rem}}
+
+  header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.9);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:60px}
+  .logo{font-weight:900;letter-spacing:-.03em;font-size:1.1rem;color:var(--navy)}
+  .logo b{color:var(--gold)}
+  .menu{display:flex;gap:24px;font-size:.92rem;color:var(--muted)}
+  .menu a:hover{color:var(--navy)}
+  .nav .btn{padding:9px 16px;font-size:.88rem}
+  @media(max-width:820px){.menu{display:none}}
+
+  /* hero diagnostic-centered */
+  .hero{padding:64px 0 60px;text-align:center}
+  .hero h1{font-size:2.6rem;max-width:16ch;margin:0 auto}
+  @media(min-width:820px){.hero h1{font-size:4.5rem}}
+  .hero .sub{font-size:1.05rem;color:var(--muted);max-width:34ch;margin:18px auto 0}
+  .diag{margin:34px auto 0;max-width:680px;background:#fff;border:1px solid var(--line);border-radius:18px;padding:26px;box-shadow:0 18px 50px -30px rgba(30,58,95,.35);text-align:left}
+  .diag .dlabel{font-size:.78rem;font-weight:800;letter-spacing:.08em;color:rgba(30,58,95,.6);text-transform:uppercase}
+  .diag h3{font-weight:900;letter-spacing:-.03em;font-size:1.35rem;margin:8px 0 20px}
+  .qgrid{display:grid;gap:16px}
+  @media(min-width:640px){.qgrid{grid-template-columns:repeat(3,1fr)}}
+  .qcol .q{font-weight:800;margin-bottom:9px;font-size:.9rem}
+  .opts{display:flex;gap:7px;flex-wrap:wrap}
+  .opt{border:1px solid var(--line);background:#fff;border-radius:8px;padding:8px 12px;font-size:.88rem;cursor:pointer;transition:.15s;color:var(--ink)}
+  .opt[aria-pressed="true"]{border-color:var(--navy);background:var(--navy);color:#fff;font-weight:800}
+  .dfoot{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:22px;padding-top:18px;border-top:1px solid var(--line)}
+  .dres{font-size:.95rem;font-weight:800;color:var(--navy)}
+  .dres span{color:var(--muted);font-weight:400}
+
+  /* manifesto */
+  .manifesto{background:var(--soft)}
+  .manifesto .lead{font-size:1.9rem;font-weight:900;letter-spacing:-.03em;line-height:1.16;max-width:20ch}
+  .manifesto p{max-width:40ch;color:var(--muted);margin-top:18px}
+  @media(min-width:820px){.manifesto .lead{font-size:2.8rem}}
+
+  /* year counters */
+  .years{display:grid;gap:0;border:1px solid var(--line);border-radius:16px;overflow:hidden}
+  @media(min-width:720px){.years{grid-template-columns:repeat(3,1fr)}}
+  .yr{padding:30px 26px;border-bottom:1px solid var(--line)}
+  @media(min-width:720px){.yr{border-bottom:0;border-right:1px solid var(--line)}.yr:last-child{border-right:0}}
+  .yr .y{font-size:.8rem;font-weight:800;letter-spacing:.06em;color:var(--muted)}
+  .yr .c{font-weight:900;letter-spacing:-.04em;font-size:3.4rem;line-height:1.05;color:var(--navy);margin-top:6px}
+  @media(min-width:820px){.yr .c{font-size:4.4rem}}
+  .yr .d{font-size:.8rem;color:var(--muted);margin-top:6px}
+
+  /* roadmap card stack + blur */
+  .stack{position:relative;display:grid;gap:14px;margin-top:6px}
+  @media(min-width:720px){.stack{grid-template-columns:repeat(3,1fr)}}
+  .rc{border:1px solid var(--line);border-radius:14px;padding:22px;background:#fff}
+  .rc .k{font-size:.72rem;font-weight:800;letter-spacing:.06em;color:var(--blue)}
+  .rc .t{font-weight:800;font-size:1.05rem;margin-top:8px}
+  .rc .p{font-size:.88rem;color:var(--muted);margin-top:6px}
+  .rc.blur{position:relative;overflow:hidden}
+  .rc.blur .t,.rc.blur .p{filter:blur(4px);user-select:none}
+  .rc.blur::after{content:"진입 후 순서대로 공개";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:.82rem;font-weight:800;color:var(--navy);background:rgba(246,248,251,.55)}
+  .rc.only{border-color:var(--gold);background:#fffdf6}
+  .rc.only .k{color:var(--gold)}
+
+  /* steps4 */
+  .steps4{display:grid;gap:18px}
+  @media(min-width:720px){.steps4{grid-template-columns:repeat(4,1fr)}}
+  .s4{border-top:2px solid var(--navy);padding-top:14px}
+  .s4 .n{font-weight:900;font-size:2.1rem;color:var(--navy);letter-spacing:-.04em;line-height:1}
+  .s4 .h{font-weight:800;margin:9px 0 5px}
+  .s4 .d{font-size:.88rem;color:var(--muted)}
+
+  .news{display:grid;gap:14px}
+  @media(min-width:720px){.news{grid-template-columns:repeat(3,1fr)}}
+  .ncard{border:1px solid var(--line);border-radius:12px;padding:20px;background:#fff}
+  .ncard .src{font-size:.74rem;color:var(--muted);font-weight:800;letter-spacing:.04em}
+  .ncard .h{font-weight:800;margin-top:10px;font-size:1.02rem;line-height:1.32}
+
+  .honesty{background:var(--soft);border-radius:16px;padding:32px 26px}
+  .honesty ul{list-style:none;display:grid;gap:13px}
+  .honesty li{padding-left:20px;position:relative}
+  .honesty li::before{content:"";position:absolute;left:0;top:9px;width:7px;height:7px;background:var(--gold);border-radius:2px}
+  .trust{margin-top:18px;font-weight:800;color:var(--navy)}
+
+  details{border-bottom:1px solid var(--line)}
+  .qa{border-top:1px solid var(--line)}
+  summary{cursor:pointer;list-style:none;padding:20px 0;font-weight:800;font-size:1.05rem;display:flex;justify-content:space-between;gap:16px}
+  summary::-webkit-details-marker{display:none}
+  summary .pm{color:var(--blue);font-weight:900}
+  details[open] summary .pm{transform:rotate(45deg)}
+  .qa .ans{padding:0 0 20px;color:var(--muted);max-width:56ch;font-size:.95rem}
+
+  .final{text-align:center;background:var(--soft)}
+  .final h2{font-size:2.3rem}
+  @media(min-width:820px){.final h2{font-size:3.6rem}}
+  .final p{color:var(--muted);margin:18px auto 26px;max-width:34ch}
+
+  footer{background:#0f1d31;color:#c7d3e4;padding:52px 0 40px;font-size:.88rem}
+  footer .cols{display:grid;gap:26px}
+  @media(min-width:720px){footer .cols{grid-template-columns:2fr 1fr 1fr}}
+  footer a:hover{color:#fff}
+  .disc{margin-top:24px;padding-top:20px;border-top:1px solid rgba(255,255,255,.12);font-size:.77rem;color:#8ea1bd;line-height:1.7}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <div class="logo">셀프등기<b>24</b></div>
+    <nav class="menu"><a href="#make">서류 만들기</a><a href="#calc">취득세 계산기</a><a href="#road">로드맵</a><a href="#qa">Q&amp;A</a></nav>
+    <a href="#make" class="btn">서류 만들기</a>
+  </div>
+</header>
+
+<!-- S1 히어로 : 진단 위젯 중심 -->
+<section class="hero">
+  <div class="wrap">
+    <div class="eyebrow">셀프 소유권이전등기 · 30초 진단</div>
+    <h1 class="disp">내 케이스, 직접 등기할 수 있을까요?</h1>
+    <p class="sub">법무사 수수료 약 120만원, 순서만 알면 직접 아낄 수 있습니다.</p>
+
+    <div class="diag" id="diag">
+      <div class="dlabel">3문항 미니 진단</div>
+      <h3>30초면 가능 여부와 예상 절약액이 나옵니다.</h3>
+      <div class="qgrid">
+        <div class="qcol"><div class="q">어떤 거래?</div><div class="opts" data-group="g1"><button class="opt" aria-pressed="false">매매</button><button class="opt" aria-pressed="false">증여</button></div></div>
+        <div class="qcol"><div class="q">부동산 종류?</div><div class="opts" data-group="g2"><button class="opt" aria-pressed="false">아파트</button><button class="opt" aria-pressed="false">오피스텔</button></div></div>
+        <div class="qcol"><div class="q">대출 있나요?</div><div class="opts" data-group="g3"><button class="opt" aria-pressed="false">없음</button><button class="opt" aria-pressed="false">있음</button></div></div>
+      </div>
+      <div class="dfoot">
+        <div class="dres" id="dres">세 문항을 선택하면 결과가 나옵니다. <span></span></div>
+        <a href="#make" class="btn" style="margin-left:auto">서류 만들기</a>
+      </div>
+    </div>
+    <p class="foot-note">* 예상 절약액은 서울 중위가격 아파트 15억 원 기준 법무사 보수 추정치이며, 실제 금액은 조건에 따라 다릅니다.</p>
+  </div>
+</section>
+
+<!-- S2 매니페스토 -->
+<section class="manifesto">
+  <div class="wrap">
+    <div class="eyebrow">왜 셀프등기인가</div>
+    <p class="lead disp">소유권이전등기는 본인이 직접 신청할 수 있는 절차입니다.</p>
+    <p>부동산 가격이 오르며 법무사 보수도 함께 올랐습니다. 셀프등기24는 서류가 아니라, 순서와 길 전체를 안내합니다. (부동산등기법 제24조 참고, 최종 확인은 관할등기소)</p>
+  </div>
+</section>
+
+<!-- S3 근거 : 연도별 카운터 -->
+<section id="trend">
+  <div class="wrap">
+    <div class="sec-head"><div class="eyebrow">근거 데이터</div><h2 class="disp">해마다 늘고 있습니다.</h2></div>
+    <div class="years">
+      <div class="yr"><div class="y">2022</div><div class="c" data-count="5654">5,654</div><div class="d">당사자 직접 신청 · 출처 등기정보광장</div></div>
+      <div class="yr"><div class="y">2023</div><div class="c" data-count="6851">6,851</div><div class="d">당사자 직접 신청 · 출처 등기정보광장</div></div>
+      <div class="yr"><div class="y">2024</div><div class="c" data-count="10361">10,361</div><div class="d">당사자 직접 신청 · 출처 등기정보광장</div></div>
+    </div>
+    <p class="foot-note">재현 수치입니다. 원자료는 등기정보광장에서 확인할 수 있습니다.</p>
+  </div>
+</section>
+
+<!-- S4 제품 시연 : 카드 스택 + 블러 -->
+<section id="road">
+  <div class="wrap">
+    <div class="sec-head"><div class="eyebrow">길 전체 미리보기</div><h2 class="disp">앞 단계는 선명하게, 뒤는 진입 후에.</h2></div>
+    <div class="stack">
+      <div class="rc"><div class="k">STEP 1 · 위택스</div><div class="t">취득세 납부</div><div class="p">계산기 금액을 온라인으로 납부합니다.</div></div>
+      <div class="rc"><div class="k">STEP 2 · 은행앱</div><div class="t">국민주택채권 매입</div><div class="p">앱에서 즉시 매입·매도로 처리합니다.</div></div>
+      <div class="rc"><div class="k">STEP 3 · 전자수입인지</div><div class="t">인지 발급</div><div class="p">필요한 금액을 온라인 발급합니다.</div></div>
+      <div class="rc blur"><div class="k">STEP 4 · 인터넷등기소</div><div class="t">신청서 작성·첨부</div><div class="p">세부 화면과 번호를 순서대로 안내합니다.</div></div>
+      <div class="rc blur"><div class="k">STEP 5 · 케이스 분기</div><div class="t">상황별 추가 서류</div><div class="p">대출·공동명의 등 케이스별로 갈립니다.</div></div>
+      <div class="rc only"><div class="k">FINAL · 등기소</div><div class="t">접수 단 한 번</div><div class="p">온라인 준비 후 방문은 한 번으로 끝.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- S5 이용 절차 -->
+<section id="make">
+  <div class="wrap">
+    <div class="sec-head"><div class="eyebrow">이용 절차</div><h2 class="disp">네 단계면 접수까지 끝납니다.</h2></div>
+    <div class="steps4">
+      <div class="s4"><div class="n">1</div><div class="h">정보 입력</div><div class="d">약 5분. 거래·부동산 정보 입력.</div></div>
+      <div class="s4"><div class="n">2</div><div class="h">서류 즉시 발급</div><div class="d">위임장 등 필요 서류 바로 발급.</div></div>
+      <div class="s4"><div class="n">3</div><div class="h">로드맵 따라 진행</div><div class="d">납부·발급을 순서대로.</div></div>
+      <div class="s4"><div class="n">4</div><div class="h">등기소 접수</div><div class="d">관할등기소에 접수 완료.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- S6 뉴스룸 -->
+<section id="news" class="manifesto">
+  <div class="wrap">
+    <div class="sec-head"><div class="eyebrow">뉴스룸</div><h2 class="disp">흐름은 이미 바뀌고 있습니다.</h2></div>
+    <div class="news">
+      <div class="ncard"><div class="src">뉴스1 · 2025.08</div><div class="h">"셀프등기 문의 급증… 수수료 부담에 직접 나서는 매수인들"</div></div>
+      <div class="ncard"><div class="src">헤럴드경제 · 2026.03</div><div class="h">"집값 오르자 등기 보수도 껑충… '내 손으로' 늘어난다"</div></div>
+      <div class="ncard"><div class="src">등기정보광장 · 2025</div><div class="h">"당사자 직접 신청 3년 새 두 배 가까이 증가"</div></div>
+    </div>
+    <p class="foot-note">헤드라인 인용 카드입니다. 기사 원문은 각 매체에서 확인하세요.</p>
+  </div>
+</section>
+
+<!-- S7 가격·정책 -->
+<section id="pricing">
+  <div class="wrap">
+    <div class="sec-head"><div class="eyebrow">가격 · 정책</div><h2 class="disp">감출 이유가 없어 다 적었습니다.</h2></div>
+    <div class="honesty">
+      <ul>
+        <li>현재 <b>무료 베타</b>로 운영합니다. 유료 전환 시 사전에 고지합니다.</li>
+        <li>서비스 귀책 재발급은 <b>무제한</b>입니다.</li>
+        <li>사용자 입력 오류 재발급은 <b>정해진 횟수</b> 내 지원합니다. (환불이 아닌 재발급 지원)</li>
+      </ul>
+      <p class="trust">매도인 주민등록번호는 수집하지 않습니다.</p>
+    </div>
+  </div>
+</section>
+
+<!-- S8 Q&A -->
+<section id="qa">
+  <div class="wrap">
+    <div class="sec-head"><div class="eyebrow">Q&amp;A</div><h2 class="disp">가장 많이 묻는 불안부터.</h2></div>
+    <div class="qa">
+      <details open><summary>법무사 없이 정말 되나요?<span class="pm">+</span></summary><div class="ans">소유권이전등기는 당사자가 직접 신청할 수 있는 절차입니다(부동산등기법 제24조 참고). 최종 확인은 관할등기소에서 이루어집니다.</div></details>
+      <details><summary>은행 대출(근저당)이 있는데요?<span class="pm">+</span></summary><div class="ans">대출을 낀 거래도 진행 가능합니다. 진단에서 대출 여부를 선택하면 협조가 필요한 구간을 로드맵에 표시합니다.</div></details>
+      <details><summary>중간에 실수하면 어떻게 되나요?<span class="pm">+</span></summary><div class="ans">대부분의 오류는 접수 전 보정으로 해결됩니다. 확인 포인트 안내와 서류 재발급을 지원하며, 확정 판단은 관할등기소 기준을 따릅니다.</div></details>
+      <details><summary>얼마나 시간이 걸리나요?<span class="pm">+</span></summary><div class="ans">정보 입력 약 5분, 서류 즉시 발급. 납부·발급과 접수는 개인 일정에 따라 보통 며칠 안에 마칠 수 있습니다.</div></details>
+    </div>
+  </div>
+</section>
+
+<!-- S9 최종 CTA -->
+<section class="final">
+  <div class="wrap">
+    <h2 class="disp">오늘 발급하고, 이번 주에 접수하세요.</h2>
+    <p>순서만 알면 됩니다. 나머지는 셀프등기24가 옆에서 안내합니다.</p>
+    <a href="#make" class="btn">서류 만들기</a>
+  </div>
+</section>
+
+<!-- S10 푸터 -->
+<footer>
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <div class="logo" style="color:#fff">셀프등기<b>24</b></div>
+        <p style="margin-top:12px;max-width:38ch;color:#9db0cc">매매계약에 따른 소유권이전등기를 법무사 없이 직접 하도록 서류 자동생성과 전 과정 로드맵을 제공합니다.</p>
+      </div>
+      <div><div style="font-weight:800;color:#fff;margin-bottom:10px">서비스</div><div><a href="#make">서류 만들기</a></div><div><a href="#calc">취득세 계산기</a></div><div><a href="#road">로드맵</a></div></div>
+      <div><div style="font-weight:800;color:#fff;margin-bottom:10px">블로그</div><div><a href="https://tistory.com" target="_blank" rel="noopener">티스토리</a></div><div><a href="https://blog.naver.com" target="_blank" rel="noopener">네이버 블로그</a></div></div>
+    </div>
+    <div class="disc">
+      셀프등기24 · 간이과세자 · 사업자등록번호 000-00-00000 · 대표 000<br>
+      본 서비스는 법무사·변호사의 법률 대리 서비스가 아니며, 서류 작성 보조와 절차 안내를 제공합니다. 제공되는 정보는 참고용이며, 등기 가능 여부와 서류의 최종 유효성은 관할등기소의 판단을 따릅니다. 매도인 주민등록번호는 수집하지 않습니다.
+    </div>
+  </div>
+</footer>
+
+<script>
+  (function(){
+    var picks={};
+    document.querySelectorAll('.opts').forEach(function(g){
+      var key=g.dataset.group;
+      g.querySelectorAll('.opt').forEach(function(b){
+        b.addEventListener('click',function(){
+          g.querySelectorAll('.opt').forEach(function(x){x.setAttribute('aria-pressed','false')});
+          b.setAttribute('aria-pressed','true');picks[key]=b.textContent.trim();
+          if(picks.g1&&picks.g2&&picks.g3){
+            document.getElementById('dres').innerHTML='직접 진행 가능한 케이스입니다. <span>예상 절약 약 120만원 · 경로 미리보기 가능</span>';
+          }
+        });
+      });
+    });
+    // 연도 카운터 애니메이션 (근거 데이터 진입 시 1회)
+    var counted=false;
+    function animate(){
+      if(counted)return;counted=true;
+      document.querySelectorAll('.yr .c').forEach(function(el){
+        var target=+el.dataset.count,cur=0,step=Math.ceil(target/40);
+        var t=setInterval(function(){cur+=step;if(cur>=target){cur=target;clearInterval(t);}el.textContent=cur.toLocaleString('ko-KR');},22);
+      });
+    }
+    var trend=document.getElementById('trend');
+    if('IntersectionObserver' in window){
+      new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)animate();});},{threshold:.4}).observe(trend);
+    }else{animate();}
+  })();
+</script>
+</body>
+</html>
