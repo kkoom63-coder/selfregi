@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>셀프등기24 — 법무사 없이 직접 소유권이전등기</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@latest/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&display=swap" rel="stylesheet">
+<!-- variant-a2 : variant-a 디벨롭 — 🅐 경로선(spine) 시그니처 + 🅒 비용 서사(S3 지배 숫자 1개)
+     축: 히어로 타이포온리 / 다크 없음 / S3 단일 숫자+스파크라인 / S4 수직 경로(페이지 척추) / gold H1·종착역 각 1회 / 넉넉 -->
+<style>
+  :root{
+    --navy:#1e3a5f; --blue:#2a5f9e; --gold:#b8952e;
+    --ink:#16233a; --muted:#5b6b82; --line:#e6eaf0; --bg:#ffffff; --soft:#f6f8fb; --max:1120px;
+    --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,system-ui,sans-serif;color:var(--ink);background:var(--bg);font-weight:400;line-height:1.6;-webkit-font-smoothing:antialiased;letter-spacing:-.01em}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:var(--max);margin:0 auto;padding:0 24px}
+  .disp{font-weight:900;letter-spacing:-.035em;line-height:1.08}
+  .sec{padding:104px 0}
+  .foot-note{font-family:var(--mono);font-size:.72rem;color:var(--muted);margin-top:14px;letter-spacing:0}
+  .eyebrow{font-family:var(--mono);font-size:.72rem;font-weight:600;letter-spacing:.14em;color:var(--blue);text-transform:uppercase;margin-bottom:18px}
+  .k-gold{background:linear-gradient(transparent 60%, rgba(184,149,46,.42) 60%);padding:0 .02em}
+  .btn{display:inline-flex;align-items:center;gap:9px;font-weight:800;background:var(--navy);color:#fff;padding:15px 26px;border-radius:10px;font-size:1rem;transition:.18s;letter-spacing:-.01em}
+  .btn:hover{background:#16304f}
+  .btn .code{font-family:var(--mono);font-weight:600;font-size:.78rem;opacity:.7}
+  .btn-ghost{background:transparent;color:var(--navy);border:1px solid var(--line);padding:14px 22px}
+  .btn-ghost:hover{border-color:var(--navy)}
+  :focus-visible{outline:3px solid var(--blue);outline-offset:3px;border-radius:6px}
+  .sec-head{margin-bottom:36px}
+  .sec-head h2{font-size:2rem}
+  @media(min-width:820px){.sec-head h2{font-size:2.7rem}}
+
+  /* header */
+  header{position:sticky;top:0;z-index:60;background:rgba(255,255,255,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:66px}
+  .logo{font-weight:900;letter-spacing:-.03em;font-size:1.15rem;color:var(--navy)}
+  .logo b{color:var(--gold)}
+  .menu{display:flex;gap:28px;font-size:.95rem;color:var(--muted)}
+  .menu a:hover{color:var(--navy)}
+  .nav .btn{padding:10px 18px;font-size:.9rem}
+  @media(max-width:860px){.menu{display:none}}
+
+  /* ===== JOURNEY : 연속 경로선(spine)이 관통하는 S1~S4 ===== */
+  .journey{position:relative;--rail:74px;--cx:40px;--ds:44px;--pad:24px}
+  .spine,.spine-fill{position:absolute;top:0;width:2px;left:calc(var(--cx) - 1px)}
+  .spine{bottom:0;background:var(--line)}
+  .spine-fill{height:0;background:var(--navy);transition:height .12s linear}
+  .jsec{padding-left:var(--rail);position:relative}
+  @media(max-width:860px){.journey{--rail:48px;--cx:20px;--ds:34px}}
+
+  /* start cap (출발) */
+  .startcap{position:absolute;left:calc(var(--cx) - 6px);top:14px;width:14px;height:14px;border-radius:50%;background:#fff;border:3px solid var(--navy);z-index:2}
+  .startlabel{position:absolute;left:calc(var(--cx) + 18px);top:11px;font-family:var(--mono);font-size:.68rem;font-weight:600;letter-spacing:.12em;color:var(--navy)}
+  @media(max-width:860px){.startlabel{display:none}}
+
+  /* hero */
+  .hero{padding:96px 0 88px}
+  .hero h1{font-size:2.9rem}
+  @media(min-width:820px){.hero h1{font-size:5.2rem}}
+  .hero .sub{font-size:1.15rem;color:var(--muted);max-width:32ch;margin:28px 0 34px}
+  .hero-cta{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+
+  /* manifesto */
+  .manifesto .lead{font-size:2rem;font-weight:900;letter-spacing:-.03em;line-height:1.18;max-width:20ch}
+  .manifesto p{max-width:40ch;color:var(--muted);margin-top:22px;font-size:1.05rem}
+  @media(min-width:820px){.manifesto .lead{font-size:2.9rem}}
+
+  /* evidence : 지배 숫자 1개 + 스파크라인 (🅒) */
+  .evi{display:grid;gap:36px;align-items:center}
+  @media(min-width:860px){.evi{grid-template-columns:auto 1fr;gap:56px}}
+  .bignum{font-weight:900;letter-spacing:-.05em;line-height:.86;font-size:6.4rem;color:var(--navy)}
+  @media(min-width:820px){.bignum{font-size:9rem}}
+  .bignum .unit{font-family:var(--mono);font-weight:600;font-size:1.1rem;letter-spacing:0;color:var(--muted);margin-left:.3rem}
+  .evi .cap{font-weight:800;margin-top:10px}
+  .evi .src{font-family:var(--mono);font-size:.72rem;color:var(--muted);margin-top:8px}
+  .spark{max-width:360px}
+  .spark svg{width:100%;height:auto;display:block}
+  .spark .lbl{font-family:var(--mono);font-size:11px;fill:var(--muted)}
+  .spark .val{font-family:var(--mono);font-size:11px;font-weight:600;fill:var(--navy)}
+  .spark .note{font-size:.9rem;color:var(--muted);margin-top:14px;max-width:34ch;line-height:1.5}
+
+  /* roadmap : 경로선 위의 실제 5역 */
+  .stations{margin-top:8px}
+  .st{position:relative;display:flex;flex-direction:column;padding-bottom:38px}
+  .st:last-child{padding-bottom:0}
+  .st .dot{position:absolute;top:0;left:calc(var(--cx) - var(--ds)/2 - var(--rail) - var(--pad));
+    width:var(--ds);height:var(--ds);border-radius:50%;background:#fff;border:2px solid var(--line);
+    display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-weight:600;font-size:.82rem;color:var(--navy);z-index:2}
+  .st .code{font-family:var(--mono);font-size:.7rem;font-weight:600;letter-spacing:.1em;color:var(--blue)}
+  .st .h{font-weight:800;font-size:1.2rem;margin-top:3px}
+  .st .d{color:var(--muted);font-size:.95rem;margin-top:4px;max-width:40ch}
+  .st.lock .dot{opacity:.5}
+  .st.lock .h,.st.lock .d{opacity:.55}
+  .st.term .dot{background:var(--gold);border-color:var(--gold)}
+  .st.term .h{color:#8a6f1d}
+  .st.term .code{color:var(--gold)}
+  /* reveal */
+  .st{opacity:1}
+  .anim .st{opacity:0;transform:translateY(10px);transition:opacity .5s ease,transform .5s ease}
+  .anim .st.show{opacity:1;transform:none}
+  .anim .st.lock.show .h,.anim .st.lock.show .d{opacity:.55}
+
+  /* ===== 이하 일반 섹션 (S5~S10) ===== */
+  .soft{background:var(--soft)}
+  .steps4{display:grid;gap:22px}
+  @media(min-width:720px){.steps4{grid-template-columns:repeat(4,1fr)}}
+  .s4{border-top:2px solid var(--navy);padding-top:18px}
+  .s4 .n{font-family:var(--mono);font-weight:600;font-size:2rem;color:var(--navy);letter-spacing:-.02em;line-height:1}
+  .s4 .h{font-weight:800;margin:12px 0 6px}
+  .s4 .d{font-size:.92rem;color:var(--muted)}
+
+  .news{display:grid;gap:18px}
+  @media(min-width:720px){.news{grid-template-columns:repeat(3,1fr)}}
+  .ncard{border:1px solid var(--line);border-radius:14px;padding:24px;background:#fff}
+  .ncard .src{font-family:var(--mono);font-size:.72rem;color:var(--muted);font-weight:600;letter-spacing:.04em}
+  .ncard .h{font-weight:800;margin-top:12px;font-size:1.08rem;line-height:1.35}
+
+  .honesty{background:var(--soft);border-radius:20px;padding:44px 32px}
+  .honesty ul{list-style:none;display:grid;gap:16px}
+  .honesty li{padding-left:22px;position:relative}
+  .honesty li::before{content:"";position:absolute;left:0;top:9px;width:8px;height:8px;background:var(--gold);border-radius:2px}
+  .trust{margin-top:22px;font-weight:800;color:var(--navy)}
+
+  details{border-bottom:1px solid var(--line)}
+  .qa{border-top:1px solid var(--line)}
+  summary{cursor:pointer;list-style:none;padding:24px 0;font-weight:800;font-size:1.1rem;display:flex;justify-content:space-between;gap:16px}
+  summary::-webkit-details-marker{display:none}
+  summary .pm{color:var(--blue);font-weight:900}
+  details[open] summary .pm{transform:rotate(45deg)}
+  .qa .ans{padding:0 0 24px;color:var(--muted);max-width:56ch}
+
+  .final{text-align:center}
+  .final h2{font-size:2.6rem}
+  @media(min-width:820px){.final h2{font-size:4rem}}
+  .final p{color:var(--muted);margin:22px auto 34px;max-width:34ch}
+
+  footer{background:#0f1d31;color:#c7d3e4;padding:64px 0 48px;font-size:.9rem}
+  footer .cols{display:grid;gap:32px}
+  @media(min-width:720px){footer .cols{grid-template-columns:2fr 1fr 1fr}}
+  footer a:hover{color:#fff}
+  footer .lbl{font-family:var(--mono);font-size:.72rem;font-weight:600;letter-spacing:.1em;color:#7f93b1;margin-bottom:12px}
+  .disc{margin-top:28px;padding-top:24px;border-top:1px solid rgba(255,255,255,.12);font-size:.78rem;color:#8ea1bd;line-height:1.7}
+
+  @media(prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    .spine-fill{transition:none}
+    .anim .st{opacity:1;transform:none;transition:none}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <div class="logo">셀프등기<b>24</b></div>
+    <nav class="menu">
+      <a href="#make">서류 만들기</a><a href="#calc">취득세 계산기</a><a href="#road">로드맵</a><a href="#qa">Q&amp;A</a>
+    </nav>
+    <a href="#make" class="btn">서류 만들기 <span class="code">→</span></a>
+  </div>
+</header>
+
+<!-- ===== JOURNEY (S1~S4) : 경로선 관통 ===== -->
+<div class="journey">
+  <div class="wrap" style="position:relative">
+    <span class="spine" aria-hidden="true"></span>
+    <span class="spine-fill" id="spineFill" aria-hidden="true"></span>
+    <span class="startcap" aria-hidden="true"></span>
+    <span class="startlabel" aria-hidden="true">출발</span>
+
+    <!-- S1 히어로 : 타이포 온리 -->
+    <section class="hero jsec">
+      <div class="eyebrow">Self-Registration</div>
+      <h1 class="disp">법무사 수수료 약 <span class="k-gold">120만원</span>,<br>직접 하면 아낄 수 있습니다.</h1>
+      <p class="sub">어려워서 못하는 게 아닙니다. 제대로 된 순서를 몰랐을 뿐입니다.</p>
+      <div class="hero-cta">
+        <a href="#make" class="btn">서류 만들기 <span class="code">01 →</span></a>
+        <a href="#calc" class="btn btn-ghost">취득세 계산기</a>
+      </div>
+      <p class="foot-note">* 서울 중위가격 아파트 15억 원 기준 법무사 보수 추정치. 실제 보수는 조건에 따라 다릅니다.</p>
+    </section>
+
+    <!-- S2 매니페스토 -->
+    <section class="manifesto jsec sec">
+      <div class="eyebrow">Why Self</div>
+      <p class="lead disp">소유권이전등기는 본인이 직접 신청할 수 있는 절차입니다.</p>
+      <p>부동산 가격이 오르며 법무사 보수도 함께 올랐습니다. 셀프등기24는 서류 파일이 아니라, 그 서류까지 가는 순서와 길 전체를 안내합니다. (부동산등기법 제24조 참고, 최종 확인은 관할등기소)</p>
+    </section>
+
+    <!-- S3 근거 : 지배 숫자 1개 + 스파크라인 (🅒) -->
+    <section class="jsec sec">
+      <div class="sec-head"><div class="eyebrow">Evidence · 등기정보광장</div><h2 class="disp">3년 새, 거의 두 배로 늘었습니다.</h2></div>
+      <div class="evi">
+        <div>
+          <div class="bignum">10,361<span class="unit">건</span></div>
+          <div class="cap">2024년 당사자 직접 신청</div>
+          <div class="src">SOURCE · 등기정보광장 · 재현 수치</div>
+        </div>
+        <div class="spark">
+          <svg viewBox="0 0 360 140" role="img" aria-label="당사자 직접 신청 추이 재현: 2022년 5,654건, 2023년 6,851건, 2024년 10,361건">
+            <line x1="8" y1="112" x2="352" y2="112" stroke="#e6eaf0"/>
+            <polyline fill="none" stroke="#2a5f9e" stroke-width="2.5" points="40,96 180,78 320,30"/>
+            <circle cx="40" cy="96" r="4" fill="#2a5f9e"/><circle cx="180" cy="78" r="4" fill="#2a5f9e"/><circle cx="320" cy="30" r="5" fill="#2a5f9e"/>
+            <text class="val" x="40" y="86" text-anchor="middle">5,654</text>
+            <text class="val" x="180" y="68" text-anchor="middle">6,851</text>
+            <text class="val" x="320" y="20" text-anchor="middle">10,361</text>
+            <text class="lbl" x="40" y="130" text-anchor="middle">2022</text>
+            <text class="lbl" x="180" y="130" text-anchor="middle">2023</text>
+            <text class="lbl" x="320" y="130" text-anchor="middle">2024</text>
+          </svg>
+          <p class="note">늘어난 건 용기가 아니라 정보였습니다. 순서를 아는 사람이 늘었을 뿐입니다.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- S4 제품 시연 : 경로선 위의 실제 5역 ★ -->
+    <section id="road" class="jsec sec">
+      <div class="sec-head"><div class="eyebrow">The Path · 길 전체 미리보기</div><h2 class="disp">서류가 아니라, 손을 잡고 걷는 길입니다.</h2></div>
+      <div class="stations" id="stations">
+        <div class="st"><span class="dot">01</span><div class="code">WETAX</div><div class="h">위택스 — 취득세 납부</div><div class="d">계산기로 확인한 금액을 온라인으로 납부합니다.</div></div>
+        <div class="st"><span class="dot">02</span><div class="code">BANK APP</div><div class="h">은행앱 — 국민주택채권 매입</div><div class="d">앱에서 즉시 매입·즉시 매도로 처리합니다.</div></div>
+        <div class="st"><span class="dot">03</span><div class="code">E-STAMP</div><div class="h">전자수입인지 발급</div><div class="d">필요한 금액의 인지를 온라인으로 발급합니다.</div></div>
+        <div class="st lock"><span class="dot">04</span><div class="code">IROS · 잠금</div><div class="h">인터넷등기소 — 서류 준비</div><div class="d">세부 단계·화면별 번호·케이스 분기는 진입 후 순서대로 공개됩니다.</div></div>
+        <div class="st term"><span class="dot" aria-hidden="true"></span><div class="code">FINAL</div><div class="h">등기소 접수 — 단 한 번만.</div><div class="d">온라인 준비를 마치면, 방문은 한 번으로 끝납니다. 여기서 불안도 끝납니다.</div></div>
+      </div>
+      <p class="foot-note">위 5역은 온라인 트랙 기준입니다. 대출·공동명의 등 케이스 분기는 로드맵에서 안내됩니다.</p>
+    </section>
+  </div>
+</div>
+
+<!-- S5 이용 절차 -->
+<section id="make" class="sec">
+  <div class="wrap">
+    <div class="sec-head"><div class="eyebrow">Process · 이용 절차</div><h2 class="disp">네 단계면 접수까지 끝납니다.</h2></div>
+    <div class="steps4">
+      <div class="s4"><div class="n">01</div><div class="h">정보 입력</div><div class="d">약 5분. 거래·부동산 정보를 입력합니다.</div></div>
+      <div class="s4"><div class="n">02</div><div class="h">서류 즉시 발급</div><div class="d">위임장 등 필요한 서류를 바로 만들어 드립니다.</div></div>
+      <div class="s4"><div class="n">03</div><div class="h">로드맵 따라 진행</div><div class="d">납부·발급을 순서대로 따라갑니다.</div></div>
+      <div class="s4"><div class="n">04</div><div class="h">등기소 접수</div><div class="d">준비된 서류로 관할등기소에 접수합니다.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- S6 뉴스룸 -->
+<section id="news" class="sec soft">
+  <div class="wrap">
+    <div class="sec-head"><div class="eyebrow">Newsroom</div><h2 class="disp">흐름은 이미 바뀌고 있습니다.</h2></div>
+    <div class="news">
+      <div class="ncard"><div class="src">뉴스1 · 2025.08</div><div class="h">"셀프등기 문의 급증… 수수료 부담에 직접 나서는 매수인들"</div></div>
+      <div class="ncard"><div class="src">헤럴드경제 · 2026.03</div><div class="h">"집값 오르자 등기 보수도 껑충… '내 손으로' 늘어난다"</div></div>
+      <div class="ncard"><div class="src">등기정보광장 · 2025</div><div class="h">"당사자 직접 신청 건수 3년 새 두 배 가까이 증가"</div></div>
+    </div>
+    <p class="foot-note">헤드라인 인용 카드입니다. 기사 원문·이미지는 각 매체에서 확인하세요.</p>
+  </div>
+</section>
+
+<!-- S7 가격·정책 -->
+<section id="pricing" class="sec">
+  <div class="wrap">
+    <div class="sec-head"><div class="eyebrow">Pricing · 정직 섹션</div><h2 class="disp">감출 이유가 없어 다 적었습니다.</h2></div>
+    <div class="honesty">
+      <ul>
+        <li>현재 <b>무료 베타</b>로 운영합니다. 유료 전환 시 사전에 고지합니다.</li>
+        <li>서비스 귀책으로 인한 재발급은 <b>무제한</b>입니다.</li>
+        <li>사용자 입력 오류로 인한 재발급은 <b>정해진 횟수</b> 내에서 지원합니다. (환불이 아닌 재발급 지원)</li>
+      </ul>
+      <p class="trust">매도인 주민등록번호는 수집하지 않습니다.</p>
+    </div>
+  </div>
+</section>
+
+<!-- S8 Q&A -->
+<section id="qa" class="sec">
+  <div class="wrap">
+    <div class="sec-head"><div class="eyebrow">Q&amp;A</div><h2 class="disp">가장 많이 묻는 불안부터.</h2></div>
+    <div class="qa">
+      <details open><summary>법무사 없이 정말 되나요?<span class="pm">+</span></summary><div class="ans">소유권이전등기는 당사자가 직접 신청할 수 있는 절차입니다(부동산등기법 제24조 참고). 셀프등기24는 서류 생성과 순서 안내를 돕고, 최종 확인은 관할등기소에서 이루어집니다.</div></details>
+      <details><summary>은행 대출(근저당)이 있는데요?<span class="pm">+</span></summary><div class="ans">대출을 낀 거래도 진행 가능합니다. 진단에서 대출 여부를 선택하면 은행·법무사 협조가 필요한 구간을 로드맵에 표시해 안내합니다.</div></details>
+      <details><summary>중간에 실수하면 어떻게 되나요?<span class="pm">+</span></summary><div class="ans">대부분의 오류는 접수 전 보정으로 해결됩니다. 각 단계에서 확인 포인트를 안내하며, 서류 재발급을 지원합니다. 확정 판단은 관할등기소 기준을 따릅니다.</div></details>
+      <details><summary>얼마나 시간이 걸리나요?<span class="pm">+</span></summary><div class="ans">정보 입력은 약 5분, 서류는 즉시 발급됩니다. 납부·발급 진행과 등기소 접수는 개인 일정에 따라 보통 며칠 안에 마칠 수 있습니다.</div></details>
+    </div>
+  </div>
+</section>
+
+<!-- S9 최종 CTA -->
+<section class="sec final">
+  <div class="wrap">
+    <h2 class="disp">오늘 발급하고,<br>이번 주에 접수하세요.</h2>
+    <p>순서만 알면 됩니다. 나머지는 셀프등기24가 옆에서 안내합니다.</p>
+    <a href="#make" class="btn">서류 만들기 <span class="code">→</span></a>
+  </div>
+</section>
+
+<!-- S10 푸터 -->
+<footer>
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <div class="logo" style="color:#fff">셀프등기<b>24</b></div>
+        <p style="margin-top:14px;max-width:38ch;color:#9db0cc">매매계약에 따른 소유권이전등기를 법무사 없이 직접 하도록 서류 자동생성과 전 과정 로드맵을 제공합니다.</p>
+      </div>
+      <div>
+        <div class="lbl">SERVICE</div>
+        <div><a href="#make">서류 만들기</a></div><div><a href="#calc">취득세 계산기</a></div><div><a href="#road">로드맵</a></div>
+      </div>
+      <div>
+        <div class="lbl">BLOG</div>
+        <div><a href="https://tistory.com" target="_blank" rel="noopener">티스토리</a></div><div><a href="https://blog.naver.com" target="_blank" rel="noopener">네이버 블로그</a></div>
+      </div>
+    </div>
+    <div class="disc">
+      셀프등기24 · 간이과세자 · 사업자등록번호 000-00-00000 · 대표 000<br>
+      본 서비스는 법무사·변호사의 법률 대리 서비스가 아니며, 서류 작성 보조와 절차 안내를 제공합니다. 제공되는 정보는 참고용이며, 등기 가능 여부와 서류의 최종 유효성은 관할등기소의 판단을 따릅니다. 매도인 주민등록번호는 수집하지 않습니다.
+    </div>
+  </div>
+</footer>
+
+<script>
+  (function(){
+    var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var journey=document.querySelector('.journey');
+    var fill=document.getElementById('spineFill');
+    var stations=document.getElementById('stations');
+
+    // 경로선 진행: 스크롤에 맞춰 navy 채움
+    function updateSpine(){
+      var r=journey.getBoundingClientRect();
+      var mid=window.innerHeight*0.5;
+      var passed=Math.min(Math.max(mid-r.top,0),r.height);
+      fill.style.height=passed+'px';
+    }
+    if(reduce){ fill.style.height='100%'; }
+    else{ updateSpine(); window.addEventListener('scroll',updateSpine,{passive:true}); window.addEventListener('resize',updateSpine); }
+
+    // 역 순차 등장
+    if(!reduce && 'IntersectionObserver' in window){
+      stations.classList.add('anim');
+      var io=new IntersectionObserver(function(es){
+        es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('show'); io.unobserve(e.target); } });
+      },{threshold:.35});
+      stations.querySelectorAll('.st').forEach(function(s){ io.observe(s); });
+    }
+  })();
+</script>
+</body>
+</html>
