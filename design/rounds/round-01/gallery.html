@@ -34,6 +34,13 @@
   /* device widths */
   body[data-w="mobile"] iframe{width:390px;margin:0 auto}
   body[data-w="mobile"] .frame-wrap{overflow-x:auto;display:flex;justify-content:center;background:#f6f8fb}
+
+  /* dev section : variant-a 디벨롭 */
+  .dev-head{padding:36px 28px 0}
+  .dev-head h2{font-weight:900;letter-spacing:-.02em;font-size:1.25rem}
+  .dev-head p{color:var(--muted);font-size:.88rem;margin-top:6px;max-width:70ch}
+  .swatches{display:flex;gap:6px;margin-top:10px}
+  .sw{width:20px;height:20px;border-radius:5px;border:1px solid rgba(0,0,0,.08)}
 </style>
 </head>
 <body data-w="desktop">
@@ -95,6 +102,54 @@
     </div>
     <div class="frame-wrap"><iframe src="variant-e.html" title="variant-e" loading="lazy"></iframe></div>
     <div class="foot"><a href="variant-e.html" target="_blank" rel="noopener">새 탭에서 열기 ↗</a><div class="note">b의 다크 유무 대조군</div></div>
+  </div>
+
+</div>
+
+<div class="dev-head">
+  <h2>variant-a 디벨롭 — 경로선(spine) 시그니처</h2>
+  <p>frontend-design 렌즈 발전본. 구조는 동일(S1~S4 관통 경로선 + 모노 유틸 페이스 + S3 지배 숫자). a2는 브리프 고정 컬러(navy/blue/gold), 이후 3종은 <b>컬러 톤 탐색</b>(brief §5 색상 토큰과 별개의 실험 — 채택 시 brief 갱신 필요).</p>
+</div>
+<div class="grid">
+
+  <div class="card">
+    <div class="head">
+      <div class="name">variant-<span>a2</span> · 경로선 (기준 컬러)</div>
+      <div class="swatches"><span class="sw" style="background:#1e3a5f"></span><span class="sw" style="background:#2a5f9e"></span><span class="sw" style="background:#b8952e"></span></div>
+      <div class="axes"><span class="tag">경로선 시그니처</span><span class="tag">모노 유틸(IBM Plex Mono)</span><span class="tag">S3 지배숫자1개</span><span class="tag">brief 고정 컬러</span></div>
+    </div>
+    <div class="frame-wrap"><iframe src="variant-a2.html" title="variant-a2" loading="lazy"></iframe></div>
+    <div class="foot"><a href="variant-a2.html" target="_blank" rel="noopener">새 탭에서 열기 ↗</a><div class="note">navy/blue/gold 유지</div></div>
+  </div>
+
+  <div class="card">
+    <div class="head">
+      <div class="name">variant-a2-<span>toss</span> · 토스 블루</div>
+      <div class="swatches"><span class="sw" style="background:#171B21"></span><span class="sw" style="background:#3182F6"></span><span class="sw" style="background:#FFC800"></span></div>
+      <div class="axes"><span class="tag">근접흑색 잉크</span><span class="tag">채도 높은 트러스트 블루</span><span class="tag">옐로 포인트 1곳</span></div>
+    </div>
+    <div class="frame-wrap"><iframe src="variant-a2-toss.html" title="variant-a2-toss" loading="lazy"></iframe></div>
+    <div class="foot"><a href="variant-a2-toss.html" target="_blank" rel="noopener">새 탭에서 열기 ↗</a><div class="note">토스풍 · 신뢰+친근</div></div>
+  </div>
+
+  <div class="card">
+    <div class="head">
+      <div class="name">variant-a2-<span>teal</span> · 잉크 &amp; 틸</div>
+      <div class="swatches"><span class="sw" style="background:#122024"></span><span class="sw" style="background:#0F6E63"></span><span class="sw" style="background:#C98A3E"></span></div>
+      <div class="axes"><span class="tag">딥 틸그린 인터랙션</span><span class="tag">안정감·성장</span><span class="tag">앰버 포인트 1곳</span></div>
+    </div>
+    <div class="frame-wrap"><iframe src="variant-a2-teal.html" title="variant-a2-teal" loading="lazy"></iframe></div>
+    <div class="foot"><a href="variant-a2-teal.html" target="_blank" rel="noopener">새 탭에서 열기 ↗</a><div class="note">크림+테라코타 회피</div></div>
+  </div>
+
+  <div class="card">
+    <div class="head">
+      <div class="name">variant-a2-<span>seal</span> · 잉크 &amp; 관인 레드</div>
+      <div class="swatches"><span class="sw" style="background:#1C242B"></span><span class="sw" style="background:#2E4152"></span><span class="sw" style="background:#B23A2E"></span></div>
+      <div class="axes"><span class="tag">슬레이트 인터랙션</span><span class="tag">관공서 인주(印朱) 악센트</span><span class="tag">red 1곳(종착역)</span></div>
+    </div>
+    <div class="frame-wrap"><iframe src="variant-a2-seal.html" title="variant-a2-seal" loading="lazy"></iframe></div>
+    <div class="foot"><a href="variant-a2-seal.html" target="_blank" rel="noopener">새 탭에서 열기 ↗</a><div class="note">한국 관공서 문화 소구</div></div>
   </div>
 
 </div>
