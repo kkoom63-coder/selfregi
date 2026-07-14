@@ -425,7 +425,7 @@
     var mm=document.getElementById('minimap');
     if(!reduce){
       mm.classList.add('anim');
-      requestAnimationFrame(function(){ setTimeout(function(){ mm.classList.add('drawn'); },120); });
+      setTimeout(function(){ mm.classList.add('drawn'); },150);
     }
 
     /* HARVEST(r1-c): Evidence 카운트업 + 스파크라인 draw-in */
