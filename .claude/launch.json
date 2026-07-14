@@ -4,7 +4,7 @@
     {
       "name": "design-preview",
       "runtimeExecutable": "python",
-      "runtimeArgs": ["-m", "http.server", "4599", "--directory", "design/rounds/round-01"],
+      "runtimeArgs": ["-m", "http.server", "4599", "--directory", "design/rounds"],
       "port": 4599
     }
   ]
