@@ -149,6 +149,36 @@ footer{text-align:center;padding:18px;font-size:11px;color:#a0aec0;max-width:720
     <div class="f"><label>호 <span class="req">*</span></label><input type="number" id="ho" placeholder="1204"></div>
   </div>
   <div class="divider"></div>
+  <!-- 집합건물 상세 (신청서 '부동산의 표시' 자동기재용) -->
+  <div class="fg s1"><div class="f">
+    <label>아파트/건물명 <span class="hint">(선택 — 입력 시 신청서에 자동 기재)</span></label>
+    <input type="text" id="apt-name" placeholder="예: 반월아이파크">
+    <span class="fn">등기부 표제부의 '건물명칭 및 번호' 기준입니다. (예: OO아파트)</span>
+  </div></div>
+  <div class="divider"></div>
+  <div class="fg">
+    <div class="f"><label>부동산 종류 <span class="hint">(선택)</span></label>
+      <select id="prop-kind">
+        <option value="">선택 안 함</option>
+        <option value="주택">주택(아파트)</option>
+        <option value="근린생활시설">근린생활시설(상가)</option>
+        <option value="오피스텔">오피스텔</option>
+      </select>
+    </div>
+    <div class="f"><label>층 <span class="hint">(선택)</span></label><input type="number" id="floor" placeholder="12"></div>
+  </div>
+  <div class="divider"></div>
+  <div class="fg">
+    <div class="f"><label>구조 <span class="hint">(선택 — 신청서 자동 기재)</span></label><input type="text" id="prop-struct" placeholder="예: 철근콘크리트구조"></div>
+    <div class="f"><label>전유면적 (㎡) <span class="hint">(선택)</span></label><input type="text" id="prop-area" placeholder="예: 84.99"></div>
+  </div>
+  <div class="divider"></div>
+  <div class="fg s1"><div class="f">
+    <label>부동산 도로명주소 <span class="hint">(선택 — 입력 시 신청서에 자동 기재)</span></label>
+    <input type="text" id="prop-road-address" placeholder="예: 경기도 화성시 반월천로 100">
+    <span class="fn">등기부 표제부에 도로명주소가 있으면 입력하세요. 비워두면 신청서에 빈 칸으로 남습니다.</span>
+  </div></div>
+  <div class="divider"></div>
   <div class="fg s3">
     <div class="f"><label>취득 연도<span class="hint">(선택)</span></label><input type="number" id="year" placeholder="2025" min="2000" max="2100"></div>
     <div class="f"><label>월</label><input type="number" id="month" placeholder="3" min="1" max="12"></div>
@@ -495,6 +525,8 @@ function getData() {
     jibun: gv('jibun-address'), dong: gv('dong'), ho: gv('ho'),
     yr: gv('year')||'     ', mo: gv('month')||'  ', dy: gv('day')||'  ',
     total: gv('total-land'), unit: gv('unit-land'),
+    aptName: gv('apt-name'), propKind: gv('prop-kind'), propStruct: gv('prop-struct'),
+    propArea: gv('prop-area'), floor: gv('floor'), propRoadAddr: gv('prop-road-address'),
     tyr: gv('trust-year')||'    ', tmo: gv('trust-month')||'  ', tdy: gv('trust-day')||'  ',
     receiptNo: gv('receipt-no'), bkNo: gv('trust-book-no'), bkSub: gv('trust-book-sub'),
     tName: t.name||'', tAddr: t.addr||'', tCEO: t.ceo||'', tReg: t.reg||'',
@@ -671,6 +703,8 @@ function goRoadmap() {
       jibun: d.jibun, dong: d.dong, ho: d.ho,
       causeYr: (d.yr || '').trim(), causeMo: (d.mo || '').trim(), causeDy: (d.dy || '').trim(),
       total: d.total, unit: d.unit,
+      aptName: d.aptName, propKind: d.propKind, propStruct: d.propStruct,
+      propArea: d.propArea, floor: d.floor, propRoadAddr: d.propRoadAddr,
       propertyUid: d.propertyUid, dealReportNo: d.dealReportNo, dealPrice: d.dealPrice
     }));
   } catch (e) { /* localStorage 불가 환경은 무시 (주소 파라미터만으로 진행) */ }
