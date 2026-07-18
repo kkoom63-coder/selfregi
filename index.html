@@ -7,164 +7,254 @@
 </script>
 <script defer src="/_vercel/insights/script.js"></script>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>셀프등기24 | 소유권이전등기, 직접 하는 사람들을 위한 서류 자동생성</title>
-<meta name="description" content="아파트 소유권이전등기, 법무사 없이 직접 하세요. 셀프등기가 왜 늘고 있는지, 무엇을 준비해야 하는지부터 서류 자동생성·동선 로드맵까지.">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>셀프등기24 | 법무사 없이 소유권이전등기, 서류 자동생성부터 등기소 접수까지</title>
+<meta name="description" content="아파트 소유권이전등기, 법무사 없이 직접 하세요. 서울 중위가격 15억원 기준 약 120만원 절약. 위임장·등기신청서 자동생성부터 취득세 신고, 관할 등기소 동선까지 순서대로 안내합니다.">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--navy:#1e3a5f;--blue:#2a5f9e;--gold:#b8952e;--bg:#f2f4f8;--card:#fff;--text:#1a1e2e;--muted:#6b7280;--border:#dde2ec;--radius:12px;--shadow:0 2px 12px rgba(30,58,95,.08)}
-body{font-family:'Noto Sans KR','Malgun Gothic',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden;touch-action:manipulation}
+:root{
+  --navy:#1e3a5f;--blue:#2a5f9e;--gold:#b8952e;
+  --text:#2d3748;--muted:#718096;--border:#e2e8f0;
+  --bg:#f5f7fa;--card:#fff;
+  --radius:12px;--shadow:0 1px 3px rgba(30,58,95,.06);
+}
+html{scroll-behavior:smooth}
+body{overflow-x:hidden;font-family:'Noto Sans KR',-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;letter-spacing:-.01em}
+img{max-width:100%;display:block}
 
 /* ── 네비게이션 ── */
-nav{background:var(--navy);position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(255,255,255,.06)}
-.nav-inner{max-width:720px;margin:0 auto;padding:0 20px;height:52px;display:flex;align-items:center;gap:12px;overflow-x:auto;white-space:nowrap;-webkit-overflow-scrolling:touch}
-.nav-inner::-webkit-scrollbar{display:none}
-.nav-logo{flex-shrink:0;font-size:16px;font-weight:700;color:#fff;text-decoration:none;margin-right:auto;letter-spacing:-.3px}
-.nav-logo span{display:inline-block;background:rgba(184,149,46,.3);color:#f0d075;font-size:9px;font-weight:700;letter-spacing:1.2px;padding:1px 6px;border-radius:10px;vertical-align:middle;margin-left:6px}
-.nav-a{flex-shrink:0;color:rgba(255,255,255,.55);font-size:12px;padding:5px 11px;border-radius:7px;text-decoration:none;transition:all .15s;white-space:nowrap}
-.nav-a:hover{background:rgba(255,255,255,.1);color:#fff}
-.nav-a.cta{background:rgba(255,255,255,.12);color:#fff;font-weight:600}
-.nav-a.cta:hover{background:rgba(255,255,255,.2)}
+nav{background:var(--navy);position:sticky;top:0;z-index:100}
+.nav-inner{max-width:1200px;margin:0 auto;padding:0 14px;height:54px;display:flex;align-items:center;gap:2px}
+.nav-logo{flex-shrink:0;font-size:15px;font-weight:800;color:#fff;text-decoration:none;margin-right:auto;letter-spacing:-.02em}
+.nav-logo span{display:inline-block;background:rgba(255,255,255,.12);color:rgba(255,255,255,.6);font-size:9px;font-weight:700;letter-spacing:.08em;padding:2px 7px;border-radius:10px;vertical-align:2px;margin-left:6px}
+.nav-a{flex-shrink:0;color:rgba(255,255,255,.65);font-size:12.5px;font-weight:500;padding:8px 10px;border-radius:7px;text-decoration:none;transition:all .15s}
+.nav-a:hover{color:#fff;background:rgba(255,255,255,.08)}
+.nav-a.cta{background:var(--blue);color:#fff;font-weight:700;padding:8px 14px;margin-left:4px}
+.nav-a.cta:hover{background:#1d4d85}
+@media(max-width:560px){.nav-a:not(.cta){display:none}}
 
 /* ── 히어로 ── */
-.hero{background:var(--navy);padding:52px 20px 46px;text-align:center}
-.hero-eyebrow{display:inline-block;background:rgba(184,149,46,.25);color:#f0d075;font-size:11px;font-weight:700;letter-spacing:.8px;padding:4px 14px;border-radius:20px;margin-bottom:18px}
-.hero h1{font-size:31px;font-weight:700;color:#fff;line-height:1.4;margin-bottom:14px}
-.hero-sub{font-size:14px;color:rgba(255,255,255,.62);margin-bottom:26px;line-height:1.8}
-.hero-sub a{color:#f0d075;text-decoration:underline}
-.hero-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
-.btn-primary{display:inline-flex;align-items:center;gap:7px;padding:13px 26px;background:#2a5f9e;color:#fff;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;text-decoration:none;transition:background .15s}
+header{background:var(--navy)}
+.hero{max-width:1200px;margin:0 auto;padding:52px 20px 44px;text-align:center}
+.hero-badge{display:inline-block;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.16);color:rgba(255,255,255,.75);font-size:11.5px;font-weight:600;padding:5px 14px;border-radius:20px;margin-bottom:20px}
+.hero h1{font-size:31px;font-weight:800;color:#fff;line-height:1.4;letter-spacing:-.02em;margin-bottom:14px;word-break:keep-all}
+.hero h1 em{font-style:normal;color:#ffd66e}
+.hero-sub{font-size:14.5px;color:rgba(255,255,255,.72);line-height:1.8;margin-bottom:8px;word-break:keep-all}
+.hero-what{font-size:13.5px;color:rgba(255,255,255,.55);line-height:1.75;margin-bottom:10px;word-break:keep-all}
+.hero-basis{font-size:11px;color:rgba(255,255,255,.35);margin-bottom:26px}
+.hero-concept{font-size:16px;font-weight:700;color:#fff;line-height:1.5;margin-bottom:12px;word-break:keep-all}
+.hero-concept em{font-style:normal;color:#ffd66e}
+.hero-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:16px}
+.btn-primary{display:inline-flex;align-items:center;gap:7px;padding:14px 26px;background:var(--blue);color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;text-decoration:none;transition:background .15s}
 .btn-primary:hover{background:#1d4d85}
 .btn-ghost{display:inline-flex;align-items:center;gap:7px;padding:13px 22px;background:rgba(255,255,255,.1);color:rgba(255,255,255,.85);border:1.5px solid rgba(255,255,255,.2);border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;text-decoration:none;transition:all .15s}
 .btn-ghost:hover{background:rgba(255,255,255,.16);color:#fff}
+.hero-trust{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;font-weight:500;color:rgba(255,255,255,.75);background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);padding:8px 16px;border-radius:22px;line-height:1.5}
+
+
+/* ── 신뢰 지표 배너 ── */
+.stats-bar{background:#172f4e;border-bottom:1px solid rgba(255,255,255,.06)}
+.stats-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr)}
+.stat-item{padding:20px 12px;text-align:center;border-right:1px solid rgba(255,255,255,.06)}
+.stat-item:last-child{border-right:none}
+.stat-num{display:block;font-size:19px;font-weight:800;color:#fff;margin-bottom:3px;letter-spacing:-.02em}
+.stat-num.up{color:#6ee7a8}
+.stat-num.gold{color:#ffd66e}
+.stat-label{font-size:10.5px;color:rgba(255,255,255,.45);line-height:1.45}
+.stats-src{max-width:1200px;margin:0 auto;padding:8px 14px 12px;font-size:10px;color:rgba(255,255,255,.28);text-align:center}
+.stats-src-wrap{background:#172f4e}
 
 /* ── 공통 섹션 ── */
-.section{max-width:720px;margin:0 auto;padding:38px 14px 0}
+.section{max-width:1200px;margin:0 auto;padding:40px 14px 0}
 .sec-label{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;color:var(--blue);letter-spacing:.6px;margin-bottom:10px}
 .sec-label::before{content:'';display:block;width:3px;height:12px;background:var(--blue);border-radius:2px}
-.sec-title{font-size:21px;font-weight:700;color:var(--navy);margin-bottom:8px;line-height:1.45;word-break:keep-all}
-.sec-sub{font-size:13.5px;color:var(--muted);line-height:1.8;margin-bottom:20px;word-break:keep-all}
+.sec-title{font-size:20px;font-weight:700;color:var(--navy);margin-bottom:6px;line-height:1.45;word-break:keep-all}
+.sec-sub{font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:20px;word-break:keep-all}
 
-/* ── WHY: 비용 vs 발품 비교 ── */
-.compare{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.cmp-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 18px;box-shadow:var(--shadow)}
-.cmp-card.accent{border:1.5px solid var(--blue);background:#f7faff}
-.cmp-tag{display:inline-block;font-size:10.5px;font-weight:700;padding:3px 10px;border-radius:20px;margin-bottom:12px}
-.cmp-tag.grey{background:#eef1f5;color:#7a8699}
-.cmp-tag.blue{background:#e8f0ff;color:var(--blue)}
-.cmp-amount{font-size:24px;font-weight:800;color:var(--navy);line-height:1.2;margin-bottom:4px}
-.cmp-amount small{font-size:13px;font-weight:600;color:var(--muted)}
-.cmp-desc{font-size:12px;color:var(--muted);line-height:1.7}
-.why-note{background:#fffbeb;border:1px solid #fde68a;color:#92400e;border-radius:10px;padding:12px 14px;font-size:12px;line-height:1.7;margin-top:14px}
-.why-note b{font-weight:700}
+/* ── 왜 셀프등기 (뉴스 + 차트) ── */
+.news-wrap{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.news-col{display:flex;flex-direction:column;gap:12px}
+.news-card{display:block;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:16px 18px;box-shadow:var(--shadow);flex:1;text-decoration:none;transition:all .15s;position:relative}
+.news-card:hover{border-color:var(--blue);box-shadow:0 4px 14px rgba(42,95,158,.12)}
+.news-meta{display:flex;align-items:center;gap:6px;font-size:11px;color:#a0aec0;font-weight:600;margin-bottom:6px}
+.news-meta .ext{margin-left:auto;font-size:11px;color:var(--blue);font-weight:700}
+.news-h{font-size:13.5px;font-weight:700;color:var(--navy);line-height:1.55;word-break:keep-all;margin-bottom:6px}
+.news-d{font-size:12px;color:var(--muted);line-height:1.65;word-break:keep-all}
+.chart-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow);display:flex;flex-direction:column}
+.chart-t{font-size:13px;font-weight:700;color:var(--navy);margin-bottom:2px}
+.chart-s{font-size:11px;color:#a0aec0;margin-bottom:16px}
+.bars{display:flex;align-items:flex-end;gap:14px;height:140px;flex:1;padding:0 4px}
+.bar-g{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%}
+.bar-n{font-size:12px;font-weight:800;color:var(--navy);margin-bottom:5px}
+.bar{width:100%;max-width:60px;background:#dde6f0;border-radius:6px 6px 2px 2px}
+.bar.hot{background:var(--blue)}
+.bar-y{font-size:11px;color:var(--muted);margin-top:7px;font-weight:600}
+.chart-src{font-size:10px;color:#a0aec0;margin-top:12px;padding-top:10px;border-top:1px solid var(--border)}
 
-/* ── DATA: 통계 카드 ── */
-.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.stat-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:18px 14px;box-shadow:var(--shadow);text-align:center}
-.stat-big{font-size:22px;font-weight:800;color:var(--navy);line-height:1.15;margin-bottom:6px}
-.stat-big.up{color:#1a7a4a}
-.stat-big.down{color:#b0392b}
-.stat-cap{font-size:11px;color:var(--muted);line-height:1.5}
-.stat-source{font-size:11px;color:#9aa5b1;margin-top:12px;line-height:1.7}
-.data-lead{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:16px 18px;margin-top:12px;font-size:13px;color:var(--text);line-height:1.8}
-.data-lead b{color:var(--navy);font-weight:700}
+/* ── 받게 되는 것 ── */
+.feat-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.feat-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 18px;box-shadow:var(--shadow)}
+.feat-n{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;background:var(--navy);color:#fff;border-radius:8px;font-size:12px;font-weight:800;margin-bottom:11px}
+.feat-t{font-size:14px;font-weight:700;color:var(--navy);margin-bottom:5px;word-break:keep-all}
+.feat-t .tag{display:inline-block;font-size:9.5px;font-weight:700;color:var(--blue);background:#eef3fb;padding:2px 8px;border-radius:10px;margin-left:6px;vertical-align:1px}
+.feat-t .tag.gold{color:#8a6d1c;background:#faf3dd}
+.feat-d{font-size:12px;color:var(--muted);line-height:1.7;word-break:keep-all}
 
-/* ── 결과물 예시 카드 ── */
-.deliver-grid{display:grid;grid-template-columns:1fr;gap:12px}
-.dlv-card{display:flex;gap:14px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px}
-.dlv-ico{width:44px;height:44px;border-radius:10px;background:#eef3fb;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:var(--navy);flex-shrink:0}
-.dlv-t{font-size:14px;font-weight:700;color:var(--navy);margin-bottom:4px}
-.dlv-t .tag{display:inline-block;font-size:10px;font-weight:700;color:var(--gold);background:#f9f2df;padding:1px 7px;border-radius:6px;margin-left:6px;vertical-align:middle}
-.dlv-d{font-size:12.5px;color:var(--muted);line-height:1.7}
-.preview-link{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:12px;background:var(--navy);border-radius:var(--radius);padding:16px 18px;text-decoration:none;box-shadow:var(--shadow)}
-.preview-link .pl-t{font-size:14px;font-weight:700;color:#fff;margin-bottom:3px}
-.preview-link .pl-d{font-size:12px;color:rgba(255,255,255,.6)}
-.preview-link .pl-arrow{color:#f0d075;font-size:18px;font-weight:700;flex-shrink:0}
+/* ── 가이드 티저 ── */
+.guide-band{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:22px 20px}
+.guide-band-h{font-size:15px;font-weight:700;color:var(--navy);margin-bottom:4px;word-break:keep-all}
+.guide-band-d{font-size:12.5px;color:var(--muted);line-height:1.65;margin-bottom:14px;word-break:keep-all}
+.guide-links{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.guide-a{display:flex;flex-direction:column;gap:3px;background:#f8fafc;border:1px solid var(--border);border-radius:9px;padding:13px 12px;text-decoration:none;transition:all .15s}
+.guide-a:hover{border-color:var(--blue);background:#f0f5ff}
+.guide-a-n{font-size:10px;font-weight:700;color:var(--blue);letter-spacing:.04em}
+.guide-a-t{font-size:12.5px;font-weight:700;color:var(--navy);line-height:1.4;word-break:keep-all}
 
 /* ── 3단계 프로세스 ── */
 .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
 .step-box{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:18px 16px;box-shadow:var(--shadow)}
 .step-n{font-size:11px;font-weight:700;color:var(--blue);margin-bottom:8px}
-.step-t{font-size:13px;font-weight:700;color:var(--navy);margin-bottom:5px;line-height:1.4}
-.step-d{font-size:11px;color:var(--muted);line-height:1.5;word-break:keep-all}
+.step-t{font-size:13px;font-weight:700;color:var(--navy);margin-bottom:5px;line-height:1.4;word-break:keep-all}
+.step-d{font-size:11px;color:var(--muted);line-height:1.55;word-break:keep-all}
 
-/* ── 구분선 ── */
-.div-line{max-width:720px;margin:34px auto 0 auto;padding:0 14px}
-.div-line hr{border:none;border-top:1px solid var(--border)}
-
-/* ── 카드 / 마법사 / 케이스 ── */
-main{max-width:720px;margin:0 auto;padding:16px 14px 20px}
+/* ── 케이스 선택 ── */
+main{max-width:1200px;margin:0 auto;padding:40px 14px 0}
 .card{background:var(--card);border-radius:var(--radius);border:1px solid var(--border);padding:22px;margin-bottom:14px;box-shadow:var(--shadow)}
-.ch{display:flex;align-items:center;gap:10px;margin-bottom:4px}
+.ch{display:flex;align-items:center;gap:10px;margin-bottom:14px}
 .step-num{width:32px;height:32px;background:var(--navy);color:#fff;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0;letter-spacing:-.3px}
 .ct{font-size:14px;font-weight:700;color:var(--navy)}
 .cs{font-size:11px;color:var(--muted);margin-top:1px}
+.cases{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:4px}
+.case-card{border:2px solid var(--border);border-radius:10px;padding:18px 16px;cursor:pointer;transition:all .15s;position:relative;background:#fff}
+.case-card:hover{border-color:var(--blue);box-shadow:0 4px 14px rgba(42,95,158,.12)}
+.case-card.selected{border-color:var(--blue);background:#f0f5ff}
+.case-card.recommended::after{content:"가장 일반적";position:absolute;top:-10px;right:14px;background:var(--blue);color:#fff;font-size:10px;font-weight:700;padding:2px 9px;border-radius:10px}
+.case-card.disabled{cursor:not-allowed;opacity:.6;background:#f8fafc;border-color:var(--border)}
+.case-card.disabled:hover{border-color:var(--border);box-shadow:none}
+.case-card.disabled::after{content:"준비 중";position:absolute;top:-10px;right:14px;background:var(--muted);color:#fff;font-size:10px;font-weight:700;padding:2px 9px;border-radius:10px}
+.case-card.disabled .c-icon-box{background:#e8edf3;color:#a0aec0}
+.c-icon-box{width:36px;height:36px;background:#eef3fb;border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--navy);font-size:14px;font-weight:900;margin-bottom:10px}
+.case-card.selected .c-icon-box{background:var(--navy);color:#fff}
+.c-title{font-size:14px;font-weight:700;color:var(--navy);margin-bottom:5px;line-height:1.4;word-break:keep-all}
+.c-desc{font-size:12px;color:var(--muted);line-height:1.55;word-break:keep-all}
+.c-when{margin-top:10px;padding-top:10px;border-top:1px dashed var(--border);font-size:11px;color:var(--blue);font-weight:500;word-break:keep-all}
+.result-box{background:#f0f5ff;border:1.5px solid #c5d5f5;border-radius:10px;padding:14px 16px;margin-top:12px}
+.r-label{font-size:11px;color:var(--muted);margin-bottom:2px}
+.r-case{font-size:15px;font-weight:800;color:var(--navy)}
+.next-btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;margin-top:14px;padding:15px 20px;background:var(--navy);color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;transition:background .15s}
+.next-btn:hover{background:var(--blue)}
 
-.wizard-q{background:#f8fafc;border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:12px}
+/* 진단 (접힘) */
+.diag-toggle{margin-top:14px;text-align:center}
+.diag-toggle button{background:none;border:none;color:var(--muted);font-size:12px;text-decoration:underline;text-underline-offset:3px;cursor:pointer;font-family:inherit;padding:8px}
+.diag-toggle button:hover{color:var(--blue)}
+.diag-body{display:none;margin-top:6px}
+.diag-body.open{display:block}
+.wizard-q{background:#f8fafc;border:1px solid var(--border);border-radius:10px;padding:16px;margin-bottom:10px}
 .q-text{font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px;word-break:keep-all}
 .q-hint{font-size:11px;color:var(--blue);margin-bottom:12px;display:block;word-break:keep-all}
 .opt-row{display:flex;gap:8px}
 .opt-btn{flex:1;padding:10px;border:1.5px solid var(--border);background:#fff;border-radius:8px;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;transition:all .15s;font-family:inherit}
 .opt-btn:hover{border-color:var(--blue);color:var(--blue)}
 .opt-btn.active{border-color:var(--blue);background:var(--blue);color:#fff}
-.skip-link{text-align:right;margin-top:8px}
-.skip-link a{color:var(--muted);font-size:11px;text-decoration:underline;cursor:pointer}
-.skip-link a:hover{color:var(--blue)}
-
-.cases{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:4px}
-.case-card{border:2px solid var(--border);border-radius:10px;padding:18px 16px;cursor:pointer;transition:all .15s;position:relative}
-.case-card:hover{border-color:var(--blue);box-shadow:0 4px 14px rgba(42,95,158,.12)}
-.case-card.selected{border-color:var(--blue);background:#f0f5ff}
-.case-card.recommended::after{content:"추천";position:absolute;top:-10px;right:14px;background:var(--blue);color:#fff;font-size:10px;font-weight:700;padding:2px 9px;border-radius:10px}
-.c-icon-box{width:36px;height:36px;background:#eef3fb;border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--navy);font-size:14px;font-weight:900;margin-bottom:10px}
-.c-title{font-size:14px;font-weight:700;color:var(--navy);margin-bottom:5px;line-height:1.4;word-break:keep-all}
-.c-desc{font-size:12px;color:var(--muted);line-height:1.5;word-break:keep-all}
-.c-when{margin-top:10px;padding-top:10px;border-top:1px dashed var(--border);font-size:11px;color:var(--blue);font-weight:500}
-.soon-badge{display:inline-block;background:#f0f4f8;color:#9aa5b1;font-size:10px;font-weight:700;padding:2px 8px;border-radius:6px;margin-left:6px;vertical-align:middle}
-
-#result{display:none}
-.result-box{background:#f0f5ff;border:1.5px solid #c5d5f5;border-radius:10px;padding:16px}
-.r-label{font-size:11px;color:var(--muted);margin-bottom:3px}
-.r-case{font-size:17px;font-weight:800;color:var(--navy);word-break:keep-all}
-.next-btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;margin-top:14px;padding:15px 20px;background:var(--navy);color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;transition:background .15s}
-.next-btn:hover{background:var(--blue)}
-.next-btn.disabled{background:#b0bcc8;cursor:not-allowed}
-
-.ntc{border-radius:8px;padding:10px 12px;font-size:11px;line-height:1.6;margin-top:12px;word-break:keep-all}
+.ntc{border-radius:8px;padding:10px 12px;font-size:11px;line-height:1.6;margin-top:12px}
 .ntc.inf{background:#eef3ff;border:1px solid #c5d5f5;color:#2a4080}
+.ntc strong{font-weight:700}
 
 /* ── FAQ ── */
-.faq-item{border-bottom:1px solid var(--border)}
+.faq-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:4px 20px}
+.faq-item{border-bottom:1px solid #edf1f5}
 .faq-item:last-child{border-bottom:none}
-.faq-q{width:100%;display:flex;justify-content:space-between;align-items:center;gap:12px;background:none;border:none;padding:15px 0;font-size:13.5px;font-weight:600;color:var(--navy);cursor:pointer;font-family:inherit;text-align:left;line-height:1.5}
-.faq-q .ico{font-size:18px;color:var(--muted);transition:transform .2s;flex-shrink:0}
+.faq-q{width:100%;display:flex;justify-content:space-between;align-items:center;gap:12px;background:none;border:none;padding:16px 0;font-size:13.5px;font-weight:600;color:var(--navy);cursor:pointer;font-family:inherit;text-align:left;line-height:1.5;word-break:keep-all}
+.faq-q .ico{font-size:18px;color:#a0aec0;transition:transform .2s;flex-shrink:0;font-weight:400}
 .faq-q.open .ico{transform:rotate(45deg)}
 .faq-a{display:none;font-size:12.5px;color:var(--muted);line-height:1.8;padding:0 0 16px;word-break:keep-all}
-.faq-a strong{color:var(--text)}
+.faq-a strong{color:var(--navy);font-weight:700}
+
+/* ── 하단 CTA ── */
+.cta-band{max-width:1200px;margin:40px auto 0;padding:0 14px}
+.cta-inner{background:var(--navy);border-radius:16px;padding:40px 24px;text-align:center}
+.cta-inner h2{font-size:21px;font-weight:800;color:#fff;line-height:1.5;letter-spacing:-.02em;margin-bottom:8px;word-break:keep-all}
+.cta-inner p{font-size:13px;color:rgba(255,255,255,.6);margin-bottom:20px;word-break:keep-all}
+.cta-inner .btn-primary{background:#fff;color:var(--navy)}
+.cta-inner .btn-primary:hover{background:#eef3fb}
 
 /* ── 푸터 ── */
 footer{background:var(--navy);margin-top:40px;padding:28px 20px}
-.foot-inner{max-width:720px;margin:0 auto}
+.foot-inner{max-width:1200px;margin:0 auto}
 .foot-brand{font-size:14px;font-weight:700;color:rgba(255,255,255,.8);margin-bottom:8px}
-.foot-links{display:flex;gap:14px;margin-bottom:12px;flex-wrap:wrap}
-.foot-links a{color:rgba(255,255,255,.5);font-size:12px;text-decoration:none}
+.foot-links{display:flex;gap:6px 14px;margin-bottom:12px;flex-wrap:wrap}
+.foot-links a{color:rgba(255,255,255,.5);font-size:12px;text-decoration:none;padding:2px 0}
 .foot-links a:hover{color:#fff}
-.foot-copy{font-size:11px;color:rgba(255,255,255,.4);line-height:1.8}
+.foot-copy{font-size:10.5px;color:rgba(255,255,255,.35);line-height:1.9}
 
 .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(80px);background:#1a7a4a;color:#fff;padding:9px 18px;border-radius:8px;font-size:12px;font-weight:500;transition:transform .3s;z-index:999;white-space:nowrap}
 .toast.show{transform:translateX(-50%) translateY(0)}
 
-@media(max-width:520px){
+@media(max-width:560px){
   .hero h1{font-size:25px}
-  .sec-title{font-size:19px}
-  .compare{grid-template-columns:1fr}
-  .stat-grid{grid-template-columns:1fr}
+  .news-wrap{grid-template-columns:1fr}
+  .feat-grid{grid-template-columns:1fr}
+  .guide-links{grid-template-columns:1fr}
   .steps{grid-template-columns:1fr}
   .cases{grid-template-columns:1fr}
   .hero-btns{flex-direction:column;align-items:stretch}
-  .btn-primary,.btn-ghost{justify-content:center}
+  .stats-inner{grid-template-columns:repeat(3,1fr)}
 }
+
+/* ── 와이드 보강 (레이아웃 확장 시 밀도/가독 유지) ── */
+.hero-concept,.hero-sub,.hero-what,.hero-basis{max-width:660px;margin-left:auto;margin-right:auto}
+.sec-sub{max-width:640px}
+@media(min-width:768px){
+  .hero{padding:72px 20px 56px}
+  .hero h1{font-size:40px}
+  .hero-concept{font-size:19px}
+  .hero-sub{font-size:16px}
+  .hero-what{font-size:15px}
+  .stat-num{font-size:24px}
+  .stat-label{font-size:11.5px}
+  .section{padding-top:60px}
+  .sec-title{font-size:26px}
+  .sec-sub{font-size:14.5px;margin-bottom:26px}
+  .feat-grid{grid-template-columns:repeat(4,1fr);gap:16px}
+  .news-wrap{grid-template-columns:1.15fr 1fr;gap:16px}
+  .feat-card{padding:22px 20px}
+  .guide-links{gap:10px}
+  .steps{gap:14px}
+  .cases{gap:16px}
+  .cta-inner{padding:52px 24px}
+  .cta-inner h2{font-size:25px}
+}
+@media(min-width:1024px){
+  .hero h1{font-size:44px}
+  .sec-title{font-size:28px}
+}
+
+/* ── 근거: 카운트업 + 스파크라인 ── */
+.evi-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:24px 22px;display:grid;grid-template-columns:1fr;gap:20px;align-items:center;opacity:0;transform:translateY(12px);transition:opacity .6s ease,transform .6s ease}
+.evi-card.in{opacity:1;transform:none}
+@media(min-width:700px){.evi-card{grid-template-columns:auto 1fr;gap:40px;padding:30px 32px}}
+.evi-num{text-align:center}
+.evi-big{font-size:44px;font-weight:800;color:var(--navy);line-height:1;letter-spacing:-.03em;font-variant-numeric:tabular-nums}
+.evi-unit{font-size:16px;font-weight:700;color:var(--muted);margin-left:4px}
+.evi-cap{font-size:13px;color:var(--muted);margin-top:10px;font-weight:500;word-break:keep-all}
+.evi-delta{display:inline-block;margin-top:12px;font-size:12px;font-weight:700;color:#8a6d1c;background:#faf3dd;padding:5px 12px;border-radius:20px}
+.evi-graph{width:100%;max-width:560px;justify-self:center}
+.evi-graph svg{width:100%;height:auto;display:block}
+.evi-v{font-size:11px;font-weight:700;fill:var(--navy)}
+.evi-x{font-size:11px;fill:var(--muted)}
+.evi-line{stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 1.1s ease .15s}
+.evi-card.in .evi-line{stroke-dashoffset:0}
+.evi-dot,.evi-v{opacity:0;transition:opacity .4s ease .9s}
+.evi-card.in .evi-dot,.evi-card.in .evi-v{opacity:1}
+.evi-src{font-size:10.5px;color:#a0aec0;text-align:right;margin-top:10px}
+.news-2{display:grid;grid-template-columns:1fr;gap:12px;margin-top:22px}
+@media(min-width:640px){.news-2{grid-template-columns:1fr 1fr}}
+.guide-more{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;margin-top:14px;padding:15px 20px;background:var(--navy);color:#fff;border-radius:10px;font-size:15px;font-weight:700;text-decoration:none;transition:background .15s}
+.guide-more:hover{background:var(--blue)}
+@media(min-width:768px){.evi-big{font-size:56px}}
+@media(prefers-reduced-motion:reduce){.evi-card,.evi-line,.evi-dot,.evi-v{opacity:1;transform:none;stroke-dashoffset:0;transition:none}}
 </style>
 </head>
 <body>
@@ -172,261 +262,263 @@ footer{background:var(--navy);margin-top:40px;padding:28px 20px}
 <!-- 네비게이션 -->
 <nav>
   <div class="nav-inner">
-    <a href="index.html" class="nav-logo">셀프등기24 <span>BETA</span></a>
-    <a href="#why" class="nav-a">셀프등기란</a>
+    <a href="index.html" class="nav-logo">셀프등기24<span>BETA</span></a>
+    <a href="guide.html" class="nav-a">셀프등기 가이드</a>
     <a href="calculator.html" class="nav-a">취득세 계산기</a>
-    <a href="https://selfregi.tistory.com" target="_blank" rel="noopener" class="nav-a">블로그</a>
-    <a href="#start" class="nav-a cta">내 케이스 찾기 →</a>
+    <a href="https://selfregi.tistory.com" class="nav-a" target="_blank" rel="noopener">블로그</a>
+    <a href="#start" class="nav-a cta">서류 작성하기</a>
   </div>
 </nav>
 
 <!-- 히어로 -->
-<section class="hero">
-  <div class="hero-eyebrow">법무사 수수료 절약</div>
-  <h1>부동산 소유권이전,<br>직접 해도 됩니다</h1>
-  <p class="hero-sub">잔금 납부 후 등기까지 — 서류 자동생성으로<br>법무사 없이 직접 완료하세요<br><br>셀프등기 관련 상세한 안내는 <a href="https://selfregi.tistory.com" target="_blank" rel="noopener" style="color:#f0d075;text-decoration:underline">블로그</a>를 확인하면 도움이 됩니다.</p>
-  <div class="hero-btns">
-    <a href="#start" class="btn-primary">서류 작성 시작하기 →</a>
-    <a href="calculator.html" class="btn-ghost">취득세 계산해보기</a>
+<header>
+  <div class="hero">
+    <div class="hero-badge">셀프등기 서류 자동생성 서비스</div>
+    <h1>법무사 없이 직접 하면,<br><em>약 120만원</em>이 절약됩니다</h1>
+    <p class="hero-concept">온라인으로 미리 끝내고, <em>등기소는 단 한 번.</em></p>
+    <p class="hero-sub">어려워서 못하는 게 아닙니다. 제대로 된 순서를 몰랐을 뿐입니다.</p>
+    <p class="hero-what">준비서류부터 취득세·국민주택채권 신고까지 온라인으로 미리 처리하고,<br>자동생성한 위임장·신청서로 등기소에서 한 번에 접수합니다.</p>
+    <p class="hero-basis">※ 서울 중위가격 아파트 15억원 기준 법무사 수수료 (2024년 9월 보수표 기준, 법무사마다 상이)</p>
+    <div class="hero-btns">
+      <a href="#start" class="btn-primary">서류 작성 시작하기 →</a>
+      <a href="guide.html" class="btn-ghost">셀프등기가 처음이라면</a>
+    </div>
+    <p class="hero-trust">민감정보는 서버에 저장하지 않습니다 — 기재하지 않아도 서류 발급 가능하나, 출력 후 수기로 직접 작성하셔야 합니다</p>
   </div>
-</section>
+</header>
 
-<!-- ① WHY: 왜 셀프등기인가 -->
+<!-- 신뢰 지표 배너 -->
+<div class="stats-bar">
+  <div class="stats-inner">
+    <div class="stat-item">
+      <span class="stat-num">192만 건</span>
+      <span class="stat-label">연간 소유권이전등기<br>(이 중 매매 62.8%)</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num up">+58.7%</span>
+      <span class="stat-label">당사자 직접신청 증가율<br>(전년 대비)</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num gold">약 120만원</span>
+      <span class="stat-label">서울 15억 아파트 기준<br>아끼는 법무사 수수료</span>
+    </div>
+  </div>
+</div>
+<div class="stats-src-wrap"><div class="stats-src">출처: 등기정보광장(대법원) 통계 · 법무사 수수료는 2024년 9월 보수표 기준(서울 중위가격 15억원) · 수치는 집계 기준·시점에 따라 달라질 수 있습니다</div></div>
+
+<!-- ① 왜 셀프등기인가 -->
 <div class="section" id="why">
-  <div class="sec-label">왜 셀프등기?</div>
-  <p class="sec-title">부동산 가격이 상승하며 법무사 수수료도 상승하고 있습니다.<br>그런데 소유권이전등기 막상 해야 할 일은 정해져 있습니다</p>
-  <p class="sec-sub">소유권이전등기는 정형화된 절차입니다. 법무사에게 맡기면 편하지만,
-    그 편의의 대가가 수십만원에 달합니다. 등기 절차를 이해하고 서류만 갖추면 직접 할 수 있는 일이기도 합니다.</p>
-  <div class="compare">
-    <div class="cmp-card">
-      <span class="cmp-tag grey">법무사에게 맡기면</span>
-      <div class="cmp-amount">서울 중위 가격 아파트 15억원 기준, 수수료 120만원</div>
-      <div class="cmp-desc">※ 24년 9월 법무사 보수표 기준 예상금액으로 법무사마다 상이할 수 있습니다.</div>
+  <div class="sec-label">왜 셀프등기인가</div>
+  <p class="sec-title">집값이 오르자, 직접 등기하는 사람이 늘고 있습니다</p>
+  <p class="sec-sub">법무사 수수료는 통상 집값에 비례해 책정됩니다. 집값이 오를수록 커지는 비용을 아끼려는 움직임이 언론과 통계에서 확인됩니다.</p>
+  <!-- 근거: 카운트업 + 스파크라인 draw-in -->
+  <div class="evi-card">
+    <div class="evi-num">
+      <div class="evi-big"><span id="eviCount" data-count="10361">10,361</span><span class="evi-unit">건</span></div>
+      <div class="evi-cap">2026년 1~2월 당사자(본인) 직접신청</div>
+      <span class="evi-delta">2024년 대비 +83%</span>
     </div>
-    <div class="cmp-card accent">
-      <span class="cmp-tag blue">직접 하면</span>
-      <div class="cmp-amount">무료</div>
-      <div class="cmp-desc">국민주택매권매입, 등기신청 수수료 같은 실비는 동일하게 들지만, 법무사 보수는 발생하지 않습니다. 대신 서류 준비와 직접 방문하는 노력이 필요합니다.</div>
+    <div class="evi-graph">
+      <svg viewBox="0 0 360 150" role="img" aria-label="당사자 직접신청 추이 재현: 2024년 5,654건, 2025년 6,851건, 2026년 1만361건">
+        <line x1="8" y1="120" x2="352" y2="120" stroke="#e2e8f0"/>
+        <polyline class="evi-line" fill="none" stroke="#2a5f9e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" points="44,102 200,84 316,34" pathLength="1"/>
+        <circle class="evi-dot" cx="44" cy="102" r="4" fill="#2a5f9e"/>
+        <circle class="evi-dot" cx="200" cy="84" r="4" fill="#2a5f9e"/>
+        <circle class="evi-dot" cx="316" cy="34" r="6" fill="#b8952e"/>
+        <text class="evi-v" x="44" y="92" text-anchor="middle">5,654</text>
+        <text class="evi-v" x="200" y="74" text-anchor="middle">6,851</text>
+        <text class="evi-v" x="316" y="24" text-anchor="middle">10,361</text>
+        <text class="evi-x" x="44" y="140" text-anchor="middle">2024</text>
+        <text class="evi-x" x="200" y="140" text-anchor="middle">2025</text>
+        <text class="evi-x" x="316" y="140" text-anchor="middle">2026</text>
+      </svg>
     </div>
   </div>
-  <div class="why-note">
-    셀프등기는 '공짜로 다 되는 일'은 아닙니다. 필요 서류를 직접 발급 받고, 등기소에 방문하는 노력은 필요합니다.<br>
-    셀프등기24는 셀프등기에 가장 중요한 <b>위임장, 소유권이전등기 신청서 자동 발급 서비스</b>를 제공하고, <br>
-    <b>셀프등기 필요서류 발급 방법 안내 가이드를 제공</b>하여 번거로움을 덜어드립니다.
+  <div class="evi-src">법원 등기정보광장 자료 재구성 (재현 그래프) · 1~2월 합산 기준 · 보도: 헤럴드경제 2026. 3.</div>
+
+  <!-- 카드뉴스 2개 평행 -->
+  <div class="news-2">
+    <a class="news-card" href="https://www.news1.kr/realestate/general/5890947" target="_blank" rel="noopener">
+      <div class="news-meta">뉴스1 · 2025. 8.<span class="ext">기사 보기 ↗</span></div>
+      <div class="news-h">"법무사 대신 직접"… 집값 급등에 '셀프 등기' 2년 반 만에 최대</div>
+      <div class="news-d">대법원 집계 기준 7월 셀프등기 신고가 5,320건에 달해 2023년 1월 이후 최대치를 기록했다고 보도했습니다.</div>
+    </a>
+    <a class="news-card" href="https://biz.heraldcorp.com/article/10703008" target="_blank" rel="noopener">
+      <div class="news-meta">헤럴드경제 · 2026. 3.<span class="ext">기사 보기 ↗</span></div>
+      <div class="news-h">"한푼이 아쉬워" 올해 '셀프등기' 벌써 1만 건</div>
+      <div class="news-d">1~2월 매수인 직접 등기가 1만 361건에 달해 전년 동기 대비 51.2% 늘었다고 보도했습니다.</div>
+    </a>
   </div>
 </div>
 
-<!-- ② 당위성: 데이터 -->
+<!-- ② 받게 되는 것 -->
+<div class="section" id="what">
+  <div class="sec-label">셀프등기24가 하는 일</div>
+  <p class="sec-title">준비부터 접수까지, 네 단계로 끝냅니다</p>
+  <p class="sec-sub">무엇을 준비하고, 온라인으로 어떻게 처리하고, 어떤 서류로 마무리하는지 — 셀프등기의 어려움인 '순서'를 네 단계로 정리했습니다.</p>
+  <div class="feat-grid">
+    <div class="feat-card">
+      <div class="feat-n">1</div>
+      <div class="feat-t">필요서류 및 체크리스트</div>
+      <div class="feat-d">매수인이 발급받을 서류와 매도인에게 받아야 할 서류를 유형에 맞게 정리해 드립니다. 하나라도 빠뜨려 등기소에서 되돌아오는 일이 없도록 시작 전에 챙길 것을 짚어드립니다.</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-n">2</div>
+      <div class="feat-t">단계별 로드맵 <span class="tag gold">핵심</span></div>
+      <div class="feat-d">취득세 신고, 전자수입인지, 국민주택채권 매입 등 접수에 필요한 각종 제세공과금 납부를 실제 화면과 함께 안내합니다. 온라인으로 미리 처리하면 등기소 방문은 단 한 번으로 끝납니다.</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-n">3</div>
+      <div class="feat-t">관할 등기소 자동 안내</div>
+      <div class="feat-d">부동산 주소만 입력하면 서류를 제출할 관할 등기소를 자동으로 찾아 신청서에 반영합니다. 어느 등기소로 가야 하는지 따로 찾아보는 번거로운 절차가 없습니다.</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-n">4</div>
+      <div class="feat-t">최종 서류 자동발급 <span class="tag">Word 파일</span></div>
+      <div class="feat-d">마지막 단계로, 각 단계에서 입력한 자료를 토대로 등기소에 제출하는 위임장·소유권이전등기 신청서가 완성됩니다. 민감정보는 서버에 저장하지 않고, 기재하지 않아도 발급됩니다.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ③ 가이드 티저 -->
 <div class="section">
-  <div class="sec-label">요즘 흐름</div>
-  <p class="sec-title">소유권이전 셀프등기, <br>빠르게 늘고 있습니다</p>
-  <p class="sec-sub">'어려워서 못 한다'는 인식과 달리, 본인이 직접 신청하는 비중은 최근 뚜렷하게 증가하는 추세입니다.</p>
-  <div class="stat-grid">
-    <div class="stat-card">
-      <div class="stat-big">192만 건</div>
-      <div class="stat-cap">연간 소유권이전등기<br>(이 중 매매가 62.8%)</div>
+  <div class="guide-band">
+    <div class="guide-band-h">셀프등기가 처음이신가요?</div>
+    <div class="guide-band-d">소유권이전등기가 무엇인지, 어떤 서류를 준비하고 어떤 순서로 진행하는지 — 시작 전에 알아야 할 내용을 가이드에 정리해 두었습니다. 전체 무료로 열람할 수 있습니다.</div>
+    <div class="guide-links">
+      <a href="guide.html#what" class="guide-a"><span class="guide-a-n">STEP 1</span><span class="guide-a-t">셀프등기란 무엇인가</span></a>
+      <a href="guide.html#docs" class="guide-a"><span class="guide-a-n">STEP 2</span><span class="guide-a-t">준비 서류 체크리스트</span></a>
+      <a href="guide.html#flow" class="guide-a"><span class="guide-a-n">STEP 3</span><span class="guide-a-t">진행 절차 한눈에</span></a>
     </div>
-    <div class="stat-card">
-      <div class="stat-big up">+58.7%</div>
-      <div class="stat-cap">당사자 직접신청<br>증가율 (전년 대비)</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-big down">-14.4%</div>
-      <div class="stat-cap">같은 기간 전체<br>등기 시장은 오히려 감소</div>
-    </div>
+    <a href="guide.html" class="guide-more">셀프등기 가이드 보기 →</a>
   </div>
-  <div class="data-lead">
-    전체 등기 건수는 줄어드는데 <b>본인이 직접 신청하는 비중만 역행해서 늘고 있습니다.</b>
-    비용을 아끼려는 수요가 실제로 움직이고 있다는 신호로 볼 수 있습니다.
-  </div>
-  <div class="stat-source">※ 등기정보광장(대법원) 통계 기준, 최근 3개년 분석. 수치는 집계 기준·시점에 따라 달라질 수 있습니다.</div>
 </div>
 
-<!-- ③ 결과물 예시 -->
-<div class="section">
-  <div class="sec-label">받게 되는 것</div>
-  <p class="sec-title">서류 한 장이 아니라,<br>등기소까지 가는 길 전체를 드립니다</p>
-  <p class="sec-sub">정보를 입력하면 위임장 및 등기신청서 등 등기 서류가 만들어지고, 복잡한 세금신고 서류 작성 방법과 관할 등기소 동선까지 정리해 드립니다.</p>
-  <div class="deliver-grid">
-    <div class="dlv-card">
-      <div class="dlv-ico">01</div>
-      <div>
-        <div class="dlv-t">맞춤 등기 서류 <span class="tag">Word 파일</span></div>
-        <div class="dlv-d">몇 가지 정보만 입력하면 위임장 등 필요한 서류가 채워진 채로 만들어집니다.</div>
-      </div>
-    </div>
-    <div class="dlv-card">
-      <div class="dlv-ico">02</div>
-      <div>
-        <div class="dlv-t">방문 전 체크리스트</div>
-        <div class="dlv-d">초본·인감증명서 등 빠뜨리기 쉬운 준비 서류를 매수인 유형(개인·법인)에 맞게 정리해 드립니다.</div>
-      </div>
-    </div>
-    <div class="dlv-card">
-      <div class="dlv-ico">03</div>
-      <div>
-        <div class="dlv-t"> 준비서류 작성 방법 및 관할 등기소 방문 가이드 제공 <span class="tag">핵심</span></div>
-        <div class="dlv-d">셀프등기 진행 시 방문할 구청, 은행, 등기소에 대한 안내 및 서류작성 가이드를 제공합니다.</div>
-      </div>
-    </div>
-  </div>
-  <a href="roadmap.html" class="preview-link">
-    <div>
-      <div class="pl-t">준비서류 및 등기소 방문 가이드 미리보기 →</div>
-      <div class="pl-d">결제 전에 실제로 받는 가이드를 확인해보세요</div>
-    </div>
-    <span class="pl-arrow">→</span>
-  </a>
-</div>
-
-<!-- 3단계 프로세스 -->
+<!-- ④ 3단계 -->
 <div class="section">
   <div class="sec-label">진행 절차</div>
-  <p class="sec-title">3단계로 끝납니다</p>
-  <p class="sec-sub">'내가 잘 하고 있나?' 걱정하지 않도록, 케이스에 맞는 서류와 순서를 안내합니다.</p>
+  <p class="sec-title">세 단계로 진행됩니다</p>
   <div class="steps">
     <div class="step-box">
       <div class="step-n">STEP 1</div>
       <div class="step-t">케이스 확인</div>
-      <div class="step-d">2가지 질문으로 내 등기 유형을 자동으로 찾습니다</div>
+      <div class="step-d">가장 일반적인 매매 케이스가 기본으로 선택되어 있습니다. 다른 경우라면 간단 진단으로 확인하세요.</div>
     </div>
     <div class="step-box">
       <div class="step-n">STEP 2</div>
       <div class="step-t">정보 입력 · 서류 생성</div>
-      <div class="step-d">완성된 서류를 Word 파일로 내려받습니다</div>
+      <div class="step-d">완성된 위임장·신청서를 Word 파일로 내려받습니다.</div>
     </div>
     <div class="step-box">
       <div class="step-n">STEP 3</div>
-      <div class="step-t">등기소 제출</div>
-      <div class="step-d">체크리스트 및 가이드를 보고 등기 서류를 직접 접수합니다</div>
+      <div class="step-t">로드맵 따라 접수</div>
+      <div class="step-d">체크리스트와 단계별 가이드를 따라 관할 등기소에 직접 접수합니다.</div>
     </div>
   </div>
 </div>
 
-<div class="div-line"><hr></div>
-
-<!-- 케이스 선택 + 서류 작성 도구 -->
+<!-- ⑤ 케이스 선택 (제품 시작) -->
 <main id="start">
-
-  <!-- ① 진단 마법사 -->
-  <div class="card" id="wizardCard">
+  <div class="card">
     <div class="ch">
-      <div class="step-num">01</div>
-      <div><div class="ct">내 케이스 진단</div><div class="cs">2가지 질문으로 알맞은 서류를 안내해 드립니다</div></div>
-    </div>
-    <div style="height:14px"></div>
-    <div class="wizard-q">
-      <div class="q-text">Q1. 건물(전유부분) 소유권이전등기는 이미 완료되었나요?</div>
-      <span class="q-hint">등기부등본 '갑구'에 본인 이름이 소유자로 등재되어 있는지 확인하세요</span>
-      <div class="opt-row">
-        <button class="opt-btn" data-q="1" data-val="yes">예, 완료했습니다</button>
-        <button class="opt-btn" data-q="1" data-val="no">아니오 / 아직입니다</button>
-      </div>
-    </div>
-    <div class="wizard-q" id="q2" style="display:none">
-      <div class="q-text">Q2. 등기부등본 표제부에 <b>"별도등기 있음"</b> 표시가 있나요?</div>
-      <span class="q-hint">토지(대지권)에 신탁등기가 남아 있는 경우 표시됩니다</span>
-      <div class="opt-row">
-        <button class="opt-btn" data-q="2" data-val="yes">예, 있습니다</button>
-        <button class="opt-btn" data-q="2" data-val="no">아니오 / 모르겠습니다</button>
-      </div>
-    </div>
-    <div class="skip-link"><a onclick="skipWizard()">진단 없이 직접 선택할게요 →</a></div>
-  </div>
-
-  <!-- ② 케이스 선택 -->
-  <div class="card" id="caseCard">
-    <div class="ch">
-      <div class="step-num">02</div>
-      <div><div class="ct">등기 케이스 선택</div><div class="cs">해당하는 케이스를 선택하세요</div></div>
+      <div class="step-num">A·B</div>
+      <div><div class="ct">내 등기 케이스를 확인하세요</div><div class="cs">대부분의 아파트 매매는 케이스 A에 해당합니다</div></div>
     </div>
     <div class="cases">
-      <div class="case-card" data-case="general" onclick="selectCase('general')">
+      <div class="case-card recommended selected" data-case="general" onclick="selectCase('general')">
         <div class="c-icon-box">A</div>
         <div class="c-title">매매계약에 따른 소유권이전</div>
-        <div class="c-desc">매매계약 체결 후 잔금 납부 이후 소유권을 이전 받는 가장 일반적인 경우</div>
+        <div class="c-desc">매매계약 체결 후 잔금 납부 이후 소유권을 이전받는 가장 일반적인 경우</div>
         <div class="c-when">→ 위임장 및 소유권이전 신청서</div>
       </div>
-      <div class="case-card" data-case="landShare" onclick="selectCase('landShare')">
+      <div class="case-card disabled" data-case="landShare" aria-disabled="true">
         <div class="c-icon-box">B</div>
         <div class="c-title">대지지분 별도등기</div>
-        <div class="c-desc">현재 부동산등기부 상 건축물에 '대지지분'이 없는 경우로 대지권 등기를 진행해야 하는 경우</div>
-        <div class="c-when">→ 위임장(및 대지지분 포기증서)</div>
+        <div class="c-desc">등기부상 건물에 '대지지분'이 없어 대지권 등기를 진행해야 하는 경우</div>
+        <div class="c-when">서비스 준비 중 — 매매 소유권이전(케이스 A)부터 순차 오픈합니다</div>
       </div>
     </div>
-    <div class="ntc inf" style="margin-top:14px">
-      <strong>케이스를 모르시나요?</strong> 위 진단 질문에 답하시면 자동으로 선택됩니다. 상속·증여 등 다른 등기 케이스도 순차적으로 추가될 예정입니다.
-    </div>
-  </div>
-
-  <!-- ③ 결과 -->
-  <div class="card" id="result">
-    <div class="ch">
-      <div class="step-num">03</div>
-      <div><div class="ct">서류 작성 시작</div><div class="cs">선택하신 케이스로 진행합니다</div></div>
-    </div>
-    <div style="height:14px"></div>
     <div class="result-box">
       <div class="r-label">선택하신 케이스</div>
-      <div class="r-case" id="resultCase">—</div>
+      <div class="r-case" id="resultCase">매매계약에 따른 소유권이전 (케이스 A)</div>
     </div>
-    <button class="next-btn" id="nextBtn" onclick="goNext()">
-      <span>이 케이스로 서류 작성 시작하기 →</span>
-    </button>
-  </div>
+    <button class="next-btn" onclick="goNext()">이 케이스로 서류 작성 시작하기 →</button>
 
+    <div class="diag-toggle">
+      <button onclick="toggleDiag()" id="diagBtn">내 케이스가 맞는지 잘 모르겠어요 — 간단 진단하기</button>
+    </div>
+    <div class="diag-body" id="diagBody">
+      <div class="wizard-q">
+        <div class="q-text">Q1. 건물(전유부분) 소유권이전등기는 이미 완료되었나요?</div>
+        <span class="q-hint">등기부등본 '갑구'에 본인 이름이 소유자로 등재되어 있는지 확인하세요</span>
+        <div class="opt-row">
+          <button class="opt-btn" data-q="1" data-val="yes">예, 완료했습니다</button>
+          <button class="opt-btn" data-q="1" data-val="no">아니오 / 아직입니다</button>
+        </div>
+      </div>
+      <div class="wizard-q" id="q2" style="display:none">
+        <div class="q-text">Q2. 등기부등본 표제부에 <b>"별도등기 있음"</b> 표시가 있나요?</div>
+        <span class="q-hint">토지(대지권)에 신탁등기가 남아 있는 경우 표시됩니다</span>
+        <div class="opt-row">
+          <button class="opt-btn" data-q="2" data-val="yes">예, 있습니다</button>
+          <button class="opt-btn" data-q="2" data-val="no">아니오 / 모르겠습니다</button>
+        </div>
+      </div>
+      <div class="ntc inf"><strong>진단 결과에 따라 케이스가 자동으로 선택됩니다.</strong> 상속·증여 등 다른 등기 케이스도 순차적으로 추가될 예정입니다.</div>
+    </div>
+  </div>
 </main>
 
-<div class="div-line" style="margin-top:0"><hr></div>
-
-<!-- FAQ -->
-<div class="section" style="padding-bottom:0">
+<!-- ⑥ Q&A -->
+<div class="section">
   <div class="sec-label">자주 묻는 질문</div>
   <p class="sec-title">궁금한 점에 답해드릴게요</p>
-</div>
-<main style="padding-top:12px;padding-bottom:8px">
-  <div class="card">
+  <div class="faq-card">
     <div class="faq-item">
-      <button class="faq-q" onclick="toggleFaq(this)">
-        셀프등기, 정말 혼자 할 수 있나요?<span class="ico">+</span>
-      </button>
-      <div class="faq-a">네, 가능합니다. 부동산등기는 법무사 선임 의무가 없으며 본인이 직접 신청할 수 있습니다. 셀프등기24는 복잡한 서류 작성과 절차 안내를 자동화해 드립니다.</div>
+      <button class="faq-q" onclick="toggleFaq(this)">셀프등기, 정말 혼자 할 수 있나요?<span class="ico">+</span></button>
+      <div class="faq-a">부동산등기는 법무사 선임 의무가 없어 본인이 직접 신청할 수 있습니다. 셀프등기24는 복잡한 서류 작성과 절차 안내를 자동화해 그 과정을 돕습니다. 개별 사안의 최종 확인은 관할 등기소 안내를 따라 주세요.</div>
     </div>
     <div class="faq-item">
-      <button class="faq-q" onclick="toggleFaq(this)">
-        직접 하면 시간이 얼마나 드나요?<span class="ico">+</span>
-      </button>
-      <div class="faq-a">준비 서류 발급과 온라인으로 처리 가능한 취득세 신고, 국민주택채권매입 등을 미리 완료해 둘 경우 <strong>관할등기소에 방문</strong>하여 서류 제출하는 것만으로 완료됩니다.
-      셀프등기24는 <strong>셀프등기 절차 A to Z 가이드라인 제공 및 위임장, 소유권이전 신청서 자동 발급 서비스를 제공</strong>하여 개인이 직접 셀프등기 정보 및 절차를 찾아보는 시간을 줄여줍니다.
-      </div>
+      <button class="faq-q" onclick="toggleFaq(this)">직접 하면 시간이 얼마나 드나요?<span class="ico">+</span></button>
+      <div class="faq-a">준비 서류 발급과 온라인으로 처리 가능한 취득세 신고, 국민주택채권 매입 등을 미리 완료해 둘 경우 <strong>관할 등기소에 방문</strong>하여 서류를 제출하는 것으로 마무리됩니다. 셀프등기24는 <strong>절차 A to Z 가이드와 위임장·소유권이전 신청서 자동 발급</strong>으로 정보를 직접 찾아보고 검증하는 시간을 줄여드립니다.</div>
     </div>
     <div class="faq-item">
-      <button class="faq-q" onclick="toggleFaq(this)">
-        잔금대출이 있어도 셀프등기가 가능한가요?<span class="ico">+</span>
-      </button>
+      <button class="faq-q" onclick="toggleFaq(this)">잔금대출이 있어도 셀프등기가 가능한가요?<span class="ico">+</span></button>
       <div class="faq-a">대출 은행이 셀프등기를 허용하는 경우에 한해 가능합니다. 이 경우 은행은 근저당 설정 서류만 요구하며, 소유권이전 부분은 본인이 직접 처리할 수 있습니다. 대출 실행 전 담당 행원에게 셀프등기 가능 여부를 반드시 확인하세요.</div>
     </div>
     <div class="faq-item">
-      <button class="faq-q" onclick="toggleFaq(this)">
-        케이스 A와 B의 차이가 뭔가요?<span class="ico">+</span>
-      </button>
-      <div class="faq-a">케이스 A는 일반적인 소유권이전 케이스로 매매계약 체결 후 잔금납부 이후의 일반적인 경우입니다. 케이스 B는 현재 건축물에 대지 지분(대지권)이 등기되어 있지 않아 대지권 등기를 진행해야 하는 경우입니다.</div>
+      <button class="faq-q" onclick="toggleFaq(this)">개인정보는 어떻게 처리되나요?<span class="ico">+</span></button>
+      <div class="faq-a">주민등록번호 등 민감정보는 서버에 저장하지 않으며, 문서 생성은 이용자 기기 안에서 이루어집니다. 민감정보를 기재하지 않아도 서류 발급이 가능하며, 빈칸은 출력 후 손으로 기재하시면 됩니다.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">케이스 A와 B의 차이가 뭔가요?<span class="ico">+</span></button>
+      <div class="faq-a">케이스 A는 매매계약 체결 후 잔금 납부 이후 소유권을 이전받는 일반적인 경우입니다. 케이스 B는 건물에 대지지분(대지권)이 등기되어 있지 않아 대지권 등기를 함께 진행해야 하는 경우입니다.</div>
     </div>
   </div>
-</main>
+</div>
+
+<!-- 하단 CTA -->
+<div class="cta-band">
+  <div class="cta-inner">
+    <h2>이제, 순서만 따라오시면 됩니다</h2>
+    <p>몇 가지 정보 입력으로 위임장·신청서가 완성됩니다</p>
+    <a href="#start" class="btn-primary">서류 작성 시작하기 →</a>
+  </div>
+</div>
 
 <!-- 푸터 -->
 <footer>
   <div class="foot-inner">
     <div class="foot-brand">셀프등기24</div>
     <div class="foot-links">
+      <a href="guide.html">셀프등기 가이드</a>
+      <a href="calculator.html">취득세 계산기</a>
       <a href="https://selfregi.tistory.com" target="_blank" rel="noopener">블로그</a>
       <a href="#">이용약관</a>
       <a href="#">개인정보처리방침</a>
-      <a href="#">면책고지</a>
     </div>
     <div class="foot-copy">
-      © 2025 셀프등기24 · 개인정보를 별도로 저장하지 않으며, 개인정보를 기재하지 않아도 서류 발급이 가능합니다.<br>
+      © 2026 셀프등기24 · 개인정보를 별도로 저장하지 않으며, 개인정보를 기재하지 않아도 서류 발급이 가능합니다.<br>
       본 서비스는 법률 자문을 제공하지 않으며 등기 신청을 대행하지 않습니다. 최종 확인은 관할 등기소 안내를 따라 주세요.
     </div>
   </div>
@@ -440,8 +532,28 @@ const CASES = {
   general:   { label:'매매계약에 따른 소유권이전 (케이스 A)', url:'normal_form.html' },
   landShare: { label:'대지지분 별도등기 (케이스 B)',      url:'land_form.html' }
 };
+let currentCase = 'general';
 let answers = {q1:null,q2:null};
 
+function selectCase(id){
+  if(id==='landShare') return; /* 케이스 B 준비 중 — 선택 불가 */
+  currentCase = id;
+  document.querySelectorAll('.case-card').forEach(c=>c.classList.toggle('selected', c.dataset.case===id));
+  document.getElementById('resultCase').textContent = CASES[id].label;
+}
+function goNext(){
+  if(!currentCase || !CASES[currentCase]) return;
+  location.href = CASES[currentCase].url;
+}
+
+/* ===== 진단 (접힘) ===== */
+function toggleDiag(){
+  const body = document.getElementById('diagBody');
+  const open = body.classList.toggle('open');
+  document.getElementById('diagBtn').textContent = open
+    ? '진단 닫기'
+    : '내 케이스가 맞는지 잘 모르겠어요 — 간단 진단하기';
+}
 document.querySelectorAll('.opt-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     const q=btn.dataset.q, val=btn.dataset.val;
@@ -452,54 +564,54 @@ document.querySelectorAll('.opt-btn').forEach(btn => {
       document.getElementById('q2').style.display = val==='yes'?'block':'none';
       if(val==='no'){answers.q2=null;decide('general');}
     }
-    if(q==='2') decide(val==='yes'?'landShare':'general');
+    if(q==='2'){
+      if(val==='yes'){ showToast('대지지분 별도등기(케이스 B)는 현재 준비 중입니다'); }
+      else{ decide('general'); }
+    }
   });
 });
-
-function decide(id){highlightCard(id);showResult(id);}
-function selectCase(id){highlightCard(id);showResult(id);}
-
-function highlightCard(id){
-  document.querySelectorAll('.case-card').forEach(c=>c.classList.remove('selected','recommended'));
-  const el=document.querySelector(`.case-card[data-case="${id}"]`);
-  if(el) el.classList.add('selected','recommended');
-}
-function showResult(id){
-  const c=CASES[id];
-  document.getElementById('resultCase').textContent=c.label;
-  document.getElementById('result').style.display='block';
-  window.selectedCase=id;
-  const btn=document.getElementById('nextBtn');
-  if(!c.url){btn.classList.add('disabled');btn.textContent='준비중인 서비스입니다';}
-  else{btn.classList.remove('disabled');btn.innerHTML='<span>이 케이스로 서류 작성 시작하기 →</span>';}
-  document.getElementById('result').scrollIntoView({behavior:'smooth',block:'nearest'});
-}
-function skipWizard(){
-  document.getElementById('wizardCard').style.display='none';
-  document.getElementById('caseCard').scrollIntoView({behavior:'smooth'});
-}
-function goNext(){
-  const c=CASES[window.selectedCase];
-  if(!c||!c.url)return;
-  window.location.href=c.url;
+function decide(id){
+  selectCase(id);
+  showToast('진단 결과: ' + CASES[id].label + ' 선택됨');
 }
 
-/* ===== FAQ 토글 ===== */
+/* ===== FAQ ===== */
 function toggleFaq(btn){
-  const a=btn.nextElementSibling;
-  const open=btn.classList.toggle('open');
-  a.style.display=open?'block':'none';
+  const a = btn.nextElementSibling;
+  const open = a.style.display === 'block';
+  a.style.display = open ? 'none' : 'block';
+  btn.classList.toggle('open', !open);
 }
 
-/* ===== 네비 앵커 스무스 스크롤 ===== */
-document.querySelectorAll('a[href^="#"]').forEach(a=>{
-  a.addEventListener('click',e=>{
-    const id=a.getAttribute('href').slice(1);
-    if(!id)return;
-    const el=document.getElementById(id);
-    if(el){e.preventDefault();el.scrollIntoView({behavior:'smooth'});}
-  });
-});
+/* ===== 토스트 ===== */
+let toastTimer;
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>t.classList.remove('show'), 2600);
+}
+</script>
+<script>
+(function(){
+  var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var card=document.querySelector('.evi-card');
+  var big=document.getElementById('eviCount');
+  if(!card)return;
+  function run(){
+    card.classList.add('in');
+    if(reduce||!big)return;
+    var target=+big.dataset.count,cur=0,stepv=Math.ceil(target/48);
+    big.textContent='0';
+    var t=setInterval(function(){cur+=stepv;if(cur>=target){cur=target;clearInterval(t);}big.textContent=cur.toLocaleString('ko-KR');},20);
+  }
+  if(reduce){run();return;}
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){run();io.disconnect();}});},{threshold:.4});
+    io.observe(card);
+  }else run();
+})();
 </script>
 </body>
 </html>
