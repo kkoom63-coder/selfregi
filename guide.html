@@ -169,6 +169,51 @@ footer{background:var(--navy);margin-top:52px;padding:30px 20px}
   .gm-side{display:none}
   .gm-img img{max-width:100%}
 }
+
+/* ===== 번호 보관함 ===== */
+.vault{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:24px}
+.vault-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:8px}
+.vault-h{font-size:15px;font-weight:800;color:var(--navy)}
+.vault-prog{font-size:11.5px;font-weight:700;color:var(--blue);background:#eef3fb;padding:4px 12px;border-radius:20px}
+.vault-grid{display:grid;grid-template-columns:1fr;gap:10px}
+@media(min-width:560px){.vault-grid{grid-template-columns:1fr 1fr}}
+.rin{background:#f7f9fc;border:1px solid var(--border);border-radius:10px;padding:12px 13px;transition:.15s}
+.rin.saved{background:#f0f8f3;border-color:#bfe6cf}
+.rin-l{font-size:12px;font-weight:700;color:var(--navy);margin-bottom:8px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.rin-l .src{font-size:9.5px;font-weight:600;color:var(--muted);background:#eef2f6;padding:1px 6px;border-radius:5px}
+.rin-l .ok{font-size:10px;font-weight:700;color:#2f9e6a;margin-left:auto}
+.rin-row{display:flex;gap:6px}
+.rin-row input{flex:1;min-width:0;height:36px;border:1px solid var(--border);border-radius:8px;padding:0 11px;font-family:inherit;font-size:13px;color:var(--text);background:#fff}
+.rin-row input:focus{outline:none;border-color:var(--blue)}
+.rin-row button{flex-shrink:0;padding:0 15px;border:none;border-radius:8px;background:var(--navy);color:#fff;font-size:12.5px;font-weight:700;font-family:inherit;cursor:pointer;transition:.15s}
+.rin-row button:hover{background:var(--blue)}
+.rin.saved .rin-row button{background:#2f9e6a}
+/* 미니 신청서 프리뷰 */
+.vprev{margin-top:18px;border:1px solid var(--border);border-radius:12px;overflow:hidden;background:#fff}
+.vprev-h{font-size:11px;color:var(--muted);padding:12px 15px;border-bottom:1px solid var(--border);background:#fafbfd}
+.vprev-b{padding:15px;display:grid;gap:9px}
+.vprev-b .row{font-size:12.5px;display:flex;justify-content:space-between;gap:12px;align-items:baseline}
+.vprev-b .k{color:var(--muted);flex-shrink:0}
+.vprev-b .v{font-weight:700;color:var(--navy);text-align:right;word-break:break-all}
+.vprev-b .v.blank{color:#c3ccd6;font-weight:400}
+.vprev-lock{border-top:1px dashed var(--border);padding:15px;display:flex;align-items:center;justify-content:space-between;gap:12px;background:#fbfcfe;flex-wrap:wrap}
+.vprev-lock .t{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:6px;line-height:1.5}
+.vprev-cta{padding:12px 18px;border-radius:10px;background:var(--blue);color:#fff;font-size:13px;font-weight:800;text-decoration:none;white-space:nowrap;transition:background .15s}
+.vprev-cta:hover{background:#1d4d85}
+/* 모바일 하단 고정 바 */
+.vbar{position:fixed;left:0;right:0;bottom:0;z-index:150;background:var(--navy);color:#fff;display:none;align-items:center;justify-content:space-between;padding:13px 20px calc(13px + env(safe-area-inset-bottom));box-shadow:0 -4px 16px rgba(15,23,32,.2);cursor:pointer;border:none;width:100%;font-family:inherit}
+.vbar .l{font-size:13px;font-weight:700;display:flex;align-items:center;gap:9px}
+.vbar .cnt{background:rgba(255,255,255,.16);padding:2px 10px;border-radius:20px;font-size:12px;font-weight:800}
+.vbar .r{font-size:12.5px;font-weight:700;color:#ffd66e}
+@media(max-width:760px){.vbar.show{display:flex}body.hasbar{padding-bottom:62px}}
+/* 모달 내 릴레이 저장 */
+.gm-relay{padding:14px 22px;border-top:1px solid var(--border);background:#f0f8f3;flex-shrink:0;max-height:38dvh;overflow-y:auto}
+.gm-relay-h{font-size:12px;font-weight:800;color:#1a7a4a;margin-bottom:10px;line-height:1.5}
+.gm-relay .rin{background:#fff}
+.gm-relay .rin+.rin{margin-top:8px}
+/* 토스트 */
+.toast{position:fixed;left:50%;bottom:78px;transform:translateX(-50%) translateY(12px);background:var(--navy);color:#fff;font-size:12.5px;font-weight:600;padding:11px 18px;border-radius:10px;box-shadow:0 8px 24px rgba(15,23,32,.3);opacity:0;pointer-events:none;transition:.2s;z-index:300;max-width:90vw;text-align:center}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
 </style>
 </head>
 <body>
@@ -181,6 +226,7 @@ footer{background:var(--navy);margin-top:52px;padding:30px 20px}
     <a href="#docs" class="nav-a">준비서류</a>
     <a href="#flow" class="nav-a">진행 절차</a>
     <a href="#shots-sec" class="nav-a">실제 화면</a>
+    <a href="#vault-sec" class="nav-a">번호 보관함</a>
     <a href="calculator.html" class="nav-a">취득세 계산기</a>
     <a href="normal_form.html" class="nav-a cta">서류 작성하기</a>
   </div>
@@ -253,6 +299,34 @@ footer{background:var(--navy);margin-top:52px;padding:30px 20px}
   <div class="shots" id="shots"></div>
 </div>
 
+<!-- 번호 보관함 -->
+<div class="section" id="vault-sec">
+  <div class="sec-label">번호 보관함</div>
+  <p class="sec-title">진행하며 받은 번호를 여기에 저장해 두세요</p>
+  <p class="sec-sub">각 단계에서 발급받은 취득세액·시가표준액·채권번호·수수료 납부번호를 저장해 두면, 서류 작성 단계에서 신청서에 자동으로 채워집니다. 옮겨적기 실수를 막아 주는 메모장이라고 생각하시면 됩니다. 입력값은 이 기기(브라우저)에만 저장되며 서버로 전송되지 않습니다.</p>
+  <div class="vault">
+    <div class="vault-head">
+      <div class="vault-h">내 등기 번호</div>
+      <div class="vault-prog" id="vaultProg">0 / 7 저장</div>
+    </div>
+    <div class="vault-grid" id="vaultGrid"></div>
+    <div class="vprev">
+      <div class="vprev-h">소유권이전등기 신청서 미리보기 — 저장한 번호가 자동으로 들어갑니다</div>
+      <div class="vprev-b">
+        <div class="row"><span class="k">부동산별 시가표준액</span><span class="v blank" id="pv-siga">미입력</span></div>
+        <div class="row"><span class="k">국민주택채권 매입금액</span><span class="v blank" id="pv-bondamt">미입력</span></div>
+        <div class="row"><span class="k">취득세 세액합계</span><span class="v blank" id="pv-taxtotal">미입력</span></div>
+        <div class="row"><span class="k">등기신청수수료 납부번호</span><span class="v blank" id="pv-fee">미입력</span></div>
+        <div class="row"><span class="k">관할 등기소</span><span class="v blank">부동산 주소 기반 자동 반영</span></div>
+      </div>
+      <div class="vprev-lock">
+        <div class="t"><b>완성된 위임장·신청서 파일</b>은 서류 작성 단계에서 받습니다</div>
+        <a href="normal_form.html" class="vprev-cta">이 번호로 서류 작성하기 →</a>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- 마무리 -->
 <div class="section">
   <div class="finish">
@@ -289,6 +363,13 @@ footer{background:var(--navy);margin-top:52px;padding:30px 20px}
   </div>
 </footer>
 
+<!-- 모바일 하단 고정 바 (번호 보관함 바로가기) -->
+<button type="button" class="vbar" id="vbar" aria-label="번호 보관함 열기">
+  <span class="l">번호 보관함<span class="cnt" id="vbarCnt">0/7</span></span>
+  <span class="r">열기 ↑</span>
+</button>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
 <!-- 대형 2-pane 모달 -->
 <div class="gm-back" id="gmBack" role="dialog" aria-modal="true" aria-labelledby="gmSideT">
   <div class="gm">
@@ -300,6 +381,7 @@ footer{background:var(--navy);margin-top:52px;padding:30px 20px}
       <div class="gm-top"><span class="gm-count" id="gmCount"></span><button class="gm-x" id="gmX" aria-label="닫기">✕</button></div>
       <div class="gm-img" id="gmImg"></div>
       <div class="gm-cap"><div class="gm-cap-t" id="gmCapT"></div><div class="gm-cap-d" id="gmCapD"></div></div>
+      <div class="gm-relay" id="gmRelay" style="display:none"></div>
       <div class="gm-foot"><button class="gm-nav" id="gmPrev">← 이전</button><button class="gm-nav next" id="gmNext">다음 →</button></div>
     </div>
   </div>
@@ -320,13 +402,7 @@ var SHOTS=[
     {img:"gover24_5b.png",t:"이용약관 동의 및 본인확인",d:"이용약관에 동의하고 성명·주민등록번호를 입력한 뒤 인증서로 본인확인을 진행합니다. 매수인 본인 것으로 발급합니다."},
     {img:"gover24_6.svg",t:"가족관계증명서 발급 옵션 선택",d:"발급 대상자 '본인', 증명서 종류 '가족관계증명서', '상세증명서', 주민등록번호 '전부 공개', 수령방법 '직접 인쇄', 신청사유 '개인 신분 또는 가족관계증명'을 선택하고 '신청하기'를 누릅니다. ★ 취득세 신고 시 첨부용이므로 jpg 파일로도 저장하고, 파일명을 '관련구비서류(가족관계증명서)'로 저장하세요. 가족관계증명서는 취득세 신고용이며 등기신청 시에는 제출하지 않습니다."}
   ]},
-  {key:"preinput",title:"매수자 사전입력 등록 (분양권 매수 시)",desc:"매도인이 시행사(법인)일 때 인터넷등기소에 매수자 정보를 미리 등록하는 방법",steps:[
-    {img:"iros_1.jpg",t:"인터넷등기소 접속 후 로그인",d:"www.iros.go.kr에 접속한 뒤 우측 상단 '로그인'을 클릭합니다. 공동인증서(구 공인인증서) 또는 간편인증으로 로그인하세요."},
-    {img:"iros_2.jpg",t:"열람·발급 → 법인 → 매도용 매수자 등록",d:"상단 메뉴에서 '열람·발급 → 법인 → 법인인감증명서 발급지원 → 매도용 매수자 등록'을 선택합니다."},
-    {img:"iros_3.jpg",t:"등기상호 검색",d:"'등기상호검색' 탭에서 검색 조건을 전체로 두고, 시행사(분양회사)의 등기상호명을 입력한 후 검색합니다. 결과 목록에서 해당 법인을 선택하세요."},
-    {img:"iros_4.jpg",t:"매수자 정보 입력 후 추가·수정",d:"매수형태(개별·공동매수)와 용도(부동산매도용)를 선택하고, 매수자명·주민등록번호·주소·신청통수를 입력합니다. 입력 완료 후 우측 하단 '추가·수정' 버튼을 눌러 등록을 완료하세요."}
-  ]},
-  {key:"wetax",title:"위택스에서 취득세 신고·납부",desc:"실거래 정보를 불러와 취득세를 온라인으로 신고하고 납부확인서를 받는 방법",steps:[
+  {key:"wetax",title:"위택스에서 취득세 신고·납부",desc:"실거래 정보를 불러와 취득세를 온라인으로 신고하고 납부확인서를 받는 방법",relays:["tax","edu","rural","siga"],steps:[
     {img:"wetax_1.jpg",t:"위택스 로그인",d:"위택스(wetax.go.kr)에 접속해 우측 상단 '로그인'을 누릅니다. 공동인증서 또는 간편인증으로 로그인하세요. 관할 자치단체가 서울이면 서울 이택스(etax.seoul.go.kr)에서 신고합니다."},
     {img:"wetax_2.jpg",t:"취득세 신고 메뉴 진입",d:"상단 메뉴에서 '신고 → 취득세 → 취득세 신고'를 차례로 클릭합니다."},
     {img:"tax_3.svg",t:"신고인·납세자 입력",d:"신고인 정보는 로그인 정보로 자동 입력됩니다. 납세자가 본인이면 '신고인과 동일'에 체크하면 그대로 채워집니다. 주소만 '주소검색'으로 입력하세요. (재현 이미지)"},
@@ -342,13 +418,7 @@ var SHOTS=[
     {img:"tax_7.svg",t:"신고서 제출",d:"신고인·취득물건·세액을 최종 확인한 뒤 '제출'을 누릅니다. 미리보기로 실제 신고서 양식과 같은 모습을 확인할 수 있습니다. (재현 이미지)"},
     {img:"tax_8.svg",t:"납부 및 납부서 출력",d:"'납부서출력'으로 납부확인서를 출력하고 '즉시납부'로 취득세를 냅니다. 출력한 납부확인서는 등기소 제출 서류에 첨부하세요. 화면의 취득세액과 시가표준액은 로드맵 ①②칸에 입력해 두면 신청서 집계에 자동 반영됩니다. (재현 이미지)"}
   ]},
-  {key:"paper",title:"취득세 신고서 작성 (서면·구청 방문)",desc:"구청 창구에서 종이 신고서로 취득세를 신고할 때 작성하는 방법",steps:[
-    {img:"paper_1.png",t:"신고기한 확인 및 신고인 작성",d:"신고기한은 취득원인에 따라 다릅니다 — 매매는 취득일(잔금일)부터 60일, 증여는 증여일이 속한 달 말일부터 3개월, 상속은 사망일이 속한 달 말일부터 6개월입니다. 기한 안이면 '기한 내'에 체크하세요. 빨간 박스 영역에 신고인(취득자)과 전 소유자(종전 소유자) 정보를 적고, '매도자와의 관계'는 일반 매매라면 '기타'에 체크합니다."},
-    {img:"paper_2.jpg",t:"취득물건 내역 작성",d:"소재지는 등기부등본 표제부와 동일하게 적습니다. 취득일자는 잔금일과 등기일 중 빠른 날(실수 1순위)입니다. '종류'란은 부동산 사용형태(아파트 등 주거상품=주거용, 상가=영업용 등)를, '용도'란은 사용목적(주거용·상업용·공장용 등)을 각각 적습니다 — 두 칸은 시행규칙상 별개 항목입니다. 취득원인은 매매면 '매매', 증여는 '증여', 상속은 '상속'으로 적고, 취득가액은 매매는 실제 매매가가 기준이며 증여·상속은 별도 산정기준(시가인정액·시가표준액)이 적용되니 확인이 필요합니다."},
-    {img:"paper_3.jpg",t:"신고세액 확인 (구청이 계산해 줍니다)",d:"신고세액 부분은 구청 담당자가 직접 계산해서 채워주는 경우가 많습니다. 미리 계산한 취득세액을 참고로 적어도 되고, 창구 제출 후 담당자 확인을 받으면 됩니다. '가산세'란은 기한 후 신고일 때만 적습니다. 납부고지서를 받은 뒤 취득세액·시가표준액을 로드맵에 저장해두세요."},
-    {img:"paper_4.jpg",t:"신고일 기재 및 첨부서류 확인",d:"신고일(년·월·일)과 신고인 이름을 기재하고 서명 또는 인감도장을 찍습니다(서명·날인이 없으면 신고서 자체가 무효입니다). 첨부서류는 매매계약서(또는 부동산거래계약 신고필증) 사본이며, 주택을 취득했다면 '주택 취득 상세명세서(부표)'도 함께 제출합니다. 대리인이 신고할 경우 위임장(하단)도 함께 작성하세요."}
-  ]},
-  {key:"bondonline",title:"국민주택채권 매입 (온라인·하나은행)",desc:"주택도시기금에서 매입금액을 조회하고 은행 앱으로 채권을 매입하는 방법",steps:[
+  {key:"bondonline",title:"국민주택채권 매입 (온라인·하나은행)",desc:"주택도시기금에서 매입금액을 조회하고 은행 앱으로 채권을 매입하는 방법",relays:["bondamt","bond"],steps:[
     {img:"gigum_1.JPG",t:"주택도시기금 사이트 접속",d:"채권 매입 금액을 정확히 산출하기 위해 주택도시기금(nhuf.molit.go.kr)에 접속합니다. 상단 메뉴에서 '청약/채권 > 제1종국민주택채권 > 국민주택채권매입'을 클릭하세요."},
     {img:"gigum_2a.jpg",t:"매입대상금액 조회 - 용도 선택",d:"좌측 메뉴에서 '매입대상금액조회'를 누르고, 매입용도를 '부동산 소유권등기(주택, 아파트, 연립)'으로 선택합니다."},
     {img:"gigum_2b.jpg",t:"시가표준액 입력 및 채권금액 확인",d:"대상물건지역을 선택하고, 미리 확인해둔 '건물분 시가표준액'을 입력 후 조회를 누릅니다. 하단에 계산된 '채권매입금액'을 꼭 메모해두세요. (신청서에 적을 금액입니다)"},
@@ -360,10 +430,6 @@ var SHOTS=[
     {img:"https://placehold.co/760x450/f0f4f8/6b7280?text=Step+9:+Payment+and+Authentication",t:"본인부담금 결제 및 인증 (업데이트 예정)",d:"수수료 등이 포함된 최종 '본인부담금'을 확인하고, 하나은행 출금 계좌 비밀번호 및 공인/금융인증서 암호를 입력하여 결제를 진행합니다. (상세 사진 업데이트 예정)"},
     {img:"https://placehold.co/760x450/f0f4f8/6b7280?text=Step+10:+Confirm+Bond+Issue+Number",t:"채권발행번호 확인 및 저장 (업데이트 예정)",d:"결제가 완료되면 매입 영수증이 나타납니다. 영수증에 적힌 14자리 채권발행번호를 복사하거나 메모하여, 로드맵 3단계 신청서 집계란에 잊지 말고 저장해두세요! (상세 사진 업데이트 예정)"}
   ]},
-  {key:"bond",title:"국민주택채권 매입 (은행 창구)",desc:"은행 창구 비치 매입요청서로 채권을 매입할 때 작성 방법",steps:[
-    {img:"https://placehold.co/400x300/eef3ff/2a5f9e?text=Bond+Form",t:"채권 매입요청서 작성",d:"은행 비치 '국민주택채권 매입요청서'에 매입자명·매입금액을 적습니다. 매입액은 시가표준액 기준으로 계산됩니다."},
-    {img:"https://placehold.co/400x150/fffbeb/92400e?text=Check+Sell+Immediately",t:"즉시 매도 체크",d:"가장 중요합니다. '즉시매도'에 V표시하세요. 그래야 본인부담금(할인액)만 내고 처리됩니다."}
-  ]},
   {key:"stamp",title:"전자수입인지 구매·출력",desc:"등기소 제출 서류에 붙일 전자수입인지를 온라인으로 구매하는 방법",steps:[
     {img:"estamp_1r.jpg",t:"전자수입인지 사이트 접속 및 종류 선택",d:"전자수입인지.kr에 접속하면 두 종류가 나옵니다. 등기소에 종이로 제출할 서류에 붙이는 것이므로 반드시 '종이문서용 전자수입인지'를 선택하세요('전자문서용'이 아닙니다). (실제 화면)"},
     {img:"estamp_2r.jpg",t:"구매 메뉴 클릭",d:"첫 화면 좌측의 '구매' 메뉴(또는 상단 메뉴의 '구매' 탭)를 클릭합니다. (실제 화면)"},
@@ -374,7 +440,7 @@ var SHOTS=[
     {img:"estamp_7r.jpg",t:"신용카드 선택 시 정보 입력",d:"신용카드를 선택한 경우의 화면입니다. 카드종류(개인/사업자용)와 카드사, 할부기간(5만원 미만은 할부 불가)을 선택하고, 카드번호·유효기간·구매자 성명·주민등록번호·연락처를 입력한 뒤 '납부'를 누르세요. (실제 화면)"},
     {img:"estamp_8.png",t:"구매 결과 확인 및 출력 클릭",d:"'정상처리' 화면이 뜨면 전자수입인지 구매가 완료된 것입니다. '출력' 버튼을 클릭합니다. ★ 출력은 1회만 가능합니다 — 반드시 '테스트 출력'으로 프린터 상태를 먼저 확인하세요. (재현 이미지 — 결제 완료 후 화면은 아직 실제 캡처가 반영되지 않았습니다)"}
   ]},
-  {key:"efee",title:"등기신청수수료 납부 (인터넷등기소)",desc:"인터넷등기소에서 등기신청수수료를 납부하고 영수필확인서를 받는 방법",steps:[
+  {key:"efee",title:"등기신청수수료 납부 (인터넷등기소)",desc:"인터넷등기소에서 등기신청수수료를 납부하고 영수필확인서를 받는 방법",relays:["fee"],steps:[
     {img:"irosfee_1.jpg",t:"인터넷등기소 로그인",d:"인터넷등기소(iros.go.kr)에 접속해 우측 상단 '로그인'을 클릭합니다. 공동인증서(구 공인인증서) 또는 간편인증으로 로그인하세요. (실제 화면)"},
     {img:"irosfee_2.jpg",t:"등기지원 서비스 → 부동산등기 신청수수료",d:"상단 메뉴 '등기지원 서비스'를 클릭하면 나오는 메뉴에서 '전자납부' 항목의 '부동산등기 신청수수료'를 선택합니다. (실제 화면)"},
     {img:"irosfee_3.jpg",t:"납부 신규작성",d:"'납부작성현황' 화면입니다. 업무구분이 '부동산등기'인지 확인하고, 우측 하단 '납부신규작성'을 클릭해 새 납부건을 만듭니다. (실제 화면)"},
@@ -387,20 +453,69 @@ var SHOTS=[
   {key:"seal",title:"위임장 도장 날인 위치",desc:"매도인·매수인 인감도장을 찍는 위치를 확인하는 방법",steps:[
     {img:"normal_case1(위임장).JPG",t:"날인 위치 확인",d:"빨간 박스 위치(매도인·매수인 각 칸)에 인감 도장을 선명하게 찍으세요. 도장이 깨지거나 인감증명서 도장과 다르면 반려될 수 있습니다."}
   ]},
-  {key:"app",title:"소유권이전등기 신청서 작성",desc:"부동산 표시부터 등기원인, 세액, 수수료까지 신청서를 항목별로 작성하는 방법",steps:[
-    {img:"https://placehold.co/760x460/eef3ff/2a5f9e?text=1.+Property+Description",t:"부동산의 표시 (구분건물)",d:"신청서 맨 위 '부동산의 표시'란은 등기기록(표제부)과 100% 일치해야 합니다. 구분건물(아파트 등)은 ①1동 건물의 표시(소재·지번·건물명칭·도로명주소) ②전유부분(건물번호·구조·면적) ③대지권의 표시(토지 표시·대지권 종류·비율)를 차례로 적고, 하단에 부동산거래계약신고필증의 거래신고관리번호와 거래가액을 기재합니다. (예: 서울특별시 서초구 서초동 100 · 샛별아파트 가동 · 1-101 · 86.03㎡ · 대지권 3,000분의 500) ★ 등기기록과 대장의 표시가 다르면 먼저 부동산표시변경등기부터 해야 합니다. (작성 예시 이미지는 준비 후 교체 예정)"},
-    {img:"https://placehold.co/760x460/eef3ff/2a5f9e?text=2.+Cause+%26+Date",t:"등기원인과 그 연월일",d:"등기원인은 '매매'로, 연월일은 매매계약서상 계약일을 적습니다. (예: 2017년 4월 3일 매매) ★ 잔금일이 아니라 계약일입니다. (작성 예시 이미지는 준비 후 교체 예정)"},
-    {img:"https://placehold.co/760x460/eef3ff/2a5f9e?text=3.+Purpose",t:"등기의 목적",d:"소유권 전부를 이전하는 일반 매매는 '소유권이전'으로 적습니다. (지분 일부이전·공유지분 이전은 '소유권 일부이전' 또는 '갑구 ○번 □□□지분 전부이전' 등으로 다르게 적습니다) (작성 예시 이미지는 준비 후 교체 예정)"},
-    {img:"https://placehold.co/760x460/eef3ff/2a5f9e?text=4.+Share+to+Transfer",t:"이전할 지분",d:"소유권 전부이전이면 비워둡니다. 일부이전(공유지분 이전 포함)일 때만 '공유자 지분 ○분의 ○'처럼 부동산 전체에 대한 지분을 적습니다. (작성 예시 이미지는 준비 후 교체 예정)"},
-    {img:"https://placehold.co/760x460/eef3ff/2a5f9e?text=5.+Seller+%26+Buyer",t:"등기의무자(매도인) · 등기권리자(매수인)",d:"등기의무자란에 매도인의 성명·주민등록번호·주소를, 등기권리자란에 매수인의 성명·주민등록번호·주소를 적습니다. ★ 매도인 표시는 등기기록상 소유자 표시와 일치해야 하고, 매수인 주소는 주민등록등(초)본과 일치해야 합니다. (작성 예시 이미지는 준비 후 교체 예정)"},
-    {img:"https://placehold.co/760x460/fffbeb/92400e?text=6.+Std+Value+%26+Bond",t:"시가표준액 · 국민주택채권 매입금액 · 발행번호",d:"부동산별 시가표준액은 취득세(등록면허세) 납부서(OCR)에 적힌 시가표준액을 그대로 옮겨 적고, 그 옆에 국민주택채권 매입금액을 적은 뒤 매입총액을 기재합니다. 국민주택채권 발행번호는 채권 매입 시 은행에서 받은 번호를 적습니다. ★ 로드맵 3단계 '신청서 옮겨적기' 집계에 저장해둔 시가표준액·채권발행번호를 그대로 보고 적으면 됩니다. 하나의 신청사건에는 하나의 발행번호만 기재합니다. (작성 예시 이미지는 준비 후 교체 예정)"},
-    {img:"https://placehold.co/760x460/fffbeb/92400e?text=7.+Tax+Amounts",t:"취득세·지방교육세·농어촌특별세 및 세액합계",d:"취득세(등록면허세) 영수필확인서에 적힌 금액을 보고 취득세·지방교육세·농어촌특별세를 각 기재하고, 세액합계란에 합계를 적습니다. 농어촌특별세는 납부액이 없으면 비워둡니다. (작성 예시 이미지는 준비 후 교체 예정)"},
-    {img:"https://placehold.co/760x460/fffbeb/92400e?text=8.+Registration+Fee",t:"등기신청수수료",d:"부동산 1개당 18,000원(서면방문 신청 기준)을 적고, 로드맵에 저장한 납부번호를 기재합니다. 영수필확인서를 신청서에 첨부합니다. ★ 여러 건을 은행 현금으로 일괄납부한 경우에만 '일괄납부' 칸을 씁니다. (작성 예시 이미지는 준비 후 교체 예정)"},
-    {img:"https://placehold.co/760x460/eef3ff/2a5f9e?text=9.+Seller+Reg.+Info",t:"등기의무자의 등기필정보",d:"매도인이 소유권 취득 시 '등기필정보 및 등기완료통지서'(보안스티커 부착)를 받은 경우, 거기 적힌 부동산고유번호·성명·일련번호·비밀번호를 각 기재합니다(원본을 제출하는 것이 아니며, 한번 쓴 비밀번호는 재사용 불가). 반대로 예전 '등기필증'을 받은 경우에는 이 란을 비우고 등기필증 원본을 제출합니다. (작성 예시 이미지는 준비 후 교체 예정)"},
-    {img:"https://placehold.co/760x460/eef3ff/2a5f9e?text=10.+Attachments",t:"첨부서면",d:"신청서에 첨부하는 서면과 각 통수를 적습니다(매매계약서·취득세영수필확인서·등기신청수수료 영수필확인서·인감증명서·주민등록표초본·토지/집합건축물대장등본·부동산거래계약신고필증·위임장 등). (작성 예시 이미지는 준비 후 교체 예정)"},
-    {img:"https://placehold.co/760x460/eef3ff/2a5f9e?text=11.+Applicant+%26+Court",t:"신청인 및 제출 법원",d:"작성 날짜를 적고, 신청인(매도인·매수인)의 성명·전화번호를 기재한 뒤 매도인은 인감도장을 날인(또는 본인서명사실확인서 서명), 매수인은 도장 날인 또는 서명합니다. 맨 아래 관할 지방법원(등기국/등기과·소) 이름을 적고 '귀중'으로 마무리합니다. ★ 신청서가 여러 장이면 장 사이에 간인(또는 각 장 서명)을 합니다. (작성 예시 이미지는 준비 후 교체 예정)"}
+  {key:"app",title:"소유권이전등기 신청서 — 이렇게 생겼습니다",desc:"대법원 표준 양식(기재례)입니다. 항목만 눈에 익혀 두고, 실제 작성은 자동완성으로 끝내세요.",steps:[
+    {img:"app_form_p1.png",t:"신청서 1면 — 부동산 표시·당사자·세액",d:"맨 위 '부동산의 표시'는 등기부 표제부와 글자·숫자까지 같아야 하고, 이어서 등기원인(매매·계약일)·등기목적(소유권이전)·이전할 지분, 등기의무자(매도인)/등기권리자(매수인)의 성명·주민등록번호·주소, 그리고 부동산별 시가표준액·국민주택채권 매입금액을 차례로 적습니다. 칸이 많고 하나만 어긋나도 보정 대상이 됩니다."},
+    {img:"app_form_p2.png",t:"신청서 2면 — 세액·수수료·첨부·위임",d:"취득세·지방교육세·농어촌특별세와 세액합계, 등기신청수수료(납부번호), 등기의무자의 등기필정보, 첨부서면 통수, 신청인·관할 지방법원까지 이어지고, 아래쪽 위임 부분은 잔금일에 매도인 인감 날인이 필요한 자리입니다. ▶ 이 모든 칸은 셀프등기24에서 입력하신 정보와 아래 '번호 보관함'에 저장한 값으로 자동 완성됩니다 — 빈 양식을 손으로 옮겨 적을 필요가 없습니다."}
   ]}
 ];
+
+/* ===== 번호 보관함: roadmap.html RELAY와 동일한 7키 스키마 공유 =====
+   localStorage 'selfregi_relay_v1' 로 guide↔roadmap 공유 → 결제/작성 진입 시 자동 프리필 */
+var RELAY={siga:'',tax:'',edu:'',rural:'',bond:'',bondamt:'',fee:''};
+var RMETA={
+  tax    :{label:'취득세액',       src:'위택스',        fmt:true },
+  edu    :{label:'지방교육세',     src:'위택스',        fmt:true },
+  rural  :{label:'농어촌특별세',   src:'위택스',        fmt:true },
+  siga   :{label:'시가표준액',     src:'위택스/구청',   fmt:true },
+  bondamt:{label:'채권매입금액',   src:'은행',          fmt:true },
+  bond   :{label:'채권발행번호',   src:'은행',          fmt:false},
+  fee    :{label:'수수료 납부번호',src:'인터넷등기소',  fmt:false}
+};
+var RORDER=['tax','edu','rural','siga','bondamt','bond','fee'];
+function fmtNum(v){var n=Number(String(v).replace(/[^\d]/g,''));return isNaN(n)?v:n.toLocaleString('ko-KR');}
+function relayInputHTML(k){var m=RMETA[k];
+  return '<div class="rin" data-relay="'+k+'"><div class="rin-l">'+m.label
+    +'<span class="src">'+m.src+'</span><span class="ok" style="display:none">✓ 저장됨</span></div>'
+    +'<div class="rin-row"><input inputmode="'+(m.fmt?'numeric':'text')+'" placeholder="'+(m.fmt?'숫자 입력':'번호 입력')
+    +'" aria-label="'+m.label+'"><button type="button" onclick="saveRelay(this)">저장</button></div></div>';}
+function loadRelay(){try{var r=JSON.parse(localStorage.getItem('selfregi_relay_v1')||'{}');RORDER.forEach(function(k){if(r[k])RELAY[k]=r[k];});}catch(e){}}
+function persistRelay(){try{localStorage.setItem('selfregi_relay_v1',JSON.stringify(RELAY));}catch(e){}}
+function taxTotal(){var n=function(v){return Number(String(v||'0').replace(/[^\d]/g,''))||0;};return n(RELAY.tax)+n(RELAY.edu)+n(RELAY.rural);}
+function saveRelay(btn){
+  var box=btn.closest('[data-relay]');if(!box)return;
+  var key=box.getAttribute('data-relay'),inp=box.querySelector('input');
+  var v=(inp?inp.value:'').trim();
+  if(!v){toast('값을 입력해 주세요');return;}
+  RELAY[key]=v;persistRelay();renderRelay(key);toast('저장 완료 — 신청서에 자동 반영됩니다');
+}
+function renderRelay(key){
+  var m=RMETA[key],val=RELAY[key],shown=val?(m.fmt?fmtNum(val)+'원':val):'';
+  var boxes=document.querySelectorAll('[data-relay="'+key+'"]');
+  for(var i=0;i<boxes.length;i++){var box=boxes[i];
+    box.classList.toggle('saved',!!val);
+    var inp=box.querySelector('input');if(inp&&val&&!inp.value)inp.value=val;
+    var b=box.querySelector('.rin-row button');if(b)b.textContent=val?'수정':'저장';
+    var ok=box.querySelector('.ok');if(ok)ok.style.display=val?'inline':'none';
+  }
+  var pv=document.getElementById('pv-'+key);
+  if(pv){pv.textContent=shown||'미입력';pv.classList.toggle('blank',!val);}
+  renderTaxTotal();updateProgress();
+}
+function renderTaxTotal(){var t=taxTotal(),el=document.getElementById('pv-taxtotal');
+  if(el){el.textContent=t?fmtNum(t)+'원':'미입력';el.classList.toggle('blank',!t);}}
+function updateProgress(){
+  var done=0;for(var i=0;i<RORDER.length;i++)if(RELAY[RORDER[i]])done++;
+  var p=document.getElementById('vaultProg');if(p)p.textContent=done+' / '+RORDER.length+' 저장';
+  var bc=document.getElementById('vbarCnt');if(bc)bc.textContent=done+'/'+RORDER.length;
+}
+var _tt;
+function toast(msg){var t=document.getElementById('toast');if(!t)return;t.textContent=msg;t.classList.add('on');clearTimeout(_tt);_tt=setTimeout(function(){t.classList.remove('on');},2200);}
+/* 보관함 그리드 생성 + 저장값 로드 */
+(function(){var g=document.getElementById('vaultGrid');if(g){var h='';for(var i=0;i<RORDER.length;i++)h+=relayInputHTML(RORDER[i]);g.innerHTML=h;}
+  loadRelay();for(var j=0;j<RORDER.length;j++)renderRelay(RORDER[j]);})();
+/* 모바일 고정 바 */
+(function(){var bar=document.getElementById('vbar');if(!bar)return;document.body.classList.add('hasbar');bar.classList.add('show');
+  bar.addEventListener('click',function(){var el=document.getElementById('vault-sec');if(el)el.scrollIntoView({behavior:'smooth',block:'start'});});})();
 
 (function(){
   var g=document.getElementById('shots'),h='';
@@ -441,6 +556,13 @@ function render(){
   document.getElementById('gmCapD').textContent=s.d;
   document.getElementById('gmPrev').disabled=(step===0);
   document.getElementById('gmNext').textContent=(step===cur.steps.length-1)?'닫기':'다음 →';
+  var rl=document.getElementById('gmRelay');
+  if(cur.relays&&cur.relays.length&&step===cur.steps.length-1){
+    var rh='<div class="gm-relay-h">✎ 방금 확인한 번호를 보관함에 저장하세요 — 서류 작성 시 자동으로 채워집니다</div>';
+    for(var r=0;r<cur.relays.length;r++)rh+=relayInputHTML(cur.relays[r]);
+    rl.innerHTML=rh;rl.style.display='block';
+    for(var q=0;q<cur.relays.length;q++)renderRelay(cur.relays[q]);
+  }else{rl.style.display='none';rl.innerHTML='';}
   var items=document.querySelectorAll('.gm-sitem');
   for(var i=0;i<items.length;i++)items[i].classList.toggle('on',i===step);
   if(items[step]&&items[step].scrollIntoView)items[step].scrollIntoView({block:'nearest'});
