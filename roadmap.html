@@ -1569,8 +1569,16 @@ function copyTaxTotal(){
   copyText(String(total));
 }
 
-function persistRelay(){} 
-function restoreRelay(){ recountProgress(); }
+// guide.html과 동일한 'selfregi_relay_v1' 스키마 공유 → 가이드에서 저장한 번호가 로드맵에 자동 프리필
+function persistRelay(){ try{ localStorage.setItem('selfregi_relay_v1', JSON.stringify(RELAY)); }catch(e){} }
+function restoreRelay(){
+  try{
+    const r = JSON.parse(localStorage.getItem('selfregi_relay_v1')||'{}');
+    Object.keys(RELAY).forEach(k=>{ if(r[k]) RELAY[k]=r[k]; });
+  }catch(e){}
+  Object.keys(RELAY).forEach(k=>{ if(RELAY[k]) renderRelay(k); });
+  recountProgress();
+}
 
 function setTrack(t){
   const tracks = ['online','visit'];
