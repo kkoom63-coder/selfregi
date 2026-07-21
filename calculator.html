@@ -8,34 +8,34 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;800&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--navy:#1e3a5f;--blue:#2a5f9e;--gold:#b8952e;--bg:#f2f4f8;--card:#fff;--text:#1a1e2e;--muted:#6b7280;--border:#dde2ec;--radius:12px;--shadow:0 2px 12px rgba(30,58,95,.08)}
+:root{--navy:#0F172A;--blue:#0369A1;--gold:#0369A1;--bg:#F8FAFC;--card:#fff;--text:#020617;--muted:#64748B;--border:#E2E8F0;--radius:12px;--shadow:0 2px 12px rgba(2,6,23,.08)}
 html, body {overflow-x:hidden; touch-action:manipulation;}
 body{font-family:'Noto Sans KR','Malgun Gothic',sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
 
-nav{background:var(--navy);position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(255,255,255,.06)}
+nav{background:rgba(248,250,252,.86);backdrop-filter:saturate(140%) blur(8px);-webkit-backdrop-filter:saturate(140%) blur(8px);position:sticky;top:0;z-index:100;border-bottom:1px solid var(--border)}
 .nav-inner{
   max-width:1080px;margin:0 auto;padding:0 20px;height:52px;
   display:flex;align-items:center;gap:12px;
   overflow-x:auto; white-space:nowrap; -webkit-overflow-scrolling:touch;
 }
 .nav-inner::-webkit-scrollbar { display:none; }
-.nav-logo{flex-shrink:0;font-size:16px;font-weight:700;color:#fff;text-decoration:none;margin-right:auto;letter-spacing:-.3px}
-.nav-logo span{display:inline-block;background:rgba(184,149,46,.3);color:#f0d075;font-size:9px;font-weight:700;letter-spacing:1.2px;padding:1px 6px;border-radius:10px;vertical-align:middle;margin-left:6px}
-.nav-a{flex-shrink:0;color:rgba(255,255,255,.55);font-size:12px;padding:5px 11px;border-radius:7px;text-decoration:none;transition:all .15s}
-.nav-a:hover{background:rgba(255,255,255,.1);color:#fff}
-.nav-a.active{background:rgba(255,255,255,.12);color:#fff}
-.nav-a.cta{background:rgba(255,255,255,.12);color:#fff;font-weight:600}
+.nav-logo{flex-shrink:0;font-size:16px;font-weight:800;color:var(--navy);text-decoration:none;margin-right:auto;letter-spacing:-.3px}
+.nav-logo span{display:inline-block;background:#E0F2FE;color:#075985;font-size:9px;font-weight:700;letter-spacing:1.2px;padding:1px 6px;border-radius:10px;vertical-align:middle;margin-left:6px}
+.nav-a{flex-shrink:0;color:var(--muted);font-size:12px;padding:5px 11px;border-radius:7px;text-decoration:none;transition:all .15s}
+.nav-a:hover{background:#F1F5F9;color:var(--navy)}
+.nav-a.active{background:#E0F2FE;color:#075985;font-weight:700}
+.nav-a.cta{background:var(--blue);color:#fff;font-weight:700}
 
-.back-bar{background:var(--navy);border-bottom:1px solid rgba(255,255,255,.06);padding:0 20px}
-.back-bar-inner{max-width:1080px;margin:0 auto;height:32px;display:flex;align-items:center}
-.back-a{display:inline-flex;align-items:center;gap:4px;color:rgba(255,255,255,.45);font-size:11px;font-weight:500;text-decoration:none;transition:color .12s;}
-.back-a:hover{color:#fff}
+.back-bar{background:var(--bg);padding:10px 20px 0}
+.back-bar-inner{max-width:1080px;margin:0 auto;display:flex;align-items:center}
+.back-a{display:inline-flex;align-items:center;gap:4px;color:#075985;background:#E0F2FE;font-size:11.5px;font-weight:700;text-decoration:none;padding:5px 12px;border-radius:20px;transition:background .12s;}
+.back-a:hover{background:#BAE6FD}
 
-.page-header{background:var(--navy);padding:36px 20px 32px}
+.page-header{background:var(--bg);padding:44px 20px 36px}
 .page-header-inner{max-width:1080px;margin:0 auto}
-.page-eyebrow{display:inline-block;background:rgba(184,149,46,.25);color:#f0d075;font-size:10px;font-weight:700;letter-spacing:.8px;padding:3px 12px;border-radius:20px;margin-bottom:12px}
-.page-header h1{font-size:22px;font-weight:700;color:#fff;margin-bottom:6px;word-break:keep-all}
-.page-header p{font-size:13px;color:rgba(255,255,255,.55);word-break:keep-all}
+.page-eyebrow{display:inline-block;background:#E0F2FE;border:1px solid #BAE6FD;color:#075985;font-size:10px;font-weight:700;letter-spacing:.8px;padding:3px 12px;border-radius:20px;margin-bottom:12px}
+.page-header h1{font-size:clamp(22px,3.4vw,28px);font-weight:900;color:var(--navy);margin-bottom:6px;word-break:keep-all}
+.page-header p{font-size:13.5px;color:var(--muted);word-break:keep-all}
 
 main{max-width:1080px;margin:0 auto;padding:20px 14px 60px}
 .card{background:var(--card);border-radius:var(--radius);border:1px solid var(--border);padding:22px;margin-bottom:14px;box-shadow:var(--shadow)}
@@ -72,37 +72,37 @@ main{max-width:1080px;margin:0 auto;padding:20px 14px 60px}
 .res-row .l{color:var(--muted)}
 .res-row .v{font-weight:600;color:var(--text)}
 .res-row.highlight{background:#fffbeb; color:#92400e;}
-.res-row.highlight .l, .res-row.highlight .v{color:#d97706; font-weight:700;}
+.res-row.highlight .l, .res-row.highlight .v{color:#B45309; font-weight:700;}
 
-.res-total{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;background:#eef3ff;border-top:1.5px solid #c5d5f5}
+.res-total{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;background:#E0F2FE;border-top:1.5px solid #BAE6FD}
 .res-total .l{font-size:15px;font-weight:700;color:var(--navy)}
 .res-total .v{font-size:22px;font-weight:800;color:var(--navy)}
 .res-ph{text-align:center;padding:28px;color:#b0bcc8;font-size:13px}
 
-.rate-tag{display:inline-block;background:#eef3ff;color:var(--blue);font-size:10px;font-weight:700;padding:2px 8px;border-radius:6px;margin-left:6px;vertical-align:middle}
-.heavy-tag{background:#fff0f0;color:#c0392b}
+.rate-tag{display:inline-block;background:#E0F2FE;color:var(--blue);font-size:10px;font-weight:700;padding:2px 8px;border-radius:6px;margin-left:6px;vertical-align:middle}
+.heavy-tag{background:#fff0f0;color:#DC2626}
 
 .ntc{border-radius:8px;padding:11px 13px;font-size:11px;line-height:1.7;margin-top:14px;word-break:keep-all}
 .ntc.warn{background:#fffbeb;border:1px solid #fde68a;color:#92400e}
-.ntc.inf{background:#eef3ff;border:1px solid #c5d5f5;color:#2a4080}
+.ntc.inf{background:#E0F2FE;border:1px solid #BAE6FD;color:#075985}
 
 /* 강력한 마이크로 SaaS CTA */
-.cta-box{margin-top:20px;text-align:center;background:#fff;border:2px solid var(--gold);border-radius:12px;padding:24px 16px;box-shadow:0 8px 24px rgba(184,149,46,.15); position:relative; overflow:hidden;}
+.cta-box{margin-top:20px;text-align:center;background:#fff;border:2px solid var(--gold);border-radius:12px;padding:24px 16px;box-shadow:0 8px 24px rgba(3,105,161,.15); position:relative; overflow:hidden;}
 .cta-box::before{content:'';position:absolute;top:0;left:0;width:100%;height:4px;background:var(--gold);}
 .cta-eyebrow{font-size:13px;color:var(--gold);font-weight:800;margin-bottom:6px; display:inline-block;}
 .cta-title{font-size:16px;color:var(--navy);font-weight:800;margin-bottom:20px;word-break:keep-all; line-height:1.4;}
 .cta-title span{color:#d32f2f; text-decoration:underline; text-underline-offset: 4px; font-size:18px;}
-.cta-btn{display:block;background:var(--blue);color:#fff;text-decoration:none;padding:15px 20px;border-radius:8px;font-weight:700;font-size:15px;box-shadow:0 4px 12px rgba(42,95,158,.3);transition:all .2s; animation: pulse 2s infinite;}
+.cta-btn{display:block;background:var(--blue);color:#fff;text-decoration:none;padding:15px 20px;border-radius:8px;font-weight:700;font-size:15px;box-shadow:0 4px 12px rgba(3,105,161,.3);transition:all .2s; animation: pulse 2s infinite;}
 .cta-btn:active{transform:scale(0.98);}
 @keyframes pulse {
-  0% { box-shadow: 0 0 0 0 rgba(42,95,158, 0.4); }
-  70% { box-shadow: 0 0 0 10px rgba(42,95,158, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(42,95,158, 0); }
+  0% { box-shadow: 0 0 0 0 rgba(3,105,161, 0.4); }
+  70% { box-shadow: 0 0 0 10px rgba(3,105,161, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(3,105,161, 0); }
 }
 
 .table-scroll {width: 100%;overflow-x: auto;-webkit-overflow-scrolling: touch;margin-top: 6px;border: 1px solid var(--border);border-radius: 8px;}
 .rate-table{width:100%;border-collapse:collapse;font-size:12px;min-width:480px;}
-.rate-table th{background:#f0f4f8;color:var(--navy);font-weight:700;padding:9px 12px;text-align:left;border-bottom:1px solid var(--border);white-space:nowrap;}
+.rate-table th{background:#F8FAFC;color:var(--navy);font-weight:700;padding:9px 12px;text-align:left;border-bottom:1px solid var(--border);white-space:nowrap;}
 .rate-table td{padding:9px 12px;border-bottom:1px solid var(--border);color:var(--text);word-break:keep-all}
 .rate-table tr:last-child td{border-bottom:none}
 .rate-table td.hl{font-weight:600;color:var(--navy);white-space:nowrap;}
@@ -112,13 +112,13 @@ main{max-width:1080px;margin:0 auto;padding:20px 14px 60px}
 .toggle-hd.open .ico{transform:rotate(45deg)}
 .toggle-body{display:none;margin-top:14px}
 
-footer{background:var(--navy);margin-top:40px;padding:28px 20px}
+footer{background:var(--bg);border-top:1px solid var(--border);margin-top:40px;padding:32px 20px 28px}
 .foot-inner{max-width:1080px;margin:0 auto}
-.foot-brand{font-size:14px;font-weight:700;color:rgba(255,255,255,.8);margin-bottom:8px}
+.foot-brand{font-size:14px;font-weight:800;color:var(--navy);margin-bottom:8px}
 .foot-links{display:flex;gap:14px;margin-bottom:10px;flex-wrap:wrap}
-.foot-links a{font-size:11px;color:rgba(255,255,255,.4);text-decoration:none}
-.foot-links a:hover{color:rgba(255,255,255,.7)}
-.foot-copy{font-size:11px;color:rgba(255,255,255,.25);line-height:1.6}
+.foot-links a{color:var(--muted);font-size:12px;text-decoration:none;padding:2px 0}
+.foot-links a:hover{color:var(--navy)}
+.foot-copy{font-size:11px;color:var(--muted);line-height:1.7}.foot-biz{font-size:11.5px;color:#334155;font-weight:500;margin-bottom:10px}.foot-biz a{color:var(--blue);text-decoration:none}
 
 @media(max-width:520px){
   .field-grid.col2{grid-template-columns:1fr}
@@ -132,7 +132,7 @@ footer{background:var(--navy);margin-top:40px;padding:28px 20px}
 
 <nav>
   <div class="nav-inner">
-    <a href="index.html" class="nav-logo">셀프등기24 <span>BETA</span></a>
+    <a href="index.html" class="nav-logo">셀프등기24</a>
     <a href="index.html" class="nav-a">서류 만들기</a>
     <a href="calculator.html" class="nav-a active">취득세 계산기</a>
     <a href="https://selfregi.tistory.com" target="_blank" rel="noopener" class="nav-a">블로그</a>
@@ -345,6 +345,7 @@ footer{background:var(--navy);margin-top:40px;padding:28px 20px}
       <a href="#">개인정보처리방침</a>
       <a href="#">면책고지</a>
     </div>
+    <div class="foot-biz">셀프등기24 · 사업자등록번호 164-20-02315 · 이메일 <a href="mailto:selfregi999@gmail.com">selfregi999@gmail.com</a></div>
     <div class="foot-copy">
       © 2026 셀프등기24 · 개인정보를 별도로 저장하지 않습니다 · 본 서비스는 법률/세무 자문을 제공하지 않습니다.
     </div>

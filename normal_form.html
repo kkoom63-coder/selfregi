@@ -10,52 +10,47 @@
 <script>emailjs.init('Ry2pyJz_cIirdIRJF');</script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--navy:#1e3a5f;--blue:#2a5f9e;--gold:#b8952e;--bg:#f2f4f8;--card:#fff;--text:#1a1e2e;--muted:#6b7280;--border:#dde2ec;--radius:12px;--shadow:0 2px 12px rgba(30,58,95,.08)}
+:root{--navy:#0F172A;--blue:#0369A1;--gold:#0369A1;--bg:#F8FAFC;--card:#fff;--text:#020617;--muted:#64748B;--border:#E2E8F0;--radius:12px;--shadow:0 2px 12px rgba(2,6,23,.08)}
 body{font-family:'Noto Sans KR','Malgun Gothic',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6}
-header{background:var(--navy);color:#fff}
-.back-bar{background:var(--navy);border-bottom:1px solid rgba(255,255,255,.06);padding:0 20px}
-.back-bar-inner{max-width:1200px;margin:0 auto;height:32px;display:flex;align-items:center}
-.back-a{display:inline-flex;align-items:center;gap:4px;color:rgba(255,255,255,.45);font-size:11px;font-weight:500;text-decoration:none;transition:color .12s}
-.back-a:hover{color:#fff}
+header{background:var(--bg);color:var(--text)}
+.back-bar{background:var(--bg);padding:10px 20px 0}
+.back-bar-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center}
+.back-a{display:inline-flex;align-items:center;gap:4px;color:#075985;background:#E0F2FE;font-size:11.5px;font-weight:700;text-decoration:none;padding:5px 12px;border-radius:20px;transition:background .12s}
+.back-a:hover{background:#BAE6FD}
 .hi{max-width:1200px;margin:0 auto;padding:22px 20px 18px}
-.badge{display:inline-block;background:rgba(184,149,46,.25);color:#f0d075;font-size:10px;font-weight:700;letter-spacing:1.5px;padding:2px 9px;border-radius:20px;margin-bottom:10px}
-header h1{font-size:21px;font-weight:700;margin-bottom:4px}
-header p{font-size:13px;color:rgba(255,255,255,.6)}
-.sbar{background:#172f4e;border-top:1px solid rgba(255,255,255,.08)}
-.sbi{max-width:1200px;margin:0 auto;padding:10px 20px;display:flex;gap:5px;align-items:center}
-.sd{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.25)}
-.sd.on{background:#f0d075}
-.sl{font-size:11px;color:rgba(255,255,255,.45);margin-right:6px}
+.badge{display:inline-block;background:#E0F2FE;border:1px solid #BAE6FD;color:#075985;font-size:10px;font-weight:700;letter-spacing:1.5px;padding:2px 9px;border-radius:20px;margin-bottom:10px}
+header h1{font-size:clamp(21px,3.2vw,26px);font-weight:900;color:var(--navy);margin-bottom:4px;word-break:keep-all}
+header p{font-size:13.5px;color:var(--muted);word-break:keep-all}
 main{max-width:1200px;margin:0 auto;padding:20px 14px 60px}
 .card{background:var(--card);border-radius:var(--radius);border:1px solid var(--border);padding:22px;margin-bottom:14px;box-shadow:var(--shadow)}
-.card.blue-card{border:1.5px solid var(--blue);background:#f0f5ff}
+.card.blue-card{border:1.5px solid var(--blue);background:#E0F2FE}
 .ch{display:flex;align-items:center;gap:10px;margin-bottom:16px}
-.ci{width:32px;height:32px;background:#eef3fb;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.ci{width:32px;height:32px;background:#E0F2FE;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
 .ct{font-size:14px;font-weight:700;color:var(--navy)}
 .cs{font-size:11px;color:var(--muted);margin-top:1px}
 .fg{display:grid;grid-template-columns:1fr 1fr;gap:11px}
 .fg.s1{grid-template-columns:1fr}
 .fg.s3{grid-template-columns:1fr 1fr 1fr}
 .f{display:flex;flex-direction:column;gap:4px}
-label{font-size:11px;font-weight:500;color:#374151}
-.req{color:#e53e3e;margin-left:2px}
+label{font-size:11px;font-weight:500;color:#334155}
+.req{color:#DC2626;margin-left:2px}
 .hint{color:var(--muted);font-weight:400;margin-left:3px}
 .addr-tip{font-size:11px;color:var(--muted);line-height:1.6;margin-top:6px;padding:7px 10px;background:#f4f6fb;border-radius:6px;border-left:3px solid var(--blue)}
 .addr-tip b{color:var(--navy)}
-input[type=text],input[type=number],input[type=email],select{height:38px;border:1px solid var(--border);border-radius:8px;padding:0 10px;font-size:13px;font-family:inherit;color:var(--text);background:#fafbfd;outline:none;transition:border-color .15s,box-shadow .15s;width:100%}
-input:focus,select:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(42,95,158,.12);background:#fff}
+input[type=text],input[type=number],input[type=email],select{height:38px;border:1px solid var(--border);border-radius:8px;padding:0 10px;font-size:13px;font-family:inherit;color:var(--text);background:#FFFFFF;outline:none;transition:border-color .15s,box-shadow .15s;width:100%}
+input:focus,select:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(3,105,161,.12);background:#fff}
 input::placeholder{color:#c0c8d8;font-size:12px}
 select{cursor:pointer;appearance:auto}
 .fn{font-size:10px;color:var(--muted);line-height:1.4}
 .divider{height:1px;background:var(--border);margin:16px 0}
 .ntc{border-radius:8px;padding:10px 12px;font-size:11px;line-height:1.6;margin-top:10px}
-.ntc.inf{background:#eef3ff;border:1px solid #c5d5f5;color:#2a4080}
+.ntc.inf{background:#E0F2FE;border:1px solid #BAE6FD;color:#075985}
 .ntc.wrn{background:#fff8e6;border:1px solid #e8cc80;color:#5a3d00}
-.ntc.inf2{background:#f0f5ff;border:1px solid #b0c8f0;color:#1e3a6e}
+.ntc.inf2{background:#E0F2FE;border:1px solid #b0c8f0;color:#1e3a6e}
 .ntc strong{font-weight:600}
 
 /* 신탁사 선택 */
-.trust-preview{display:none;background:#f4f8ff;border:1px solid #c5d5f5;border-radius:8px;padding:11px 13px;font-size:12px;color:#1e3a6e;line-height:1.9;margin-top:10px}
+.trust-preview{display:none;background:#f4f8ff;border:1px solid #BAE6FD;border-radius:8px;padding:11px 13px;font-size:12px;color:#1e3a6e;line-height:1.9;margin-top:10px}
 .trust-preview strong{font-size:13px;display:block;margin-bottom:2px}
 #custom-fields{display:none;margin-top:12px}
 #custom-fields.open{display:block}
@@ -63,17 +58,25 @@ select{cursor:pointer;appearance:auto}
 /* 직접입력 토글 버튼 */
 .btn-custom-toggle{display:inline-flex;align-items:center;gap:6px;background:none;border:1px solid var(--border);border-radius:8px;padding:7px 13px;font-size:12px;font-family:inherit;color:var(--muted);cursor:pointer;transition:border-color .15s,color .15s;margin-top:10px}
 .btn-custom-toggle:hover{border-color:var(--blue);color:var(--blue)}
-.btn-custom-toggle.active{border-color:var(--blue);color:var(--blue);background:#eef3ff}
+.btn-custom-toggle.active{border-color:var(--blue);color:var(--blue);background:#E0F2FE}
 
 /* 매매유형 탭 */
 .deal-tab{display:flex;gap:8px}
-.deal-tab-btn{flex:1;padding:11px 8px;border:1.5px solid var(--border);border-radius:8px;background:#fafbfd;font-size:13px;font-weight:600;font-family:inherit;color:var(--muted);cursor:pointer;transition:all .15s}
-.deal-tab-btn.active{border-color:var(--blue);background:#eef3ff;color:var(--navy)}
-.deal-tab-btn:disabled{opacity:.4;cursor:not-allowed;background:#f2f4f8}
+.deal-tab-btn{flex:1;padding:11px 8px;border:1.5px solid var(--border);border-radius:8px;background:#FFFFFF;font-size:13px;font-weight:600;font-family:inherit;color:var(--muted);cursor:pointer;transition:all .15s}
+.deal-tab-btn.active{border-color:var(--blue);background:#E0F2FE;color:var(--navy)}
+.deal-tab-btn:disabled{opacity:.4;cursor:not-allowed;background:#F8FAFC}
 .deal-tab-btn:disabled:hover{transform:none}
 
 
 .dg{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.pay-btn{width:100%;display:flex;flex-direction:row;align-items:center;gap:12px;padding:16px 18px;background:var(--blue);color:#fff;border:none;border-radius:10px;cursor:pointer;font-family:inherit;transition:background .15s,transform .1s}
+.pay-btn:hover{background:#075985}
+.pay-btn:active{transform:translateY(1px)}
+.pay-ic{flex-shrink:0;width:38px;height:38px;background:rgba(255,255,255,.18);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800}
+.pay-btn .dn{font-size:14px;font-weight:800;color:#fff}
+.pay-btn .ds{font-size:11px;color:rgba(255,255,255,.82);margin-top:2px}
+.pay-arrow{margin-left:auto;font-size:20px;font-weight:800;opacity:.9}
+.pay-note{font-size:11.5px;color:var(--muted);text-align:center;margin-top:10px;line-height:1.6}
 .dbtn{display:flex;flex-direction:column;align-items:center;gap:5px;padding:16px 10px;border-radius:10px;border:none;cursor:pointer;font-family:inherit;transition:transform .15s,box-shadow .15s}
 .dbtn:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,.12)}
 .d1{background:var(--navy);color:#fff}
@@ -82,11 +85,11 @@ select{cursor:pointer;appearance:auto}
 .dn{font-size:13px;font-weight:700}
 .ds{font-size:10px;opacity:.75}
 
-.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(80px);background:#1a7a4a;color:#fff;padding:9px 18px;border-radius:8px;font-size:12px;font-weight:500;transition:transform .3s;z-index:999;white-space:nowrap}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(80px);background:#047857;color:#fff;padding:9px 18px;border-radius:8px;font-size:12px;font-weight:500;transition:transform .3s;z-index:999;white-space:nowrap}
 .toast.show{transform:translateX(-50%) translateY(0)}
 
 /* 가이드 버튼 (라벨 옆) */
-.guide-link{display:inline-flex;align-items:center;gap:4px;background:#eef3fb;border:1px solid #c5d5f5;border-radius:6px;padding:3px 9px;font-size:11px;font-weight:600;font-family:inherit;color:var(--blue);cursor:pointer;transition:background .15s,border-color .15s;margin-left:6px;min-height:26px;vertical-align:middle}
+.guide-link{display:inline-flex;align-items:center;gap:4px;background:#E0F2FE;border:1px solid #BAE6FD;border-radius:6px;padding:3px 9px;font-size:11px;font-weight:600;font-family:inherit;color:var(--blue);cursor:pointer;transition:background .15s,border-color .15s;margin-left:6px;min-height:26px;vertical-align:middle}
 .guide-link:hover{background:#dce8ff;border-color:var(--blue)}
 .guide-link:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
 
@@ -104,15 +107,15 @@ select{cursor:pointer;appearance:auto}
 .gm-body{padding:18px}
 .gm-lead{font-size:13px;color:var(--text);line-height:1.7;margin-bottom:14px}
 .gm-lead b{color:var(--navy)}
-.gm-img-wrap{border:1px solid var(--border);border-radius:10px;overflow:hidden;background:#fbfcfe;margin-bottom:8px}
+.gm-img-wrap{border:1px solid var(--border);border-radius:10px;overflow:hidden;background:#FFFFFF;margin-bottom:8px}
 .gm-img-cap{font-size:10px;color:var(--muted);text-align:center;margin-bottom:16px}
 .gm-legend{display:flex;flex-direction:column;gap:8px}
-.gm-litem{display:flex;gap:10px;align-items:flex-start;padding:9px 12px;background:#f7f9fc;border-radius:8px;border-left:3px solid var(--blue)}
+.gm-litem{display:flex;gap:10px;align-items:flex-start;padding:9px 12px;background:#F8FAFC;border-radius:8px;border-left:3px solid var(--blue)}
 .gm-lnum{flex-shrink:0;width:20px;height:20px;border-radius:5px;background:var(--navy);color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:1px}
 .gm-ltxt{font-size:12px;line-height:1.6}
 .gm-ltxt b{color:var(--navy)}
-.gm-ltxt .gm-field{display:inline-block;background:#eef3fb;color:var(--blue);font-weight:600;padding:0 6px;border-radius:4px;font-size:11px}
-footer{text-align:center;padding:18px;font-size:11px;color:#a0aec0;max-width:1200px;margin:0 auto}
+.gm-ltxt .gm-field{display:inline-block;background:#E0F2FE;color:var(--blue);font-weight:600;padding:0 6px;border-radius:4px;font-size:11px}
+footer{text-align:center;padding:18px;font-size:11px;color:#64748B;max-width:1200px;margin:0 auto}
 @media(max-width:520px){.fg,.fg.s3,.dg{grid-template-columns:1fr}.gm-overlay{padding:0}.gm-box{border-radius:0;min-height:100vh}}
 </style>
 </head>
@@ -127,16 +130,11 @@ footer{text-align:center;padding:18px;font-size:11px;color:#a0aec0;max-width:120
 
 <header>
   <div class="hi">
-    <div class="badge">Beta</div>
-    <h1>📄 셀프등기 서류 자동생성기</h1>
+        <h1>셀프등기 서류 자동생성기</h1>
     <p>소유권이전등기(일반매매 · 신탁해지) 서류를 직접 작성해 비용을 절약하세요</p>
-    <p style="font-size:11px;color:rgba(255,255,255,.4);margin-top:6px;">본 서비스는 개인정보를 별도로 저장하고 있지 않으며, 개인정보를 기재하지 않아도 서류 발급이 가능합니다.</p>
+    <p style="font-size:11px;color:var(--muted);margin-top:6px;">본 서비스는 개인정보를 별도로 저장하고 있지 않으며, 개인정보를 기재하지 않아도 서류 발급이 가능합니다.</p>
   </div>
-  <div class="sbar"><div class="sbi">
-    <span class="sl">작성 순서 →</span>
-    <span class="sd on"></span><span class="sd on"></span><span class="sd on"></span><span class="sd on"></span><span class="sd"></span>
-  </div></div>
-</header>
+  </header>
 
 <main>
 
@@ -187,7 +185,7 @@ footer{text-align:center;padding:18px;font-size:11px;color:#a0aec0;max-width:120
   <!-- 신탁해지 매도인 영역 -->
   <div id="seller-trust" style="display:none">
     <div class="ntc wrn" style="margin-bottom:14px">
-      <strong>📄 분양계약서를 확인하세요.</strong> 매도인은 부동산신탁회사(아래 목록)이거나 시공사 직접분양인 경우 직접 입력합니다.
+      <strong>분양계약서를 확인하세요.</strong> 매도인은 부동산신탁회사(아래 목록)이거나 시공사 직접분양인 경우 직접 입력합니다.
     </div>
 
     <!-- 신탁사 드롭다운 -->
@@ -220,7 +218,7 @@ footer{text-align:center;padding:18px;font-size:11px;color:#a0aec0;max-width:120
     <!-- 선택된 신탁사 미리보기 -->
     <div class="trust-preview" id="trust-preview">
       <strong id="tp-name"></strong>
-      <span id="tp-addr" style="color:#2a4080;font-size:11px"></span><br>
+      <span id="tp-addr" style="color:#075985;font-size:11px"></span><br>
       <span style="color:#555">대표이사: </span><span id="tp-ceo"></span> &nbsp;|&nbsp;
       <span style="color:#555">법인번호: </span><span id="tp-reg"></span>
     </div>
@@ -249,7 +247,7 @@ footer{text-align:center;padding:18px;font-size:11px;color:#a0aec0;max-width:120
   <!-- 일반매매 매도인 영역 -->
   <div id="seller-sale">
     <div class="ntc wrn" style="margin-bottom:14px">
-      <strong>📄 매매계약서를 확인하세요.</strong> 일반매매의 매도인은 개인(자연인)입니다. 매매계약서상 매도인 정보를 입력하세요.
+      <strong>매매계약서를 확인하세요.</strong> 일반매매의 매도인은 개인(자연인)입니다. 매매계약서상 매도인 정보를 입력하세요.
     </div>
     <div class="fg s1"><div class="f">
       <label>매도인 성명 <span class="req">*</span></label>
@@ -386,23 +384,24 @@ footer{text-align:center;padding:18px;font-size:11px;color:#a0aec0;max-width:120
   </div></div>
 </div>
 
-<!-- ⑥ 결제 (스캐폴딩 — 심사 승인 전까지 비활성)
-     ※ 승인 후 활성화 방법: 아래 button의 disabled 속성 제거,
-        onclick="startPayment()" 연결. startPayment()는 결제 승인 콜백에서
-        goRoadmap()을 호출하도록 구현 예정(구조는 이미 goRoadmap()에 완성되어 있음). -->
-<div class="card" style="opacity:.5">
-  <button id="btn-pay" class="dbtn" disabled style="width:100%;display:flex;flex-direction:row;align-items:center;justify-content:center;gap:12px;padding:18px 20px;background:#ccc;color:#666;border:none;border-radius:10px;cursor:not-allowed;font-family:inherit">
-    <div class="diw" style="font-size:22px;background:rgba(0,0,0,.08);border-radius:7px;display:flex;align-items:center;justify-content:center;width:36px;height:36px">💳</div>
+<!-- ⑥ 결제 (무료 출시 기간 — 결제 UI는 노출하되 지금은 무료로 다운로드 연결)
+     ※ TossPay 심사 승인 후: onclick을 startPayment()로 교체하고
+        결제 승인 콜백에서 다운로드/로드맵으로 연결. 무료 기간엔 goFreeIssue() 사용. -->
+<div class="card">
+  <button id="btn-pay" class="pay-btn" onclick="goFreeIssue()">
+    <div class="pay-ic">지금</div>
     <div style="text-align:left">
-      <div class="dn">결제하고 신청서 자동생성 받기</div>
-      <div class="ds">준비 중</div>
+      <div class="dn">지금은 무료로 서류를 받으실 수 있습니다</div>
+      <div class="ds">출시 기념 무료 · 아래에서 위임장·신청서 다운로드</div>
     </div>
+    <span class="pay-arrow">↓</span>
   </button>
+  <p class="pay-note">정식 요금은 건당 7,000원으로 예정되어 있으며, 출시 기간 동안 무료로 제공됩니다.</p>
 </div>
 
 <!-- ⑦ 다운로드 -->
-<div class="card">
-  <div style="font-size:13px;font-weight:700;color:var(--navy);margin-bottom:12px">📥 서류 생성 및 다운로드</div>
+<div class="card" id="dl-section">
+  <div style="font-size:13px;font-weight:700;color:var(--navy);margin-bottom:12px">서류 생성 및 다운로드</div>
 
   <!-- 신탁해지: 위임장 + 해지증서 -->
   <button id="dl-trust" class="dbtn d1" onclick="downloadAll()" style="display:none;width:100%;flex-direction:row;align-items:center;justify-content:center;gap:12px;padding:18px 20px">
@@ -440,8 +439,8 @@ footer{text-align:center;padding:18px;font-size:11px;color:#a0aec0;max-width:120
 
 </main>
 <footer>
-  셀프등기 서류 및 상세 절차 안내는 <a href="https://selfregi.tistory.com" target="_blank" rel="noopener" style="color:#7a8aa8;text-decoration:underline">블로그</a>를 참고하시기 바랍니다.<br>
-  © 2025 셀프등기24 셀프등기 서류 자동생성기 · 본 서비스는 법률 자문을 제공하지 않습니다
+  셀프등기 서류 및 상세 절차 안내는 <a href="https://selfregi.tistory.com" target="_blank" rel="noopener" style="color:#64748B;text-decoration:underline">블로그</a>를 참고하시기 바랍니다.<br>
+  셀프등기24 · 사업자등록번호 164-20-02315 · 이메일 <a href="mailto:selfregi999@gmail.com" style="color:#0369A1;text-decoration:none">selfregi999@gmail.com</a><br>© 2026 셀프등기24 셀프등기 서류 자동생성기 · 본 서비스는 법률 자문을 제공하지 않습니다
 </footer>
 <div class="toast" id="toast"></div>
 
@@ -451,7 +450,7 @@ footer{text-align:center;padding:18px;font-size:11px;color:#a0aec0;max-width:120
     <div class="gm-head">
       <div>
         <div class="gm-title" id="reg-guide-title">등기부등본, 어디를 보고 입력하나요?</div>
-        <div class="gm-sub">부동산 정보는 모두 <b style="color:#f0d075">표제부</b>에 적혀 있습니다</div>
+        <div class="gm-sub">부동산 정보는 모두 <b style="color:#7DD3FC">표제부</b>에 적혀 있습니다</div>
       </div>
       <button type="button" class="gm-close" onclick="closeRegGuide()" aria-label="닫기">×</button>
     </div>
@@ -463,59 +462,59 @@ footer{text-align:center;padding:18px;font-size:11px;color:#a0aec0;max-width:120
       <div class="gm-img-wrap">
         <svg viewBox="0 0 640 340" xmlns="http://www.w3.org/2000/svg" style="display:block;width:100%;height:auto" font-family="'Noto Sans KR',sans-serif" role="img" aria-label="등기사항전부증명서 표제부 재현 이미지 — 입력 항목이 표시된 위치">
           <rect x="0" y="0" width="640" height="340" fill="#fff"/>
-          <text x="320" y="20" text-anchor="middle" font-size="11" font-weight="700" fill="#1e3a5f">등기사항전부증명서 (집합건물)</text>
-          <line x1="20" y1="27" x2="620" y2="27" stroke="#1e3a5f" stroke-width="1"/>
-          <text x="24" y="42" font-size="8" fill="#3a4252">[집합건물] 경기도 화성시 반월동 974 반월아이파크 제107동 제12층 제1204호</text>
-          <text x="24" y="55" font-size="8" fill="#3a4252">고유번호  1354-2017-002088</text>
-          <rect x="69" y="47" width="120" height="12" fill="none" stroke="#e11d48" stroke-width="1.5" rx="2"/>
-          <circle cx="198" cy="53" r="8" fill="#e11d48"/><text x="198" y="56" text-anchor="middle" font-size="10" font-weight="800" fill="#fff">1</text>
-          <text x="24" y="76" font-size="9" font-weight="700" fill="#1a1e2e">【 표제부 】 (1동의 건물의 표시)</text>
-          <rect x="24" y="82" width="556" height="40" fill="#f7f9fc" stroke="#c9d2e0"/>
-          <line x1="24" y1="95" x2="580" y2="95" stroke="#c9d2e0"/><line x1="170" y1="82" x2="170" y2="122" stroke="#c9d2e0"/><line x1="360" y1="82" x2="360" y2="122" stroke="#c9d2e0"/>
-          <text x="30" y="92" font-size="7.5" font-weight="700" fill="#374151">소재지번, 건물명칭 및 번호</text>
-          <text x="242" y="92" font-size="7.5" font-weight="700" fill="#374151">건물내역</text>
-          <text x="430" y="92" font-size="7.5" font-weight="700" fill="#374151">등기원인 및 기타사항</text>
-          <text x="30" y="108" font-size="8" fill="#3a4252">경기도 화성시 반월동 974</text>
-          <text x="30" y="118" font-size="8" fill="#3a4252">반월아이파크 제107동</text>
-          <text x="176" y="108" font-size="8" fill="#3a4252">철근콘크리트구조</text>
-          <text x="176" y="118" font-size="8" fill="#3a4252">(철근)콘크리트지붕 25층</text>
-          <rect x="27" y="100" width="140" height="20" fill="none" stroke="#e11d48" stroke-width="1.5" rx="2"/>
-          <circle cx="153" cy="90" r="8" fill="#e11d48"/><text x="153" y="93" text-anchor="middle" font-size="10" font-weight="800" fill="#fff">2</text>
+          <text x="320" y="20" text-anchor="middle" font-size="11" font-weight="700" fill="#0F172A">등기사항전부증명서 (집합건물)</text>
+          <line x1="20" y1="27" x2="620" y2="27" stroke="#0F172A" stroke-width="1"/>
+          <text x="24" y="42" font-size="8" fill="#334155">[집합건물] 경기도 화성시 반월동 974 반월아이파크 제107동 제12층 제1204호</text>
+          <text x="24" y="55" font-size="8" fill="#334155">고유번호  1354-2017-002088</text>
+          <rect x="69" y="47" width="120" height="12" fill="none" stroke="#DC2626" stroke-width="1.5" rx="2"/>
+          <circle cx="198" cy="53" r="8" fill="#DC2626"/><text x="198" y="56" text-anchor="middle" font-size="10" font-weight="800" fill="#fff">1</text>
+          <text x="24" y="76" font-size="9" font-weight="700" fill="#020617">【 표제부 】 (1동의 건물의 표시)</text>
+          <rect x="24" y="82" width="556" height="40" fill="#F8FAFC" stroke="#CBD5E1"/>
+          <line x1="24" y1="95" x2="580" y2="95" stroke="#CBD5E1"/><line x1="170" y1="82" x2="170" y2="122" stroke="#CBD5E1"/><line x1="360" y1="82" x2="360" y2="122" stroke="#CBD5E1"/>
+          <text x="30" y="92" font-size="7.5" font-weight="700" fill="#334155">소재지번, 건물명칭 및 번호</text>
+          <text x="242" y="92" font-size="7.5" font-weight="700" fill="#334155">건물내역</text>
+          <text x="430" y="92" font-size="7.5" font-weight="700" fill="#334155">등기원인 및 기타사항</text>
+          <text x="30" y="108" font-size="8" fill="#334155">경기도 화성시 반월동 974</text>
+          <text x="30" y="118" font-size="8" fill="#334155">반월아이파크 제107동</text>
+          <text x="176" y="108" font-size="8" fill="#334155">철근콘크리트구조</text>
+          <text x="176" y="118" font-size="8" fill="#334155">(철근)콘크리트지붕 25층</text>
+          <rect x="27" y="100" width="140" height="20" fill="none" stroke="#DC2626" stroke-width="1.5" rx="2"/>
+          <circle cx="153" cy="90" r="8" fill="#DC2626"/><text x="153" y="93" text-anchor="middle" font-size="10" font-weight="800" fill="#fff">2</text>
           <rect x="173" y="102" width="128" height="10" fill="none" stroke="#f59e0b" stroke-width="1.5" rx="2"/>
           <circle cx="343" cy="90" r="8" fill="#f59e0b"/><text x="343" y="93" text-anchor="middle" font-size="10" font-weight="800" fill="#fff">3</text>
-          <text x="24" y="144" font-size="9" font-weight="700" fill="#1a1e2e">( 대지권의 목적인 토지의 표시 )</text>
-          <rect x="24" y="150" width="556" height="32" fill="#f7f9fc" stroke="#c9d2e0"/>
-          <line x1="24" y1="163" x2="580" y2="163" stroke="#c9d2e0"/><line x1="230" y1="150" x2="230" y2="182" stroke="#c9d2e0"/><line x1="310" y1="150" x2="310" y2="182" stroke="#c9d2e0"/>
-          <text x="30" y="160" font-size="7.5" font-weight="700" fill="#374151">소재지번</text>
-          <text x="236" y="160" font-size="7.5" font-weight="700" fill="#374151">지목</text>
-          <text x="316" y="160" font-size="7.5" font-weight="700" fill="#374151">면적</text>
-          <text x="30" y="177" font-size="8" fill="#3a4252">1. 경기도 화성시 반월동 974</text>
-          <text x="236" y="177" font-size="8" fill="#3a4252">대</text>
-          <text x="316" y="177" font-size="8" fill="#3a4252">63066.9 ㎡</text>
-          <rect x="313" y="169" width="72" height="11" fill="none" stroke="#e11d48" stroke-width="1.5" rx="2"/>
-          <circle cx="395" cy="158" r="8" fill="#e11d48"/><text x="395" y="161" text-anchor="middle" font-size="10" font-weight="800" fill="#fff">4</text>
-          <text x="24" y="204" font-size="9" font-weight="700" fill="#1a1e2e">【 표제부 】 (전유부분의 건물의 표시)</text>
-          <rect x="24" y="210" width="556" height="32" fill="#f7f9fc" stroke="#c9d2e0"/>
-          <line x1="24" y1="223" x2="580" y2="223" stroke="#c9d2e0"/><line x1="170" y1="210" x2="170" y2="242" stroke="#c9d2e0"/><line x1="360" y1="210" x2="360" y2="242" stroke="#c9d2e0"/>
-          <text x="30" y="220" font-size="7.5" font-weight="700" fill="#374151">건물번호</text>
-          <text x="242" y="220" font-size="7.5" font-weight="700" fill="#374151">건물내역</text>
-          <text x="430" y="220" font-size="7.5" font-weight="700" fill="#374151">등기원인 및 기타사항</text>
-          <text x="30" y="237" font-size="8" fill="#3a4252">제12층 제1204호</text>
-          <text x="176" y="237" font-size="8" fill="#3a4252">철근콘크리트구조 84.99 ㎡</text>
-          <rect x="27" y="229" width="104" height="11" fill="none" stroke="#e11d48" stroke-width="1.5" rx="2"/>
-          <circle cx="141" cy="218" r="8" fill="#e11d48"/><text x="141" y="221" text-anchor="middle" font-size="10" font-weight="800" fill="#fff">5</text>
+          <text x="24" y="144" font-size="9" font-weight="700" fill="#020617">( 대지권의 목적인 토지의 표시 )</text>
+          <rect x="24" y="150" width="556" height="32" fill="#F8FAFC" stroke="#CBD5E1"/>
+          <line x1="24" y1="163" x2="580" y2="163" stroke="#CBD5E1"/><line x1="230" y1="150" x2="230" y2="182" stroke="#CBD5E1"/><line x1="310" y1="150" x2="310" y2="182" stroke="#CBD5E1"/>
+          <text x="30" y="160" font-size="7.5" font-weight="700" fill="#334155">소재지번</text>
+          <text x="236" y="160" font-size="7.5" font-weight="700" fill="#334155">지목</text>
+          <text x="316" y="160" font-size="7.5" font-weight="700" fill="#334155">면적</text>
+          <text x="30" y="177" font-size="8" fill="#334155">1. 경기도 화성시 반월동 974</text>
+          <text x="236" y="177" font-size="8" fill="#334155">대</text>
+          <text x="316" y="177" font-size="8" fill="#334155">63066.9 ㎡</text>
+          <rect x="313" y="169" width="72" height="11" fill="none" stroke="#DC2626" stroke-width="1.5" rx="2"/>
+          <circle cx="395" cy="158" r="8" fill="#DC2626"/><text x="395" y="161" text-anchor="middle" font-size="10" font-weight="800" fill="#fff">4</text>
+          <text x="24" y="204" font-size="9" font-weight="700" fill="#020617">【 표제부 】 (전유부분의 건물의 표시)</text>
+          <rect x="24" y="210" width="556" height="32" fill="#F8FAFC" stroke="#CBD5E1"/>
+          <line x1="24" y1="223" x2="580" y2="223" stroke="#CBD5E1"/><line x1="170" y1="210" x2="170" y2="242" stroke="#CBD5E1"/><line x1="360" y1="210" x2="360" y2="242" stroke="#CBD5E1"/>
+          <text x="30" y="220" font-size="7.5" font-weight="700" fill="#334155">건물번호</text>
+          <text x="242" y="220" font-size="7.5" font-weight="700" fill="#334155">건물내역</text>
+          <text x="430" y="220" font-size="7.5" font-weight="700" fill="#334155">등기원인 및 기타사항</text>
+          <text x="30" y="237" font-size="8" fill="#334155">제12층 제1204호</text>
+          <text x="176" y="237" font-size="8" fill="#334155">철근콘크리트구조 84.99 ㎡</text>
+          <rect x="27" y="229" width="104" height="11" fill="none" stroke="#DC2626" stroke-width="1.5" rx="2"/>
+          <circle cx="141" cy="218" r="8" fill="#DC2626"/><text x="141" y="221" text-anchor="middle" font-size="10" font-weight="800" fill="#fff">5</text>
           <rect x="288" y="230" width="50" height="10" fill="none" stroke="#f59e0b" stroke-width="1.5" rx="2"/>
           <circle cx="348" cy="218" r="8" fill="#f59e0b"/><text x="348" y="221" text-anchor="middle" font-size="10" font-weight="800" fill="#fff">6</text>
-          <text x="24" y="264" font-size="9" font-weight="700" fill="#1a1e2e">( 대지권의 표시 )</text>
-          <rect x="24" y="270" width="556" height="32" fill="#f7f9fc" stroke="#c9d2e0"/>
-          <line x1="24" y1="283" x2="580" y2="283" stroke="#c9d2e0"/><line x1="170" y1="270" x2="170" y2="302" stroke="#c9d2e0"/><line x1="360" y1="270" x2="360" y2="302" stroke="#c9d2e0"/>
-          <text x="30" y="280" font-size="7.5" font-weight="700" fill="#374151">대지권종류</text>
-          <text x="242" y="280" font-size="7.5" font-weight="700" fill="#374151">대지권비율</text>
-          <text x="430" y="280" font-size="7.5" font-weight="700" fill="#374151">등기원인 및 기타사항</text>
-          <text x="30" y="297" font-size="8" fill="#3a4252">1. 소유권대지권</text>
-          <text x="176" y="297" font-size="8" fill="#3a4252">63066.9 분의 39.4783</text>
-          <rect x="173" y="289" width="130" height="11" fill="none" stroke="#e11d48" stroke-width="1.5" rx="2"/>
-          <circle cx="313" cy="278" r="8" fill="#e11d48"/><text x="313" y="281" text-anchor="middle" font-size="10" font-weight="800" fill="#fff">7</text>
+          <text x="24" y="264" font-size="9" font-weight="700" fill="#020617">( 대지권의 표시 )</text>
+          <rect x="24" y="270" width="556" height="32" fill="#F8FAFC" stroke="#CBD5E1"/>
+          <line x1="24" y1="283" x2="580" y2="283" stroke="#CBD5E1"/><line x1="170" y1="270" x2="170" y2="302" stroke="#CBD5E1"/><line x1="360" y1="270" x2="360" y2="302" stroke="#CBD5E1"/>
+          <text x="30" y="280" font-size="7.5" font-weight="700" fill="#334155">대지권종류</text>
+          <text x="242" y="280" font-size="7.5" font-weight="700" fill="#334155">대지권비율</text>
+          <text x="430" y="280" font-size="7.5" font-weight="700" fill="#334155">등기원인 및 기타사항</text>
+          <text x="30" y="297" font-size="8" fill="#334155">1. 소유권대지권</text>
+          <text x="176" y="297" font-size="8" fill="#334155">63066.9 분의 39.4783</text>
+          <rect x="173" y="289" width="130" height="11" fill="none" stroke="#DC2626" stroke-width="1.5" rx="2"/>
+          <circle cx="313" cy="278" r="8" fill="#DC2626"/><text x="313" y="281" text-anchor="middle" font-size="10" font-weight="800" fill="#fff">7</text>
           <text x="24" y="326" font-size="7" fill="#8a93a3">※ 이해를 돕기 위한 재현 이미지입니다. 실제 등기부와 서식·수치가 다를 수 있습니다.</text>
         </svg>
       </div>
@@ -665,9 +664,14 @@ document.addEventListener('keydown', e => {
   }
 });
 
+function goFreeIssue(){
+  showToast('출시 기간 무료입니다 — 아래에서 서류를 다운로드하세요', '#0369A1');
+  var sec=document.getElementById('dl-section');
+  if(sec){ sec.scrollIntoView({behavior:'smooth', block:'start'}); }
+}
 function showToast(msg, bg) {
   const t = document.getElementById('toast');
-  t.textContent = msg; t.style.background = bg || '#1a7a4a';
+  t.textContent = msg; t.style.background = bg || '#047857';
   t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 3000);
 }
 
@@ -682,7 +686,7 @@ function blobDL(blob, name) {
 function validate() {
   // 베타테스트: 입력값이 비어 있어도 다운로드 가능 (빈 항목은 출력 후 직접 기재)
   if (!gv('user-email')) {
-    showToast('⚠️ 이메일을 입력하면 체크리스트 안내를 받을 수 있습니다 (건너뛰어도 다운로드는 진행됩니다)', '#b8952e');
+    showToast('⚠️ 이메일을 입력하면 체크리스트 안내를 받을 수 있습니다 (건너뛰어도 다운로드는 진행됩니다)', '#0369A1');
   }
   return true;
 }
@@ -765,7 +769,7 @@ async function fillTemplate(b64, replacements) {
 // =============================================
 async function downloadAll() {
   if (!validate()) return;
-  if (typeof JSZip === 'undefined') { showToast('❌ 라이브러리 로딩 중, 잠시 후 다시 시도해주세요', '#c0392b'); return; }
+  if (typeof JSZip === 'undefined') { showToast('❌ 라이브러리 로딩 중, 잠시 후 다시 시도해주세요', '#DC2626'); return; }
   try {
     const d = getData();
 
@@ -823,7 +827,7 @@ async function downloadAll() {
 
     showToast('✅ 2개 서류 다운로드 완료!');
     sendConfirmEmail();
-  } catch(e) { showToast('❌ ' + e.message, '#c0392b'); console.error(e); }
+  } catch(e) { showToast('❌ ' + e.message, '#DC2626'); console.error(e); }
 }
 
 // =============================================
@@ -831,7 +835,7 @@ async function downloadAll() {
 // =============================================
 async function downloadWimiOnly() {
   if (!validate()) return;
-  if (typeof JSZip === 'undefined') { showToast('❌ 라이브러리 로딩 중, 잠시 후 다시 시도해주세요', '#c0392b'); return; }
+  if (typeof JSZip === 'undefined') { showToast('❌ 라이브러리 로딩 중, 잠시 후 다시 시도해주세요', '#DC2626'); return; }
   try {
     const d = getData();
     const blob1 = await fillTemplate(WIMI_B64, {
@@ -861,7 +865,7 @@ async function downloadWimiOnly() {
     blobDL(blob1, `위임장_${d.ownerName}_${d.dong}동${d.ho}호.docx`);
     showToast('✅ 위임장 다운로드 완료!');
     sendConfirmEmail();
-  } catch(e) { showToast('❌ ' + e.message, '#c0392b'); console.error(e); }
+  } catch(e) { showToast('❌ ' + e.message, '#DC2626'); console.error(e); }
 }
 
 // =============================================
