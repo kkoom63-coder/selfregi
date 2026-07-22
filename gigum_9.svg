@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 450" font-family="'Noto Sans KR',sans-serif">
+<rect width="760" height="450" fill="#F8FAFC"/>
+<rect x="0" y="0" width="760" height="52" fill="#FFFFFF"/>
+<line x1="0" y1="52" x2="760" y2="52" stroke="#E2E8F0"/>
+<circle cx="28" cy="26" r="6" fill="#CBD5E1"/><circle cx="48" cy="26" r="6" fill="#CBD5E1"/><circle cx="68" cy="26" r="6" fill="#CBD5E1"/>
+<rect x="96" y="14" width="420" height="24" rx="12" fill="#F1F5F9"/>
+<text x="110" y="31" font-size="12" fill="#94A3B8">인터넷뱅킹 &gt; 주택도시기금 &gt; 국민주택채권 매입</text>
+<text x="40" y="88" font-size="17" font-weight="700" fill="#0F172A">본인부담금 확인 및 결제</text>
+<rect x="40" y="104" width="680" height="96" rx="10" fill="#FFFFFF" stroke="#E2E8F0"/>
+<text x="64" y="134" font-size="12" fill="#64748B">채권매입금액</text><text x="696" y="134" font-size="13" fill="#0F172A" text-anchor="end">1,234,000 원</text>
+<text x="64" y="158" font-size="12" fill="#64748B">즉시매도 할인·수수료</text><text x="696" y="158" font-size="13" fill="#0F172A" text-anchor="end">- 1,163,000 원</text>
+<line x1="64" y1="168" x2="696" y2="168" stroke="#E2E8F0"/>
+<text x="64" y="190" font-size="13" font-weight="700" fill="#0F172A">최종 본인부담금</text>
+<text x="696" y="190" font-size="15" font-weight="800" fill="#0369A1" text-anchor="end">71,000 원</text><rect x="30" y="96" width="700" height="112" fill="none" stroke="#DC2626" stroke-width="2.5" stroke-dasharray="7 4" rx="8"/>
+<circle cx="30" cy="96" r="12" fill="#DC2626"/><text x="30" y="100.5" font-size="12" font-weight="800" fill="#FFFFFF" text-anchor="middle">1</text><text x="40" y="232" font-size="12" fill="#64748B">출금계좌 비밀번호</text>
+<rect x="40" y="240" width="320" height="34" rx="6" fill="#FFFFFF" stroke="#CBD5E1"/>
+<text x="52" y="262" font-size="13" font-weight="400" fill="#0F172A">••••</text><text x="400" y="232" font-size="12" fill="#64748B">공동/금융인증서 암호</text>
+<rect x="400" y="240" width="320" height="34" rx="6" fill="#FFFFFF" stroke="#CBD5E1"/>
+<text x="412" y="262" font-size="13" font-weight="400" fill="#0F172A">••••••••</text><rect x="390" y="224" width="340" height="60" fill="none" stroke="#DC2626" stroke-width="2.5" stroke-dasharray="7 4" rx="8"/>
+<circle cx="390" cy="224" r="12" fill="#DC2626"/><text x="390" y="228.5" font-size="12" font-weight="800" fill="#FFFFFF" text-anchor="middle">2</text><rect x="560" y="330" width="160" height="42" rx="8" fill="#0F172A"/>
+<text x="640" y="356" font-size="14" font-weight="700" fill="#FFFFFF" text-anchor="middle">결제 실행</text>
+<text x="40" y="356" font-size="11.5" fill="#64748B">※ 금액은 예시이며, 할인율은 매일 변동됩니다</text>
+<rect x="0" y="418" width="760" height="32" fill="#EEF2F6"/>
+<text x="380" y="438" font-size="11" fill="#64748B" text-anchor="middle">재현 이미지 — 금액은 예시이며 실제 은행 화면과 배치·명칭이 다를 수 있습니다</text>
+</svg>

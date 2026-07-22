@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 450" font-family="'Noto Sans KR',sans-serif">
+<rect width="760" height="450" fill="#F8FAFC"/>
+<rect x="0" y="0" width="760" height="52" fill="#FFFFFF"/>
+<line x1="0" y1="52" x2="760" y2="52" stroke="#E2E8F0"/>
+<circle cx="28" cy="26" r="6" fill="#CBD5E1"/><circle cx="48" cy="26" r="6" fill="#CBD5E1"/><circle cx="68" cy="26" r="6" fill="#CBD5E1"/>
+<rect x="96" y="14" width="420" height="24" rx="12" fill="#F1F5F9"/>
+<text x="110" y="31" font-size="12" fill="#94A3B8">인터넷뱅킹 &gt; 주택도시기금 &gt; 국민주택채권 매입</text>
+<text x="40" y="88" font-size="17" font-weight="700" fill="#0F172A">국민주택채권 매입 정보 입력</text>
+<text x="40" y="110" font-size="12" fill="#64748B">매입 구분</text>
+<rect x="40" y="118" width="320" height="34" rx="6" fill="#FFFFFF" stroke="#CBD5E1"/>
+<text x="52" y="140" font-size="13" font-weight="400" fill="#0F172A">본인 매입  ●</text><text x="400" y="110" font-size="12" fill="#64748B">매입 용도</text>
+<rect x="400" y="118" width="320" height="34" rx="6" fill="#FFFFFF" stroke="#CBD5E1"/>
+<text x="412" y="140" font-size="13" font-weight="400" fill="#0F172A">부동산 소유권등기(주택·아파트·연립)</text><text x="40" y="175" font-size="12" fill="#64748B">채권매입금액</text>
+<rect x="40" y="183" width="320" height="34" rx="6" fill="#FFFFFF" stroke="#CBD5E1"/>
+<text x="52" y="205" font-size="13" font-weight="700" fill="#0F172A">1,234,000 원</text><rect x="30" y="168" width="340" height="60" fill="none" stroke="#DC2626" stroke-width="2.5" stroke-dasharray="7 4" rx="8"/>
+<circle cx="30" cy="168" r="12" fill="#DC2626"/><text x="30" y="172.5" font-size="12" font-weight="800" fill="#FFFFFF" text-anchor="middle">1</text><text x="40" y="262" font-size="12" fill="#64748B">매도 방법 선택</text>
+<rect x="40" y="272" width="330" height="52" rx="8" fill="#E0F2FE" stroke="#0369A1" stroke-width="2"/>
+<circle cx="66" cy="298" r="8" fill="#FFFFFF" stroke="#0369A1" stroke-width="2"/><circle cx="66" cy="298" r="4" fill="#0369A1"/>
+<text x="84" y="294" font-size="13.5" font-weight="700" fill="#0369A1">즉시매도</text>
+<text x="84" y="312" font-size="11" fill="#075985">할인된 본인부담금만 납부 (일반적)</text>
+<rect x="390" y="272" width="330" height="52" rx="8" fill="#FFFFFF" stroke="#CBD5E1"/>
+<circle cx="416" cy="298" r="8" fill="#FFFFFF" stroke="#CBD5E1" stroke-width="2"/>
+<text x="434" y="294" font-size="13.5" fill="#64748B">보유 (5년 후 상환)</text>
+<text x="434" y="312" font-size="11" fill="#94A3B8">전액 매입 후 만기까지 보유</text><rect x="30" y="264" width="350" height="68" fill="none" stroke="#DC2626" stroke-width="2.5" stroke-dasharray="7 4" rx="8"/>
+<circle cx="30" cy="264" r="12" fill="#DC2626"/><text x="30" y="268.5" font-size="12" font-weight="800" fill="#FFFFFF" text-anchor="middle">2</text><rect x="560" y="356" width="160" height="42" rx="8" fill="#0F172A"/>
+<text x="640" y="382" font-size="14" font-weight="700" fill="#FFFFFF" text-anchor="middle">다음</text>
+<rect x="0" y="418" width="760" height="32" fill="#EEF2F6"/>
+<text x="380" y="438" font-size="11" fill="#64748B" text-anchor="middle">재현 이미지 — 이해를 돕기 위해 간략하게 재구성했으며, 실제 은행 화면과 배치·명칭이 다를 수 있습니다</text>
+</svg>
