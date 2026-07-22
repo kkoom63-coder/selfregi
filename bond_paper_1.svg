@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" font-family="'Noto Sans KR',sans-serif">
+<rect width="400" height="300" fill="#F1F5F9"/><rect x="20" y="16" width="360" height="240" fill="#fff" stroke="#CBD5E1"/>
+<text x="200" y="44" font-size="13" font-weight="700" fill="#0F172A" text-anchor="middle" letter-spacing="3">국민주택채권 매입요청서</text>
+<line x1="36" y1="54" x2="364" y2="54" stroke="#94A3B8"/>
+<rect x="36" y="70" width="328" height="30" fill="#fff" stroke="#CBD5E1"/><text x="48" y="90" font-size="11" fill="#64748B" font-weight="700">매입자 성명</text><text x="352" y="90" font-size="11" fill="#0F172A" text-anchor="end">김갑동</text>
+<rect x="36" y="106" width="328" height="30" fill="#fff" stroke="#CBD5E1"/><text x="48" y="126" font-size="11" fill="#64748B" font-weight="700">매입금액</text><text x="352" y="126" font-size="11" fill="#0F172A" text-anchor="end">금 0,000,000원</text>
+<rect x="30" y="64" width="340" height="78" fill="none" stroke="#DC2626" stroke-width="2.5" stroke-dasharray="7 4" rx="6"/>
+<text x="36" y="170" font-size="10.5" font-weight="700" fill="#DC2626">시가표준액 기준으로 계산해 둔 매입금액을 적습니다</text>
+<rect x="0" y="266" width="400" height="34" fill="#E2E8F0"/><text x="200" y="287" font-size="9.5" fill="#475569" text-anchor="middle">재현 이미지 — 은행 비치 서식과 배치가 다를 수 있습니다</text></svg>
