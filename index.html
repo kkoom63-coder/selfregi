@@ -137,7 +137,7 @@ main{max-width:1200px;margin:0 auto;padding:40px 14px 0}
 .step-num{width:32px;height:32px;background:var(--navy);color:#fff;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0;letter-spacing:-.3px}
 .ct{font-size:14px;font-weight:700;color:var(--navy)}
 .cs{font-size:11px;color:var(--muted);margin-top:1px}
-.cases{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:4px}
+.cases{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:12px;margin-top:4px}
 .case-card{border:2px solid var(--border);border-radius:10px;padding:18px 16px;cursor:pointer;transition:all .15s;position:relative;background:#fff}
 .case-card:hover{border-color:var(--blue);box-shadow:0 1px 3px rgba(2,6,23,.06)}
 .case-card.selected{border-color:var(--blue);background:#E0F2FE}
@@ -211,7 +211,6 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:40px;p
   .feat-grid{grid-template-columns:1fr}
   .guide-links{grid-template-columns:1fr}
   .steps{grid-template-columns:1fr}
-  .cases{grid-template-columns:1fr}
   .hero-btns{flex-direction:column;align-items:stretch}
   .stats-inner{grid-template-columns:repeat(3,1fr)}
 }
@@ -265,6 +264,8 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:40px;p
 @media(min-width:640px){.news-2{grid-template-columns:1fr 1fr}}
 .guide-more{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;margin-top:14px;padding:15px 20px;background:var(--navy);color:#fff;border-radius:10px;font-size:15px;font-weight:700;text-decoration:none;transition:background .15s}
 .guide-more:hover{background:var(--blue)}
+.guide-alt{display:block;text-align:center;margin-top:10px;padding:4px;color:var(--blue);font-size:13px;font-weight:600;text-decoration:none;word-break:keep-all}
+.guide-alt:hover{text-decoration:underline}
 @media(min-width:768px){.evi-big{font-size:56px}}
 @media(prefers-reduced-motion:reduce){.evi-card,.evi-line,.evi-dot,.evi-v{opacity:1;transform:none;stroke-dashoffset:0;transition:none}}
 </style>
@@ -407,6 +408,7 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:40px;p
       <a href="guide.html#flow" class="guide-a"><span class="guide-a-n">STEP 3</span><span class="guide-a-t">진행 절차 한눈에</span></a>
     </div>
     <a href="guide.html" class="guide-more">셀프등기 가이드 보기 →</a>
+    <a href="cancel_guide.html" class="guide-alt" onclick="trackCase('band')">대출을 다 갚으셨다면 — 근저당권 말소 가이드 →</a>
   </div>
 </div>
 
@@ -437,7 +439,7 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:40px;p
 <main id="start">
   <div class="card">
     <div class="ch">
-      <div class="step-num">A·B</div>
+      <div class="step-num">A~C</div>
       <div><div class="ct">내 등기 케이스를 확인하세요</div><div class="cs">대부분의 아파트 매매는 케이스 A에 해당합니다</div></div>
     </div>
     <div class="cases">
@@ -453,6 +455,12 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:40px;p
         <div class="c-desc">등기부상 건물에 '대지지분'이 없어 대지권 등기를 진행해야 하는 경우</div>
         <div class="c-when">서비스 준비 중 — 매매 소유권이전(케이스 A)부터 순차 오픈합니다</div>
       </div>
+      <div class="case-card" data-case="cancel" onclick="selectCase('cancel')">
+        <div class="c-icon-box">C</div>
+        <div class="c-title">근저당권 말소</div>
+        <div class="c-desc">대출을 전부 상환한 뒤, 등기부에 남아 있는 근저당권을 지우는 경우</div>
+        <div class="c-when">→ 절차 · 준비서류 · 비용 안내</div>
+      </div>
     </div>
     <div class="result-box">
       <div class="r-label">선택하신 케이스</div>
@@ -464,6 +472,14 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:40px;p
       <button onclick="toggleDiag()" id="diagBtn">내 케이스가 맞는지 잘 모르겠어요 — 간단 진단하기</button>
     </div>
     <div class="diag-body" id="diagBody">
+      <div class="wizard-q">
+        <div class="q-text">Q0. 어떤 등기가 필요하신가요?</div>
+        <span class="q-hint">가장 먼저 나뉘는 갈림길입니다</span>
+        <div class="opt-row">
+          <button class="opt-btn" data-q="0" data-val="transfer">집을 사서 소유권을 가져옵니다</button>
+          <button class="opt-btn" data-q="0" data-val="cancel">대출을 갚아 근저당권을 지웁니다</button>
+        </div>
+      </div>
       <div class="wizard-q">
         <div class="q-text">Q1. 건물(전유부분) 소유권이전등기는 이미 완료되었나요?</div>
         <span class="q-hint">등기부등본 '갑구'에 본인 이름이 소유자로 등재되어 있는지 확인하세요</span>
@@ -564,9 +580,19 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:40px;p
 <script>
 /* ===== 케이스 선택 ===== */
 const CASES = {
-  general:   { label:'매매계약에 따른 소유권이전 (케이스 A)', url:'normal_form.html' },
-  landShare: { label:'대지지분 별도등기 (케이스 B)',      url:'land_form.html' }
+  general:   { label:'매매계약에 따른 소유권이전 (케이스 A)', url:'normal_form.html',  cta:'이 케이스로 서류 작성 시작하기 →' },
+  landShare: { label:'대지지분 별도등기 (케이스 B)',      url:'land_form.html',    cta:'이 케이스로 서류 작성 시작하기 →' },
+  cancel:    { label:'근저당권 말소 (케이스 C)',          url:'cancel_guide.html', cta:'이 케이스 안내 보기 →' }
 };
+/* 접근성: 선택형 카드에 키보드 조작 부여(마우스 전용 → 키보드 사용자도 선택 가능) */
+document.addEventListener('DOMContentLoaded',function(){
+  document.querySelectorAll('.case-card:not(.disabled)').forEach(function(c){
+    c.setAttribute('role','button'); c.setAttribute('tabindex','0');
+    c.addEventListener('keydown',function(e){
+      if(e.key==='Enter'||e.key===' '){ e.preventDefault(); selectCase(c.dataset.case); }
+    });
+  });
+});
 let currentCase = 'general';
 let answers = {q1:null,q2:null};
 
@@ -575,9 +601,11 @@ function selectCase(id){
   currentCase = id;
   document.querySelectorAll('.case-card').forEach(c=>c.classList.toggle('selected', c.dataset.case===id));
   document.getElementById('resultCase').textContent = CASES[id].label;
+  var btn=document.querySelector('.next-btn'); if(btn) btn.textContent = CASES[id].cta;
 }
 function goNext(){
   if(!currentCase || !CASES[currentCase]) return;
+  if(currentCase==='cancel') trackCase('card');
   location.href = CASES[currentCase].url;
 }
 
@@ -595,6 +623,11 @@ document.querySelectorAll('.opt-btn').forEach(btn => {
     document.querySelectorAll(`.opt-btn[data-q="${q}"]`).forEach(b=>b.classList.remove('active'));
     btn.classList.add('active');
     answers['q'+q]=val;
+    if(q==='0'){
+      if(val==='cancel'){ decide('cancel'); trackCase('wizard'); }
+      else { decide('general'); }
+      return;
+    }
     if(q==='1'){
       document.getElementById('q2').style.display = val==='yes'?'block':'none';
       if(val==='no'){answers.q2=null;decide('general');}
@@ -605,6 +638,7 @@ document.querySelectorAll('.opt-btn').forEach(btn => {
     }
   });
 });
+function trackCase(from){ try{ window.SR&&SR.track('case_select',{key:'cancel',from:from}); }catch(e){} }
 function decide(id){
   selectCase(id);
   showToast('진단 결과: ' + CASES[id].label + ' 선택됨');
