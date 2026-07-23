@@ -648,5 +648,59 @@ function showToast(msg){
   }else run();
 })();
 </script>
+<!-- 셀프등기24 계측 레이어 v1 (벤더 독립) -->
+<script>
+/* SR.track(name, data)
+   - Vercel Web Analytics(window.va)가 있으면 전송 (Pro 플랜에서만 대시보드 집계)
+   - GA4(gtag)가 있으면 전송
+   - 위 둘이 없어도 이 기기 localStorage에 집계되어 SR.report()로 즉시 확인 가능
+   - 개인정보는 절대 싣지 않는다: 이벤트명 + 최대 2개 키(짧은 식별자)만 */
+window.SR=window.SR||(function(){
+  var LK='selfregi_events_v1',MAX=500;
+  function readLog(){try{return JSON.parse(localStorage.getItem(LK)||'[]')||[];}catch(e){return[];}}
+  function writeLog(a){try{localStorage.setItem(LK,JSON.stringify(a.slice(-MAX)));}catch(e){}}
+  var ALLOW=['key','from','doc','track','step'];           /* 허용된 키만 통과 */
+  var DENY=/\d{6}\s*-\s*\d{7}|\d{10,}|@/;                  /* 주민번호·긴 숫자열·이메일 차단 */
+  function sane(d){ /* 개인정보 차단 + 키 2개 제한(Vercel Pro 상한) */
+    var out={},n=0;
+    for(var i=0;i<ALLOW.length;i++){
+      if(n>=2)break;
+      var k=ALLOW[i],v=d[k];
+      if(v===undefined||v===null)continue;
+      if(['string','number','boolean'].indexOf(typeof v)<0)continue;
+      if(typeof v==='string'){if(DENY.test(v))continue;v=v.slice(0,40);}
+      out[k]=v;n++;
+    }
+    return out;
+  }
+  function track(name,data){
+    var d=sane(data||{});
+    try{if(typeof window.va==='function')window.va('event',{name:name,data:d});}catch(e){}
+    try{if(typeof window.gtag==='function')window.gtag('event',name,d);}catch(e){}
+    var log=readLog();
+    log.push({n:name,d:d,t:Date.now(),p:location.pathname.replace(/^.*\//,'')});
+    writeLog(log);
+  }
+  function report(){ /* 콘솔에서 SR.report() 호출 → 이 기기 집계 요약 */
+    var log=readLog(),by={};
+    log.forEach(function(e){by[e.n]=(by[e.n]||0)+1;});
+    console.table(by);
+    var g=log.filter(function(e){return e.n==='guide_open';}).length;
+    var f=log.filter(function(e){return e.n==='form_enter';}).length;
+    var dl=log.filter(function(e){return e.n==='doc_download';}).length;
+    console.log('가이드 열람 '+g+'회 → 작성 진입 '+f+'회 → 서류 발급 '+dl+'회');
+    if(g)console.log('가이드→작성 전환율 '+(f/g*100).toFixed(1)+'%');
+    if(f)console.log('작성→발급 전환율 '+(dl/f*100).toFixed(1)+'%');
+    return by;
+  }
+  function exportCsv(){
+    var log=readLog(),rows=['event,key,ts,page'];
+    log.forEach(function(e){rows.push([e.n,(e.d&&(e.d.key||e.d.doc||e.d.from))||'',new Date(e.t).toISOString(),e.p].join(','));});
+    return rows.join('\n');
+  }
+  function reset(){try{localStorage.removeItem(LK);}catch(e){}}
+  return {track:track,report:report,exportCsv:exportCsv,reset:reset};
+})();
+</script>
 </body>
 </html>

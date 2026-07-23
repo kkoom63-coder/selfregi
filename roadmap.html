@@ -18,6 +18,8 @@ nav{background:rgba(248,250,252,.86);backdrop-filter:saturate(140%) blur(8px);-w
 .nav-logo{flex-shrink:0;font-size:16px;font-weight:800;color:var(--navy);text-decoration:none;margin-right:auto;letter-spacing:-.3px}
 .nav-logo span{display:inline-block;background:#E0F2FE;color:#075985;font-size:9px;font-weight:700;letter-spacing:1.2px;padding:1px 6px;border-radius:10px;vertical-align:middle;margin-left:6px}
 .nav-a{flex-shrink:0;color:var(--muted);font-size:12px;padding:5px 11px;border-radius:7px;text-decoration:none;transition:all .15s}
+.nav-a.cta{background:var(--blue);color:#fff;font-weight:700;padding:6px 13px;margin-left:4px}
+.nav-a:hover:not(.cta){color:var(--navy);background:#F1F5F9}
 .nav-a:hover{background:#F1F5F9;color:var(--navy)}
 
 .back-bar{background:var(--bg);padding:10px 20px 0}
@@ -279,9 +281,10 @@ main{max-width:var(--read);margin:0 auto;padding:24px 20px 110px;position:relati
 <nav>
   <div class="nav-inner">
     <a href="index.html" class="nav-logo">셀프등기24</a>
-    <a href="index.html" class="nav-a">서류 만들기</a>
+    <a href="guide.html" class="nav-a">셀프등기 가이드</a>
     <a href="calculator.html" class="nav-a">취득세 계산기</a>
     <a href="https://selfregi.tistory.com" target="_blank" rel="noopener" class="nav-a">블로그</a>
+    <a href="normal_form.html" class="nav-a cta">작성 화면으로</a>
   </div>
 </nav>
 
@@ -950,6 +953,7 @@ function fmtWon(v){
 async function downloadSinchungseo(){
   if (typeof JSZip === 'undefined') { showToast('❌ 라이브러리 로딩 중, 잠시 후 다시 시도해주세요', '#DC2626'); return; }
   if (SINCHUNGSEO_B64 === 'PLACEHOLDER') { showToast('⚠️ 신청서 템플릿이 아직 등록되지 않았습니다', '#0369A1'); return; }
+  try{window.SR&&SR.track('doc_download',{doc:'sinchungseo'});}catch(e){}
 
   let f = {};
   try {
@@ -1526,6 +1530,7 @@ function saveRelay(btn){
   RELAY[key] = v;
   persistRelay();
   renderRelay(key);
+  try{window.SR&&SR.track('relay_save',{key:key,from:'roadmap'});}catch(e){}
   // [요청4] 저장 버튼은 값 저장만 담당 — 체크박스(취소선)는 사용자가 직접 눌렀을 때만 반응하도록 자동 체크 로직 제거
   showToast('저장 완료! 3단계 신청서 집계에 반영됩니다.');
 }
@@ -1890,5 +1895,60 @@ document.addEventListener('keydown',function(e){
   else if(e.key==='ArrowRight'){ e.preventDefault(); guidePage(1); }
 });
 </script>
+<!-- 셀프등기24 계측 레이어 v1 (벤더 독립) -->
+<script>
+/* SR.track(name, data)
+   - Vercel Web Analytics(window.va)가 있으면 전송 (Pro 플랜에서만 대시보드 집계)
+   - GA4(gtag)가 있으면 전송
+   - 위 둘이 없어도 이 기기 localStorage에 집계되어 SR.report()로 즉시 확인 가능
+   - 개인정보는 절대 싣지 않는다: 이벤트명 + 최대 2개 키(짧은 식별자)만 */
+window.SR=window.SR||(function(){
+  var LK='selfregi_events_v1',MAX=500;
+  function readLog(){try{return JSON.parse(localStorage.getItem(LK)||'[]')||[];}catch(e){return[];}}
+  function writeLog(a){try{localStorage.setItem(LK,JSON.stringify(a.slice(-MAX)));}catch(e){}}
+  var ALLOW=['key','from','doc','track','step'];           /* 허용된 키만 통과 */
+  var DENY=/\d{6}\s*-\s*\d{7}|\d{10,}|@/;                  /* 주민번호·긴 숫자열·이메일 차단 */
+  function sane(d){ /* 개인정보 차단 + 키 2개 제한(Vercel Pro 상한) */
+    var out={},n=0;
+    for(var i=0;i<ALLOW.length;i++){
+      if(n>=2)break;
+      var k=ALLOW[i],v=d[k];
+      if(v===undefined||v===null)continue;
+      if(['string','number','boolean'].indexOf(typeof v)<0)continue;
+      if(typeof v==='string'){if(DENY.test(v))continue;v=v.slice(0,40);}
+      out[k]=v;n++;
+    }
+    return out;
+  }
+  function track(name,data){
+    var d=sane(data||{});
+    try{if(typeof window.va==='function')window.va('event',{name:name,data:d});}catch(e){}
+    try{if(typeof window.gtag==='function')window.gtag('event',name,d);}catch(e){}
+    var log=readLog();
+    log.push({n:name,d:d,t:Date.now(),p:location.pathname.replace(/^.*\//,'')});
+    writeLog(log);
+  }
+  function report(){ /* 콘솔에서 SR.report() 호출 → 이 기기 집계 요약 */
+    var log=readLog(),by={};
+    log.forEach(function(e){by[e.n]=(by[e.n]||0)+1;});
+    console.table(by);
+    var g=log.filter(function(e){return e.n==='guide_open';}).length;
+    var f=log.filter(function(e){return e.n==='form_enter';}).length;
+    var dl=log.filter(function(e){return e.n==='doc_download';}).length;
+    console.log('가이드 열람 '+g+'회 → 작성 진입 '+f+'회 → 서류 발급 '+dl+'회');
+    if(g)console.log('가이드→작성 전환율 '+(f/g*100).toFixed(1)+'%');
+    if(f)console.log('작성→발급 전환율 '+(dl/f*100).toFixed(1)+'%');
+    return by;
+  }
+  function exportCsv(){
+    var log=readLog(),rows=['event,key,ts,page'];
+    log.forEach(function(e){rows.push([e.n,(e.d&&(e.d.key||e.d.doc||e.d.from))||'',new Date(e.t).toISOString(),e.p].join(','));});
+    return rows.join('\n');
+  }
+  function reset(){try{localStorage.removeItem(LK);}catch(e){}}
+  return {track:track,report:report,exportCsv:exportCsv,reset:reset};
+})();
+</script>
+<script>try{window.SR&&SR.track('roadmap_enter',{track:(new URLSearchParams(location.search)).get('track')||'online'});}catch(e){}</script>
 </body>
 </html>

@@ -11,10 +11,16 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{--navy:#0F172A;--blue:#0369A1;--gold:#0369A1;--bg:#F8FAFC;--card:#fff;--text:#020617;--muted:#64748B;--border:#E2E8F0;--radius:12px;--shadow:0 2px 12px rgba(2,6,23,.08)}
+nav{background:rgba(248,250,252,.86);backdrop-filter:saturate(140%) blur(8px);-webkit-backdrop-filter:saturate(140%) blur(8px);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100}
+.nav-inner{max-width:1200px;margin:0 auto;padding:0 14px;height:54px;display:flex;align-items:center;gap:2px}
+.nav-logo{flex-shrink:0;font-size:15px;font-weight:800;color:var(--navy);text-decoration:none;margin-right:auto;letter-spacing:-.02em}
+.nav-a{flex-shrink:0;color:var(--muted);font-size:12.5px;font-weight:500;padding:8px 10px;border-radius:7px;text-decoration:none;transition:all .15s}
+.nav-a.here{color:var(--navy);font-weight:700;background:#F1F5F9;cursor:default}
+.nav-a:hover{color:var(--navy);background:#F1F5F9}
+@media(max-width:560px){.nav-inner{overflow-x:auto;white-space:nowrap;-webkit-overflow-scrolling:touch}}
 body{font-family:'Noto Sans KR','Malgun Gothic',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6}
 header{background:var(--bg);color:var(--text)}
-.back-bar{background:var(--bg);padding:10px 20px 0}
-.back-bar-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center}
+.back-bar{background:var(--bg);padding:10px 20px 0}.back-bar-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center}
 .back-a{display:inline-flex;align-items:center;gap:4px;color:#075985;background:#E0F2FE;font-size:11.5px;font-weight:700;text-decoration:none;padding:5px 12px;border-radius:20px;transition:background .12s}
 .back-a:hover{background:#BAE6FD}
 .hi{max-width:1200px;margin:0 auto;padding:22px 20px 18px}
@@ -121,12 +127,15 @@ footer{text-align:center;padding:18px;font-size:11px;color:#64748B;max-width:120
 </head>
 <body>
 
-<!-- 홈으로 바 -->
-<div class="back-bar">
-  <div class="back-bar-inner">
-    <a href="index.html" class="back-a">← 홈으로</a>
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">셀프등기24</a>
+    <a href="guide.html" class="nav-a">셀프등기 가이드</a>
+    <a href="calculator.html" class="nav-a">취득세 계산기</a>
+    <a href="https://selfregi.tistory.com" class="nav-a" target="_blank" rel="noopener">블로그</a>
+    <span class="nav-a here" aria-current="page">서류 작성</span>
   </div>
-</div>
+</nav>
 
 <header>
   <div class="hi">
@@ -769,6 +778,7 @@ async function fillTemplate(b64, replacements) {
 // =============================================
 async function downloadAll() {
   if (!validate()) return;
+  try{window.SR&&SR.track('doc_download',{doc:'all'});}catch(e){}
   if (typeof JSZip === 'undefined') { showToast('❌ 라이브러리 로딩 중, 잠시 후 다시 시도해주세요', '#DC2626'); return; }
   try {
     const d = getData();
@@ -835,6 +845,7 @@ async function downloadAll() {
 // =============================================
 async function downloadWimiOnly() {
   if (!validate()) return;
+  try{window.SR&&SR.track('doc_download',{doc:'wimijang'});}catch(e){}
   if (typeof JSZip === 'undefined') { showToast('❌ 라이브러리 로딩 중, 잠시 후 다시 시도해주세요', '#DC2626'); return; }
   try {
     const d = getData();
@@ -927,5 +938,60 @@ function sendConfirmEmail() {
   }).catch(err => console.warn('EmailJS 오류:', err));
 }
 </script>
+<!-- 셀프등기24 계측 레이어 v1 (벤더 독립) -->
+<script>
+/* SR.track(name, data)
+   - Vercel Web Analytics(window.va)가 있으면 전송 (Pro 플랜에서만 대시보드 집계)
+   - GA4(gtag)가 있으면 전송
+   - 위 둘이 없어도 이 기기 localStorage에 집계되어 SR.report()로 즉시 확인 가능
+   - 개인정보는 절대 싣지 않는다: 이벤트명 + 최대 2개 키(짧은 식별자)만 */
+window.SR=window.SR||(function(){
+  var LK='selfregi_events_v1',MAX=500;
+  function readLog(){try{return JSON.parse(localStorage.getItem(LK)||'[]')||[];}catch(e){return[];}}
+  function writeLog(a){try{localStorage.setItem(LK,JSON.stringify(a.slice(-MAX)));}catch(e){}}
+  var ALLOW=['key','from','doc','track','step'];           /* 허용된 키만 통과 */
+  var DENY=/\d{6}\s*-\s*\d{7}|\d{10,}|@/;                  /* 주민번호·긴 숫자열·이메일 차단 */
+  function sane(d){ /* 개인정보 차단 + 키 2개 제한(Vercel Pro 상한) */
+    var out={},n=0;
+    for(var i=0;i<ALLOW.length;i++){
+      if(n>=2)break;
+      var k=ALLOW[i],v=d[k];
+      if(v===undefined||v===null)continue;
+      if(['string','number','boolean'].indexOf(typeof v)<0)continue;
+      if(typeof v==='string'){if(DENY.test(v))continue;v=v.slice(0,40);}
+      out[k]=v;n++;
+    }
+    return out;
+  }
+  function track(name,data){
+    var d=sane(data||{});
+    try{if(typeof window.va==='function')window.va('event',{name:name,data:d});}catch(e){}
+    try{if(typeof window.gtag==='function')window.gtag('event',name,d);}catch(e){}
+    var log=readLog();
+    log.push({n:name,d:d,t:Date.now(),p:location.pathname.replace(/^.*\//,'')});
+    writeLog(log);
+  }
+  function report(){ /* 콘솔에서 SR.report() 호출 → 이 기기 집계 요약 */
+    var log=readLog(),by={};
+    log.forEach(function(e){by[e.n]=(by[e.n]||0)+1;});
+    console.table(by);
+    var g=log.filter(function(e){return e.n==='guide_open';}).length;
+    var f=log.filter(function(e){return e.n==='form_enter';}).length;
+    var dl=log.filter(function(e){return e.n==='doc_download';}).length;
+    console.log('가이드 열람 '+g+'회 → 작성 진입 '+f+'회 → 서류 발급 '+dl+'회');
+    if(g)console.log('가이드→작성 전환율 '+(f/g*100).toFixed(1)+'%');
+    if(f)console.log('작성→발급 전환율 '+(dl/f*100).toFixed(1)+'%');
+    return by;
+  }
+  function exportCsv(){
+    var log=readLog(),rows=['event,key,ts,page'];
+    log.forEach(function(e){rows.push([e.n,(e.d&&(e.d.key||e.d.doc||e.d.from))||'',new Date(e.t).toISOString(),e.p].join(','));});
+    return rows.join('\n');
+  }
+  function reset(){try{localStorage.removeItem(LK);}catch(e){}}
+  return {track:track,report:report,exportCsv:exportCsv,reset:reset};
+})();
+</script>
+<script>try{if(window.SR){var r=document.referrer||'';var from=/guide\.html/.test(r)?'guide':(/calculator\.html/.test(r)?'calculator':(/roadmap\.html/.test(r)?'roadmap':(/selfregi/.test(r)?'index':'direct')));SR.track('form_enter',{from:from});}}catch(e){}</script>
 </body>
 </html>

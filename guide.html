@@ -129,6 +129,9 @@ header{background:var(--navy)}
 .shot-prog .pr-b{height:4px;background:#EEF2F6;border-radius:2px;overflow:hidden}
 .shot-prog .pr-b i{display:block;height:100%;background:var(--blue);border-radius:2px}
 .shot-prog .pr-t .done{color:#047857;font-weight:700}
+.prog-note{margin-top:-6px}
+.prog-reset{border:1px solid var(--border);background:#fff;color:var(--muted);font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;cursor:pointer;font-family:inherit;margin-left:4px;transition:.15s}
+.prog-reset:hover{border-color:var(--blue);color:var(--blue)}
 .shot-foot{display:flex;gap:8px;margin-top:13px;align-items:center}
 .shot-foot .go{flex:1;font-size:12px;font-weight:700;color:var(--blue)}
 .shot-link{flex-shrink:0;height:28px;padding:0 10px;font-size:11px;font-weight:700;border:1px solid var(--border);border-radius:8px;background:#fff;color:var(--muted);font-size:13px;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;transition:.15s}
@@ -365,7 +368,8 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:52px;p
 <div class="section" id="shots-sec">
   <div class="sec-label">STEP 4 · 실제 화면 안내</div>
   <p class="sec-title">각 단계, 실제 화면으로 확인하세요</p>
-  <p class="sec-sub">카드를 누르면 진행 화면이 단계별로 열립니다. 실제 캡처 화면과, 저작권 보호를 위해 재구성한 재현 화면을 함께 사용합니다. 보던 위치는 자동으로 저장됩니다.</p>
+  <p class="sec-sub">카드를 누르면 진행 화면이 단계별로 열립니다. 실제 캡처 화면과, 저작권 보호를 위해 재구성한 재현 화면을 함께 사용합니다.</p>
+  <p class="sec-sub prog-note">보던 위치는 이 기기에만 저장되며, 60일이 지나면 자동으로 사라집니다. <button type="button" class="prog-reset" onclick="clearGpos()">진행 기록 지우기</button></p>
   <div class="shots" id="shots"></div>
 </div>
 
@@ -569,6 +573,7 @@ function saveRelay(btn){
   var v=(inp?inp.value:'').trim();
   if(!v){toast('값을 입력해 주세요');return;}
   RELAY[key]=v;persistRelay();renderRelay(key);toast('저장 완료 — 신청서에 자동 반영됩니다');
+  try{window.SR&&SR.track('relay_save',{key:key,from:'guide'});}catch(e){}
 }
 function renderRelay(key){
   var m=RMETA[key],val=RELAY[key],shown=val?(m.fmt?fmtNum(val)+'원':val):'';
@@ -600,11 +605,25 @@ function toast(msg){var t=document.getElementById('toast');if(!t)return;t.textCo
   bar.addEventListener('click',function(){var el=document.getElementById('vault-sec');if(el)el.scrollIntoView({behavior:'smooth',block:'start'});});})();
 
 /* ===== 가이드 진행상태: 이 기기(브라우저)에만 저장 ===== */
-var GPOS_KEY='selfregi_guide_pos_v1',GPOS={};
+var GPOS_KEY='selfregi_guide_pos_v2',GPOS={},GPOS_TTL=60*24*3600*1000;
 try{GPOS=JSON.parse(localStorage.getItem(GPOS_KEY)||'{}')||{};}catch(e){GPOS={};}
+(function(){ /* 오래된 기록(60일 경과)은 무시하고 정리 */
+  var now=Date.now(),dirty=false;
+  for(var k in GPOS){if(!GPOS[k]||!GPOS[k].ts||now-GPOS[k].ts>GPOS_TTL){delete GPOS[k];dirty=true;}}
+  if(dirty){try{localStorage.setItem(GPOS_KEY,JSON.stringify(GPOS));}catch(e){}}
+})();
+/* 실제로 '본 화면'만 집계한다. 마지막 스텝에 점프했다고 완료가 아니다. */
 function saveGpos(key,st,total){
-  GPOS[key]={step:st,done:(GPOS[key]&&GPOS[key].done)||st>=total-1,ts:Date.now()};
+  var p=GPOS[key],seen=(p&&Object.prototype.toString.call(p.seen)==='[object Array]')?p.seen.slice():[];
+  if(seen.indexOf(st)<0)seen.push(st);
+  var wasDone=!!(p&&p.done);
+  GPOS[key]={step:st,seen:seen,total:total,done:seen.length>=total,ts:Date.now()};
+  if(!wasDone&&GPOS[key].done){try{window.SR&&SR.track('guide_complete',{key:key});}catch(e){}}
   try{localStorage.setItem(GPOS_KEY,JSON.stringify(GPOS));}catch(e){}
+}
+function clearGpos(){
+  GPOS={};try{localStorage.removeItem(GPOS_KEY);}catch(e){}
+  renderShots();toast('가이드 진행 기록을 지웠습니다');
 }
 var FLOW_NAMES={1:'절차 1단계 · 서류 발급',2:'절차 2단계 · 제세공과금',3:'절차 3단계 · 서류 작성'};
 
@@ -629,12 +648,13 @@ function renderShots(){
     if(s.meta)for(var m=0;m<s.meta.length;m++)chips+='<span class="shot-chip'+(s.meta[m].indexOf('번호')===0?' n':'')+'">'+s.meta[m]+'</span>';
     chips+='<span class="shot-chip">화면 '+s.steps.length+'장</span>';
     var p=GPOS[s.key],prog='',goTxt='화면으로 보기 →';
-    if(p&&p.done){
-      prog='<div class="shot-prog"><div class="pr-t"><span class="done">✓ 끝까지 봤어요</span><span>'+s.steps.length+'/'+s.steps.length+'</span></div><div class="pr-b"><i style="width:100%"></i></div></div>';
+    var seenN=(p&&p.seen&&p.seen.length)||0;
+    if(p&&p.done&&seenN>=s.steps.length){
+      prog='<div class="shot-prog"><div class="pr-t"><span class="done">✓ 모든 화면을 봤어요</span><span>'+s.steps.length+'/'+s.steps.length+'</span></div><div class="pr-b"><i style="width:100%"></i></div></div>';
       goTxt='다시 보기 →';
-    }else if(p&&p.step>0){
-      var pct=Math.round((p.step+1)/s.steps.length*100);
-      prog='<div class="shot-prog"><div class="pr-t"><span>보던 위치: '+(p.step+1)+'단계</span><span>'+(p.step+1)+'/'+s.steps.length+'</span></div><div class="pr-b"><i style="width:'+pct+'%"></i></div></div>';
+    }else if(seenN>0){
+      var pct=Math.round(seenN/s.steps.length*100);
+      prog='<div class="shot-prog"><div class="pr-t"><span>보던 위치: '+((p.step||0)+1)+'단계</span><span>'+seenN+'/'+s.steps.length+' 확인</span></div><div class="pr-b"><i style="width:'+pct+'%"></i></div></div>';
       goTxt='이어서 보기 →';
     }
     h+='<div class="shot" role="button" tabindex="0" onclick="openShot(\''+s.key+'\')" onkeydown="if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();openShot(\''+s.key+'\')}">'
@@ -653,6 +673,7 @@ function openShot(key,startStep){
   cur=null;
   for(var i=0;i<SHOTS.length;i++)if(SHOTS[i].key===key){cur=SHOTS[i];break;}
   if(!cur||!cur.steps.length)return;
+  try{window.SR&&SR.track('guide_open',{key:key});}catch(e){}
   if(typeof startStep==='number'&&startStep>=0&&startStep<cur.steps.length){step=startStep;}
   else{var p=GPOS[key];step=(p&&!p.done&&p.step>0&&p.step<cur.steps.length)?p.step:0;}
   document.getElementById('gmSideT').textContent=cur.title;
@@ -764,6 +785,60 @@ document.addEventListener('keydown',function(e){
   if(e.key==='ArrowLeft'&&step>0){step--;render();}
   if(e.key==='ArrowRight'&&cur&&step<cur.steps.length-1){step++;render();}
 });
+</script>
+<!-- 셀프등기24 계측 레이어 v1 (벤더 독립) -->
+<script>
+/* SR.track(name, data)
+   - Vercel Web Analytics(window.va)가 있으면 전송 (Pro 플랜에서만 대시보드 집계)
+   - GA4(gtag)가 있으면 전송
+   - 위 둘이 없어도 이 기기 localStorage에 집계되어 SR.report()로 즉시 확인 가능
+   - 개인정보는 절대 싣지 않는다: 이벤트명 + 최대 2개 키(짧은 식별자)만 */
+window.SR=window.SR||(function(){
+  var LK='selfregi_events_v1',MAX=500;
+  function readLog(){try{return JSON.parse(localStorage.getItem(LK)||'[]')||[];}catch(e){return[];}}
+  function writeLog(a){try{localStorage.setItem(LK,JSON.stringify(a.slice(-MAX)));}catch(e){}}
+  var ALLOW=['key','from','doc','track','step'];           /* 허용된 키만 통과 */
+  var DENY=/\d{6}\s*-\s*\d{7}|\d{10,}|@/;                  /* 주민번호·긴 숫자열·이메일 차단 */
+  function sane(d){ /* 개인정보 차단 + 키 2개 제한(Vercel Pro 상한) */
+    var out={},n=0;
+    for(var i=0;i<ALLOW.length;i++){
+      if(n>=2)break;
+      var k=ALLOW[i],v=d[k];
+      if(v===undefined||v===null)continue;
+      if(['string','number','boolean'].indexOf(typeof v)<0)continue;
+      if(typeof v==='string'){if(DENY.test(v))continue;v=v.slice(0,40);}
+      out[k]=v;n++;
+    }
+    return out;
+  }
+  function track(name,data){
+    var d=sane(data||{});
+    try{if(typeof window.va==='function')window.va('event',{name:name,data:d});}catch(e){}
+    try{if(typeof window.gtag==='function')window.gtag('event',name,d);}catch(e){}
+    var log=readLog();
+    log.push({n:name,d:d,t:Date.now(),p:location.pathname.replace(/^.*\//,'')});
+    writeLog(log);
+  }
+  function report(){ /* 콘솔에서 SR.report() 호출 → 이 기기 집계 요약 */
+    var log=readLog(),by={};
+    log.forEach(function(e){by[e.n]=(by[e.n]||0)+1;});
+    console.table(by);
+    var g=log.filter(function(e){return e.n==='guide_open';}).length;
+    var f=log.filter(function(e){return e.n==='form_enter';}).length;
+    var dl=log.filter(function(e){return e.n==='doc_download';}).length;
+    console.log('가이드 열람 '+g+'회 → 작성 진입 '+f+'회 → 서류 발급 '+dl+'회');
+    if(g)console.log('가이드→작성 전환율 '+(f/g*100).toFixed(1)+'%');
+    if(f)console.log('작성→발급 전환율 '+(dl/f*100).toFixed(1)+'%');
+    return by;
+  }
+  function exportCsv(){
+    var log=readLog(),rows=['event,key,ts,page'];
+    log.forEach(function(e){rows.push([e.n,(e.d&&(e.d.key||e.d.doc||e.d.from))||'',new Date(e.t).toISOString(),e.p].join(','));});
+    return rows.join('\n');
+  }
+  function reset(){try{localStorage.removeItem(LK);}catch(e){}}
+  return {track:track,report:report,exportCsv:exportCsv,reset:reset};
+})();
 </script>
 </body>
 </html>
