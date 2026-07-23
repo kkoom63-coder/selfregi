@@ -79,6 +79,10 @@ header{background:var(--navy)}
 .pgo:hover{background:var(--blue);color:#fff}
 .prep-callout{margin-top:14px;padding:15px 18px;background:#FEF9EC;border:1px solid #F5E3B3;border-radius:12px;font-size:12.5px;color:#644008;line-height:1.75;word-break:keep-all}
 .prep-callout b{color:#854F0B;font-weight:800}
+.pitem.warn{background:#FFFBF5}
+.rj-badge{display:inline-block;font-size:9.5px;font-weight:800;color:#9A3412;background:#FFEDD5;border:1px solid #FED7AA;border-radius:20px;padding:2px 8px;margin-left:2px;vertical-align:1px;white-space:nowrap;letter-spacing:-.01em}
+.rj-why{display:block;margin-top:6px;padding:8px 10px;background:#FFF7ED;border-left:3px solid #FB923C;border-radius:0 6px 6px 0;color:#7C2D12;font-size:11.5px;line-height:1.7;word-break:keep-all}
+.rj-why b{font-weight:800;color:#9A3412}
 .ph{font-size:15px;font-weight:800;color:var(--navy);margin-bottom:3px}
 .ps{font-size:11.5px;color:var(--muted);margin-bottom:15px}
 .pitem{display:flex;gap:9px;padding:11px 0;border-top:1px solid #edf1f5;font-size:13.5px;color:var(--text)}
@@ -329,7 +333,7 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:52px;p
       <div class="ptime">절차 진행 중</div>
       <div class="ph">온라인으로 만드는 서류</div>
       <div class="ps">아래 실제 화면 안내를 따라가면 자연스럽게 모입니다</div>
-      <div class="pitem"><div><b>주민등록등본</b> <a class="pgo" href="#g=gov24" onclick="openShot('gov24');return false">화면 가이드</a><small>매수인 본인 · <b>주민번호 뒷자리 포함</b>으로 발급</small></div></div>
+      <div class="pitem warn"><div><b>주민등록등본</b> <span class="rj-badge">자주 반려되는 항목</span> <a class="pgo" href="#g=gov24" onclick="openShot('gov24');return false">화면 가이드</a><small>매수인 본인 · <b>주민번호 뒷자리 포함</b>으로 발급</small><small class="rj-why">발급 화면에서 주민등록번호를 &lsquo;전체 표시&rsquo;로 선택하세요. 뒷자리가 별표(******)로 가려진 서류는 본인 확인이 되지 않아 보정 요구를 받는 경우가 많습니다.</small></div></div>
       <div class="pitem"><div><b>토지대장 · 건축물대장(집합·전유부)</b> <a class="pgo" href="#g=gov24" onclick="openShot('gov24');return false">화면 가이드</a><small>정부24 무료 발급</small></div></div>
       <div class="pitem"><div><b>가족관계증명서</b> <a class="pgo" href="#g=gov24" onclick="openShot('gov24');return false">화면 가이드</a><small>취득세 신고용 — 등기신청 시에는 제출하지 않음</small></div></div>
       <div class="pitem"><div><b>취득세 납부확인서</b> <a class="pgo" href="#g=wetax" onclick="openShot('wetax');return false">화면 가이드</a><small>위택스 신고·납부 후 출력</small></div></div>
@@ -342,7 +346,7 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:52px;p
       <div class="ph">매도인에게 받아 완성</div>
       <div class="ps">잔금을 치르는 그 자리에서 확인하고 받습니다</div>
       <div class="pitem"><div><b>매도용 인감증명서</b><small>매수인 성명·주민번호·주소가 기재된 '매도용'인지, 인감도장과 일치하는지 확인</small></div></div>
-      <div class="pitem"><div><b>주민등록초본 (매도인)</b><small>주민번호 뒷자리 + <b>주소 변동 이력 포함</b> — 등기부상 주소와 현주소를 잇기 위해 필요</small></div></div>
+      <div class="pitem warn"><div><b>주민등록초본 (매도인)</b> <span class="rj-badge">자주 반려되는 항목</span><small>주민번호 뒷자리 + <b>주소 변동 이력 포함</b> — 등기부상 주소와 현주소를 잇기 위해 필요</small><small class="rj-why">주소 이력은 &lsquo;최근 5년&rsquo;이 아니라 <b>전체</b>로 발급해야 합니다. 등기부에 적힌 옛 주소부터 현재 주소까지 이어지지 않으면, 같은 사람인지 확인되지 않아 보정 대상이 됩니다.</small></div></div>
       <div class="pitem"><div><b>등기필정보 (구 등기필증·등기권리증)</b><small>일련번호·비밀번호가 기재된 서류 — 잔금일에 원본 수령</small></div></div>
       <div class="pitem"><div><b>위임장에 매도인 인감 날인</b> <a class="pgo" href="#g=seal" onclick="openShot('seal');return false">날인 위치</a><small>셀프등기24에서 미리 출력해 가져가는 그 서류</small></div></div>
     </div>
