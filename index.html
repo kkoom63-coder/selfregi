@@ -39,7 +39,7 @@
   --bg:#F8FAFC;--card:#fff;
   --radius:12px;--shadow:0 1px 3px rgba(2,6,23,.06);
 }
-html{scroll-behavior:smooth}
+html{scroll-behavior:smooth;scroll-padding-top:66px}
 body{overflow-x:hidden;font-family:'Noto Sans KR',-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;letter-spacing:-.01em}
 img{max-width:100%;display:block}
 
@@ -142,6 +142,18 @@ header{background:var(--bg)}
 .guide-a:hover{border-color:var(--blue);background:#E0F2FE}
 .guide-a-n{font-size:10px;font-weight:700;color:var(--blue);letter-spacing:.04em}
 .guide-a-t{font-size:12.5px;font-weight:700;color:var(--navy);line-height:1.4;word-break:keep-all}
+/* ── 목적 분기 카드 (가이드 밴드) ── */
+.purpose-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:20px}
+.purpose-card{display:flex;flex-direction:column;width:100%;background:#fff;border:1.5px solid var(--border);border-radius:12px;padding:18px 18px 16px;text-decoration:none;transition:border-color .15s,background .15s}
+.purpose-card:hover{border-color:var(--blue);background:#F8FBFE}
+.purpose-badge{align-self:flex-start;font-size:10.5px;font-weight:700;letter-spacing:.02em;padding:4px 10px;border-radius:20px;background:#E0F2FE;color:#075985;margin-bottom:11px}
+.purpose-badge.alt{background:#ECFDF5;color:#047857}
+.purpose-t{font-size:16.5px;font-weight:800;color:var(--navy);line-height:1.35;letter-spacing:-.02em;word-break:keep-all}
+.purpose-sub{font-size:12px;font-weight:600;color:var(--blue);margin-top:4px}
+.purpose-d{font-size:12.5px;color:var(--muted);line-height:1.6;margin-top:10px;word-break:keep-all}
+.purpose-cta{margin-top:auto;padding-top:16px;font-size:13px;font-weight:700;color:var(--navy);word-break:keep-all}
+.purpose-card:hover .purpose-cta{color:var(--blue)}
+.guide-jump-l{font-size:11.5px;font-weight:700;color:var(--muted);letter-spacing:.02em;margin-bottom:9px}
 
 /* ── 3단계 프로세스 ── */
 .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
@@ -230,6 +242,7 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:40px;p
   .news-wrap{grid-template-columns:1fr}
   .feat-grid{grid-template-columns:1fr}
   .guide-links{grid-template-columns:1fr}
+  .purpose-grid{grid-template-columns:1fr}
   .steps{grid-template-columns:1fr}
   .hero-btns{flex-direction:column;align-items:stretch}
   .stats-inner{grid-template-columns:repeat(3,1fr)}
@@ -282,19 +295,9 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:40px;p
 .evi-src{font-size:10.5px;color:#64748B;text-align:right;margin-top:10px}
 .news-2{display:grid;grid-template-columns:1fr;gap:12px;margin-top:22px}
 @media(min-width:640px){.news-2{grid-template-columns:1fr 1fr}}
-.guide-more{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;margin-top:14px;padding:15px 20px;background:var(--navy);color:#fff;border-radius:10px;font-size:15px;font-weight:700;text-decoration:none;transition:background .15s}
-.guide-more:hover{background:var(--blue)}
-.guide-alt{display:block;text-align:center;margin-top:10px;padding:4px;color:var(--blue);font-size:13px;font-weight:600;text-decoration:none;word-break:keep-all}
-.guide-alt:hover{text-decoration:underline}
 @media(min-width:768px){.evi-big{font-size:56px}}
 @media(prefers-reduced-motion:reduce){.evi-card,.evi-line,.evi-dot,.evi-v{opacity:1;transform:none;stroke-dashoffset:0;transition:none}}
 </style>
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-DR3W5XWF50"></script>
-<script>
-window.dataLayer=window.dataLayer||[];
-function gtag(){dataLayer.push(arguments);}
-gtag('js',new Date());gtag('config','G-DR3W5XWF50');
-</script>
 </head>
 <body>
 
@@ -319,7 +322,7 @@ gtag('js',new Date());gtag('config','G-DR3W5XWF50');
     <p class="hero-basis">※ 서울 중위가격 아파트 15억원 기준 법무사 수수료 (2024년 9월 보수표 기준, 법무사마다 상이)</p>
     <div class="hero-btns">
       <a href="#start" class="btn-primary">서류 작성 시작하기 →</a>
-      <a href="guide.html" class="btn-ghost">셀프등기가 처음이라면</a>
+      <a href="#guide-band" class="btn-ghost">셀프등기가 처음이라면</a>
     </div>
     <p class="hero-trust">민감정보는 서버에 저장하지 않습니다 — 기재하지 않아도 서류 발급 가능하나, 출력 후 수기로 직접 작성하셔야 합니다</p>
   </div>
@@ -425,16 +428,31 @@ gtag('js',new Date());gtag('config','G-DR3W5XWF50');
 
 <!-- ③ 가이드 티저 -->
 <div class="section">
-  <div class="guide-band">
+  <div class="guide-band" id="guide-band">
     <div class="guide-band-h">셀프등기가 처음이신가요?</div>
-    <div class="guide-band-d">소유권이전등기가 무엇인지, 어떤 서류를 준비하고 어떤 순서로 진행하는지 — 시작 전에 알아야 할 내용을 가이드에 정리해 두었습니다. 전체 무료로 열람할 수 있습니다.</div>
+    <div class="guide-band-d">어떤 등기가 필요하신지 먼저 확인해 보세요. 상황에 맞는 가이드를 무료로 전부 열람하실 수 있습니다.</div>
+    <div class="purpose-grid">
+      <a href="guide.html" class="purpose-card" onclick="trackPurpose('transfer')">
+        <span class="purpose-badge">가장 일반적</span>
+        <span class="purpose-t">집을 샀습니다</span>
+        <span class="purpose-sub">소유권이전등기</span>
+        <span class="purpose-d">잔금을 치르고 부동산 명의를 내 앞으로 옮기는 절차입니다.</span>
+        <span class="purpose-cta">셀프등기 가이드 보기 →</span>
+      </a>
+      <a href="cancel_guide.html" class="purpose-card" onclick="trackPurpose('cancel')">
+        <span class="purpose-badge alt">실비 약 1만원</span>
+        <span class="purpose-t">대출을 다 갚았습니다</span>
+        <span class="purpose-sub">근저당권 말소</span>
+        <span class="purpose-d">등기부에 남아 있는 은행 근저당권을 지우는 절차입니다.</span>
+        <span class="purpose-cta">근저당권 말소 가이드 보기 →</span>
+      </a>
+    </div>
+    <div class="guide-jump-l">소유권이전등기 가이드 바로가기</div>
     <div class="guide-links">
       <a href="guide.html#what" class="guide-a"><span class="guide-a-n">STEP 1</span><span class="guide-a-t">셀프등기란 무엇인가</span></a>
       <a href="guide.html#docs" class="guide-a"><span class="guide-a-n">STEP 2</span><span class="guide-a-t">준비 서류 체크리스트</span></a>
       <a href="guide.html#flow" class="guide-a"><span class="guide-a-n">STEP 3</span><span class="guide-a-t">진행 절차 한눈에</span></a>
     </div>
-    <a href="guide.html" class="guide-more">셀프등기 가이드 보기 →</a>
-    <a href="cancel_guide.html" class="guide-alt" onclick="trackCase('band')">대출을 다 갚으셨다면 — 근저당권 말소 가이드 →</a>
   </div>
 </div>
 
@@ -665,6 +683,7 @@ document.querySelectorAll('.opt-btn').forEach(btn => {
   });
 });
 function trackCase(from){ try{ window.SR&&SR.track('case_select',{key:'cancel',from:from}); }catch(e){} }
+function trackPurpose(key){ try{ window.SR&&SR.track('case_select',{key:key,from:'band'}); }catch(e){} }
 function decide(id){
   selectCase(id);
   showToast('진단 결과: ' + CASES[id].label + ' 선택됨');
