@@ -517,27 +517,27 @@ gtag('js',new Date());gtag('config','G-DR3W5XWF50');
         </div>
 
         <div class="frow">
-          <div class="ffield"><label for="af-dong">동 <span class="opt">(선택)</span></label><input type="text" id="af-dong" inputmode="numeric" placeholder="107"></div>
-          <div class="ffield"><label for="af-ho">호 <span class="opt">(선택)</span></label><input type="text" id="af-ho" inputmode="numeric" placeholder="1204"></div>
-          <div class="ffield"><label for="af-floor">층 <span class="opt">(선택)</span></label><input type="text" id="af-floor" inputmode="numeric" placeholder="12"></div>
+          <div class="ffield"><label for="af-dong">동</label><input type="text" id="af-dong" inputmode="numeric" placeholder="107"></div>
+          <div class="ffield"><label for="af-ho">호</label><input type="text" id="af-ho" inputmode="numeric" placeholder="1204"></div>
+          <div class="ffield"><label for="af-floor">층</label><input type="text" id="af-floor" inputmode="numeric" placeholder="12"></div>
         </div>
 
         <div class="frow">
           <div class="ffield full">
-            <label for="af-apt">아파트·건물명 <span class="opt">(선택)</span></label>
+            <label for="af-apt">아파트·건물명</label>
             <input type="text" id="af-apt" placeholder="예: 반월아이파크">
             <span class="fn">표제부의 '건물명칭 및 번호' 기준입니다. 단독주택·토지라면 비워 두세요.</span>
           </div>
         </div>
 
         <div class="frow">
-          <div class="ffield"><label for="af-struct">구조 <span class="opt">(선택)</span></label><input type="text" id="af-struct" placeholder="예: 철근콘크리트구조"></div>
-          <div class="ffield"><label for="af-area">전유면적 (㎡) <span class="opt">(선택)</span></label><input type="text" id="af-area" inputmode="decimal" placeholder="예: 84.99"></div>
+          <div class="ffield"><label for="af-struct">구조</label><input type="text" id="af-struct" placeholder="예: 철근콘크리트구조"></div>
+          <div class="ffield"><label for="af-area">전유면적 (㎡)</label><input type="text" id="af-area" inputmode="decimal" placeholder="예: 84.99"></div>
         </div>
 
         <div class="frow">
           <div class="ffield full">
-            <label for="af-road">부동산 도로명주소 <span class="opt">(선택)</span></label>
+            <label for="af-road">부동산 도로명주소</label>
             <input type="text" id="af-road" placeholder="예: 경기도 화성시 반월천로 100">
             <span class="fn">표제부에 도로명주소가 있으면 입력하세요. 비워 두면 서류에서 해당 줄이 빠집니다.</span>
           </div>
@@ -563,14 +563,29 @@ gtag('js',new Date());gtag('config','G-DR3W5XWF50');
         </div>
         <div class="fgrp-s">등기부 <b>을구</b>에서 이번에 지울 근저당권을 찾아 옮겨 적습니다.</div>
         <div class="frow">
-          <div class="ffield full">
-            <label for="af-target">말소할 사항 <span class="opt">(선택)</span></label>
-            <textarea id="af-target" rows="3" placeholder="예: 2019년 3월 5일 접수 제1001호 순위 제1번으로 등기한 근저당권설정등기"></textarea>
-            <div class="addr-tip">
-              을구의 <b>접수연월일 · 접수번호 · 순위번호</b> 세 가지를 등기부에 적힌 그대로 옮겨 적습니다. 이 값이 틀리면 보정 요구를 받는 일이 잦습니다.<br>
-              근저당권이 여러 건 설정되어 있다면 <b>이번에 지울 것 하나만</b> 적어 주세요.
-            </div>
+          <div class="ffield"><label for="af-reg-y">접수 연월일<span class="opt">(선택)</span></label><input type="text" id="af-reg-y" inputmode="numeric" placeholder="년"></div>
+          <div class="ffield"><label for="af-reg-m">&nbsp;</label><input type="text" id="af-reg-m" inputmode="numeric" placeholder="월"></div>
+          <div class="ffield"><label for="af-reg-d">&nbsp;</label><input type="text" id="af-reg-d" inputmode="numeric" placeholder="일"></div>
+        </div>
+        <div class="frow">
+          <div class="ffield"><label for="af-receipt-no">접수번호<span class="opt">(선택)</span></label><input type="text" id="af-receipt-no" inputmode="numeric" placeholder="예: 1001"></div>
+          <div class="ffield"><label for="af-rank-no">순위번호<span class="opt">(선택)</span></label><input type="text" id="af-rank-no" inputmode="numeric" placeholder="예: 1"></div>
+        </div>
+        <div class="frow">
+          <div class="ffield">
+            <label for="af-court-name">등기한 법원<span class="opt">(선택)</span></label>
+            <input type="text" id="af-court-name" placeholder="예: 서울중앙">
+            <span class="fn">'○○지방법원'에서 '지방법원' 앞부분만 적습니다</span>
           </div>
+          <div class="ffield">
+            <label for="af-court-branch">지원<span class="opt">(선택 · 본원이면 비워두세요)</span></label>
+            <input type="text" id="af-court-branch" placeholder="예: 성남">
+          </div>
+        </div>
+        <div class="addr-tip">
+          을구의 <b>접수연월일 · 접수번호 · 순위번호</b>, 그리고 상단의 <b>등기한 법원</b>을 등기부에 적힌 그대로 옮겨 적습니다. 이 값이 틀리면 보정 요구를 받는 일이 잦습니다.<br>
+          근저당권이 여러 건 설정되어 있다면 <b>이번에 지울 것 하나만</b> 적어 주세요. 지금 신청서를 접수할 등기소(위에서 자동으로 찾은 곳)와, 근저당권이 처음 등기된 법원은 <b>다를 수 있어</b> 별도로 확인이 필요합니다.<br>
+          지원이 아닌 별도 <b>등기소</b> 관할이었던 경우 이 서식으로 정확히 표현되지 않을 수 있어, 등기소에 방문 전 문의를 권합니다.
         </div>
       </div>
 
@@ -578,18 +593,18 @@ gtag('js',new Date());gtag('config','G-DR3W5XWF50');
         <div class="fgrp-h"><span class="fgrp-n">3</span>은행에서 받은 서류를 보고 입력</div>
         <div class="fgrp-s">해지증서와 등기필정보(또는 등기필증)를 보고 옮겨 적습니다.</div>
         <div class="frow">
-          <div class="ffield"><label for="af-cy">해지일(등기원인일자) <span class="opt">(선택)</span></label><input type="text" id="af-cy" inputmode="numeric" placeholder="년"></div>
+          <div class="ffield"><label for="af-cy">해지일(등기원인일자)</label><input type="text" id="af-cy" inputmode="numeric" placeholder="년"></div>
           <div class="ffield"><label for="af-cm">&nbsp;</label><input type="text" id="af-cm" inputmode="numeric" placeholder="월"></div>
           <div class="ffield"><label for="af-cd">&nbsp;</label><input type="text" id="af-cd" inputmode="numeric" placeholder="일"></div>
         </div>
         <div class="frow">
           <div class="ffield"><label for="af-bname">등기의무자(은행) 상호 <span class="opt">(선택)</span></label><input type="text" id="af-bname" placeholder="예: 주식회사 ○○은행"></div>
-          <div class="ffield"><label for="af-breg">은행 등기용등록번호 <span class="opt">(선택)</span></label><input type="text" id="af-breg" placeholder="법인등기사항증명서 확인"></div>
+          <div class="ffield"><label for="af-breg">등기의무자 법인등록번호 <span class="opt">(선택)</span></label><input type="text" id="af-breg" placeholder="법인등기사항증명서 확인"></div>
           <div class="ffield full"><label for="af-baddr">은행 본점(주사무소) 소재지 <span class="opt">(선택)</span></label><input type="text" id="af-baddr" placeholder="법인등기사항증명서 확인"></div>
         </div>
         <div class="frow">
           <div class="ffield"><label for="af-uid">부동산고유번호 <span class="opt">(선택)</span></label><input type="text" id="af-uid" placeholder="예: 1354-2017-002088"><span class="fn">등기필정보 상단 · 등기부 표제부 고유번호와 같은 값입니다</span></div>
-          <div class="ffield"><label for="af-pname">등기필정보 성명(명칭) <span class="opt">(선택)</span></label><input type="text" id="af-pname" placeholder="은행 상호와 동일한 경우가 많습니다"></div>
+          <div class="ffield"><label for="af-pname">등기필정보 성명(명칭)</label><input type="text" id="af-pname" placeholder="은행 상호와 동일한 경우가 많습니다"></div>
         </div>
         <div class="frow">
           <div class="ffield"><label for="af-pserial">일련번호 <span class="opt">(선택)</span></label><input type="text" id="af-pserial" placeholder="예: A77C-LO71-35J5"></div>
@@ -603,9 +618,9 @@ gtag('js',new Date());gtag('config','G-DR3W5XWF50');
         <div class="fgrp-h"><span class="fgrp-n">4</span>신청인(소유자) 정보</div>
         <div class="fgrp-s">등기권리자, 즉 부동산 소유자 본인의 정보입니다.</div>
         <div class="frow">
-          <div class="ffield"><label for="af-oname">성명 <span class="opt">(선택)</span></label><input type="text" id="af-oname"></div>
+          <div class="ffield"><label for="af-oname">성명</label><input type="text" id="af-oname"></div>
           <div class="ffield"><label for="af-orrn">주민등록번호 <span class="opt">(선택)</span></label><input type="text" id="af-orrn" placeholder="000000-0000000"></div>
-          <div class="ffield full"><label for="af-oaddr">주소 <span class="opt">(선택)</span></label><input type="text" id="af-oaddr"></div>
+          <div class="ffield full"><label for="af-oaddr">주소</label><input type="text" id="af-oaddr"></div>
         </div>
       </div>
 
@@ -619,7 +634,7 @@ gtag('js',new Date());gtag('config','G-DR3W5XWF50');
         </div>
         <div class="frow">
           <div class="ffield"><label for="af-feeamt">등기신청수수료</label><input type="text" id="af-feeamt" inputmode="numeric" value="4,000"></div>
-          <div class="ffield"><label for="af-feeno">등기신청수수료 납부번호 <span class="opt">(선택)</span></label><input type="text" id="af-feeno" inputmode="numeric" placeholder="위 진행 절차 3단계에서 저장하면 자동으로 채워집니다"></div>
+          <div class="ffield"><label for="af-feeno">등기신청수수료 납부번호</label><input type="text" id="af-feeno" inputmode="numeric" placeholder="위 진행 절차 3단계에서 저장하면 자동으로 채워집니다"></div>
         </div>
       </div>
 
@@ -1359,7 +1374,8 @@ function blobDL(blob, name) {
 
 /* ── 신청서 입력값 로컬 저장 (번호 보관함과 별개 키) ── */
 var AF_LK = 'selfregi_cancelform_v1';
-var AF_KEYS = ['jibun','court','dong','ho','floor','apt','struct','area','road','landtotal','landunit','target',
+var AF_KEYS = ['jibun','court','dong','ho','floor','apt','struct','area','road','landtotal','landunit',
+  'reg-y','reg-m','reg-d','receipt-no','rank-no','court-name','court-branch',
   'cy','cm','cd','bname','breg','baddr','uid','pname','pserial','oname','orrn','oaddr',
   'lictax','edutax','feeamt','feeno'];
 function afRead(){ try{return JSON.parse(localStorage.getItem(AF_LK)||'{}')||{};}catch(e){return{};} }
@@ -1400,7 +1416,8 @@ function afRestore(){
 }
 (function(){
   ['af-jibun','af-court','af-dong','af-ho','af-floor','af-apt','af-struct','af-area','af-road',
-   'af-landtotal','af-landunit','af-target','af-cy','af-cm','af-cd',
+   'af-landtotal','af-landunit','af-reg-y','af-reg-m','af-reg-d','af-receipt-no','af-rank-no',
+   'af-court-name','af-court-branch','af-cy','af-cm','af-cd',
    'af-bname','af-breg','af-baddr','af-uid','af-pname','af-pserial','af-ppw',
    'af-oname','af-orrn','af-oaddr','af-lictax','af-edutax','af-feeamt','af-feeno'].forEach(function(id){
     var el = document.getElementById(id);
@@ -1432,26 +1449,22 @@ function afParts(){
 /* ── 부동산의 표시 자동 조립 (등기부 표제부 표기 순서) ── */
 function afCompose(){
   var p = afParts();
-  if(!p.title && !p.bldgNo) return '';
+  if(!p.title) return '';
+  var v = p.title;
+  if(p.road) v += ' [도로명주소] ' + p.road;
+  return v;
+}
+
+function afCancelTarget(){
+  var g = function(id){ var el=document.getElementById(id); return el ? (el.value||'').trim() : ''; };
+  var y=g('af-reg-y'), m=g('af-reg-m'), d=g('af-reg-d'), rc=g('af-receipt-no'), rk=g('af-rank-no');
+  if(!y && !m && !d && !rc && !rk) return '';
   var L = [];
-  L.push('1동의 건물의 표시');
-  if(p.title) L.push('   ' + p.title);
-  if(p.road)  L.push('   [도로명주소] ' + p.road);
-  if(p.bldgNo || p.struct || p.area){
-    L.push('전유부분의 건물의 표시');
-    if(p.bldgNo) L.push('   건물의 번호 ' + p.bldgNo);
-    var l = [];
-    if(p.struct) l.push('구조 ' + p.struct);
-    if(p.area)   l.push('면적 ' + p.area);
-    if(l.length) L.push('   ' + l.join('   '));
-  }
-  if(p.landTotal || p.landUnit){
-    L.push('대지권의 표시');
-    L.push('   토지의 표시 ' + p.landAddr);
-    L.push('   대지권의 종류 : 소유권');
-    L.push('   대지권의 비율 : ' + p.landTotal + ' 분의 ' + p.landUnit);
-  }
-  return L.join('\n');
+  if(y||m||d) L.push((y?y+'년 ':'')+(m?m+'월 ':'')+(d?d+'일 ':''));
+  if(rc) L.push('접수 제'+rc+'호 ');
+  if(rk) L.push('순위 제'+rk+'번으로 ');
+  L.push('등기한 근저당권설정등기');
+  return L.join('').replace(/\s+/g,' ').trim();
 }
 
 /* ── 관할 등기소 자동 판정 ── */
@@ -1540,10 +1553,14 @@ async function downloadCancelWimi(){
       PROPERTY_DESC: afCompose(),
       BLDG_TITLE: p.title, BLDG_NO: p.bldgNo, STRUCT: p.struct, AREA: p.area,
       LAND_ADDR: p.landAddr, LAND_TOTAL: p.landTotal, LAND_UNIT: p.landUnit,
-      CANCEL_TARGET: g('af-target'),
+      CANCEL_TARGET: afCancelTarget(),
       CAUSE_Y: g('af-cy'), CAUSE_M: g('af-cm'), CAUSE_D: g('af-cd'),
       BANK_NAME: g('af-bname'), BANK_ADDR: g('af-baddr'),
-      OWNER_NAME: g('af-oname'), OWNER_ADDR: g('af-oaddr')
+      OWNER_NAME: g('af-oname'), OWNER_ADDR: g('af-oaddr'),
+      TODAY_Y: String(new Date().getFullYear()), TODAY_M: String(new Date().getMonth()+1),
+      REG_Y: g('af-reg-y'), REG_M: g('af-reg-m'), REG_D: g('af-reg-d'),
+      COURT_NAME: g('af-court-name'), COURT_BRANCH: g('af-court-branch'),
+      RECEIPT_NO: g('af-receipt-no')
     });
     blobDL(blob, '근저당권말소_위임장및해지증서.docx');
     cgToast('위임장·해지증서를 내려받았습니다. 은행에서 날인을 받아 주세요.');
@@ -1553,12 +1570,13 @@ async function downloadCancelWimi(){
 }
 
 async function downloadCancelForm(){
+  var p = afParts();
   if (typeof JSZip === 'undefined') { cgToast('라이브러리를 불러오는 중입니다. 잠시 후 다시 시도해 주세요'); return; }
   try{window.SR&&SR.track('doc_download',{doc:'cancelform'});}catch(e){}
   var g = function(id){ var el=document.getElementById(id); return el ? (el.value||'').trim() : ''; };
   var replacements = {
-    PROPERTY_DESC: afCompose(),
-    CANCEL_TARGET: g('af-target'),
+    PROPERTY_DESC: afCompose(), BLDG_NO: p.bldgNo, STRUCT: p.struct, AREA: p.area, LAND_ADDR: p.landAddr, LAND_TOTAL: p.landTotal, LAND_UNIT: p.landUnit, TODAY_Y: String(new Date().getFullYear()), TODAY_M: String(new Date().getMonth()+1),
+    CANCEL_TARGET: afCancelTarget(),
     CAUSE_Y: g('af-cy'), CAUSE_M: g('af-cm'), CAUSE_D: g('af-cd'),
     PURPOSE: '근저당권설정등기말소',
     BANK_NAME: g('af-bname'), BANK_REG: g('af-breg'), BANK_ADDR: g('af-baddr'),
