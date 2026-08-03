@@ -631,7 +631,6 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:40px;p
       <li>부동산 주소 기반 관할 등기소 자동 반영</li>
       <li>동일 부동산 · 동일 매수인 한정 재발급</li>
     </ul>
-    <a href="#start" class="btn-primary" style="width:100%;justify-content:center">서류 작성 시작하기 →</a>
     <p class="price-note">가격은 변동될 수 있습니다 · 결제 전 모든 안내를 무료로 확인하실 수 있습니다</p>
   </div>
 </div>
@@ -719,20 +718,21 @@ function goNext(){
 }
 
 /* ===== 가이드 안내 다이얼로그 =====
-   폼(케이스 A·B) 진입 시, 가이드를 한 번도 연 적 없는 이용자에게 1회만 노출.
+   폼(케이스 A·B) 진입 시, 가이드를 한 번도 연 적 없는 이용자에게 노출.
+   페이지 로드당 1회 — 새로고침하면 다시 뜨고, 닫은 뒤 재클릭은 그대로 통과.
    케이스 C(cancel_guide.html)는 그 자체가 가이드이므로 제외. */
 (function(){
-  var SEEN='selfregi_guide_seen_v1', SHOWN='selfregi_guide_gate_v1';
+  var SEEN='selfregi_guide_seen_v1';
+  var shown=false;                       /* 페이지 로드 단위 — 새로고침하면 다시 노출됨 */
   var back=document.getElementById('ggBack'), pending=null, lastFocus=null;
   /* 저장소를 못 읽으면 true(=이미 봄)로 처리 — 기록이 안 남는 환경에서 매번 뜨는 것을 막음 */
   function has(k){ try{ return !!localStorage.getItem(k); }catch(e){ return true; } }
-  function mark(k){ try{ localStorage.setItem(k,'1'); }catch(e){} }
   window.ggNeeded=function(url){
     if(url!=='normal_form.html' && url!=='land_form.html') return false;
-    return !has(SEEN) && !has(SHOWN);
+    return !has(SEEN) && !shown;
   };
   window.ggOpen=function(url){
-    pending=url; mark(SHOWN); lastFocus=document.activeElement;
+    pending=url; shown=true; lastFocus=document.activeElement;
     back.classList.add('open'); document.body.style.overflow='hidden';
     document.getElementById('ggGo').focus();
     try{ window.SR&&SR.track('guide_gate_shown',{from:'case'}); }catch(e){}
