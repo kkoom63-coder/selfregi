@@ -248,6 +248,34 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:40px;p
 .foot-biz{font-size:11.5px;color:#334155;font-weight:500;margin-bottom:10px}.foot-biz a{color:var(--blue);text-decoration:none}
 .foot-copy{font-size:11px;color:var(--muted);line-height:1.9}
 
+/* ── 가이드 안내 다이얼로그 ── */
+.gg-back{position:fixed;inset:0;background:rgba(15,23,32,.66);z-index:500;display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px)}
+.gg-back.open{display:flex}
+.gg{background:var(--card);border-radius:16px;max-width:460px;width:100%;padding:26px 24px 22px;box-shadow:0 24px 60px -20px rgba(2,6,23,.4);position:relative;animation:ggIn .2s ease-out}
+@keyframes ggIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes ggUp{from{transform:translateY(100%)}to{transform:none}}
+.gg-x{position:absolute;top:12px;right:12px;width:34px;height:34px;border:none;background:#F8FAFC;border-radius:9px;font-size:14px;color:var(--muted);cursor:pointer;font-family:inherit;line-height:1;transition:.15s}
+.gg-x:hover{background:#e2e8f0;color:var(--navy)}
+.gg-eyebrow{font-size:10.5px;font-weight:800;letter-spacing:.08em;color:var(--blue);margin-bottom:8px}
+.gg-h{font-size:18px;font-weight:800;color:var(--navy);line-height:1.45;margin-bottom:10px;word-break:keep-all;padding-right:38px}
+.gg-d{font-size:13.5px;color:#334155;line-height:1.75;margin-bottom:14px;word-break:keep-all}
+.gg-list{background:#F8FAFC;border:1px solid var(--border);border-radius:10px;padding:13px 15px;margin-bottom:18px}
+.gg-li{font-size:12.5px;color:#334155;line-height:1.7;display:flex;gap:9px;word-break:keep-all}
+.gg-li+.gg-li{margin-top:6px}
+.gg-li b{color:var(--navy);font-weight:700;flex-shrink:0;min-width:62px}
+.gg-btns{display:flex;gap:9px}
+.gg-btn{flex:1;min-height:48px;padding:13px 14px;border:1.5px solid var(--border);background:#fff;color:var(--navy);border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .15s}
+.gg-btn:hover{border-color:var(--navy);background:#F1F5F9}
+.gg-btn.pri{background:var(--blue);border-color:var(--blue);color:#fff}
+.gg-btn.pri:hover{background:#075985;border-color:#075985}
+.gg-btn:focus-visible,.gg-x:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+@media(max-width:560px){
+  .gg-back{align-items:flex-end;padding:0}
+  .gg{max-width:none;border-radius:16px 16px 0 0;padding-bottom:calc(22px + env(safe-area-inset-bottom));animation:ggUp .22s ease-out}
+  .gg-btns{flex-direction:column-reverse}
+}
+@media(prefers-reduced-motion:reduce){.gg{animation:none}}
+
 .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(80px);background:#047857;color:#fff;padding:9px 18px;border-radius:8px;font-size:12px;font-weight:500;transition:transform .3s;z-index:999;white-space:nowrap}
 .toast.show{transform:translateX(-50%) translateY(0)}
 
@@ -636,6 +664,24 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:40px;p
   </div>
 </footer>
 
+<div class="gg-back" id="ggBack" role="dialog" aria-modal="true" aria-labelledby="ggH">
+  <div class="gg">
+    <button class="gg-x" id="ggX" type="button" aria-label="닫기">✕</button>
+    <div class="gg-eyebrow">무료 가이드</div>
+    <div class="gg-h" id="ggH">서류 작성 전에 가이드를 먼저 보시겠어요?</div>
+    <div class="gg-d">준비서류(첨부서면) 목록과 발급처, 실제 화면 캡처까지 무료로 열람하실 수 있습니다.</div>
+    <div class="gg-list">
+      <div class="gg-li"><b>준비서류</b><span>무엇을 어디서 발급받는지</span></div>
+      <div class="gg-li"><b>진행 절차</b><span>어떤 순서로 처리하는지</span></div>
+      <div class="gg-li"><b>실제 화면</b><span>정부24 · 위택스 · 인터넷등기소 캡처</span></div>
+    </div>
+    <div class="gg-btns">
+      <button class="gg-btn" id="ggSkip" type="button">바로 작성하기</button>
+      <button class="gg-btn pri" id="ggGo" type="button">가이드 먼저 보기 →</button>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
@@ -667,8 +713,53 @@ function selectCase(id){
 function goNext(){
   if(!currentCase || !CASES[currentCase]) return;
   if(currentCase==='cancel') trackCase('card');
-  location.href = CASES[currentCase].url;
+  var url = CASES[currentCase].url;
+  if(window.ggNeeded && ggNeeded(url)){ ggOpen(url); return; }
+  location.href = url;
 }
+
+/* ===== 가이드 안내 다이얼로그 =====
+   폼(케이스 A·B) 진입 시, 가이드를 한 번도 연 적 없는 이용자에게 1회만 노출.
+   케이스 C(cancel_guide.html)는 그 자체가 가이드이므로 제외. */
+(function(){
+  var SEEN='selfregi_guide_seen_v1', SHOWN='selfregi_guide_gate_v1';
+  var back=document.getElementById('ggBack'), pending=null, lastFocus=null;
+  /* 저장소를 못 읽으면 true(=이미 봄)로 처리 — 기록이 안 남는 환경에서 매번 뜨는 것을 막음 */
+  function has(k){ try{ return !!localStorage.getItem(k); }catch(e){ return true; } }
+  function mark(k){ try{ localStorage.setItem(k,'1'); }catch(e){} }
+  window.ggNeeded=function(url){
+    if(url!=='normal_form.html' && url!=='land_form.html') return false;
+    return !has(SEEN) && !has(SHOWN);
+  };
+  window.ggOpen=function(url){
+    pending=url; mark(SHOWN); lastFocus=document.activeElement;
+    back.classList.add('open'); document.body.style.overflow='hidden';
+    document.getElementById('ggGo').focus();
+    try{ window.SR&&SR.track('guide_gate_shown',{from:'case'}); }catch(e){}
+  };
+  function close(){
+    back.classList.remove('open'); document.body.style.overflow='';
+    if(lastFocus&&lastFocus.focus) lastFocus.focus();
+  }
+  function choose(c){
+    try{ window.SR&&SR.track('guide_gate_choice',{key:c}); }catch(e){}
+    location.href = (c==='guide') ? 'guide.html' : pending;
+  }
+  document.getElementById('ggGo').addEventListener('click',function(){ choose('guide'); });
+  document.getElementById('ggSkip').addEventListener('click',function(){ choose('form'); });
+  document.getElementById('ggX').addEventListener('click',close);
+  back.addEventListener('click',function(e){ if(e.target===back) close(); });
+  document.addEventListener('keydown',function(e){
+    if(!back.classList.contains('open')) return;
+    if(e.key==='Escape'){ e.preventDefault(); close(); return; }
+    if(e.key==='Tab'){ /* 포커스 트랩 */
+      var f=back.querySelectorAll('button'); if(!f.length) return;
+      var first=f[0], last=f[f.length-1];
+      if(e.shiftKey && document.activeElement===first){ e.preventDefault(); last.focus(); }
+      else if(!e.shiftKey && document.activeElement===last){ e.preventDefault(); first.focus(); }
+    }
+  });
+})();
 
 /* ===== 진단 (접힘) ===== */
 function toggleDiag(){
