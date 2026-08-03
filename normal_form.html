@@ -57,6 +57,24 @@ input:focus,select:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(3,10
 input::placeholder{color:#c0c8d8;font-size:12px}
 select{cursor:pointer;appearance:auto}
 .fn{font-size:10px;color:var(--muted);line-height:1.4}
+/* 공동명의 토글 & 추가 당사자 블록 */
+.jt-toggle{display:flex;align-items:flex-start;gap:9px;background:#f4f6fb;border:1px solid var(--border);border-radius:8px;padding:11px 13px;cursor:pointer;margin-bottom:14px;transition:border-color .15s,background .15s}
+.jt-toggle:hover{border-color:var(--blue);background:#eef3fb}
+.jt-toggle input{width:17px;height:17px;margin:1px 0 0;flex-shrink:0;accent-color:var(--blue);cursor:pointer}
+.jt-toggle .jt-t{font-size:12px;font-weight:600;color:var(--navy);line-height:1.5}
+.jt-toggle .jt-s{font-size:10.5px;color:var(--muted);line-height:1.5;margin-top:2px}
+.jt-toggle:focus-within{border-color:var(--blue);box-shadow:0 0 0 3px rgba(3,105,161,.12)}
+.jt-body{display:none}
+.jt-body.open{display:block}
+.jt-person{border:1px solid var(--border);border-radius:8px;padding:14px;margin-top:12px;background:#fcfdff}
+.jt-person-h{font-size:11px;font-weight:700;color:var(--blue);margin-bottom:10px;letter-spacing:.02em}
+.jt-share{display:flex;align-items:center;gap:7px}
+.jt-share input{width:74px;text-align:center}
+.jt-share span{font-size:12px;color:#334155;flex-shrink:0}
+.jt-sum{font-size:10.5px;line-height:1.5;margin-top:8px;color:var(--muted)}
+.jt-sum.warn{color:#b45309;font-weight:600}
+.jt-sum.ok{color:#047857;font-weight:600}
+
 .divider{height:1px;background:var(--border);margin:16px 0}
 .ntc{border-radius:8px;padding:10px 12px;font-size:11px;line-height:1.6;margin-top:10px}
 .ntc.inf{background:#E0F2FE;border:1px solid #BAE6FD;color:#075985}
@@ -181,6 +199,15 @@ gtag('js',new Date());gtag('config','G-DR3W5XWF50');
 <!-- ① 매수인 정보 -->
 <div class="card">
   <div class="ch"><div class="ci">👤</div><div><div class="ct">매수인 정보</div><div class="cs">등기권리자(매수인)의 기본 정보</div></div></div>
+
+  <label class="jt-toggle" for="buyer-joint">
+    <input type="checkbox" id="buyer-joint" onchange="toggleJoint('buyer')">
+    <span>
+      <span class="jt-t">공동명의로 매수합니다</span>
+      <span class="jt-s">부부 공동명의 등 매수인이 2인인 경우 체크하세요. 각자의 지분을 함께 입력합니다.</span>
+    </span>
+  </label>
+
   <div class="fg s1"><div class="f">
     <label>성명 <span class="req">*</span></label>
     <input type="text" id="owner-name" placeholder="홍길동">
@@ -196,6 +223,58 @@ gtag('js',new Date());gtag('config','G-DR3W5XWF50');
     <input type="text" id="owner-rrn" placeholder="예: 900101-1234567" maxlength="14">
     <span class="fn">입력하면 소유권이전등기신청서에 자동으로 채워집니다. <b>비워두면 직접 손으로 기재</b>할 수 있도록 신청서에 빈 칸으로 남습니다. 이 값은 서버로 전송되지 않고, 이 기기(브라우저)에서 서류 생성에만 사용됩니다.</span>
   </div></div>
+
+  <!-- 공동명의 시에만 표시 -->
+  <div class="jt-body" id="buyer-joint-body">
+    <div class="divider"></div>
+    <div class="fg s1"><div class="f">
+      <label>매수인 1의 지분<span class="hint">(등기부·신청서에 기재될 개인별 지분)</span></label>
+      <div class="jt-share">
+        <input type="number" id="buyer1-share-denom" placeholder="2" min="1" step="1">
+        <span>분의</span>
+        <input type="number" id="buyer1-share-num" placeholder="1" min="1" step="1">
+      </div>
+    </div></div>
+
+    <div class="jt-person">
+      <div class="jt-person-h">매수인 2</div>
+      <div class="fg s1"><div class="f">
+        <label>성명 <span class="req">*</span></label>
+        <input type="text" id="buyer2-name" placeholder="예: 김영희">
+      </div></div>
+      <div class="fg s1" style="margin-top:10px"><div class="f">
+        <label>주소 <span class="req">*</span><span class="hint">(도로명 주소)</span></label>
+        <input type="text" id="buyer2-address" placeholder="매수인 1과 같으면 동일하게 입력">
+      </div></div>
+      <div class="fg s1" style="margin-top:10px"><div class="f">
+        <label>주민등록번호</label>
+        <input type="text" id="buyer2-rrn" placeholder="예: 920202-2345678" maxlength="14">
+      </div></div>
+      <div class="fg s1" style="margin-top:10px"><div class="f">
+        <label>매수인 2의 지분</label>
+        <div class="jt-share">
+          <input type="number" id="buyer2-share-denom" placeholder="2" min="1" step="1">
+          <span>분의</span>
+          <input type="number" id="buyer2-share-num" placeholder="1" min="1" step="1">
+        </div>
+      </div></div>
+    </div>
+
+    <div class="jt-sum" id="buyer-share-sum">지분을 입력하면 합계를 확인해 드립니다.</div>
+
+    <div class="fg s1" style="margin-top:12px"><div class="f">
+      <label>위임장 대리인<span class="hint">(등기소에 접수하러 갈 사람)</span></label>
+      <select id="buyer-agent">
+        <option value="0">매수인 1</option>
+        <option value="1">매수인 2</option>
+      </select>
+      <span class="fn">위임장은 매도인이 매수인에게 등기신청 권한을 위임하는 서류입니다. 공동명의라도 <b>실제 접수하러 가는 1인</b>을 대리인으로 지정합니다.</span>
+    </div></div>
+
+    <div class="ntc inf2">
+      <strong>공동명의 시 확인하세요.</strong> 지분의 합이 1이 되어야 합니다(예: 2분의 1 + 2분의 1). 매수인 각자의 주민등록등본(초본)이 필요하며, 취득세는 지분에 따라 신고합니다 — 구체적인 신고 방법은 관할 지자체·위택스 안내를 확인해 주세요.
+    </div>
+  </div>
 </div>
 
 <input type="hidden" id="trust-year"><input type="hidden" id="trust-month">
@@ -273,6 +352,15 @@ gtag('js',new Date());gtag('config','G-DR3W5XWF50');
     <div class="ntc wrn" style="margin-bottom:14px">
       <strong>매매계약서를 확인하세요.</strong> 일반매매의 매도인은 개인(자연인)입니다. 매매계약서상 매도인 정보를 입력하세요.
     </div>
+
+    <label class="jt-toggle" for="seller-joint">
+      <input type="checkbox" id="seller-joint" onchange="toggleJoint('seller')">
+      <span>
+        <span class="jt-t">매도인이 공동명의입니다</span>
+        <span class="jt-s">등기부 갑구의 소유자가 2인인 경우 체크하세요. 매도인 전원이 등기의무자가 됩니다.</span>
+      </span>
+    </label>
+
     <div class="fg s1"><div class="f">
       <label>매도인 성명 <span class="req">*</span></label>
       <input type="text" id="s-name" placeholder="예: 홍길동">
@@ -281,6 +369,45 @@ gtag('js',new Date());gtag('config','G-DR3W5XWF50');
       <label>매도인 주소 <span class="req">*</span><span class="hint">(도로명 주소)</span></label>
       <input type="text" id="s-addr" placeholder="예: 서울특별시 강남구 테헤란로 000, 0동 0호">
     </div></div>
+
+    <!-- 공동명의 시에만 표시 -->
+    <div class="jt-body" id="seller-joint-body">
+      <div class="fg s1" style="margin-top:10px"><div class="f">
+        <label>매도인 1의 지분<span class="hint">(등기부 갑구 기재와 동일하게)</span></label>
+        <div class="jt-share">
+          <input type="number" id="seller1-share-denom" placeholder="2" min="1" step="1">
+          <span>분의</span>
+          <input type="number" id="seller1-share-num" placeholder="1" min="1" step="1">
+        </div>
+      </div></div>
+
+      <div class="jt-person">
+        <div class="jt-person-h">매도인 2</div>
+        <div class="fg s1"><div class="f">
+          <label>성명 <span class="req">*</span></label>
+          <input type="text" id="seller2-name" placeholder="예: 김영희">
+        </div></div>
+        <div class="fg s1" style="margin-top:10px"><div class="f">
+          <label>주소 <span class="req">*</span><span class="hint">(도로명 주소)</span></label>
+          <input type="text" id="seller2-addr" placeholder="매도인 1과 같으면 동일하게 입력">
+        </div></div>
+        <div class="fg s1" style="margin-top:10px"><div class="f">
+          <label>매도인 2의 지분</label>
+          <div class="jt-share">
+            <input type="number" id="seller2-share-denom" placeholder="2" min="1" step="1">
+            <span>분의</span>
+            <input type="number" id="seller2-share-num" placeholder="1" min="1" step="1">
+          </div>
+        </div></div>
+      </div>
+
+      <div class="jt-sum" id="seller-share-sum">지분을 입력하면 합계를 확인해 드립니다.</div>
+
+      <div class="ntc wrn">
+        <strong>매도인이 2인이면 인감 날인도 2개입니다.</strong> 위임장의 등기의무자란에 매도인 각자가 인감도장을 날인해야 하며, 매도용 인감증명서도 각자 1통씩 필요합니다. 한 사람의 날인만으로는 보정 대상이 될 수 있습니다.
+      </div>
+    </div>
+
     <div class="ntc inf2" style="margin-top:12px">
       <strong>매도인 주민등록번호는 별도로 입력받지 않습니다.</strong> 매도인은 본 서비스 이용약관에 동의한 당사자가 아니므로, 매수인이 대신 입력하는 방식으로 매도인의 개인정보를 수집하지 않습니다. 서류 출력 후 매도인 본인 확인 하에 직접 기재하시거나, 중개사를 통해 기재해 주세요.
     </div>
@@ -715,6 +842,76 @@ function validate() {
   return true;
 }
 
+// =============================================
+// 공동명의 (매수인 / 매도인)
+// =============================================
+// 표시 전환만 담당. 체크 해제 시 입력값은 지우지 않되, getData()에서 무시된다.
+function toggleJoint(who) {
+  const on = !!document.getElementById(who + '-joint').checked;
+  const body = document.getElementById(who + '-joint-body');
+  if (body) body.classList.toggle('open', on);
+  updateShareSum(who);
+}
+
+// 지분 합계 안내 — 차단하지 않고 안내만 (베타 정책: 빈 값도 다운로드 허용)
+function updateShareSum(who) {
+  const el = document.getElementById(who + '-share-sum');
+  if (!el) return;
+  const p1 = who === 'buyer' ? 'buyer1' : 'seller1';
+  const p2 = who === 'buyer' ? 'buyer2' : 'seller2';
+  const d1 = +gv(p1 + '-share-denom'), n1 = +gv(p1 + '-share-num');
+  const d2 = +gv(p2 + '-share-denom'), n2 = +gv(p2 + '-share-num');
+  el.className = 'jt-sum';
+  if (!d1 || !n1 || !d2 || !n2) {
+    el.textContent = '지분을 입력하면 합계를 확인해 드립니다.';
+    return;
+  }
+  // 분수 합을 정수 비교로 판정 (부동소수점 오차 회피)
+  const lhs = n1 * d2 + n2 * d1, rhs = d1 * d2;
+  if (lhs === rhs) {
+    el.classList.add('ok');
+    el.textContent = '지분 합계 = 1 · 정상입니다.';
+  } else {
+    el.classList.add('warn');
+    el.textContent = '지분 합계가 1이 아닙니다 (' + d1 + '분의 ' + n1 + ' + ' + d2 + '분의 ' + n2 + '). 등기부 기재와 다시 대조해 주세요.';
+  }
+}
+
+// 공동명의 여부 + 당사자 배열 구성
+function isJoint(who) {
+  const c = document.getElementById(who + '-joint');
+  return !!(c && c.checked);
+}
+function getParties(who) {
+  const joint = isJoint(who);
+  const p1 = who === 'buyer'
+    ? { name: gv('owner-name'), addr: gv('owner-address'), rrn: gv('owner-rrn') }
+    : { name: gv('s-name'),     addr: gv('s-addr'),        rrn: '' };
+  if (joint) {
+    p1.shareDenom = gv((who === 'buyer' ? 'buyer1' : 'seller1') + '-share-denom');
+    p1.shareNum   = gv((who === 'buyer' ? 'buyer1' : 'seller1') + '-share-num');
+  }
+  if (!joint) return [p1];
+  const p2 = who === 'buyer'
+    ? { name: gv('buyer2-name'),  addr: gv('buyer2-address'), rrn: gv('buyer2-rrn'),
+        shareDenom: gv('buyer2-share-denom'),  shareNum: gv('buyer2-share-num') }
+    : { name: gv('seller2-name'), addr: gv('seller2-addr'),   rrn: '',
+        shareDenom: gv('seller2-share-denom'), shareNum: gv('seller2-share-num') };
+  return [p1, p2];
+}
+
+// 지분 입력 시 합계 실시간 갱신
+document.addEventListener('DOMContentLoaded', function () {
+  ['buyer1', 'buyer2', 'seller1', 'seller2'].forEach(function (p) {
+    ['-share-denom', '-share-num'].forEach(function (s) {
+      const el = document.getElementById(p + s);
+      if (el) el.addEventListener('input', function () {
+        updateShareSum(p.indexOf('buyer') === 0 ? 'buyer' : 'seller');
+      });
+    });
+  });
+});
+
 function getData() {
   const t = getTrust() || {};
   return {
@@ -739,6 +936,14 @@ function getData() {
     // ↓ 위임장 하단 작성일 — 잔금(예정)일. 일(day)은 받지 않고 공란으로 남겨 수기 기재
     settleYear: gv('settle-year') || '    ',                      // 잔금예정 연도
     settleMonth: gv('settle-month') || '  ',                      // 잔금예정 월
+    // ↓ 공동명의 — 위 단일 필드(ownerName 등)는 그대로 두고 배열을 병기한다.
+    //    단독명의면 길이 1, 공동명의면 길이 2. 기존 서류 생성 경로는 영향받지 않는다.
+    buyerJoint: isJoint('buyer'),
+    sellerJoint: isJoint('seller') && dealType === 'sale',        // 신탁 매도인은 공동명의 대상 아님
+    buyers: getParties('buyer'),
+    sellers: (dealType === 'sale') ? getParties('seller')
+                                   : [{ name: t.name || '', addr: t.addr || '', rrn: '' }],
+    agentIdx: +(gv('buyer-agent') || 0),                          // 위임장 대리인 = buyers[agentIdx]
   };
 }
 
@@ -916,10 +1121,13 @@ function goRoadmap() {
   try {
     const d = getData();
     localStorage.setItem('selfregi_form_v1', JSON.stringify({
-      v: 2, ts: Date.now(),
+      v: 3, ts: Date.now(),
       buyerName: d.ownerName, buyerAddr: d.ownerAddr, buyerRrn: d.ownerRrn,
       sellerName: d.tName, sellerAddr: d.tAddr,
       sellerCeo: d.tCEO, sellerCorpReg: d.tReg,
+      // ↓ v3 추가: 공동명의 배열. roadmap이 아직 v2 필드만 읽어도 정상 동작한다.
+      buyerJoint: d.buyerJoint, sellerJoint: d.sellerJoint,
+      buyers: d.buyers, sellers: d.sellers, agentIdx: d.agentIdx,
       jibun: d.jibun, dong: d.dong, ho: d.ho,
       causeYr: (d.yr || '').trim(), causeMo: (d.mo || '').trim(), causeDy: (d.dy || '').trim(),
       total: d.total, unit: d.unit,
