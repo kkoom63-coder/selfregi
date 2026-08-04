@@ -110,6 +110,17 @@ select{cursor:pointer;appearance:auto}
 .pay-btn .ds{font-size:11px;color:rgba(255,255,255,.82);margin-top:2px}
 .pay-arrow{margin-left:auto;font-size:20px;font-weight:800;opacity:.9}
 .pay-note{font-size:11.5px;color:var(--muted);text-align:center;margin-top:10px;line-height:1.6}
+/* 페이지 이동 버튼 — 다운로드 버튼(솔리드 네이비)과 혼동되지 않도록 아웃라인 + 화살표로 구분 */
+.nav-eyebrow{font-size:10.5px;font-weight:800;letter-spacing:.08em;color:var(--blue);margin-bottom:9px}
+.navbtn{width:100%;display:flex;align-items:center;gap:13px;padding:16px 18px;background:#fff;border:2px solid var(--navy);border-radius:10px;cursor:pointer;font-family:inherit;text-align:left;transition:background .15s,transform .15s,box-shadow .15s}
+.navbtn:hover{background:#f1f5f9;transform:translateY(-2px);box-shadow:0 6px 18px rgba(2,6,23,.1)}
+.navbtn:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.nb-ico{width:36px;height:36px;background:#eef2f7;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.nb-tx{flex:1;min-width:0}
+.nb-t{font-size:14px;font-weight:800;color:var(--navy);line-height:1.4}
+.nb-s{font-size:10.5px;color:var(--muted);line-height:1.5;margin-top:2px;word-break:keep-all}
+.nb-ar{font-size:17px;font-weight:700;color:var(--navy);flex-shrink:0}
+
 .dbtn{display:flex;flex-direction:column;align-items:center;gap:5px;padding:16px 10px;border-radius:10px;border:none;cursor:pointer;font-family:inherit;transition:transform .15s,box-shadow .15s}
 .dbtn:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,.12)}
 .d1{background:var(--navy);color:#fff}
@@ -579,12 +590,14 @@ gtag('js',new Date());gtag('config','G-DR3W5XWF50');
 
 <!-- ⑧ 로드맵 네비게이션 (다운로드 후 다음 단계) -->
 <div class="card">
-  <button id="btn-roadmap" class="dbtn" onclick="goRoadmap()" style="width:100%;display:flex;flex-direction:row;align-items:center;justify-content:center;gap:12px;padding:18px 20px;background:var(--navy);color:#fff;border:none;border-radius:10px;cursor:pointer;font-family:inherit;transition:background .15s">
-    <div class="diw" style="font-size:22px;background:rgba(255,255,255,.15);border-radius:7px;display:flex;align-items:center;justify-content:center;width:36px;height:36px">🗺️</div>
-    <div style="text-align:left">
-      <div class="dn">소유권이전신청서 작성하기</div>
-      <div class="ds">동선 로드맵 · 관할 구청·등기소 자동 안내</div>
+  <div class="nav-eyebrow">다음 단계</div>
+  <button id="btn-roadmap" class="navbtn" onclick="goRoadmap()">
+    <div class="nb-ico">🗺️</div>
+    <div class="nb-tx">
+      <div class="nb-t">신청서 작성 화면으로 이동</div>
+      <div class="nb-s">취득세·채권 등 번호를 채우면 소유권이전등기신청서를 내려받을 수 있습니다 · 관할 구청·등기소 자동 안내</div>
     </div>
+    <div class="nb-ar" aria-hidden="true">→</div>
   </button>
 </div>
 
