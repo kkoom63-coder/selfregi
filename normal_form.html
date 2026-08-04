@@ -523,18 +523,34 @@ gtag('js',new Date());gtag('config','G-DR3W5XWF50');
   <div class="ntc inf">
     <strong>💡 대지지분을 모르는 경우:</strong> 부동산 등기부등본(등기사항전부증명서)의 표제부 '대지권의 표시'란에서 확인하실 수 있습니다.
   </div>
-  <div class="divider"></div>
-  <div class="fg">
-    <div class="f">
-      <label>이전할 지분 — 분모 <span class="req">*</span></label>
-      <input type="text" id="transfer-denom" placeholder="예: 1">
+</div>
+
+<!-- ④-2 이전할 지분 (거래 조건 — 등기부가 아니라 매매계약서 기준) -->
+<div class="card">
+  <div class="ch"><div class="ci">🔁</div><div><div class="ct">이전할 지분</div><div class="cs">매매계약서 기준 — 소유권을 얼마나 넘겨받는지</div></div></div>
+  <div class="deal-tab">
+    <button type="button" class="deal-tab-btn active" id="ts-btn-all" onclick="setTransfer('all', this)">전부 이전</button>
+    <button type="button" class="deal-tab-btn" id="ts-btn-part" onclick="setTransfer('part', this)">일부만 이전</button>
+  </div>
+  <div class="ntc inf" id="ts-desc" style="margin-top:12px">
+    <strong>대부분의 매매가 여기 해당합니다.</strong> 매매계약서에 지분에 관한 특약이 없고 해당 부동산의 소유권을 통째로 넘겨받는다면 '전부 이전'입니다. 위임장에는 <b>전부</b>로 기재됩니다.
+  </div>
+  <div id="ts-part-body" style="display:none">
+    <div class="divider"></div>
+    <div class="fg">
+      <div class="f">
+        <label>이전할 지분 — 분모 <span class="req">*</span></label>
+        <input type="text" id="transfer-denom" placeholder="예: 2">
+      </div>
+      <div class="f">
+        <label>이전할 지분 — 분자 <span class="req">*</span></label>
+        <input type="text" id="transfer-num" placeholder="예: 1">
+      </div>
     </div>
-    <div class="f">
-      <label>이전할 지분 — 분자 <span class="req">*</span></label>
-      <input type="text" id="transfer-num" placeholder="예: 1">
+    <div class="ntc wrn" style="margin-top:10px">
+      <strong>지분 일부만 이전하는 경우입니다.</strong> 공유자 중 한 사람의 지분만 매매하거나, 보유 지분 중 일부만 넘기는 경우가 여기에 해당합니다. 정확한 비율은 매매계약서와 등기부 갑구(소유자 지분)를 대조해 확인해 주세요. 위 '대지지분(대지권비율)'과는 <b>다른 값</b>입니다.
     </div>
   </div>
-  <span class="fn" style="margin-top:2px;display:block">위임장의 '이전할 지분'란에 쓰입니다. 소유권 전부를 이전하면 1분의 1(분모·분자 동일)로 입력하고, 지분 일부만 매매하는 경우에는 실제 이전 비율을 입력하세요. 위 대지지분(대지권비율)과는 다른 값입니다.</span>
 </div>
 
 <!-- ⑤ 이메일 -->
@@ -925,6 +941,29 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 });
 
+// =============================================
+// 이전할 지분 (전부 / 일부)
+// =============================================
+// 대부분의 매매는 소유권 전부 이전이므로 '전부'가 기본값.
+// 대법원 신청서 양식의 '이 전 할 지 분'란 표기도 '전 부'이다.
+let transferMode = 'all';
+function setTransfer(mode, btn) {
+  transferMode = mode;
+  document.querySelectorAll('#ts-btn-all, #ts-btn-part').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  const part = mode === 'part';
+  document.getElementById('ts-part-body').style.display = part ? 'block' : 'none';
+  document.getElementById('ts-desc').style.display      = part ? 'none' : 'block';
+}
+// 위임장에 실제로 찍히는 문자열을 만든다.
+// 전부  → '전부'      (TRANSFER_DENOM/NUM에는 1/1을 넣어 구 템플릿에서도 '1 분의 1'로 유효)
+// 일부  → 'N분의 M'
+function transferShareText() {
+  if (transferMode === 'all') return '전부';
+  const d = gv('transfer-denom'), n = gv('transfer-num');
+  return (d && n) ? (d + '분의 ' + n) : '';
+}
+
 function getData() {
   const t = getTrust() || {};
   return {
@@ -944,8 +983,10 @@ function getData() {
     dealReportNo: gv('deal-report-no'),                           // 거래신고관리번호
     dealPrice: gv('deal-price'),                                  // 거래(매매)가액
     // ↓ 위임장 '이전할 지분' — 대지권비율(total/unit)과는 별개 값. 비워두면 공란으로 출력(직접 기재)
-    transferDenom: gv('transfer-denom'),                          // 이전할 지분 분모
-    transferNum: gv('transfer-num'),                               // 이전할 지분 분자
+    transferDenom: (transferMode === 'all') ? '1' : gv('transfer-denom'),   // 이전할 지분 분모
+    transferNum:   (transferMode === 'all') ? '1' : gv('transfer-num'),     // 이전할 지분 분자
+    transferMode: transferMode,                                            // 'all' | 'part'
+    transferShare: transferShareText(),                                    // '전부' 또는 'N분의 M'
     // ↓ 위임장 하단 작성일 — 잔금(예정)일. 일(day)은 받지 않고 공란으로 남겨 수기 기재
     settleYear: gv('settle-year') || '    ',                      // 잔금예정 연도
     settleMonth: gv('settle-month') || '  ',                      // 잔금예정 월
@@ -1034,6 +1075,8 @@ async function downloadAll() {
       DAY: d.dy.trim() ? d.dy : '  ',
       TRANSFER_DENOM: d.transferDenom,
       TRANSFER_NUM: d.transferNum,
+      // 템플릿을 단일 토큰으로 바꾸면 '전부' 표기가 가능해진다 (현재 템플릿엔 없어 무시됨)
+      TRANSFER_SHARE: d.transferShare,
       TRUST_NAME: d.tName,
       TRUST_ADDR: d.tAddr,
       OWNER_NAME: d.ownerName,
@@ -1099,6 +1142,8 @@ async function downloadWimiOnly() {
       DAY: d.dy.trim() ? d.dy : '  ',
       TRANSFER_DENOM: d.transferDenom,
       TRANSFER_NUM: d.transferNum,
+      // 템플릿을 단일 토큰으로 바꾸면 '전부' 표기가 가능해진다 (현재 템플릿엔 없어 무시됨)
+      TRANSFER_SHARE: d.transferShare,
       TRUST_NAME: d.tName,
       TRUST_ADDR: d.tAddr,
       OWNER_NAME: d.ownerName,
