@@ -117,6 +117,11 @@ main{max-width:var(--read);margin:0 auto;padding:24px 20px 40px;position:relativ
 .relay-row input:focus{border-color:var(--blue)}
 .relay-row button{flex:0 0 auto;background:var(--blue);color:#fff;border:none;padding:0 16px;border-radius:6px;font-weight:700;font-size:13px;cursor:pointer;font-family:inherit;white-space:nowrap;transition:background .2s}
 .relay-row button:hover{background:#075985}
+.relay-who{font-size:11px;font-weight:700;color:var(--blue);margin:8px 0 4px;letter-spacing:-.01em}
+.relay-rows > .relay-who:first-child{margin-top:0}
+.relay-sum{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:9px;padding:8px 11px;background:#eff6ff;border:1px solid #bfdbfe;border-radius:6px}
+.relay-sum .rs-l{font-size:11px;font-weight:700;color:#1e40af}
+.relay-sum .rs-v{font-size:13px;font-weight:800;color:#1e3a8a}
 .relay-desc{font-size:11px;color:var(--muted);margin-top:8px;word-break:keep-all;line-height:1.4}
 
 .btn-row{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
@@ -507,10 +512,8 @@ gtag('js',new Date());gtag('config','G-DR3W5XWF50');
                 </div>
                 <div class="relay-input" data-relay="siga" style="margin-top:8px">
                   <label>② 시가표준액 기록 (필수)</label>
-                  <div class="relay-row">
-                    <input type="number" class="relay-in" placeholder="숫자만 (예: 350000000)">
-                    <button onclick="saveRelay(this)">저장</button>
-                  </div>
+                  <div class="relay-rows" data-type="number" data-ph="숫자만 (예: 350000000)"></div>
+                  <div class="relay-sum" hidden></div>
                   <div class="relay-desc">저장버튼을 눌러주세요, 3단계 매수인 신청서 집계에 자동 반영됩니다.</div>
                 </div>
               </div>
@@ -529,18 +532,14 @@ gtag('js',new Date());gtag('config','G-DR3W5XWF50');
                 </div>
                 <div class="relay-input" data-relay="bondamt" style="margin-top:10px">
                   <label>채권매입금액 기록 (필수)</label>
-                  <div class="relay-row">
-                    <input type="number" class="relay-in" placeholder="숫자만 (예: 7800000)">
-                    <button onclick="saveRelay(this)">저장</button>
-                  </div>
+                  <div class="relay-rows" data-type="number" data-ph="숫자만 (예: 7800000)"></div>
+                  <div class="relay-sum" hidden></div>
                   <div class="relay-desc">은행 영수증(매입금액)의 금액입니다. 신청서 국민주택채권매입총액란에 반영됩니다.</div>
                 </div>
                 <div class="relay-input" data-relay="bond" style="margin-top:8px">
                   <label>③ 채권발행번호 기록 (필수)</label>
-                  <div class="relay-row">
-                    <input type="text" class="relay-in" placeholder="은행 영수증 화면의 채권발행번호">
-                    <button onclick="saveRelay(this)">저장</button>
-                  </div>
+                  <div class="relay-rows" data-type="text" data-ph="은행 영수증 화면의 채권발행번호"></div>
+                  <div class="relay-sum" hidden></div>
                   <div class="relay-desc">저장버튼을 눌러주세요, 3단계 매수인 신청서 집계에 자동 반영됩니다.</div>
                 </div>
               </div>
@@ -658,10 +657,8 @@ gtag('js',new Date());gtag('config','G-DR3W5XWF50');
                 <div class="action-desc">은행(2단계) 채권 매입액 계산과 신청서 작성에 쓰입니다. 취득세 영수증의 <strong>시가표준액</strong>을 저장해두세요.</div>
                 <div class="relay-input" data-relay="siga">
                   <label>② 시가표준액 입력</label>
-                  <div class="relay-row">
-                    <input type="number" class="relay-in" placeholder="숫자만 (예: 350000000)">
-                    <button onclick="saveRelay(this)">저장</button>
-                  </div>
+                  <div class="relay-rows" data-type="number" data-ph="숫자만 (예: 350000000)"></div>
+                  <div class="relay-sum" hidden></div>
                   <div class="relay-desc">저장하면 2단계 은행에서 버튼 한 번에 복사할 수 있습니다.</div>
                 </div>
               </div>
@@ -699,19 +696,15 @@ gtag('js',new Date());gtag('config','G-DR3W5XWF50');
                 <!-- 릴레이: 채권매입금액 -->
                 <div class="relay-input" data-relay="bondamt">
                   <label>채권매입금액 기록 (선택)</label>
-                  <div class="relay-row">
-                    <input type="number" class="relay-in" placeholder="숫자만 (예: 7800000)">
-                    <button onclick="saveRelay(this)">저장</button>
-                  </div>
+                  <div class="relay-rows" data-type="number" data-ph="숫자만 (예: 7800000)"></div>
+                  <div class="relay-sum" hidden></div>
                   <div class="relay-desc">영수증의 매입금액입니다. 신청서 국민주택채권매입총액란에 반영됩니다.</div>
                 </div>
                 <!-- 릴레이: 채권발행번호 -->
                 <div class="relay-input" data-relay="bond" style="margin-top:8px">
                   <label>③ 채권발행번호 기록 (선택)</label>
-                  <div class="relay-row">
-                    <input type="text" class="relay-in" placeholder="영수증의 채권발행번호">
-                    <button onclick="saveRelay(this)">저장</button>
-                  </div>
+                  <div class="relay-rows" data-type="text" data-ph="은행 영수증 화면의 채권발행번호"></div>
+                  <div class="relay-sum" hidden></div>
                   <div class="relay-desc">3단계 신청서 채권란에 옮겨 적습니다.</div>
                 </div>
               </div>
@@ -1009,7 +1002,10 @@ async function downloadSinchungseo(){
   }
 
   try {
-    const bondAmt = RELAY.bondamt || '';
+    // 공동명의: 시가표준액·채권은 인원별 값이므로 1행/2행으로 나눠 채우고, 총액은 합계로 넣는다.
+    const _arr = k => Array.isArray(RELAY[k]) ? RELAY[k] : [RELAY[k]||''];
+    const sigaArr = _arr('siga'), bondAmtArr = _arr('bondamt'), bondNoArr = _arr('bond');
+
     const total = taxTotal();
 
     // ── 부동산의 표시(집합건물) 조립 — 등기부 표제부 구조에 맞춰 JS에서 한 줄씩 완성 ──
@@ -1046,7 +1042,9 @@ async function downloadSinchungseo(){
       CAUSE_DATE: '', // 등기소 접수(신청)일자 — 방문 당일 확정되므로 의도적으로 공란
       SELLER_NAME: f.sellerName || '', SELLER_ADDR: f.sellerAddr || '',
       BUYER_NAME: f.buyerName || '', BUYER_RRN: f.buyerRrn || '', BUYER_ADDR: f.buyerAddr || '',
-      SIGA: fmtWon(RELAY.siga), BOND_AMT: fmtWon(bondAmt), BOND_TOTAL: fmtWon(bondAmt), BOND_NO: RELAY.bond || '',
+      SIGA: fmtWon(sigaArr[0]), BOND_AMT: fmtWon(bondAmtArr[0]), BOND_TOTAL: fmtWon(relaySum('bondamt')), BOND_NO: bondNoArr[0] || '',
+      // ↓ 공동명의 2인용 — 템플릿에 해당 토큰이 없으면 치환되지 않고 그대로 무시된다
+      SIGA2: fmtWon(sigaArr[1]), BOND_AMT2: fmtWon(bondAmtArr[1]), BOND_NO2: bondNoArr[1] || '',
       TAX: fmtWon(RELAY.tax), EDU_TAX: fmtWon(RELAY.edu), RURAL_TAX: fmtWon(RELAY.rural), TAX_TOTAL: fmtWon(total),
       FEE_AMT: '18,000', FEE_NO: RELAY.fee || '',
       PROPERTY_UID: f.propertyUid || '',
@@ -1536,7 +1534,42 @@ function calcStamp(){
     : `구매할 인지세: <b>${amt.toLocaleString('ko-KR')}원</b> <span style="font-size:11px;color:var(--muted)">(${label})</span>`;
 }
 
-const RELAY = { siga:'', tax:'', edu:'', rural:'', bond:'', bondamt:'', fee:'' };
+// ── 공동명의 대응 ──────────────────────────────────────────
+// siga / bondamt / bond 는 공유자별로 값이 갈리므로 배열로 관리한다.
+// (시가표준액을 지분대로 나눠 각각 채권을 매입 → 매입금액·발행번호가 인원수만큼 생김)
+// 나머지(tax/edu/rural/fee)는 단일값 유지: 취득세 총액은 지분과 무관하고,
+// 등기신청수수료는 인원이 아니라 부동산 개수 기준이다.
+const MULTI_KEYS = ['siga', 'bondamt', 'bond'];
+const RELAY = { siga:[''], tax:'', edu:'', rural:'', bond:[''], bondamt:[''], fee:'' };
+
+// 매수인 명단 — normal_form에서 넘어온 selfregi_form_v1을 상속. 폼을 안 거쳤으면 단독으로 간주.
+let PARTIES = [{ name:'', shareDenom:'', shareNum:'' }];
+function loadParties(){
+  try{
+    const f = JSON.parse(localStorage.getItem('selfregi_form_v1') || '{}');
+    if (f.buyerJoint && Array.isArray(f.buyers) && f.buyers.length > 1) {
+      PARTIES = f.buyers.slice(0, 2).map(b => ({
+        name: b.name || '', shareDenom: b.shareDenom || '', shareNum: b.shareNum || ''
+      }));
+    }
+  }catch(e){ /* 폼 데이터 없음 → 단독 유지 */ }
+}
+function isJointMode(){ return PARTIES.length > 1; }
+function partyLabel(i){
+  const p = PARTIES[i] || {};
+  const nm = p.name || ('매수인 ' + (i + 1));
+  const sh = (p.shareDenom && p.shareNum) ? `　${p.shareDenom}분의 ${p.shareNum}` : '';
+  return nm + sh;
+}
+function relayNum(v){ return Number(String(v==null?'':v).replace(/[^\d]/g,'')) || 0; }
+function relaySum(key){
+  const a = RELAY[key];
+  return Array.isArray(a) ? a.reduce((s,v)=>s+relayNum(v),0) : relayNum(a);
+}
+function relayFilled(key){
+  const a = RELAY[key];
+  return Array.isArray(a) ? a.filter(v=>String(v||'').trim()).length : (a ? 1 : 0);
+}
 const RELAY_META = {
   siga   :{ hub:'hub-siga',    fp:'fp-siga',    label:'시가표준액',     fmt:true },
   tax    :{ hub:'hub-tax',     fp:'fp-tax',     label:'취득세액',       fmt:true },
@@ -1562,30 +1595,106 @@ function relayBoxes(key){ return [...document.querySelectorAll(`.relay-input[dat
 function visibleRelayBox(key){ const a=relayBoxes(key); return a.find(b=>b.offsetParent!==null) || a[0] || null; }
 function fmtNum(v){ const n=Number(String(v).replace(/[^\d]/g,'')); return isNaN(n)?v:n.toLocaleString('ko-KR'); }
 
+// ── 인원별 입력 행 렌더링 ──────────────────────────────────
+// 단독명의면 행 1개(= 기존과 동일한 화면), 공동명의면 이름표가 붙은 행 2개를 그린다.
+// 마크업을 인원수만큼 복제하지 않고 여기서 한 번에 생성한다.
+function renderRelayRows(){
+  MULTI_KEYS.forEach(key=>{
+    relayBoxes(key).forEach(box=>{
+      const host = box.querySelector('.relay-rows');
+      if(!host) return;
+      const typ = host.dataset.type || 'text';
+      const ph  = host.dataset.ph || '';
+      let html = '';
+      for(let i=0; i<PARTIES.length; i++){
+        const val = (RELAY[key] && RELAY[key][i]) ? RELAY[key][i] : '';
+        if(isJointMode()) html += `<div class="relay-who">${partyLabel(i)}</div>`;
+        html += `<div class="relay-row"${i>0?' style="margin-top:6px"':''}>`
+              + `<input type="${typ}" class="relay-in" data-idx="${i}" placeholder="${ph}"`
+              + `${val ? ` value="${String(val).replace(/"/g,'&quot;')}"` : ''}>`
+              + `<button onclick="saveRelay(this)">저장</button></div>`;
+      }
+      host.innerHTML = html;
+    });
+  });
+}
+
+// 배열 키 박스 하단의 합계 줄 (금액 키만 — 발행번호는 합산 대상이 아님)
+function renderRelaySum(key){
+  const isAmt = (key === 'siga' || key === 'bondamt');
+  relayBoxes(key).forEach(box=>{
+    const el = box.querySelector('.relay-sum');
+    if(!el) return;
+    if(!isJointMode() || !isAmt){ el.hidden = true; return; }
+    const total = relaySum(key);
+    el.hidden = !total;
+    if(total){
+      const cap = (key === 'bondamt') ? '매입총액' : '합계';
+      el.innerHTML = `<span class="rs-l">${cap}</span><span class="rs-v">${fmtNum(total)}원</span>`;
+    }
+  });
+}
+
 function saveRelay(btn){
   const box = btn.closest('.relay-input[data-relay]');
   if(!box) return;
   const key = box.dataset.relay;
-  const input = box.querySelector('.relay-in');
+  const input = btn.parentElement.querySelector('.relay-in') || box.querySelector('.relay-in');
   const v = (input ? input.value : '').trim();
   if(!v){ showToast('값을 입력해 주세요.'); return; }
-  RELAY[key] = v;
+  if(MULTI_KEYS.indexOf(key) > -1){
+    const idx = Number(input && input.dataset.idx || 0);
+    if(!Array.isArray(RELAY[key])) RELAY[key] = [RELAY[key] || ''];
+    RELAY[key][idx] = v;
+  } else {
+    RELAY[key] = v;
+  }
   persistRelay();
   renderRelay(key);
   try{window.SR&&SR.track('relay_save',{key:key,from:'roadmap'});}catch(e){}
   // [요청4] 저장 버튼은 값 저장만 담당 — 체크박스(취소선)는 사용자가 직접 눌렀을 때만 반응하도록 자동 체크 로직 제거
-  showToast('저장 완료! 3단계 신청서 집계에 반영됩니다.');
+  showToast(isJointMode() && MULTI_KEYS.indexOf(key) > -1
+    ? '저장 완료! 나머지 인원의 값도 입력해 주세요.'
+    : '저장 완료! 3단계 신청서 집계에 반영됩니다.');
 }
 
 function renderRelay(key){
   const m = RELAY_META[key];
-  const val = RELAY[key];
-  const shown = m.fmt ? fmtNum(val)+'원' : val;
-  relayBoxes(key).forEach(box=>{
-    box.classList.add('saved');
-    const inp = box.querySelector('.relay-in');
-    if(inp && !inp.value) inp.value = val;
-  });
+  const multi = MULTI_KEYS.indexOf(key) > -1;
+  const filled = relayFilled(key);
+  if(!filled){ return; }
+
+  // 허브·신청서 미리보기 표시값: 금액 배열은 합계, 발행번호 배열은 건수로 압축
+  let shown;
+  if(multi && isJointMode()){
+    if(key === 'bond'){
+      shown = (filled >= PARTIES.length) ? `${filled}건 저장됨` : `${filled}건 저장 (${PARTIES.length}건 필요)`;
+    } else {
+      shown = fmtNum(relaySum(key)) + '원 (' + PARTIES.length + '인 합계)';
+    }
+  } else {
+    const val = multi ? (RELAY[key][0] || '') : RELAY[key];
+    shown = m.fmt ? fmtNum(val)+'원' : val;
+  }
+
+  relayBoxes(key).forEach(box=>{ box.classList.add('saved'); });
+  if(multi){
+    // 입력값을 다시 그려 트랙(온라인/방문) 간 값이 동기화되게 한다
+    relayBoxes(key).forEach(box=>{
+      box.querySelectorAll('.relay-in').forEach(inp=>{
+        const i = Number(inp.dataset.idx || 0);
+        const v = (RELAY[key] && RELAY[key][i]) || '';
+        if(v) inp.value = v;
+      });
+    });
+    renderRelaySum(key);
+  } else {
+    relayBoxes(key).forEach(box=>{
+      const inp = box.querySelector('.relay-in');
+      if(inp && !inp.value) inp.value = RELAY[key];
+    });
+  }
+
   const hub = document.getElementById(m.hub);
   const hubV = document.getElementById(m.hub+'-v');
   const hubC = document.getElementById(m.hub+'-c');
@@ -1609,8 +1718,17 @@ function setFP(id, text, filled){
   el.classList.toggle('blank', !filled);
 }
 
-function copyRelay(key){
-  const val = RELAY[key];
+function copyRelay(key, idx){
+  const multi = MULTI_KEYS.indexOf(key) > -1;
+  let val;
+  if(multi){
+    const arr = Array.isArray(RELAY[key]) ? RELAY[key] : [RELAY[key]||''];
+    // 인덱스를 주면 그 사람 값, 안 주면 단독은 값 / 공동은 인원별 값을 줄바꿈으로
+    val = (typeof idx === 'number') ? arr[idx]
+        : (isJointMode() ? arr.filter(v=>String(v||'').trim()).join('\n') : arr[0]);
+  } else {
+    val = RELAY[key];
+  }
   if(!val){
     showToast('먼저 해당 단계에서 값을 저장해 주세요.');
     const box = visibleRelayBox(key);
@@ -1618,7 +1736,8 @@ function copyRelay(key){
     if(step){ if(!step.classList.contains('active')) step.classList.add('active'); step.scrollIntoView({behavior:'smooth',block:'center'}); }
     return;
   }
-  copyText(String(val).replace(/\s/g,''));
+  // 줄 단위로 공백만 제거 (공동명의 복사 시 줄바꿈이 사라져 두 값이 붙는 것 방지)
+  copyText(String(val).split('\n').map(s=>s.replace(/\s/g,'')).filter(Boolean).join('\n'));
 }
 
 function copyTaxTotal(){
@@ -1628,13 +1747,49 @@ function copyTaxTotal(){
 }
 
 // guide.html과 동일한 'selfregi_relay_v1' 스키마 공유 → 가이드에서 저장한 번호가 로드맵에 자동 프리필
-function persistRelay(){ try{ localStorage.setItem('selfregi_relay_v1', JSON.stringify(RELAY)); }catch(e){} }
-function restoreRelay(){
+// guide.html과 'selfregi_relay_v1' 스키마를 공유한다(가이드에서 저장한 번호가 로드맵에 자동 프리필).
+// ⚠ 가이드는 단일 문자열만 다루므로, 공동명의 배열을 이 키에 쓰면 가이드 화면이 깨지고
+//   가이드에서 저장하는 순간 2인분 값이 1개로 덮여 사라진다.
+//   → 기존 키는 문자열 스키마 그대로 두고(인원 1의 값), 배열은 로드맵 전용 키에 따로 보관한다.
+const RELAY_MULTI_KEY = 'selfregi_relay_multi_v1';
+function persistRelay(){
   try{
-    const r = JSON.parse(localStorage.getItem('selfregi_relay_v1')||'{}');
-    Object.keys(RELAY).forEach(k=>{ if(r[k]) RELAY[k]=r[k]; });
+    const legacy = {};
+    Object.keys(RELAY).forEach(k=>{
+      legacy[k] = (MULTI_KEYS.indexOf(k) > -1)
+        ? ((Array.isArray(RELAY[k]) ? RELAY[k][0] : RELAY[k]) || '')
+        : RELAY[k];
+    });
+    localStorage.setItem('selfregi_relay_v1', JSON.stringify(legacy));
+    const multi = {};
+    MULTI_KEYS.forEach(k=>{ multi[k] = Array.isArray(RELAY[k]) ? RELAY[k] : [RELAY[k]||'']; });
+    localStorage.setItem(RELAY_MULTI_KEY, JSON.stringify(multi));
   }catch(e){}
-  Object.keys(RELAY).forEach(k=>{ if(RELAY[k]) renderRelay(k); });
+}
+function restoreRelay(){
+  loadParties();
+  let legacy = {}, multi = {};
+  try{ legacy = JSON.parse(localStorage.getItem('selfregi_relay_v1')||'{}') || {}; }catch(e){}
+  try{ multi  = JSON.parse(localStorage.getItem(RELAY_MULTI_KEY)||'{}') || {}; }catch(e){}
+  Object.keys(RELAY).forEach(k=>{
+    if(MULTI_KEYS.indexOf(k) > -1){
+      if(Array.isArray(multi[k]) && multi[k].some(v=>String(v||'').trim())){
+        RELAY[k] = multi[k].slice();
+        // 가이드에서 인원1 값을 새로 저장했다면 그 값을 우선 반영
+        if(legacy[k] && String(legacy[k]).trim()) RELAY[k][0] = String(legacy[k]);
+      } else if(legacy[k] && String(legacy[k]).trim()){
+        RELAY[k] = [String(legacy[k])];           // 기존 이용자 데이터 승격
+      }
+    } else if(legacy[k]){
+      RELAY[k] = legacy[k];
+    }
+  });
+  MULTI_KEYS.forEach(k=>{
+    if(!Array.isArray(RELAY[k])) RELAY[k] = [RELAY[k] || ''];
+    while(RELAY[k].length < PARTIES.length) RELAY[k].push('');
+  });
+  renderRelayRows();
+  Object.keys(RELAY).forEach(k=>{ if(relayFilled(k)) renderRelay(k); });
   recountProgress();
 }
 
