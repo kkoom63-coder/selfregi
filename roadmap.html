@@ -1035,15 +1035,41 @@ async function downloadSinchungseo(){
     // 대지권의 비율: 분모분의 분자
     const landRatio = (_total && _unit) ? (_total + '분의 ' + _unit) : '';
 
+    // ── 공동명의 당사자 조립 (selfregi_form_v1 v3 스키마) ──
+    const _shareOf = p => (p && p.shareDenom && p.shareNum)
+      ? (p.shareDenom + '분의 ' + p.shareNum) : '';
+    const buyerArr = (f.buyerJoint && Array.isArray(f.buyers) && f.buyers.length > 1)
+      ? f.buyers.slice(0, 2)
+      : [{ name: f.buyerName || '', addr: f.buyerAddr || '', rrn: f.buyerRrn || '' }];
+    const sellerArr = (f.sellerJoint && Array.isArray(f.sellers) && f.sellers.length > 1)
+      ? f.sellers.slice(0, 2)
+      : [{ name: f.sellerName || '', addr: f.sellerAddr || '', rrn: '' }];
+    const b2 = buyerArr[1] || {}, s2 = sellerArr[1] || {};
+
+    // 등기의 목적은 매도인 구성에만 좌우된다(매수인 공동명의 여부와 무관)
+    const regPurpose = (sellerArr.length > 1) ? '공유자전원지분전부이전' : '소유권이전';
+
+    // 국민주택채권 발행번호: 종이 신청서의 단일 칸 구조상 병합 표기
+    const bondNoAll = bondNoArr.filter(Boolean).join(' / ');
+
     const blob = await fillTemplate(SINCHUNGSEO_B64, {
       DEAL_REPORT_NO: f.dealReportNo || '',
       DEAL_PRICE: fmtWon(f.dealPrice),
       CAUSE_Y: f.causeYr || '', CAUSE_M: f.causeMo || '', CAUSE_D: f.causeDy || '',
       CAUSE_DATE: '', // 등기소 접수(신청)일자 — 방문 당일 확정되므로 의도적으로 공란
-      SELLER_NAME: f.sellerName || '', SELLER_ADDR: f.sellerAddr || '',
-      BUYER_NAME: f.buyerName || '', BUYER_RRN: f.buyerRrn || '', BUYER_ADDR: f.buyerAddr || '',
+      // ── 등기의무자(매도인) ──
+      SELLER_NAME: sellerArr[0].name || '', SELLER_ADDR: sellerArr[0].addr || '',
+      SELLER_SHARE: _shareOf(sellerArr[0]),
+      SELLER2_NAME: s2.name || '', SELLER2_ADDR: s2.addr || '', SELLER2_SHARE: _shareOf(s2),
+      // ── 등기권리자(매수인) ──
+      BUYER_NAME: buyerArr[0].name || '', BUYER_RRN: buyerArr[0].rrn || '',
+      BUYER_ADDR: buyerArr[0].addr || '', BUYER_SHARE: _shareOf(buyerArr[0]),
+      BUYER2_NAME: b2.name || '', BUYER2_RRN: b2.rrn || '',
+      BUYER2_ADDR: b2.addr || '', BUYER2_SHARE: _shareOf(b2),
+      REG_PURPOSE: regPurpose,
       SIGA: fmtWon(sigaArr[0]), BOND_AMT: fmtWon(bondAmtArr[0]), BOND_TOTAL: fmtWon(relaySum('bondamt')), BOND_NO: bondNoArr[0] || '',
       // ↓ 공동명의 2인용 — 템플릿에 해당 토큰이 없으면 치환되지 않고 그대로 무시된다
+      BOND_NO_ALL: bondNoAll,
       SIGA2: fmtWon(sigaArr[1]), BOND_AMT2: fmtWon(bondAmtArr[1]), BOND_NO2: bondNoArr[1] || '',
       TAX: fmtWon(RELAY.tax), EDU_TAX: fmtWon(RELAY.edu), RURAL_TAX: fmtWon(RELAY.rural), TAX_TOTAL: fmtWon(total),
       FEE_AMT: '18,000', FEE_NO: RELAY.fee || '',
