@@ -320,6 +320,23 @@ footer{border-top:1px solid var(--border);background:var(--bg)}
   .tl-step{padding-left:44px}
   .bridge h2{font-size:19px}
 }
+
+/* ── 모바일 최적화 ──────────────────────────────
+   iOS Safari는 16px 미만 입력에 포커스하면 페이지를 자동 확대하고 되돌리지 않는다.
+   .ffield input이 더 구체적이라 !important 없이는 덮이지 않는다. */
+@media(max-width:768px){
+  input:not([type=checkbox]):not([type=radio]),select,textarea{font-size:16px !important}
+  input[type=checkbox],input[type=radio]{width:24px;height:24px}
+  .nav-inner{overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  .nav-inner::-webkit-scrollbar{display:none}
+  .nav-a,.nav-logo{flex-shrink:0}
+  .nav-a.cta{position:sticky;right:0;z-index:1}
+  /* 모바일 가독 하한 — 9~10px 라벨을 11px 이상으로 */
+  .pgrp-tag,.tl-place,.promo-badge,.rj-badge,.nav-logo span{font-size:11px}
+  /* 목록형 푸터 링크 24px 확보(WCAG 2.2 AA 2.5.8).
+     본문 문장 속 링크는 SC 2.5.8 '인라인' 예외라 대상이 아니다. */
+  .foot-links a{display:inline-block;min-height:24px;line-height:24px;min-width:24px;text-align:center}
+}
 </style>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-DR3W5XWF50"></script>
 <script>

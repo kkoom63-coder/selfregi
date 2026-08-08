@@ -161,6 +161,25 @@ select{cursor:pointer;appearance:auto}
 .gm-ltxt .gm-field{display:inline-block;background:#E0F2FE;color:var(--blue);font-weight:600;padding:0 6px;border-radius:4px;font-size:11px}
 footer{text-align:center;padding:18px;font-size:11px;color:#64748B;max-width:1200px;margin:0 auto}
 @media(max-width:520px){.fg,.fg.s3,.dg{grid-template-columns:1fr}.gm-overlay{padding:0}.gm-box{border-radius:0;min-height:100vh}}
+
+/* ── 모바일 최적화 ──────────────────────────────
+   iOS Safari는 16px 미만 입력에 포커스하면 페이지를 자동 확대하고 되돌리지 않는다.
+   개별 규칙(.ffield input 등)이 더 구체적이라 !important 없이는 덮이지 않는다. */
+@media(max-width:768px){
+  input:not([type=checkbox]):not([type=radio]),select,textarea{font-size:16px !important}
+  input::placeholder{font-size:15px}
+  /* 체크박스는 WCAG 2.2 AA(2.5.8) 24×24 최소 확보 */
+  input[type=checkbox],input[type=radio]{width:24px;height:24px}
+  /* nav가 375px에서 넘쳐 잘렸다 — 링크를 숨기지 않고 가로 스크롤로 전부 접근 가능하게 */
+  .nav-inner{overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  .nav-inner::-webkit-scrollbar{display:none}
+  .nav-a,.nav-logo{flex-shrink:0}
+  /* 인라인 링크 최소 탭 높이 */
+  footer a{display:inline-block;min-height:24px;line-height:24px}
+  /* 모바일 가독 하한 — .fn은 서식을 채우며 읽어야 하는 필드 도움말인데 10px였다 */
+  /* .jt-toggle .jt-s 가 더 구체적이라 같은 선택자로 덮는다 */
+  .fn,.jt-s,.ds,.nav-eyebrow,.nb-s,.jt-toggle .jt-s,.jt-sum{font-size:11.5px}
+}
 </style>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-DR3W5XWF50"></script>
 <script>

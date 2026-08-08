@@ -288,6 +288,29 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:52px;p
 /* 토스트 */
 .toast{position:fixed;left:50%;bottom:78px;transform:translateX(-50%) translateY(12px);background:var(--navy);color:#fff;font-size:12.5px;font-weight:600;padding:11px 18px;border-radius:10px;box-shadow:0 8px 24px rgba(15,23,32,.3);opacity:0;pointer-events:none;transition:.2s;z-index:300;max-width:90vw;text-align:center}
 .toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ── 모바일 최적화 ──────────────────────────────
+   iOS Safari는 16px 미만 입력에 포커스하면 페이지를 자동 확대하고 되돌리지 않는다.
+   .rin-row input이 더 구체적이라 !important 없이는 덮이지 않는다. */
+@media(max-width:768px){
+  input:not([type=checkbox]):not([type=radio]),select,textarea{font-size:16px !important}
+  .rin-row input{height:44px}
+  input[type=checkbox],input[type=radio]{width:24px;height:24px}
+  .nav-inner{overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  .nav-inner::-webkit-scrollbar{display:none}
+  .nav-a,.nav-logo{flex-shrink:0}
+  .nav-a.cta{position:sticky;right:0;z-index:1}
+  /* 모바일 가독 하한 — 9.5~10.5px 라벨이 73곳 실측됐다. 30~60대 타깃에 너무 작다.
+     칩·태그는 11.5px, 출처·소형 배지는 11px, 링크는 12px + 탭 높이 24px 확보 */
+  .gm-ltxt,.rin-row label{font-size:12.5px}
+  .shot-chip,.ftag,.ptime,.shot-flow,.finish-tag,.finish-note,.sec-label{font-size:11.5px}
+  /* .ft .chip / .rin-l .src / .nav-logo span 은 더 구체적이라 같은 선택자로 덮는다 */
+  .src,.chip,.rj-badge,.ft .chip,.rin-l .src,.nav-logo span{font-size:11px}
+  /* 목록형 푸터 링크 24px 확보(WCAG 2.2 AA 2.5.8). .foot-links a가 더 구체적이라 클래스로 잡는다.
+     본문 문장 속 링크(.fd a)·이메일(.foot-biz a)은 SC 2.5.8 '인라인' 예외라 건드리지 않는다. */
+  .foot-links a{display:inline-block;min-height:24px;line-height:24px;min-width:24px;text-align:center}
+  .pgo{font-size:12px;min-height:24px;display:inline-flex;align-items:center}
+}
 </style>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-DR3W5XWF50"></script>
 <script>

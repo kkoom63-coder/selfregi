@@ -255,7 +255,6 @@ main{max-width:var(--read);margin:0 auto;padding:24px 20px 40px;position:relativ
   .action-item{padding:10px}
   .relay-input{padding:10px}
   .relay-row button{padding:0 12px;font-size:12px}
-  .relay-row input{font-size:13px;padding:9px}
   .quick-nav a{font-size:11px;padding:10px 6px}
 }
 
@@ -297,6 +296,29 @@ main{max-width:var(--read);margin:0 auto;padding:24px 20px 40px;position:relativ
 .fold-list li::before{content:counter(fold);flex:0 0 auto;width:19px;height:19px;background:#E0F2FE;color:var(--blue);border-radius:50%;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;margin-top:1px}
 .fold-list li small{color:var(--muted);font-weight:400;font-size:11px}
 .fold-foot{padding:9px 12px;font-size:11px;color:var(--muted);background:#FFFFFF;border-top:1px solid var(--border);line-height:1.6}
+
+/* ── 모바일 최적화 ──────────────────────────────
+   스타일 맨 끝에 둔다 — 미디어쿼리는 특이도를 올려주지 않아서, 동일 특이도의
+   기본 규칙(.prep-badge 등)보다 뒤에 와야 이긴다.
+   iOS Safari는 16px 미만 입력에 포커스하면 페이지를 자동 확대하고 되돌리지 않는다.
+   (이전에는 400px 이하에서 입력을 13px로 더 줄여 문제를 악화시키고 있었다) */
+@media(max-width:768px){
+  input:not([type=checkbox]):not([type=radio]),select,textarea{font-size:16px !important}
+  /* .action-item input[type=checkbox]가 18px로 더 구체적이라 같은 선택자로 덮는다 */
+  input[type=checkbox],input[type=radio],
+  .action-item input[type=checkbox]{width:24px;height:24px}
+  /* nav가 375px에서 494px까지 넘쳤다 — 숨기지 않고 가로 스크롤로 전부 접근 가능하게 */
+  .nav-inner{overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  .nav-inner::-webkit-scrollbar{display:none}
+  .nav-a,.nav-logo{flex-shrink:0}
+  .nav-a.cta{position:sticky;right:0;z-index:1}
+  /* 목록형 푸터 링크 24px 확보(WCAG 2.2 AA 2.5.8).
+     본문 문장 속 링크는 SC 2.5.8 '인라인' 예외라 대상이 아니다. */
+  .rm-foot-links a{display:inline-block;min-height:24px;line-height:24px;min-width:24px;text-align:center}
+  /* 모바일 가독 하한 — 9.5~10.5px 라벨을 11px 이상으로 */
+  .prep-badge,.prep-legend,.prep-group-hd .pg-side,.fold-hd .fh-sub,.nav-logo span,
+  .page-eyebrow,.track-badge{font-size:11px}
+}
 </style>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-DR3W5XWF50"></script>
 <script>
