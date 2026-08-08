@@ -1,1 +1,11 @@
 __pycache__/
+
+# 내부 참고자료 — 공개 저장소이므로 커밋 금지
+docs/
+
+# 개인 메모 (Claude Code)
+CLAUDE.local.md
+
+# OS 부산물
+Thumbs.db
+desktop.ini
