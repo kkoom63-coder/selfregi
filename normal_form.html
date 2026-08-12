@@ -1078,10 +1078,18 @@ function fmtTrustRegDate(y, m, d) {
 }
 
 // 공통: base64 템플릿 + 치환 dict → Blob
+// Word run-split 대응: 토큰이 여러 run으로 쪼개진 경우 하나로 병합
+// 예) <w:t>년 {</w:t> … <w:t>{MONTH}}월</w:t> → <w:t>{{MONTH}}</w:t>
+// (?!<w:t) 가드로 run 경계를 딱 한 번만 넘도록 제한 — 없으면 멀리 떨어진 중괄호끼리 오매칭
+const RUN_GAP = '(?:</w:t>(?:(?!<w:t)[\\s\\S])*?<w:t(?:\\s[^>]*)?>)?';
+const TOKEN_DEFRAG = new RegExp(
+  '\\{' + RUN_GAP + '\\{([A-Z0-9_]{2,30})' + RUN_GAP + '\\}' + RUN_GAP + '\\}', 'g'
+);
 async function fillTemplate(b64, replacements) {
   const bytes = b64ToBytes(b64);
   const zip = await JSZip.loadAsync(bytes);
   let xml = await zip.file('word/document.xml').async('string');
+  xml = xml.replace(TOKEN_DEFRAG, '{{$1}}');
   for (const k in replacements) {
     const re = new RegExp('\\{\\{' + k + '\\}\\}', 'g');
     xml = xml.replace(re, xe(replacements[k]));
