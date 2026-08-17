@@ -40,7 +40,34 @@ main{max-width:1200px;margin:0 auto;padding:20px 14px 60px}
 .card{background:var(--card);border-radius:var(--radius);border:1px solid var(--border);padding:22px;margin-bottom:14px;box-shadow:var(--shadow)}
 .card.blue-card{border:1.5px solid var(--blue);background:#E0F2FE}
 .ch{display:flex;align-items:center;gap:10px;margin-bottom:16px}
-.ci{width:32px;height:32px;background:#E0F2FE;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.ci{width:26px;height:26px;background:var(--navy);color:#fff;border-radius:7px;display:flex;align-items:center;justify-content:center;
+font-family:'SFMono-Regular',Consolas,monospace;font-size:13px;font-weight:700;flex-shrink:0;letter-spacing:-.02em}
+/* OCR 토큰 (2026.8) */
+:root{--ocr-bg:#FFFBEB;--ocr-bd:#FDE68A;--ocr:#92400E}
+input.ocr{background:var(--ocr-bg);border-color:var(--ocr-bd)}
+.ntc.addr{background:var(--ocr-bg);border:1px solid var(--ocr-bd);color:var(--ocr)}
+.ntc.addr b{color:#78350F}
+/* 2단 레이아웃 (2026.8) */
+.shell{max-width:1200px;margin:0 auto;padding:20px 14px 60px;display:grid;
+grid-template-columns:minmax(0,1fr) 384px;gap:24px;align-items:start}
+.shell>main{max-width:none;margin:0;padding:0}
+.side{position:sticky;top:96px}
+.side .card{padding:0}
+.side-h{display:flex;align-items:center;gap:10px;padding:15px 18px;border-bottom:1px solid #F1F5F9}
+.side-t{font-size:14px;font-weight:800;color:var(--navy);letter-spacing:-.2px}
+.side-b{padding:16px 18px}
+.pv{background:#FCFCFB;border:1px solid var(--border);border-radius:9px;padding:13px 14px;font-size:13.5px;line-height:1.85}
+.pv+.pv{margin-top:9px}
+.pv .cp{font-size:11px;font-weight:800;letter-spacing:.05em;color:var(--muted);margin-bottom:6px}
+.pv .v{color:#075985;font-weight:700}
+.pv .v.e{color:var(--muted);font-weight:400;background:#F1F5F9;border-radius:4px;padding:0 5px}
+.tally{display:grid;grid-template-columns:1fr auto;gap:7px 10px;font-size:13px;
+padding:14px 0;border-top:1px solid #F1F5F9;border-bottom:1px solid #F1F5F9;margin:14px 0}
+.tally .k{color:var(--muted)}
+.tally .n2{font-family:'SFMono-Regular',Consolas,monospace;font-weight:700;text-align:right}
+.tally .n2.a{color:#B45309}.tally .n2.b{color:#047857}.tally .n2.c{color:var(--muted)}
+.side-note{font-size:11.5px;color:var(--muted);line-height:1.7;margin-top:12px}
+@media(max-width:1080px){.shell{grid-template-columns:minmax(0,1fr)}.side{position:static}}
 .ct{font-size:14px;font-weight:700;color:var(--navy)}
 .cs{font-size:11px;color:var(--muted);margin-top:1px}
 .fg{display:grid;grid-template-columns:1fr 1fr;gap:11px}
@@ -52,7 +79,7 @@ label{font-size:11px;font-weight:500;color:#334155}
 .hint{color:var(--muted);font-weight:400;margin-left:3px}
 .addr-tip{font-size:11px;color:var(--muted);line-height:1.6;margin-top:6px;padding:7px 10px;background:#f4f6fb;border-radius:6px;border-left:3px solid var(--blue)}
 .addr-tip b{color:var(--navy)}
-input[type=text],input[type=number],input[type=email],select{height:38px;border:1px solid var(--border);border-radius:8px;padding:0 10px;font-size:13px;font-family:inherit;color:var(--text);background:#FFFFFF;outline:none;transition:border-color .15s,box-shadow .15s;width:100%}
+input[type=text],input[type=number],input[type=email],select{height:44px;border:1px solid var(--border);border-radius:8px;padding:0 12px;font-size:16px;font-family:inherit;color:var(--text);background:#FFFFFF;outline:none;transition:border-color .15s,box-shadow .15s;width:100%}
 input:focus,select:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(3,105,161,.12);background:#fff}
 input::placeholder{color:#c0c8d8;font-size:12px}
 select{cursor:pointer;appearance:auto}
@@ -105,7 +132,7 @@ select{cursor:pointer;appearance:auto}
 .pay-btn{width:100%;display:flex;flex-direction:row;align-items:center;gap:12px;padding:16px 18px;background:var(--blue);color:#fff;border:none;border-radius:10px;cursor:pointer;font-family:inherit;transition:background .15s,transform .1s}
 .pay-btn:hover{background:#075985}
 .pay-btn:active{transform:translateY(1px)}
-.pay-ic{flex-shrink:0;width:38px;height:38px;background:rgba(255,255,255,.18);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800}
+.pay-ic{display:none;flex-shrink:0;width:38px;height:38px;background:rgba(255,255,255,.18);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800}
 .pay-btn .dn{font-size:14px;font-weight:800;color:#fff}
 .pay-btn .ds{font-size:11px;color:rgba(255,255,255,.82);margin-top:2px}
 .pay-arrow{margin-left:auto;font-size:20px;font-weight:800;opacity:.9}
@@ -115,7 +142,7 @@ select{cursor:pointer;appearance:auto}
 .navbtn{width:100%;display:flex;align-items:center;gap:13px;padding:16px 18px;background:#fff;border:2px solid var(--navy);border-radius:10px;cursor:pointer;font-family:inherit;text-align:left;transition:background .15s,transform .15s,box-shadow .15s}
 .navbtn:hover{background:#f1f5f9;transform:translateY(-2px);box-shadow:0 6px 18px rgba(2,6,23,.1)}
 .navbtn:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
-.nb-ico{width:36px;height:36px;background:#eef2f7;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.nb-ico{display:none;width:36px;height:36px;background:#eef2f7;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
 .nb-tx{flex:1;min-width:0}
 .nb-t{font-size:14px;font-weight:800;color:var(--navy);line-height:1.4}
 .nb-s{font-size:10.5px;color:var(--muted);line-height:1.5;margin-top:2px;word-break:keep-all}
@@ -125,7 +152,7 @@ select{cursor:pointer;appearance:auto}
 .dbtn:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,.12)}
 .d1{background:var(--navy);color:#fff}
 .d2{background:#2a6056;color:#fff}
-.diw{width:36px;height:36px;background:rgba(255,255,255,.15);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:18px}
+.diw{display:none;width:36px;height:36px;background:rgba(255,255,255,.15);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:18px}
 .dn{font-size:13px;font-weight:700}
 .ds{font-size:10px;opacity:.75}
 
@@ -161,8 +188,52 @@ select{cursor:pointer;appearance:auto}
 .gm-ltxt .gm-field{display:inline-block;background:#E0F2FE;color:var(--blue);font-weight:600;padding:0 6px;border-radius:4px;font-size:11px}
 footer{text-align:center;padding:18px;font-size:11px;color:#64748B;max-width:1200px;margin:0 auto}
 @media(max-width:520px){.fg,.fg.s3,.dg{grid-template-columns:1fr}.gm-overlay{padding:0}.gm-box{border-radius:0;min-height:100vh}}
+
+/* ── 자료에서 읽어오기 (2026.8) ── */
+.slots{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:760px){.slots{grid-template-columns:1fr}}
+.drop{border:1.5px dashed var(--blue);border-radius:10px;background:#F0F9FF;padding:20px;text-align:center;transition:background .15s}
+.drop.alt{border-color:#CBD5E1;background:var(--bg)}
+.drop.over{background:#E0F2FE;border-color:#075985}
+.drop.busy{opacity:.7;pointer-events:none}
+.slot-t{font-size:17px;font-weight:800;color:var(--navy);margin-bottom:9px;letter-spacing:-.3px}
+.drop .sub{font-size:12.5px;color:var(--muted);line-height:1.7;word-break:keep-all}
+.fb{display:inline-block;margin-top:13px;height:42px;line-height:42px;padding:0 22px;font-size:14px;
+font-weight:700;color:#fff;background:var(--blue);border-radius:8px;cursor:pointer}
+.drop.alt .fb{background:#475569}
+.pr{height:5px;background:#E2E8F0;border-radius:3px;margin-top:14px;overflow:hidden;display:none}
+.pr.on{display:block}
+.pr i{display:block;height:100%;width:0;background:var(--blue);transition:width .25s}
+.plg{font-size:12.5px;color:var(--muted);margin-top:8px;min-height:18px;word-break:keep-all}
+.legend{display:flex;gap:16px;margin:18px 0 2px;font-size:12.5px;color:var(--muted);flex-wrap:wrap}
+.legend b{display:inline-flex;align-items:center;gap:6px;font-weight:600;color:var(--navy)}
+.dot{width:9px;height:9px;border-radius:3px;display:inline-block}
+.d-ok{background:#047857}.d-oc{background:#B45309}.d-no{background:#DC2626}
+.nt{font-size:11.5px;line-height:1.65;color:var(--muted);word-break:keep-all}
+.nt b{font-weight:700;color:#475569}
+.rows2{display:grid;grid-template-columns:1fr 1fr;gap:0 22px}
+@media(max-width:820px){.rows2{grid-template-columns:1fr}}
+.fr{display:grid;grid-template-columns:112px minmax(0,1fr) auto;gap:8px;align-items:center;
+padding:9px 0;border-top:1px solid #F1F5F9;font-size:13.5px}
+.fr.wide{grid-column:1/-1}
+.fr>b{font-size:12.5px;font-weight:700;color:var(--muted)}
+.fr .val{font-family:'SFMono-Regular',Consolas,monospace;font-size:14px;word-break:break-all}
+.fr .val.txt{font-family:inherit}
+.tag{font-size:11.5px;font-weight:700;border-radius:5px;padding:2px 7px;margin-left:7px;white-space:nowrap}
+.t-ok{color:#047857;background:#ECFDF5}
+.t-oc{color:#B45309;background:var(--ocr-bg)}
+.t-no{color:#DC2626;background:#FEF2F2}
+.fr .sub2{display:block;font-size:12px;color:#B45309;margin-top:3px;font-family:inherit}
+.mini{height:34px;padding:0 13px;font-family:inherit;font-size:12.5px;font-weight:700;color:var(--blue);
+background:#fff;border:1px solid var(--border);border-radius:7px;cursor:pointer}
+.ocr-all{display:block;width:100%;height:46px;margin-top:15px;font-family:inherit;font-size:14.5px;
+font-weight:800;color:var(--blue);background:#fff;border:1px solid var(--blue);border-radius:9px;cursor:pointer}
+.raw-d{margin-top:14px}
+.raw-d summary{font-size:13px;color:var(--muted);cursor:pointer}
+.raw-d pre{margin-top:9px;max-height:230px;overflow:auto;font-family:'SFMono-Regular',Consolas,monospace;
+font-size:12px;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:11px;white-space:pre-wrap;line-height:1.7}
 </style>
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-DR3W5XWF50"></script>
+
 <script>
 window.dataLayer=window.dataLayer||[];
 function gtag(){dataLayer.push(arguments);}
@@ -189,15 +260,61 @@ gtag('js',new Date());gtag('config','G-DR3W5XWF50');
   </div>
   </header>
 
+<div class="shell">
 <main>
 
 <div class="ntc inf" style="margin-bottom:14px">
   <strong>안내:</strong> <span class="req">*</span> 표시 항목 외에는 필수 입력사항이 아닙니다. 다만 입력하지 않은 항목은 서류에 공란으로 출력되며, 이 경우 직접 수기로 작성하셔야 합니다.
 </div>
 
+<!-- ⓪ 자료에서 읽어오기 (OCR) -->
+<div class="card" id="ocr-card">
+  <div class="ch"><div class="ci">0</div><div>
+    <div class="ct">자료에서 읽어오기</div>
+    <div class="cs">등기사항전부증명서를 올리면 아래 칸이 대부분 채워집니다</div>
+  </div></div>
+
+  <div class="slots">
+    <div class="drop" id="dz-reg">
+      <div class="slot-t">등기사항전부증명서</div>
+      <div class="sub">인터넷등기소에서 발급한 PDF는 글자를 그대로 가져옵니다.
+        출력물을 찍은 사진이나 스캔본도 읽습니다.</div>
+      <label class="fb" for="fi-reg">파일 선택</label>
+      <input type="file" id="fi-reg" accept="application/pdf,image/*" style="display:none">
+      <div class="pr" id="pr-reg"><i></i></div>
+      <div class="plg" id="lg-reg"></div>
+    </div>
+    <div class="drop alt" id="dz-deal">
+      <div class="slot-t">매매계약서</div>
+      <div class="sub">거래가액과 잔금일을 읽습니다. 계약서는 서식이 제각각이라
+        <b>인식이 어긋나는 경우가 있습니다.</b> 읽은 값은 반드시 확인해 주세요.</div>
+      <label class="fb" for="fi-deal">파일 선택</label>
+      <input type="file" id="fi-deal" accept="application/pdf,image/*" style="display:none">
+      <div class="pr" id="pr-deal"><i></i></div>
+      <div class="plg" id="lg-deal">준비 중입니다. 지금은 등기부만 읽습니다.</div>
+    </div>
+  </div>
+
+  <div class="nt" style="margin-top:12px">두 문서 모두 <b>저품질 복사본이나 팩스본은 인식이 어렵습니다.</b>
+    휴대전화로 찍으실 때는 그림자가 지지 않게, 글자가 또렷하게 나오도록 찍어 주세요.
+    올리신 파일은 <b>이 브라우저 안에서만</b> 열리며 서버로 전송·저장되지 않습니다.</div>
+
+  <div id="ocr-out" hidden>
+    <div class="legend">
+      <b><i class="dot d-ok"></i>원문에서 그대로</b>
+      <b><i class="dot d-oc"></i>사진에서 인식 · 대조 필요</b>
+      <b><i class="dot d-no"></i>못 읽음 · 직접 입력</b>
+    </div>
+    <div id="ocr-rows"></div>
+    <div id="ocr-flags"></div>
+    <button type="button" class="ocr-all" id="ocr-all">읽은 값 모두 넣기</button>
+    <details class="raw-d"><summary>추출한 원문 보기</summary><pre id="ocr-raw"></pre></details>
+  </div>
+</div>
+
 <!-- 등기 유형 선택 (최상단) -->
 <div class="card">
-  <div class="ch"><div class="ci">🧭</div><div><div class="ct">등기 유형 선택</div><div class="cs">소유권이전등기의 원인을 선택하세요</div></div></div>
+  <div class="ch"><div class="ci">1</div><div><div class="ct">등기 유형 선택</div><div class="cs">소유권이전등기의 원인을 선택하세요</div></div></div>
   <div class="deal-tab">
     <button class="deal-tab-btn active" onclick="switchDeal('sale', this)">일반매매</button>
     <button class="deal-tab-btn" onclick="switchDeal('trust', this)" disabled title="준비 중입니다">신탁해지 (분양·신축) · 준비중</button>
@@ -207,9 +324,228 @@ gtag('js',new Date());gtag('config','G-DR3W5XWF50');
   </div>
 </div>
 
+<!-- ③ 부동산 정보 -->
+<div class="card">
+  <div class="ch" style="justify-content:space-between">
+    <div style="display:flex;align-items:center;gap:10px">
+      <div class="ci">2</div><div><div class="ct">부동산 정보</div><div class="cs">등기부등본(등기사항전부증명서) 표제부에서 확인</div></div>
+    </div>
+    <button type="button" class="guide-link" onclick="openRegGuide()" aria-haspopup="dialog">? 등기부 어디서 봐요</button>
+  </div>
+  <div class="fg s1"><div class="f">
+    <label>지번 주소 <span class="req">*</span></label>
+    <input type="text" id="jibun-address" placeholder="예: 경기도 화성시 반월동 974">
+    <div class="addr-tip">
+      <b>등기사항전부증명서(등기부등본)의 표제부 기재 지번</b>을 입력해 주세요.<br>
+      위임장·신청서의 부동산 표시는 등기부 기준으로 작성해야 합니다(부동산등기규칙 제43조).<br>
+      매매계약서 주소와 다를 수 있으니 반드시 등기부등본을 먼저 확인하세요.<br>
+      또한 <b>시·군까지 반드시 포함</b>해 입력해 주세요. (예: '분당구' ✕ → '성남시 분당구' ○)
+    </div>
+  </div></div>
+  <div class="divider"></div>
+  <div class="fg">
+    <div class="f"><label>동 <span class="req">*</span></label><input type="number" id="dong" placeholder="107"></div>
+    <div class="f"><label>호 <span class="req">*</span></label><input type="number" id="ho" placeholder="1204"></div>
+  </div>
+  <div class="divider"></div>
+  <!-- 집합건물 상세 (신청서 '부동산의 표시' 자동기재용) -->
+  <div class="fg s1"><div class="f">
+    <label>아파트/건물명</label>
+    <input type="text" id="apt-name" placeholder="예: 반월아이파크">
+    <span class="fn">등기부 표제부의 '건물명칭 및 번호' 기준입니다. (예: OO아파트)</span>
+  </div></div>
+  <div class="divider"></div>
+  <div class="fg">
+    <div class="f"><label>부동산 종류</label>
+      <select id="prop-kind">
+        <option value="">선택 안 함</option>
+        <option value="주택">주택(아파트)</option>
+        <option value="근린생활시설">근린생활시설(상가)</option>
+        <option value="오피스텔">오피스텔</option>
+        <option value="토지">토지</option>
+      </select>
+    </div>
+    <div class="f"><label>층</label><input type="number" id="floor" placeholder="12"></div>
+  </div>
+  <div class="divider"></div>
+  <div class="fg">
+    <div class="f"><label>구조</label><input type="text" id="prop-struct" placeholder="예: 철근콘크리트구조"></div>
+    <div class="f"><label>전유면적 (㎡)</label><input type="text" id="prop-area" placeholder="예: 84.99"></div>
+  </div>
+  <div class="divider"></div>
+  <div class="fg s1"><div class="f">
+    <label>부동산 도로명주소</label>
+    <input type="text" id="prop-road-address" placeholder="예: 경기도 화성시 반월천로 100">
+    <span class="fn">등기부 표제부에 도로명주소가 있으면 입력하세요. 비워두면 신청서에 빈 칸으로 남습니다.</span>
+  </div></div>
+  <div class="divider"></div>
+  
+</div>
+
+<!-- ④ 대지지분 -->
+<div class="card">
+  <div class="ch"><div><div class="ct">대지지분</div><div class="cs">부동산 등기부등본(등기사항전부증명서)에서 확인</div></div></div>
+  <div class="fg">
+    <div class="f">
+      <label>대지권의 비율 · 분모 <span class="req">*</span></label>
+      <input type="text" id="total-land" placeholder="예: 63066.9">
+      <span class="fn">등기부 표제부 「대지권의 비율」의 <b>분모를 그대로</b>. 아파트는 보통 단지 전체 대지면적(㎡)입니다.</span>
+    </div>
+    <div class="f">
+      <label>대지권의 비율 · 분자 <span class="req">*</span></label>
+      <input type="text" id="unit-land" placeholder="예: 39.4783">
+      <span class="fn">같은 줄의 <b>분자를 그대로</b>. 소수점까지 한 자리도 빠뜨리지 마세요.</span>
+    </div>
+  </div>
+  <div class="ntc inf">
+    <strong>대지권의 비율은 계산하지 않습니다</strong> · 등기부 표제부 「대지권의 표시」 칸에 <b>「○○○분의 △△△」</b> 형태로 적혀 있습니다. 그 숫자를 <b>그대로</b> 옮겨 적으세요. 신청서의 부동산 표시는 등기부 기재와 동일해야 합니다. 「63527.1분의 75.809」, 「638분의 79.093」, 「55분의 1」 등 형태가 여러 가지인데 <b>어느 쪽이든 그대로</b>입니다. 분모가 정수라고 해서 면적이 아닌 것도 아닙니다(토지면적이 638㎡면 분모가 638이 됩니다).</div>
+</div>
+
+<!-- ② 매도인 정보 -->
+<div class="card">
+  <div class="ch"><div class="ci">3</div><div><div class="ct">매도인 정보</div><div class="cs">매매(분양)계약서의 매도인 정보를 입력하세요</div></div>
+  <div class="ntc addr" style="margin-bottom:14px">
+    주소는 <b>매도인의 주민등록초본에 적힌 주소 그대로</b> 입력해 주세요. 등기부에 적힌 주소는 매도인이 소유권을 얻을 당시의 주소라,
+    이사한 경우 지금 주소와 다릅니다. <b>초본 주소와 다르게 적으면 보정 사유가 될 수 있습니다.</b>
+    주소가 바뀌었다면 <b>변동 이력이 전부 나온 초본</b>을 받아 두시기 바랍니다.
+  </div></div>
+
+  <!-- 신탁해지 매도인 영역 -->
+  <div id="seller-trust" style="display:none">
+    <div class="ntc wrn" style="margin-bottom:14px">
+      <strong>분양계약서를 확인하세요.</strong> 매도인은 부동산신탁회사(아래 목록)이거나 시공사 직접분양인 경우 직접 입력합니다.
+    </div>
+
+    <!-- 신탁사 드롭다운 -->
+    <div class="f">
+      <label>매도인 선택 <span class="req">*</span></label>
+      <select id="trust-select" onchange="onTrustSelect()">
+        <option value="">-- 직접 입력하거나 신탁사를 선택하세요 --</option>
+        <optgroup label="직접 입력">
+          <option value="custom">매도인 직접입력</option>
+        </optgroup>
+        <optgroup label="부동산신탁회사 (분양계약서 매도인 확인)">
+          <option value="kb">케이비부동산신탁 주식회사</option>
+          <option value="daehan">대한토지신탁 주식회사</option>
+          <option value="shinhan">신한자산신탁 주식회사</option>
+          <option value="hana">주식회사 하나자산신탁</option>
+          <option value="korea">코리아신탁 주식회사</option>
+          <option value="mudong">주식회사 무궁화신탁</option>
+          <option value="koramco">주식회사 코람코자산신탁</option>
+          <option value="kyobo">교보자산신탁 주식회사</option>
+          <option value="woori">우리자산신탁 주식회사</option>
+          <option value="kic">한국투자부동산신탁 주식회사</option>
+          <option value="daeshin">대신자산신탁 주식회사</option>
+          <option value="shinyoung">신영부동산신탁 주식회사</option>
+          <option value="korit">한국자산신탁 주식회사</option>
+          <option value="koreit">주식회사 한국토지신탁</option>
+        </optgroup>
+      </select>
+    </div>
+
+    <!-- 선택된 신탁사 미리보기 -->
+    <div class="trust-preview" id="trust-preview">
+      <strong id="tp-name"></strong>
+      <span id="tp-addr" style="color:#075985;font-size:11px"></span><br>
+      <span style="color:#555">대표이사: </span><span id="tp-ceo"></span> &nbsp;|&nbsp;
+      <span style="color:#555">법인번호: </span><span id="tp-reg"></span>
+    </div>
+
+    <!-- 직접 입력 영역 -->
+    <div id="custom-fields">
+      <div class="fg s1" style="margin-top:10px"><div class="f">
+        <label>매도인 상호(법인명) <span class="req">*</span></label>
+        <input type="text" id="c-name" placeholder="예: 주식회사○○건설">
+      </div></div>
+      <div class="fg s1" style="margin-top:10px"><div class="f">
+        <label>매도인 주소 <span class="req">*</span></label>
+        <input type="text" id="c-addr" placeholder="예: 서울특별시 강남구 테헤란로 000, 0층">
+      </div></div>
+      <div class="fg" style="margin-top:10px">
+        <div class="f"><label>대표이사 성명 <span class="req">*</span></label><input type="text" id="c-ceo" placeholder="예: 홍 길 동"></div>
+        <div class="f"><label>법인등록번호 <span class="req">*</span></label><input type="text" id="c-reg" placeholder="예: 110111-0000000"></div>
+      </div>
+    </div>
+
+    <div class="ntc inf2" style="margin-top:12px">
+      <strong>매수자 사전입력확인서 작성 시</strong> · 인터넷등기소(iros.go.kr) → 열람·발급 → 법인인감증명서 발급지원 → 매도용 매수자 등록에서 위 법인 정보로 매도인 검색 후 본인 정보를 등록합니다.
+    </div>
+  </div>
+
+  <!-- 일반매매 매도인 영역 -->
+  <div id="seller-sale">
+    <div class="ntc wrn" style="margin-bottom:14px">
+      <strong>매매계약서를 확인하세요.</strong> 일반매매의 매도인은 개인(자연인)입니다. 매매계약서상 매도인 정보를 입력하세요.
+    </div>
+
+    <label class="jt-toggle" for="seller-joint">
+      <input type="checkbox" id="seller-joint" onchange="toggleJoint('seller')">
+      <span>
+        <span class="jt-t">매도인이 공동명의입니다</span>
+        <span class="jt-s">등기부 갑구의 소유자가 2인인 경우 체크하세요. 매도인 전원이 등기의무자가 됩니다.</span>
+      </span>
+    </label>
+
+    <div class="fg s1"><div class="f">
+      <label>매도인 성명 <span class="req">*</span></label>
+      <input type="text" id="s-name" placeholder="예: 홍길동">
+    </div></div>
+    <div class="fg s1" style="margin-top:10px"><div class="f">
+      <label>매도인 주소 <span class="req">*</span><span class="hint">(도로명 주소)</span></label>
+      <input type="text" id="s-addr" placeholder="예: 서울특별시 강남구 테헤란로 000, 0동 0호">
+    </div></div>
+
+    <!-- 공동명의 시에만 표시 -->
+    <div class="jt-body" id="seller-joint-body">
+      <div class="fg s1" style="margin-top:10px"><div class="f">
+        <label>매도인 1의 지분<span class="hint">(등기부 갑구 기재와 동일하게)</span></label>
+        <div class="jt-share">
+          <input type="number" id="seller1-share-denom" placeholder="2" min="1" step="1">
+          <span>분의</span>
+          <input type="number" id="seller1-share-num" placeholder="1" min="1" step="1">
+        </div>
+      </div></div>
+
+      <div class="jt-person">
+        <div class="jt-person-h">매도인 2</div>
+        <div class="fg s1"><div class="f">
+          <label>성명 <span class="req">*</span></label>
+          <input type="text" id="seller2-name" placeholder="예: 김영희">
+        </div></div>
+        <div class="fg s1" style="margin-top:10px"><div class="f">
+          <label>주소 <span class="req">*</span><span class="hint">(도로명 주소)</span></label>
+          <input type="text" id="seller2-addr" placeholder="매도인 1과 같으면 동일하게 입력">
+        </div></div>
+        <div class="fg s1" style="margin-top:10px"><div class="f">
+          <label>매도인 2의 지분</label>
+          <div class="jt-share">
+            <input type="number" id="seller2-share-denom" placeholder="2" min="1" step="1">
+            <span>분의</span>
+            <input type="number" id="seller2-share-num" placeholder="1" min="1" step="1">
+          </div>
+        </div></div>
+      </div>
+
+      <div class="jt-sum" id="seller-share-sum">지분을 입력하면 합계를 확인해 드립니다.</div>
+
+      <div class="ntc wrn">
+        <strong>매도인이 2인이면 인감 날인도 2개입니다.</strong> 위임장의 등기의무자란에 매도인 각자가 인감도장을 날인해야 하며, 매도용 인감증명서도 각자 1통씩 필요합니다. 한 사람의 날인만으로는 보정 대상이 될 수 있습니다.
+      </div>
+    </div>
+
+    <div class="ntc inf2" style="margin-top:12px">
+      <strong>매도인 주민등록번호는 별도로 입력받지 않습니다.</strong> 매도인은 본 서비스 이용약관에 동의한 당사자가 아니므로, 매수인이 대신 입력하는 방식으로 매도인의 개인정보를 수집하지 않습니다. 서류 출력 후 매도인 본인 확인 하에 직접 기재하시거나, 중개사를 통해 기재해 주세요.
+    </div>
+  </div>
+</div>
+
 <!-- ① 매수인 정보 -->
 <div class="card">
-  <div class="ch"><div class="ci">👤</div><div><div class="ct">매수인 정보</div><div class="cs">등기권리자(매수인)의 기본 정보</div></div></div>
+  <div class="ch"><div class="ci">4</div><div><div class="ct">매수인 정보</div><div class="cs">등기권리자(매수인)의 기본 정보</div></div>
+  <div class="ntc addr" style="margin-bottom:14px">
+    주소는 <b>주민등록등본·초본에 적힌 주소 그대로</b> 입력해 주세요. 도로명주소로 바뀐 뒤 옛 지번주소를 쓰거나,
+    상세주소(동·호)를 빠뜨리는 경우가 많습니다.
+  </div></div>
 
   <label class="jt-toggle" for="buyer-joint">
     <input type="checkbox" id="buyer-joint" onchange="toggleJoint('buyer')">
@@ -283,7 +619,7 @@ gtag('js',new Date());gtag('config','G-DR3W5XWF50');
     </div></div>
 
     <div class="ntc inf2">
-      <strong>공동명의 시 확인하세요.</strong> 지분의 합이 1이 되어야 합니다(예: 2분의 1 + 2분의 1). 매수인 각자의 주민등록등본(초본)이 필요하며, 취득세는 지분에 따라 신고합니다 — 구체적인 신고 방법은 관할 지자체·위택스 안내를 확인해 주세요.
+      <strong>공동명의 시 확인하세요.</strong> 지분의 합이 1이 되어야 합니다(예: 2분의 1 + 2분의 1). 매수인 각자의 주민등록등본(초본)이 필요하며, 취득세는 지분에 따라 신고합니다. 구체적인 신고 방법은 관할 지자체·위택스 안내를 확인해 주세요.
     </div>
   </div>
 </div>
@@ -292,194 +628,13 @@ gtag('js',new Date());gtag('config','G-DR3W5XWF50');
 <input type="hidden" id="trust-day"><input type="hidden" id="receipt-no">
 <input type="hidden" id="trust-book-no"><input type="hidden" id="trust-book-sub">
 
-<!-- ② 매도인 정보 -->
+<!-- 5 매매계약 정보 (2026.8 신설 · 등기부가 아니라 계약서 기준) -->
 <div class="card">
-  <div class="ch"><div class="ci">🏦</div><div><div class="ct">매도인 정보</div><div class="cs">매매(분양)계약서의 매도인 정보를 입력하세요</div></div></div>
-
-  <!-- 신탁해지 매도인 영역 -->
-  <div id="seller-trust" style="display:none">
-    <div class="ntc wrn" style="margin-bottom:14px">
-      <strong>분양계약서를 확인하세요.</strong> 매도인은 부동산신탁회사(아래 목록)이거나 시공사 직접분양인 경우 직접 입력합니다.
-    </div>
-
-    <!-- 신탁사 드롭다운 -->
-    <div class="f">
-      <label>매도인 선택 <span class="req">*</span></label>
-      <select id="trust-select" onchange="onTrustSelect()">
-        <option value="">-- 직접 입력하거나 신탁사를 선택하세요 --</option>
-        <optgroup label="직접 입력">
-          <option value="custom">✏️ 매도인 직접입력</option>
-        </optgroup>
-        <optgroup label="부동산신탁회사 (분양계약서 매도인 확인)">
-          <option value="kb">케이비부동산신탁 주식회사</option>
-          <option value="daehan">대한토지신탁 주식회사</option>
-          <option value="shinhan">신한자산신탁 주식회사</option>
-          <option value="hana">주식회사 하나자산신탁</option>
-          <option value="korea">코리아신탁 주식회사</option>
-          <option value="mudong">주식회사 무궁화신탁</option>
-          <option value="koramco">주식회사 코람코자산신탁</option>
-          <option value="kyobo">교보자산신탁 주식회사</option>
-          <option value="woori">우리자산신탁 주식회사</option>
-          <option value="kic">한국투자부동산신탁 주식회사</option>
-          <option value="daeshin">대신자산신탁 주식회사</option>
-          <option value="shinyoung">신영부동산신탁 주식회사</option>
-          <option value="korit">한국자산신탁 주식회사</option>
-          <option value="koreit">주식회사 한국토지신탁</option>
-        </optgroup>
-      </select>
-    </div>
-
-    <!-- 선택된 신탁사 미리보기 -->
-    <div class="trust-preview" id="trust-preview">
-      <strong id="tp-name"></strong>
-      <span id="tp-addr" style="color:#075985;font-size:11px"></span><br>
-      <span style="color:#555">대표이사: </span><span id="tp-ceo"></span> &nbsp;|&nbsp;
-      <span style="color:#555">법인번호: </span><span id="tp-reg"></span>
-    </div>
-
-    <!-- 직접 입력 영역 -->
-    <div id="custom-fields">
-      <div class="fg s1" style="margin-top:10px"><div class="f">
-        <label>매도인 상호(법인명) <span class="req">*</span></label>
-        <input type="text" id="c-name" placeholder="예: 주식회사○○건설">
-      </div></div>
-      <div class="fg s1" style="margin-top:10px"><div class="f">
-        <label>매도인 주소 <span class="req">*</span></label>
-        <input type="text" id="c-addr" placeholder="예: 서울특별시 강남구 테헤란로 000, 0층">
-      </div></div>
-      <div class="fg" style="margin-top:10px">
-        <div class="f"><label>대표이사 성명 <span class="req">*</span></label><input type="text" id="c-ceo" placeholder="예: 홍 길 동"></div>
-        <div class="f"><label>법인등록번호 <span class="req">*</span></label><input type="text" id="c-reg" placeholder="예: 110111-0000000"></div>
-      </div>
-    </div>
-
-    <div class="ntc inf2" style="margin-top:12px">
-      <strong>💡 매수자 사전입력확인서 작성 시:</strong> 인터넷등기소(iros.go.kr) → 열람·발급 → 법인인감증명서 발급지원 → 매도용 매수자 등록에서 위 법인 정보로 매도인 검색 후 본인 정보를 등록합니다.
-    </div>
-  </div>
-
-  <!-- 일반매매 매도인 영역 -->
-  <div id="seller-sale">
-    <div class="ntc wrn" style="margin-bottom:14px">
-      <strong>매매계약서를 확인하세요.</strong> 일반매매의 매도인은 개인(자연인)입니다. 매매계약서상 매도인 정보를 입력하세요.
-    </div>
-
-    <label class="jt-toggle" for="seller-joint">
-      <input type="checkbox" id="seller-joint" onchange="toggleJoint('seller')">
-      <span>
-        <span class="jt-t">매도인이 공동명의입니다</span>
-        <span class="jt-s">등기부 갑구의 소유자가 2인인 경우 체크하세요. 매도인 전원이 등기의무자가 됩니다.</span>
-      </span>
-    </label>
-
-    <div class="fg s1"><div class="f">
-      <label>매도인 성명 <span class="req">*</span></label>
-      <input type="text" id="s-name" placeholder="예: 홍길동">
-    </div></div>
-    <div class="fg s1" style="margin-top:10px"><div class="f">
-      <label>매도인 주소 <span class="req">*</span><span class="hint">(도로명 주소)</span></label>
-      <input type="text" id="s-addr" placeholder="예: 서울특별시 강남구 테헤란로 000, 0동 0호">
-    </div></div>
-
-    <!-- 공동명의 시에만 표시 -->
-    <div class="jt-body" id="seller-joint-body">
-      <div class="fg s1" style="margin-top:10px"><div class="f">
-        <label>매도인 1의 지분<span class="hint">(등기부 갑구 기재와 동일하게)</span></label>
-        <div class="jt-share">
-          <input type="number" id="seller1-share-denom" placeholder="2" min="1" step="1">
-          <span>분의</span>
-          <input type="number" id="seller1-share-num" placeholder="1" min="1" step="1">
-        </div>
-      </div></div>
-
-      <div class="jt-person">
-        <div class="jt-person-h">매도인 2</div>
-        <div class="fg s1"><div class="f">
-          <label>성명 <span class="req">*</span></label>
-          <input type="text" id="seller2-name" placeholder="예: 김영희">
-        </div></div>
-        <div class="fg s1" style="margin-top:10px"><div class="f">
-          <label>주소 <span class="req">*</span><span class="hint">(도로명 주소)</span></label>
-          <input type="text" id="seller2-addr" placeholder="매도인 1과 같으면 동일하게 입력">
-        </div></div>
-        <div class="fg s1" style="margin-top:10px"><div class="f">
-          <label>매도인 2의 지분</label>
-          <div class="jt-share">
-            <input type="number" id="seller2-share-denom" placeholder="2" min="1" step="1">
-            <span>분의</span>
-            <input type="number" id="seller2-share-num" placeholder="1" min="1" step="1">
-          </div>
-        </div></div>
-      </div>
-
-      <div class="jt-sum" id="seller-share-sum">지분을 입력하면 합계를 확인해 드립니다.</div>
-
-      <div class="ntc wrn">
-        <strong>매도인이 2인이면 인감 날인도 2개입니다.</strong> 위임장의 등기의무자란에 매도인 각자가 인감도장을 날인해야 하며, 매도용 인감증명서도 각자 1통씩 필요합니다. 한 사람의 날인만으로는 보정 대상이 될 수 있습니다.
-      </div>
-    </div>
-
-    <div class="ntc inf2" style="margin-top:12px">
-      <strong>매도인 주민등록번호는 별도로 입력받지 않습니다.</strong> 매도인은 본 서비스 이용약관에 동의한 당사자가 아니므로, 매수인이 대신 입력하는 방식으로 매도인의 개인정보를 수집하지 않습니다. 서류 출력 후 매도인 본인 확인 하에 직접 기재하시거나, 중개사를 통해 기재해 주세요.
-    </div>
-  </div>
-</div>
-
-<!-- ③ 부동산 정보 -->
-<div class="card">
-  <div class="ch" style="justify-content:space-between">
-    <div style="display:flex;align-items:center;gap:10px">
-      <div class="ci">🏢</div><div><div class="ct">부동산 정보</div><div class="cs">등기부등본(등기사항전부증명서) 표제부에서 확인</div></div>
-    </div>
-    <button type="button" class="guide-link" onclick="openRegGuide()" aria-haspopup="dialog">? 등기부 어디서 봐요</button>
-  </div>
-  <div class="fg s1"><div class="f">
-    <label>지번 주소 <span class="req">*</span></label>
-    <input type="text" id="jibun-address" placeholder="예: 경기도 화성시 반월동 974">
-    <div class="addr-tip">
-      <b>등기사항전부증명서(등기부등본)의 표제부 기재 지번</b>을 입력해 주세요.<br>
-      위임장·신청서의 부동산 표시는 등기부 기준으로 작성해야 합니다(부동산등기규칙 제43조).<br>
-      매매계약서 주소와 다를 수 있으니 반드시 등기부등본을 먼저 확인하세요.<br>
-      또한 <b>시·군까지 반드시 포함</b>해 입력해 주세요. (예: '분당구' ✕ → '성남시 분당구' ○)
-    </div>
+  <div class="ch"><div class="ci">5</div><div>
+    <div class="ct">매매계약 정보</div>
+    <div class="cs">등기부가 아니라 <b>매매계약서</b>를 보고 입력합니다</div>
   </div></div>
-  <div class="divider"></div>
-  <div class="fg">
-    <div class="f"><label>동 <span class="req">*</span></label><input type="number" id="dong" placeholder="107"></div>
-    <div class="f"><label>호 <span class="req">*</span></label><input type="number" id="ho" placeholder="1204"></div>
-  </div>
-  <div class="divider"></div>
-  <!-- 집합건물 상세 (신청서 '부동산의 표시' 자동기재용) -->
-  <div class="fg s1"><div class="f">
-    <label>아파트/건물명</label>
-    <input type="text" id="apt-name" placeholder="예: 반월아이파크">
-    <span class="fn">등기부 표제부의 '건물명칭 및 번호' 기준입니다. (예: OO아파트)</span>
-  </div></div>
-  <div class="divider"></div>
-  <div class="fg">
-    <div class="f"><label>부동산 종류</label>
-      <select id="prop-kind">
-        <option value="">선택 안 함</option>
-        <option value="주택">주택(아파트)</option>
-        <option value="근린생활시설">근린생활시설(상가)</option>
-        <option value="오피스텔">오피스텔</option>
-      </select>
-    </div>
-    <div class="f"><label>층</label><input type="number" id="floor" placeholder="12"></div>
-  </div>
-  <div class="divider"></div>
-  <div class="fg">
-    <div class="f"><label>구조</label><input type="text" id="prop-struct" placeholder="예: 철근콘크리트구조"></div>
-    <div class="f"><label>전유면적 (㎡)</label><input type="text" id="prop-area" placeholder="예: 84.99"></div>
-  </div>
-  <div class="divider"></div>
-  <div class="fg s1"><div class="f">
-    <label>부동산 도로명주소</label>
-    <input type="text" id="prop-road-address" placeholder="예: 경기도 화성시 반월천로 100">
-    <span class="fn">등기부 표제부에 도로명주소가 있으면 입력하세요. 비워두면 신청서에 빈 칸으로 남습니다.</span>
-  </div></div>
-  <div class="divider"></div>
-  <div class="fg s3">
+<div class="fg s3">
     <div class="f"><label>취득 연도</label><input type="number" id="year" placeholder="2025" min="2000" max="2100"></div>
     <div class="f"><label>월</label><input type="number" id="month" placeholder="3" min="1" max="12"></div>
     <div class="f"><label>일</label><input type="number" id="day" placeholder="15" min="1" max="31"></div>
@@ -487,8 +642,8 @@ gtag('js',new Date());gtag('config','G-DR3W5XWF50');
   <span class="fn" style="margin-top:2px;display:block">※ 부동산 매매계약 체결일을 기준으로 입력해 주세요.</span>
   <div class="divider"></div>
   <div class="fg">
-    <div class="f"><label>잔금 (예정)일 — 연도</label><input type="number" id="settle-year" placeholder="2025" min="2000" max="2100"></div>
-    <div class="f"><label>잔금 (예정)일 — 월</label><input type="number" id="settle-month" placeholder="4" min="1" max="12"></div>
+    <div class="f"><label>잔금 (예정)일 · 연도</label><input type="number" id="settle-year" placeholder="2025" min="2000" max="2100"></div>
+    <div class="f"><label>잔금 (예정)일 · 월</label><input type="number" id="settle-month" placeholder="4" min="1" max="12"></div>
   </div>
   <span class="fn" style="margin-top:2px;display:block">※ 위임장 하단 작성일에 쓰입니다. 일(day)은 공란으로 출력되며, 잔금 당일 직접 기재합니다.</span>
   <div class="divider"></div>
@@ -505,29 +660,9 @@ gtag('js',new Date());gtag('config','G-DR3W5XWF50');
   </div></div>
 </div>
 
-<!-- ④ 대지지분 -->
+<!-- ④-2 이전할 지분 (거래 조건 · 등기부가 아니라 매매계약서 기준) -->
 <div class="card">
-  <div class="ch"><div class="ci">📐</div><div><div class="ct">대지지분 정보</div><div class="cs">부동산 등기부등본(등기사항전부증명서)에서 확인</div></div></div>
-  <div class="fg">
-    <div class="f">
-      <label>단지 전체 대지지분 (㎡) <span class="req">*</span></label>
-      <input type="text" id="total-land" placeholder="예: 63066.9">
-      <span class="fn">분모에 들어가는 전체 면적</span>
-    </div>
-    <div class="f">
-      <label>동호수 대지지분 (㎡) <span class="req">*</span></label>
-      <input type="text" id="unit-land" placeholder="예: 39.4783">
-      <span class="fn">분자에 들어가는 귀하의 지분</span>
-    </div>
-  </div>
-  <div class="ntc inf">
-    <strong>💡 대지지분을 모르는 경우:</strong> 부동산 등기부등본(등기사항전부증명서)의 표제부 '대지권의 표시'란에서 확인하실 수 있습니다.
-  </div>
-</div>
-
-<!-- ④-2 이전할 지분 (거래 조건 — 등기부가 아니라 매매계약서 기준) -->
-<div class="card">
-  <div class="ch"><div class="ci">🔁</div><div><div class="ct">이전할 지분</div><div class="cs">매매계약서 기준 — 소유권을 얼마나 넘겨받는지</div></div></div>
+  <div class="ch"><div class="ci">6</div><div><div class="ct">이전할 지분</div><div class="cs">매매계약서 기준 · 소유권을 얼마나 넘겨받는지</div></div></div>
   <div class="deal-tab">
     <button type="button" class="deal-tab-btn active" id="ts-btn-all" onclick="setTransfer('all', this)">전부 이전</button>
     <button type="button" class="deal-tab-btn" id="ts-btn-part" onclick="setTransfer('part', this)">일부만 이전</button>
@@ -539,11 +674,11 @@ gtag('js',new Date());gtag('config','G-DR3W5XWF50');
     <div class="divider"></div>
     <div class="fg">
       <div class="f">
-        <label>이전할 지분 — 분모 <span class="req">*</span></label>
+        <label>이전할 지분 · 분모 <span class="req">*</span></label>
         <input type="text" id="transfer-denom" placeholder="예: 2">
       </div>
       <div class="f">
-        <label>이전할 지분 — 분자 <span class="req">*</span></label>
+        <label>이전할 지분 · 분자 <span class="req">*</span></label>
         <input type="text" id="transfer-num" placeholder="예: 1">
       </div>
     </div>
@@ -555,20 +690,19 @@ gtag('js',new Date());gtag('config','G-DR3W5XWF50');
 
 <!-- ⑤ 이메일 -->
 <div class="card blue-card">
-  <div class="ch"><div class="ci" style="background:#dce8ff">✉️</div><div><div class="ct">셀프등기 체크리스트 안내 수령 이메일</div></div></div>
+  <div class="ch"><div class="ci">7</div><div><div class="ct">셀프등기 체크리스트 안내 수령 이메일</div></div></div>
   <div class="fg s1"><div class="f">
     <label>이메일 주소 <span class="req">*</span></label>
     <input type="email" id="user-email" placeholder="예: hong@example.com">
   </div></div>
 </div>
 
-<!-- ⑥ 결제 (무료 출시 기간 — 결제 UI는 노출하되 지금은 무료로 다운로드 연결)
+<!-- ⑥ 결제 (무료 출시 기간 · 결제 UI는 노출하되 지금은 무료로 다운로드 연결)
      ※ TossPay 심사 승인 후: onclick을 startPayment()로 교체하고
         결제 승인 콜백에서 다운로드/로드맵으로 연결. 무료 기간엔 goFreeIssue() 사용. -->
 <div class="card">
   <button id="btn-pay" class="pay-btn" onclick="goFreeIssue()">
-    <div class="pay-ic">지금</div>
-    <div style="text-align:left">
+        <div style="text-align:left">
       <div class="dn">지금은 무료로 서류를 받으실 수 있습니다</div>
       <div class="ds">출시 기념 무료 · 아래에서 위임장·신청서 다운로드</div>
     </div>
@@ -583,7 +717,7 @@ gtag('js',new Date());gtag('config','G-DR3W5XWF50');
 
   <!-- 신탁해지: 위임장 + 해지증서 -->
   <button id="dl-trust" class="dbtn d1" onclick="downloadAll()" style="display:none;width:100%;flex-direction:row;align-items:center;justify-content:center;gap:12px;padding:18px 20px">
-    <div class="diw" style="font-size:22px">📄</div>
+    
     <div style="text-align:left">
       <div class="dn">위임장 + 신탁일부해지증서 다운로드</div>
       <div class="ds">위임장.docx · 신탁일부해지증서.docx</div>
@@ -592,7 +726,7 @@ gtag('js',new Date());gtag('config','G-DR3W5XWF50');
 
   <!-- 일반매매: 위임장 -->
   <button id="dl-sale" class="dbtn d1" onclick="downloadWimiOnly()" style="width:100%;display:flex;flex-direction:row;align-items:center;justify-content:center;gap:12px;padding:18px 20px">
-    <div class="diw" style="font-size:22px">📄</div>
+    
     <div style="text-align:left">
       <div class="dn">위임장 다운로드</div>
       <div class="ds">위임장.docx</div>
@@ -600,7 +734,7 @@ gtag('js',new Date());gtag('config','G-DR3W5XWF50');
   </button>
 
   <div class="ntc inf" style="margin-top:12px">
-    <strong>⚠️ 유의사항:</strong> 본 서비스는 법률 자문을 제공하지 않습니다. 개인정보를 입력하지 않아 공란으로 발급된 부분은 직접 기재하시어 제출하시기 바랍니다.
+    <strong>유의사항</strong> · 본 서비스는 법률 자문을 제공하지 않습니다. 개인정보를 입력하지 않아 공란으로 발급된 부분은 직접 기재하시어 제출하시기 바랍니다.
   </div>
 </div>
 
@@ -608,7 +742,7 @@ gtag('js',new Date());gtag('config','G-DR3W5XWF50');
 <div class="card">
   <div class="nav-eyebrow">다음 단계</div>
   <button id="btn-roadmap" class="navbtn" onclick="goRoadmap()">
-    <div class="nb-ico">🗺️</div>
+    
     <div class="nb-tx">
       <div class="nb-t">신청서 작성 화면으로 이동</div>
       <div class="nb-s">취득세·채권 등 번호를 채우면 소유권이전등기신청서를 내려받을 수 있습니다 · 관할 구청·등기소 자동 안내</div>
@@ -618,6 +752,41 @@ gtag('js',new Date());gtag('config','G-DR3W5XWF50');
 </div>
 
 </main>
+
+<aside class="side">
+  <div class="card">
+    <div class="side-h"><div class="side-t">문서 반영 미리보기</div></div>
+    <div class="side-b">
+      <div class="pv">
+        <div class="cp">위임장에 들어갈 내용</div>
+        부동산의 표시 <span class="v e" id="pvProp">아직 입력 전</span><br>
+        등기원인 <span class="v e" id="pvCause">아직 입력 전</span><br>
+        위임인(매도인) <span class="v e" id="pvSeller">아직 입력 전</span><br>
+        대리인 <span class="v e" id="pvAgent">아직 입력 전</span>
+      </div>
+      <div class="pv">
+        <div class="cp">신청서에 들어갈 내용</div>
+        전유면적 <span class="v e" id="pvArea">아직 입력 전</span><br>
+        대지권 비율 <span class="v e" id="pvRatio">아직 입력 전</span><br>
+        이전할 지분 <span class="v e" id="pvShare">아직 입력 전</span><br>
+        거래가액 <span class="v e" id="pvPrice">아직 입력 전</span>
+      </div>
+
+      <div class="tally">
+        <span class="k">입력을 마친 항목</span><span class="n2 b" id="tlDone">0</span>
+        <span class="k">아직 비어 있는 항목</span><span class="n2 a" id="tlLeft">0</span>
+        <span class="k">비워두어도 되는 항목</span><span class="n2 c" id="tlOpt">0</span>
+      </div>
+
+      <div class="side-note">
+        입력하신 내용은 <b>이 브라우저 안에서만</b> 처리됩니다. 서버로 전송·저장되지 않습니다.<br>
+        주민등록번호는 비워두고 출력 후 직접 적으셔도 됩니다.<br>
+        최종 확인은 관할 등기소 안내를 따라 주세요.
+      </div>
+    </div>
+  </div>
+</aside>
+</div>
 <footer>
   셀프등기 서류 및 상세 절차 안내는 <a href="https://selfregi.tistory.com" target="_blank" rel="noopener" style="color:#64748B;text-decoration:underline">블로그</a>를 참고하시기 바랍니다.<br>
   셀프등기24 · 사업자등록번호 164-20-02315 · 이메일 <a href="mailto:selfregi999@gmail.com" style="color:#0369A1;text-decoration:none">selfregi999@gmail.com</a><br>© 2026 셀프등기24 셀프등기 서류 자동생성기 · 본 서비스는 법률 자문을 제공하지 않습니다
@@ -640,7 +809,7 @@ gtag('js',new Date());gtag('config','G-DR3W5XWF50');
       </div>
 
       <div class="gm-img-wrap">
-        <svg viewBox="0 0 640 340" xmlns="http://www.w3.org/2000/svg" style="display:block;width:100%;height:auto" font-family="'Noto Sans KR',sans-serif" role="img" aria-label="등기사항전부증명서 표제부 재현 이미지 — 입력 항목이 표시된 위치">
+        <svg viewBox="0 0 640 340" xmlns="http://www.w3.org/2000/svg" style="display:block;width:100%;height:auto" font-family="'Noto Sans KR',sans-serif" role="img" aria-label="등기사항전부증명서 표제부 재현 이미지 · 입력 항목이 표시된 위치">
           <rect x="0" y="0" width="640" height="340" fill="#fff"/>
           <text x="320" y="20" text-anchor="middle" font-size="11" font-weight="700" fill="#0F172A">등기사항전부증명서 (집합건물)</text>
           <line x1="20" y1="27" x2="620" y2="27" stroke="#0F172A" stroke-width="1"/>
@@ -698,13 +867,13 @@ gtag('js',new Date());gtag('config','G-DR3W5XWF50');
           <text x="24" y="326" font-size="7" fill="#8a93a3">※ 이해를 돕기 위한 재현 이미지입니다. 실제 등기부와 서식·수치가 다를 수 있습니다.</text>
         </svg>
       </div>
-      <div class="gm-img-cap">재현 이미지 — 실제 등기부와 서식·수치가 다를 수 있습니다</div>
+      <div class="gm-img-cap">재현 이미지 · 실제 등기부와 서식·수치가 다를 수 있습니다</div>
 
       <div class="gm-legend">
         <div class="gm-litem"><div class="gm-lnum">1</div><div class="gm-ltxt"><b>부동산고유번호</b> → <span class="gm-field">부동산고유번호</span><br>표제부 위, '고유번호' 옆 13자리 숫자입니다.</div></div>
         <div class="gm-litem"><div class="gm-lnum">2</div><div class="gm-ltxt"><b>소재지번 · 건물명칭</b> → <span class="gm-field">지번 주소</span> · <span class="gm-field">아파트/건물명</span><br>'1동의 건물의 표시'의 소재지번을 지번 주소에, 아파트명을 건물명에 입력합니다. <b>시·군까지 포함</b>하세요.</div></div>
         <div class="gm-litem"><div class="gm-lnum">3</div><div class="gm-ltxt"><b>건물내역(구조)</b> → <span class="gm-field">구조</span><br>예: 철근콘크리트구조.</div></div>
-        <div class="gm-litem"><div class="gm-lnum">4</div><div class="gm-ltxt"><b>대지권의 목적인 토지 — 면적</b> → <span class="gm-field">단지 전체 대지지분</span><br>대지권 비율의 <b>분모(전체 면적)</b>가 되는 숫자입니다.</div></div>
+        <div class="gm-litem"><div class="gm-lnum">4</div><div class="gm-ltxt"><b>대지권의 목적인 토지 · 면적</b> → <span class="gm-field">단지 전체 대지지분</span><br>대지권 비율의 <b>분모(전체 면적)</b>가 되는 숫자입니다.</div></div>
         <div class="gm-litem"><div class="gm-lnum">5</div><div class="gm-ltxt"><b>전유부분 건물번호(층·호)</b> → <span class="gm-field">동</span> · <span class="gm-field">호</span> · <span class="gm-field">층</span><br>예: 제12층 제1204호 → 층 12, 호 1204. 동은 '1동 건물 표시'의 동 번호입니다.</div></div>
         <div class="gm-litem"><div class="gm-lnum">6</div><div class="gm-ltxt"><b>전유부분 건물내역(면적)</b> → <span class="gm-field">전유면적</span><br>㎡ 단위의 전용면적입니다(공급·분양면적 아님).</div></div>
         <div class="gm-litem"><div class="gm-lnum">7</div><div class="gm-ltxt"><b>대지권비율</b> → <span class="gm-field">동호수 대지지분</span><br>'○○분의 △△'에서 <b>분자(△△)</b>가 귀하의 대지지분입니다.</div></div>
@@ -956,7 +1125,7 @@ function setTransfer(mode, btn) {
   document.getElementById('ts-desc').style.display      = part ? 'none' : 'block';
 }
 // 위임장에 실제로 찍히는 문자열을 만든다.
-// 전부  → '전부'      (TRANSFER_DENOM/NUM에는 1/1을 넣어 구 템플릿에서도 '1 분의 1'로 유효)
+// 전부  → '전부'      (3슬롯 템플릿은 TRANSFER_SHARE 단일 토큰이라 '전부' 표기가 그대로 들어간다)
 // 일부  → 'N분의 M'
 function transferShareText() {
   if (transferMode === 'all') return '전부';
@@ -1005,7 +1174,7 @@ function getData() {
 // 위임장 / 신탁일부해지증서 — 실제 양식 docx를 base64로 embed,
 // JSZip으로 word/document.xml의 {{PLACEHOLDER}}만 치환
 // =============================================
-const WIMI_B64 = "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";
+const WIMI_B64 = "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";
 
 /* =========================================================
    위임장 템플릿 — 위임인 인원수별 3종
@@ -1014,29 +1183,46 @@ const WIMI_B64 = "UEsDBBQABgAIAAAAIQBTfiLzhAEAAKwGAAATAAgCW0NvbnRlbnRfVHlwZXNdLn
       "PLACEHOLDER" 안의 단어만 docx base64 문자열로 교체하세요.
       (따옴표는 그대로 두고 내용만 치환)
    ========================================================= */
-const WIMI3_B64 = "PLACEHOLDER";   /* 위임인 3명용 */
-const WIMI4_B64 = "PLACEHOLDER";   /* 위임인 4명용 */
+/* WIMI_B64 = 위임장_3슬롯_반영.docx (위임인 슬롯 P1~P3 + 대리인 AGENT_*).
+   sha256 d2ea52de7fdfc0bb0b6af96d87753d9b0eba6458d2bd3d71a48337fa50643b97 */
+const SLOT_MAX = 3;
+/* 4명 이상용 별도 템플릿은 두지 않는다.
+   위임인 4명 = 매도인 3인 이상 조합인데 실무 빈도가 극히 낮다.
+   넘치면 앞 3명만 인쇄하고 나머지는 손으로 적도록 화면에서 알린다. */
 
 /* 참고: SINTAG_B64(신탁일부해지증서)는 선언 없이 downloadAll()에서 참조만 되고 있습니다.
    신탁해지 탭이 disabled라 현재는 도달 불가 경로이며, 케이스 재개 시 선언을 추가해야 합니다. */
 
 /* =========================================================
-   위임장 인원 계획
-   위임인 = 매도인 전원 + 매수인 전원 (최대 4명, 전원 인감도장)
-   수임인(대리인) = buyers[agentIdx]
-   ⚠ 대리인을 위임인란에서 제외해야 하는지는 [미확인].
-      제외 방식으로 바꾸려면 slots 조립부 한 줄만 수정하면 됩니다.
+   위임장 인원 계획  (2026.8.16 확정)
+     대리인(수임인) = 매수인 중 등기소에 접수하러 가는 1인 = buyers[agentIdx]
+     위임인          = 매도인 전원 + 등기소에 가지 않는 매수인
+   대리인 본인은 위임인란에 들어가지 않는다.
+   자기 자신에게 위임하는 꼴이 되고, 같은 사람이 두 칸에 찍힌다.
+   ---------------------------------------------------------
+   인원 상한: 부부 공동명의(매도 2 + 매수 2, 그중 1인이 대리인) = 위임인 3명.
+   3슬롯 템플릿으로 실무 대부분이 커버된다. 매도인 3인 이상은 극히 드물어
+   별도 템플릿을 만들지 않고 넘치는 인원을 화면에 알린다.
    ========================================================= */
 function wimiPlan(d) {
   const sellers = (d.sellers || []).filter(p => p && p.name);
   const buyers  = (d.buyers  || []).filter(p => p && p.name);
+  const ai = Math.min(Math.max(+d.agentIdx || 0, 0), Math.max(buyers.length - 1, 0));
   const slots = sellers.map(p => ({ role: '매도인', name: p.name, addr: p.addr }))
-    .concat(buyers.map(p => ({ role: '매수인', name: p.name, addr: p.addr })));
+    .concat(buyers.filter((p, i) => i !== ai)
+                  .map(p => ({ role: '매수인', name: p.name, addr: p.addr })));
 
-  const n = Math.min(slots.length, 4);
-  const tpl = (n >= 4) ? WIMI4_B64 : (n === 3 ? WIMI3_B64 : WIMI_B64);
+  const n = slots.length;
 
-  const agent = buyers[d.agentIdx] || buyers[0] || {};
+  /* 템플릿 선택.
+     현재 WIMI_B64 = 위임장_3슬롯_반영.docx (P1~P3).
+     3슬롯 템플릿 하나로 3명까지 처리하고, 4명 이상은 넘치는 인원을 알린다. */
+  const tpl = WIMI_B64;
+  const overflow = slots.slice(SLOT_MAX);
+
+  const agent = buyers[ai] || buyers[0] || {};
+  /* 부동산 표시·등기원인·작성일 토큰은 호출부(downloadWimiOnly / downloadAll)에서
+     Object.assign 의 기반 객체로 넘긴다. 여기서는 인원 슬롯과 대리인만 담당한다. */
   const tokens = {
     CAUSE: (typeof dealType !== 'undefined' && dealType === 'sale')
       ? '매매' : '전유부분의 취득',   /* 신탁 케이스 등기원인 문구 [미확인] */
@@ -1044,13 +1230,13 @@ function wimiPlan(d) {
     AGENT_NAME: agent.name || '',
     AGENT_ADDR: agent.addr || ''
   };
-  for (let i = 0; i < 4; i++) {
+  for (let i = 0; i < SLOT_MAX; i++) {
     const p = slots[i] || {};
     tokens['P' + (i + 1) + '_ROLE'] = p.role || '';
     tokens['P' + (i + 1) + '_NAME'] = p.name || '';
     tokens['P' + (i + 1) + '_ADDR'] = p.addr || '';
   }
-  return { tpl: tpl, count: n, tokens: tokens };
+  return { tpl: tpl, count: n, tokens: tokens, overflow: overflow };
 }
 
 
@@ -1078,13 +1264,16 @@ function fmtTrustRegDate(y, m, d) {
 }
 
 // 공통: base64 템플릿 + 치환 dict → Blob
-// Word run-split 대응: 토큰이 여러 run으로 쪼개진 경우 하나로 병합
-// 예) <w:t>년 {</w:t> … <w:t>{MONTH}}월</w:t> → <w:t>{{MONTH}}</w:t>
-// (?!<w:t) 가드로 run 경계를 딱 한 번만 넘도록 제한 — 없으면 멀리 떨어진 중괄호끼리 오매칭
+/* Word run-split 대응 (2026.8.16 재적용)
+   한영 혼용 입력 시 w:hint="eastAsia" / proofErr 가 끼어들어
+   {{MONTH}} 같은 토큰이 여러 XML run 으로 쪼개진다.
+   (?!<w:t) 가드로 run 경계를 딱 한 번만 넘게 제한한다 — 없으면
+   멀리 떨어진 중괄호끼리 오매칭된다.
+   실측: 위임장_양식_수정본v2 에서 온전한 토큰 22 → 23개로 복구. */
 const RUN_GAP = '(?:</w:t>(?:(?!<w:t)[\\s\\S])*?<w:t(?:\\s[^>]*)?>)?';
 const TOKEN_DEFRAG = new RegExp(
-  '\\{' + RUN_GAP + '\\{([A-Z0-9_]{2,30})' + RUN_GAP + '\\}' + RUN_GAP + '\\}', 'g'
-);
+  '\\{' + RUN_GAP + '\\{([A-Z0-9_]{2,30})' + RUN_GAP + '\\}' + RUN_GAP + '\\}', 'g');
+
 async function fillTemplate(b64, replacements) {
   const bytes = b64ToBytes(b64);
   const zip = await JSZip.loadAsync(bytes);
@@ -1114,9 +1303,15 @@ async function downloadAll() {
 
     // 위임장
     const _wimi = wimiPlan(d);
-    if (_wimi.tpl === 'PLACEHOLDER') {
-      showToast('⚠️ 위임인 ' + _wimi.count + '명용 위임장 템플릿이 아직 등록되지 않았습니다', '#0369A1');
+    if (!_wimi.tpl || _wimi.tpl === 'PLACEHOLDER') {
+      showToast('위임장 템플릿이 아직 등록되지 않았습니다', '#0369A1');
       return;
+    }
+    if (_wimi.overflow.length) {
+      /* 현재 템플릿은 위임인 3명까지. 넘치는 인원은 조용히 빠지면 안 된다. */
+      showToast('위임인이 ' + _wimi.count + '명입니다. 위임장에는 앞 3명(' +
+        _wimi.overflow.map(function(p){return p.name;}).join(', ') +
+        ' 제외)만 인쇄되니 나머지는 손으로 적어 주세요.', '#B45309');
     }
     const blob1 = await fillTemplate(_wimi.tpl, Object.assign({
       PROPERTY_UID: d.propertyUid,
@@ -1133,14 +1328,7 @@ async function downloadAll() {
       YEAR: d.yr.trim() ? d.yr : '    ',
       MONTH: d.mo.trim() ? d.mo : '  ',
       DAY: d.dy.trim() ? d.dy : '  ',
-      TRANSFER_DENOM: d.transferDenom,
-      TRANSFER_NUM: d.transferNum,
-      // 템플릿을 단일 토큰으로 바꾸면 '전부' 표기가 가능해진다 (현재 템플릿엔 없어 무시됨)
       TRANSFER_SHARE: d.transferShare,
-      TRUST_NAME: d.tName,
-      TRUST_ADDR: d.tAddr,
-      OWNER_NAME: d.ownerName,
-      OWNER_ADDR: d.ownerAddr,
       SETTLE_YEAR: d.settleYear.trim() ? d.settleYear : '    ',
       SETTLE_MONTH: d.settleMonth.trim() ? d.settleMonth : '  ',
     }, _wimi.tokens));
@@ -1186,9 +1374,15 @@ async function downloadWimiOnly() {
   try {
     const d = getData();
     const _wimi = wimiPlan(d);
-    if (_wimi.tpl === 'PLACEHOLDER') {
-      showToast('⚠️ 위임인 ' + _wimi.count + '명용 위임장 템플릿이 아직 등록되지 않았습니다', '#0369A1');
+    if (!_wimi.tpl || _wimi.tpl === 'PLACEHOLDER') {
+      showToast('위임장 템플릿이 아직 등록되지 않았습니다', '#0369A1');
       return;
+    }
+    if (_wimi.overflow.length) {
+      /* 현재 템플릿은 위임인 3명까지. 넘치는 인원은 조용히 빠지면 안 된다. */
+      showToast('위임인이 ' + _wimi.count + '명입니다. 위임장에는 앞 3명(' +
+        _wimi.overflow.map(function(p){return p.name;}).join(', ') +
+        ' 제외)만 인쇄되니 나머지는 손으로 적어 주세요.', '#B45309');
     }
     const blob1 = await fillTemplate(_wimi.tpl, Object.assign({
       PROPERTY_UID: d.propertyUid,
@@ -1205,14 +1399,7 @@ async function downloadWimiOnly() {
       YEAR: d.yr.trim() ? d.yr : '    ',
       MONTH: d.mo.trim() ? d.mo : '  ',
       DAY: d.dy.trim() ? d.dy : '  ',
-      TRANSFER_DENOM: d.transferDenom,
-      TRANSFER_NUM: d.transferNum,
-      // 템플릿을 단일 토큰으로 바꾸면 '전부' 표기가 가능해진다 (현재 템플릿엔 없어 무시됨)
       TRANSFER_SHARE: d.transferShare,
-      TRUST_NAME: d.tName,
-      TRUST_ADDR: d.tAddr,
-      OWNER_NAME: d.ownerName,
-      OWNER_ADDR: d.ownerAddr,
       SETTLE_YEAR: d.settleYear.trim() ? d.settleYear : '    ',
       SETTLE_MONTH: d.settleMonth.trim() ? d.settleMonth : '  ',
     }, _wimi.tokens));
@@ -1339,5 +1526,382 @@ window.SR=window.SR||(function(){
 })();
 </script>
 <script>try{if(window.SR){var r=document.referrer||'';var from=/guide\.html/.test(r)?'guide':(/calculator\.html/.test(r)?'calculator':(/roadmap\.html/.test(r)?'roadmap':(/selfregi/.test(r)?'index':'direct')));SR.track('form_enter',{from:from});}}catch(e){}</script>
+
+<script>
+/* 우측 미리보기 패널 — 기존 입력값을 읽어 표시만 한다(부작용 없음) */
+(function(){
+  function v(id){var e=document.getElementById(id);return e?String(e.value||'').trim():'';}
+  function put(id,val){
+    var e=document.getElementById(id); if(!e) return;
+    if(val){e.textContent=val;e.className='v';} else {e.textContent='아직 입력 전';e.className='v e';}
+  }
+  var REQ=['owner-name','owner-address','s-name','s-addr','jibun-address','dong','ho',
+           'total-land','unit-land','transfer-denom','transfer-num','user-email'];
+  var OPT=['owner-rrn','apt-name','floor','prop-struct','prop-area','prop-road-address',
+           'property-uid','deal-price'];
+  function frac(a,b){var x=v(a),y=v(b);return (x&&y)?(x+'분의 '+y):'';}
+  function render(){
+    var addr=v('jibun-address'), apt=v('apt-name'), dong=v('dong'), ho=v('ho');
+    var prop='';
+    if(addr){prop=addr+(apt?' '+apt:'')+(dong?' 제'+dong+'동':'')+(ho?' 제'+ho+'호':'');}
+    put('pvProp',prop);
+    var y=v('year'),m=v('month'),d=v('day');
+    put('pvCause',(y&&m&&d)?(y+'년 '+m+'월 '+d+'일 매매'):'');
+    put('pvSeller', v('s-name') || v('c-name'));
+    put('pvAgent',  v('owner-name'));
+    put('pvArea',   v('prop-area')?v('prop-area')+'㎡':'');
+    put('pvRatio',  frac('total-land','unit-land'));
+    put('pvShare',  frac('transfer-denom','transfer-num'));
+    var pr=v('deal-price');
+    put('pvPrice',  pr?(pr.replace(/[^0-9]/g,'').replace(/\B(?=(\d{3})+(?!\d))/g,',')+'원'):'');
+    var done=0,left=0,opt=0,i;
+    for(i=0;i<REQ.length;i++){ var e=document.getElementById(REQ[i]);
+      if(!e||e.offsetParent===null) continue; if(v(REQ[i]))done++;else left++; }
+    for(i=0;i<OPT.length;i++){ var e2=document.getElementById(OPT[i]);
+      if(!e2||e2.offsetParent===null) continue; if(v(OPT[i]))done++;else opt++; }
+    var a=document.getElementById('tlDone'),b=document.getElementById('tlLeft'),c=document.getElementById('tlOpt');
+    if(a)a.textContent=done; if(b)b.textContent=left; if(c)c.textContent=opt;
+  }
+  document.addEventListener('input',render,true);
+  document.addEventListener('change',render,true);
+  if(document.readyState!=='loading')render();
+  else document.addEventListener('DOMContentLoaded',render);
+})();
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="regparse.js"></script>
+<script src="regocr.js"></script>
+<script>
+/* ── 자료에서 읽어오기 (2026.8.16) ─────────────────────────────────
+   RegParse(텍스트 PDF) / RegOCR(이미지·사진)로 등기부를 읽고,
+   사용자가 확인한 뒤에만 기존 입력칸에 넣는다. 폼을 자동으로 바꾸지 않는다. */
+(function(){
+  'use strict';
+  var $ = function(id){ return document.getElementById(id); };
+  function esc(t){ return String(t==null?'':t).replace(/[&<>"]/g,function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+  function trk(n,d){ try{ window.SR && SR.track(n,d); }catch(e){} }
+
+  if(window.pdfjsLib){ try{
+    pdfjsLib.GlobalWorkerOptions.workerSrc =
+      'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  }catch(e){} }
+
+  var TESS_SRC = 'https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js';
+  var R = null, PENDING = null;
+
+  function say(t){ var e=$('lg-reg'); if(e) e.textContent = t||''; }
+  function bar(v){
+    var p=$('pr-reg'); if(!p) return;
+    if(v==null){ p.classList.remove('on'); return; }
+    p.classList.add('on'); p.firstElementChild.style.width = Math.round(v*100)+'%';
+  }
+
+  /* ── 등기부 값 → 폼 필드 ──
+     등기부는 「소재지번 + 건물명 + 제N동」이 한 덩어리라 쪼개야 한다. */
+  function splitJibun(j){
+    var out = { addr:j||'', apt:'', dong:'' };
+    if(!j) return out;
+    var m = j.match(/^(.*?)\s*([가-힣A-Za-z0-9·\.]+)\s*제\s*([0-9가-힣]+)\s*동\s*$/);
+    if(m){ out.addr = m[1].trim(); out.apt = m[2].trim(); out.dong = m[3]; return out; }
+    m = j.match(/^(.*?\d+(?:-\d+)?)\s+(.+)$/);
+    if(m){ out.addr = m[1].trim(); out.apt = m[2].trim(); }
+    return out;
+  }
+  /* 부동산 종류 — 건물내역·전유부 구조 문자열에서 고른다.
+     드롭다운 값과 정확히 같은 문자열만 반환한다(아니면 select에 안 들어간다). */
+  function kindOf(res){
+    if(res.docType === '토지') return '토지';
+    var t = [ (res.property && res.property.buildingDetail || []).join(' '),
+              (res.property && res.property.exclusiveStruct) || '' ].join(' ');
+    if(/오피스텔|업무시설/.test(t)) return '오피스텔';
+    if(/아파트|공동주택|연립주택|다세대주택|주상복합/.test(t)) return '주택';
+    if(/근린생활시설|상가|판매시설/.test(t)) return '근린생활시설';
+    return '';
+  }
+  function splitExcl(e){
+    var m = String(e||'').match(/제\s*(\d+)\s*층\s*제\s*([0-9가-힣]+)\s*호/);
+    return m ? { floor:m[1], ho:m[2] } : { floor:'', ho:'' };
+  }
+  /* 대지권의 비율은 환산하지 않는다.
+     신청서의 부동산 표시는 등기부 기재와 동일해야 하므로(국가기록원 절차안내),
+     「63527.1분의 75.809」든 「55분의 1」이든 적힌 그대로 옮긴다. */
+
+  function buildRows(res){
+    var P = res.property||{}, jb = splitJibun(P.jibunAddress), ex = splitExcl(P.exclusiveNo);
+    var struct = String(P.exclusiveStruct||'').replace(/[\d.,]+\s*(?:㎡|m2|m²).*$/,'').trim();
+    var rows = [];
+    function add(id,label,val,note,cls){ if(val) rows.push({id:id,label:label,v:String(val),note:note||'',cls:cls||''}); }
+    /* 파서가 교차검증에서 어긋남을 잡은 항목(confidence:'low')은 「사진에서 인식」이 아니라
+       「확인 필요」로 내린다. 가장 위험한 실패는 빈 칸이 아니라 그럴싸하게 틀린 값이다. */
+    var CF = res.confidence || {};
+    function addK(id,label,val,key,msg){
+      if(CF[key]==='low') add(id,label,val,msg,'warn'); else add(id,label,val);
+    }
+    var M_ID = '페이지마다 다르게 읽힌 값이 있습니다. 원본과 대조해 주세요.';
+    var M_EX = '층과 호수가 서로 맞지 않습니다. 원본과 대조해 주세요.';
+    var M_AR = '표제부의 한 층 면적보다 큽니다. ㎡ 기호가 숫자로 읽혔을 수 있습니다.';
+
+    addK('jibun-address','소재지번', jb.addr, 'jibunAddress', M_ID);
+    addK('apt-name','아파트 · 건물명', jb.apt, 'jibunAddress', M_ID);
+    addK('dong','동', jb.dong, 'jibunAddress', M_ID);
+    addK('floor','층', ex.floor, 'exclusiveNo', M_EX);
+    addK('ho','호', ex.ho, 'exclusiveNo', M_EX);
+    add('prop-struct','구조', struct);
+    addK('prop-area','전유면적(㎡)', P.exclusiveArea, 'exclusiveArea', M_AR);
+    add('prop-road-address','도로명주소', P.roadAddress);
+    add('property-uid','부동산고유번호', res.uid);
+    add('prop-kind','부동산 종류', kindOf(res));
+
+    var r = P.landRightRatio;
+    if(r){
+      /* 형태를 분류하지 않는다. 638분의 79.093 처럼 분모가 정수여도 면적 기준일 수 있고,
+         어느 쪽이든 신청서에는 등기부 기재를 그대로 옮긴다. */
+      var rl = CF.landRightRatio==='low';
+      add('total-land','대지권의 비율 · 분모', r.denom,
+          '등기부에 <b>'+esc(r.denom+'분의 '+r.num)+'</b>으로 적혀 있습니다. 이 숫자를 그대로 씁니다.',
+          rl?'warn':'');
+      add('unit-land','대지권의 비율 · 분자', r.num, '', rl?'warn':'');
+    }
+    var owners = res.owners||[];
+    owners.forEach(function(o,i){
+      var n = i===0 ? 's-name' : (i===1 ? 'seller2-name' : null);
+      add(n, '매도인'+(owners.length>1?(' '+(i+1)):'')+' 성명', o.name);
+      if(o.shareRaw && owners.length>1)
+        rows.push({id:null,label:'매도인'+(i+1)+' 지분', v:o.shareRaw});
+      if(o.registryAddress)
+        rows.push({id:null,label:'등기부상 주소', v:o.registryAddress, cls:'warn',
+          note:'등기부에 적힌 주소입니다. 매도인이 이사했다면 지금 주소와 다릅니다. 서류에는 <b>주민등록초본상 현재 주소</b>를 쓰셔야 하니 초본과 대조해 주세요.'});
+    });
+    return rows;
+  }
+
+  function render(res){
+    R = res;
+    var rows = buildRows(res), html = '', fillable = 0;
+    var src = res._ocr ? ['t-oc','사진에서 인식'] : ['t-ok','원문'];
+    rows.forEach(function(r,idx){
+      if(r.id) fillable++;
+      var wide = /주소|성명|아파트|소재지번/.test(r.label) || String(r.v).length > 22;
+      html += '<div class="fr'+(wide?' wide':'')+'"><b>'+esc(r.label)+'</b><span class="val'
+           +  (/주소|성명|구조|아파트|소재지번|지분/.test(r.label)?' txt':'')+'">'
+           +  esc(r.v)
+           +  '<span class="tag '+(r.cls==='warn'?'t-no':src[0])+'">'
+           +  (r.cls==='warn'?'확인 필요':src[1])+'</span>'
+           +  (r.note?'<span class="sub2">'+r.note+'</span>':'')
+           +  '</span>'
+           +  (r.id?'<button type="button" class="mini" data-i="'+idx+'">넣기</button>':'<span></span>')
+           +  '</div>';
+    });
+    if(!rows.length) html = '<div class="nt" style="margin-top:14px">읽어낸 항목이 없습니다. 아래 「추출한 원문 보기」를 열어 무엇이 읽혔는지 확인하실 수 있습니다. 칸은 직접 입력해 주세요.</div>';
+    $('ocr-rows').innerHTML = rows.length ? '<div class="rows2">'+html+'</div>' : html;
+    R._rows = rows;
+
+    var al = '';
+    function note(kind, t){ al += '<div class="ntc '+kind+'" style="margin-top:12px">'+t+'</div>'; }
+    if(res.hasBlocker)
+      note('addr','<b>소유권에 압류·가처분 등이 기재되어 있습니다.</b> 그대로 진행하면 등기가 접수되지 않을 수 있습니다. 매도인·중개사를 통해 말소 여부를 먼저 확인해 주세요.');
+    if(res.isTrust)
+      note('addr','<b>현재 소유자가 신탁 수탁자입니다.</b> 일반 매매와 절차가 다릅니다.');
+    if(res.property && res.property.separateReg && res.property.separateReg.value)
+      note('addr','<b>표제부에 「별도등기 있음」 기재가 있습니다.</b> 이 화면은 매매 소유권이전 기준이므로, 해당 여부를 <a href="guide.html" style="color:#92400e;font-weight:700">가이드</a>에서 먼저 확인해 보시기 바랍니다.');
+    if(res.scope === '말소사항포함')
+      note('addr','<b>「말소사항 포함」 발급본입니다.</b> 취소선이 그어진 옛 기재사항도 글자로는 그대로 읽힙니다. 소유자·주소가 옛 값일 수 있으니 반드시 원본과 대조하세요.');
+    if(res.isJointOwnership)
+      note('inf','매도인이 <b>'+res.ownerCount+'명</b>입니다. 위임장은 매도인 수만큼 필요합니다.');
+    /* 단어 신뢰도가 낮은 필드는 따로 모아 대조를 요구한다.
+       가장 위험한 실패는 빈 칸이 아니라 그럴싸하게 틀린 값이다. */
+    if(res._confirm && res._confirm.length){
+      var names = res._confirm.map(function(f){ return esc(f.label || f.key || ''); })
+                              .filter(Boolean).join(', ');
+      note('addr','<b>다음 항목은 글자가 흐릿해 확신하기 어렵습니다.</b>'
+        + (names ? ' (' + names + ')' : '')
+        + ' 원본과 한 글자씩 대조해 주세요. 숫자 0과 O, 1과 l이 특히 자주 바뀝니다.');
+    }
+    (res.warnings||[]).forEach(function(w){
+      if(!/압류|신탁|말소/.test(w)) note('addr', esc(w));
+    });
+    $('ocr-flags').innerHTML = al;
+
+    $('ocr-raw').textContent = res._raw || '(원문 없음)';
+    $('ocr-out').hidden = false;
+    var b = $('ocr-all');
+    b.textContent = fillable ? ('읽은 값 '+fillable+'개 모두 넣기') : '넣을 값이 없습니다';
+    b.disabled = !fillable; b.dataset.n = fillable;
+    trk('ocr_result',{mode: res._ocr ? 'ocr' : 'text'});
+  }
+
+  function put(i){
+    if(!R || !R._rows) return false;
+    var r = R._rows[i]; if(!r || !r.id) return false;
+    var el = $(r.id); if(!el) return false;
+    el.value = r.v;
+    if(R._ocr) el.classList.add('ocr');
+    el.dispatchEvent(new Event('input',{bubbles:true}));
+    el.dispatchEvent(new Event('change',{bubbles:true}));
+    return true;
+  }
+
+  /* ── 읽기 ── */
+  function readBuf(f){ return new Promise(function(res,rej){
+    var r=new FileReader(); r.onload=function(){res(r.result)};
+    r.onerror=function(){rej(new Error('파일을 읽지 못했습니다.'))}; r.readAsArrayBuffer(f); }); }
+  function toImage(f){ return new Promise(function(res,rej){
+    var r=new FileReader();
+    r.onload=function(){ var im=new Image();
+      im.onload=function(){res(im)}; im.onerror=function(){rej(new Error('이미지를 열지 못했습니다.'))};
+      im.src=r.result; };
+    r.onerror=function(){rej(new Error('파일을 읽지 못했습니다.'))}; r.readAsDataURL(f); }); }
+
+  function loadTess(){
+    if(window.Tesseract) return Promise.resolve();
+    say('사진 판독기를 내려받는 중입니다. 처음 한 번만 시간이 걸립니다…');
+    return new Promise(function(res,rej){
+      var t=document.createElement('script'); t.src=TESS_SRC;
+      t.onload=res; t.onerror=function(){rej(new Error('사진 판독기를 내려받지 못했습니다. 인터넷 연결을 확인해 주세요.'))};
+      document.head.appendChild(t);
+    });
+  }
+
+  async function runText(file){
+    if(!window.pdfjsLib) throw new Error('PDF 판독 모듈을 불러오지 못했습니다. 새로고침 후 다시 시도해 주세요.');
+    say('발급 원본을 여는 중…'); bar(0.1);
+    var buf = await readBuf(file);
+    var res = await RegParse.parseRegistry(pdfjsLib, buf);
+    bar(1);
+    if(res && res.ok && !res._raw){
+      try{
+        var doc = await pdfjsLib.getDocument({data: buf.slice(0)}).promise;
+        var txt = [], n = Math.min(doc.numPages, 20), i, pg, tc;
+        for(i=1;i<=n;i++){ pg=await doc.getPage(i); tc=await pg.getTextContent();
+          txt.push('===== ' + i + '쪽 =====');
+          txt.push(tc.items.map(function(t){ return t.str; }).join(' ')); }
+        res._raw = txt.join('\n');
+      }catch(e){}
+    }
+    return res;
+  }
+
+  async function runOcr(sources){
+    await loadTess();
+    say('한국어 판독기를 준비하는 중입니다…');
+    var worker = await RegOCR.makeWorker(window.Tesseract, {
+      logger:function(m){ if(m&&m.status&&typeof m.progress==='number'){
+        say('판독기 준비: '+m.status); bar(0.1+0.15*m.progress); } }
+    });
+    var tokAll = [], confirm = [];
+    try{
+      for(var i=0;i<sources.length;i++){
+        var src = sources[i];
+        say('판독 중… ('+(i+1)+'/'+sources.length+')');
+        /* 장마다 해상도가 다를 수 있으므로 프리셋을 매 장 다시 계산한다. */
+        var out = await RegOCR.recognize(src.el, window.Tesseract, {
+          worker: worker,
+          maxPasses: src.clean ? 1 : 2,
+          presets: src.clean ? [{name:'그대로', blur:0, width:(src.el.width||src.el.naturalWidth)}] : null,
+          onProgress:function(p){
+            var base = 0.25 + 0.7*(i/sources.length);
+            bar(Math.min(0.97, base + (p.phase==='ocr'?0.05:0)));
+          }
+        });
+        if(out && out.tokens && out.tokens.length) tokAll.push(out.tokens);
+        if(out && out.confirmList && out.confirmList.length) confirm = confirm.concat(out.confirmList);
+      }
+    } finally { try{ await worker.terminate(); }catch(e){} }
+    if(!tokAll.length) throw new Error('사진에서 글자를 찾지 못했습니다. 더 밝고 또렷한 사진으로 다시 시도해 주세요.');
+    var comb = RegOCR.combinePages(tokAll);
+    var parsed = RegParse.parseTokens(comb, { ocr: true });
+    parsed._ocr = true;
+    parsed._confirm = confirm;
+    /* 진단용 원문. 파싱이 실패해도 무엇이 읽혔는지 볼 수 있어야 한다. */
+    parsed._raw = comb.map(function(t){ return t.str; }).join(' ');
+    bar(1);
+    return parsed;
+  }
+
+  async function handle(file){
+    if(!file) return;
+    if(/heic|heif/i.test(file.type) || /\.hei[cf]$/i.test(file.name)){
+      say('HEIC 형식은 아직 읽지 못합니다. 아이폰 [설정 > 카메라 > 포맷]을 「높은 호환성」으로 바꾸거나 JPG로 저장해 올려 주세요.');
+      return;
+    }
+    var dz = $('dz-reg'); dz.classList.add('busy');
+    trk('ocr_upload',{type: /pdf/i.test(file.type) ? 'pdf' : 'image'});
+    try{
+      var res = null, isPdf = /pdf/i.test(file.type) || /\.pdf$/i.test(file.name);
+      if(isPdf){
+        res = await runText(file);
+        if(!res.ok && res.reason === 'NO_TEXT_LAYER'){
+          say('사진으로 만들어진 PDF입니다. 이미지 판독으로 넘어갑니다…');
+          var doc = await pdfjsLib.getDocument({data: await readBuf(file)}).promise;
+          var n = Math.min(doc.numPages, 8), srcs = [];
+          for(var p=1;p<=n;p++){
+            say('페이지를 이미지로 바꾸는 중… ('+p+'/'+n+')'); bar(0.1+0.1*p/n);
+            var pg = await doc.getPage(p);
+            /* 이미지 PDF는 200dpi 렌더가 최적(실측: 200dpi 100% / 500dpi 92%).
+               PDF 좌표는 72dpi 기준이므로 배율은 200/72. */
+            var vp = pg.getViewport({scale:200/72});
+            var cv = document.createElement('canvas');
+            cv.width = vp.width; cv.height = vp.height;
+            await pg.render({canvasContext:cv.getContext('2d'), viewport:vp}).promise;
+            srcs.push({el:cv, clean:true});
+          }
+          res = await runOcr(srcs);
+        }
+      }else{
+        res = await runOcr([{el: await toImage(file), clean:false}]);
+      }
+
+      if(!res || !res.ok){
+        var why = (res && res.reason === 'NOT_REGISTRY')
+          ? '등기사항전부증명서로 보이지 않습니다. 다른 파일을 올리셨는지 확인해 주세요.'
+          : ((res && res.warnings && res.warnings[0]) || '내용을 알아보지 못했습니다.');
+        throw new Error(why);
+      }
+      render(res);
+      say(res._ocr ? '사진에서 읽었습니다. 값이 정확한지 원본과 반드시 대조하세요.'
+                   : '발급 원본에서 글자를 그대로 가져왔습니다.');
+    }catch(e){
+      bar(null); say('');
+      $('ocr-out').hidden = false;
+      $('ocr-rows').innerHTML = '<div class="ntc addr" style="margin-top:14px"><b>읽지 못했습니다.</b> '
+        + esc(e && e.message ? e.message : e)
+        + '<br>아래 칸은 직접 입력하셔도 서류 발급에는 아무 지장이 없습니다.</div>';
+      $('ocr-flags').innerHTML = ''; $('ocr-raw').textContent = '';
+      trk('ocr_result',{mode:'fail'});
+    }finally{ dz.classList.remove('busy'); }
+  }
+
+  var fi = $('fi-reg'), dz = $('dz-reg');
+  if(fi) fi.addEventListener('change', function(){ handle(fi.files && fi.files[0]); });
+  if(dz){
+    ['dragenter','dragover'].forEach(function(t){
+      dz.addEventListener(t,function(e){ e.preventDefault(); dz.classList.add('over'); }); });
+    ['dragleave','drop'].forEach(function(t){
+      dz.addEventListener(t,function(e){ e.preventDefault(); dz.classList.remove('over'); }); });
+    dz.addEventListener('drop', function(e){
+      var f = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
+      if(f) handle(f);
+    });
+  }
+
+  document.addEventListener('click', function(e){
+    var b = e.target.closest && e.target.closest('.mini[data-i]');
+    if(b){ if(put(+b.dataset.i)){ b.textContent='넣었습니다'; b.disabled=true; } return; }
+    if(e.target.id === 'ocr-all'){
+      var n=0; (R && R._rows || []).forEach(function(_,i){ if(put(i)) n++; });
+      e.target.textContent = n+'개를 넣었습니다'; e.target.disabled = true;
+      document.querySelectorAll('.mini[data-i]').forEach(function(x){ x.textContent='넣었습니다'; x.disabled=true; });
+      trk('ocr_accept',{key:String(n)});
+    }
+  });
+
+  var boot = [];
+  if(!window.pdfjsLib) boot.push('PDF 판독 모듈');
+  if(!window.RegParse) boot.push('등기부 파서');
+  if(!window.RegOCR)   boot.push('사진 판독 모듈');
+  if(boot.length) say(boot.join(' · ') + '을(를) 불러오지 못했습니다. 새로고침 후 다시 시도해 주세요.');
+})();
+</script>
 </body>
 </html>
