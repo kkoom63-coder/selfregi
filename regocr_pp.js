@@ -290,21 +290,46 @@
        같은 줄을 두 군데에 담아 두면 같은 값이 두 번 들어온다. 그대로 두면
        주소 같은 긴 값이 반복 연결되어 나온다(실측 증상).
        같은 문자열이 같은 자리에 있으면 한 번만 남긴다. */
+    /* 같은 줄이 여러 벌 들어온다(실측: 241줄 중 172줄). 겹친 토큰을 regparse 의
+       joinRow 가 간격 없이 이어붙여 '고다영고다영', 주소 5회 반복이 나온다.
+       좌표를 4px 버킷으로 뭉개 지웠더니 멀쩡한 값까지 사라진 적이 있으므로,
+       글자와 상자가 '정확히' 같을 때만 지운다. 다른 칸을 같은 것으로 볼 여지가 없다. */
     var seen = Object.create(null), before = rows.length, dup = 0;
-    var kept = rows.filter(function (r) {
+    rows = rows.filter(function (r) {
       var rc = boxToRect(r.box);
-      var key = r.text + '@' + (rc ? Math.round(rc.x0 / 4) + ',' + Math.round(rc.y0 / 4) : '-');
-      if (seen[key]) { dup++; return false; }
+      var key = r.text + '@' + (rc ? [Math.round(rc.x0), Math.round(rc.y0),
+                                      Math.round(rc.x1), Math.round(rc.y1)].join(',') : '-');
+      if (seen[key]) { dup++; return (opts.dedup === false); }
       seen[key] = 1; return true;
     });
-    /* 실측(2026.08.21): 이 제거를 켜면 신당동 대지권비율이 통째로 사라졌다.
-       같은 좌표·같은 글자를 지우는 것이 왜 값을 없애는지 확인되기 전에는 켜지 않는다.
-       세는 것만 유지한다 — 중복이 실제로 몇 건인지가 원인 판별의 근거다.
-       ?dedup=1 로만 켠다. */
-    if (opts.dedup) rows = kept;
     try {
       console.log('[ppocr] ' + canvas.width + 'px · ' + (Date.now() - t0) + 'ms · 줄 ' + before +
-                  ' · 같은자리 중복 ' + dup + (opts.dedup ? ' (제거함)' : ' (그대로 둠)'));
+                  ' → ' + rows.length + ' (완전동일 중복 ' + dup + ')');
+      /* 한 번만: 라이브러리가 결과를 어떤 모양으로 주는지 남긴다.
+         이걸 모르면 계속 추측으로 고치게 된다. */
+      if (!recognize._probed) {
+        recognize._probed = 1;
+        console.log('[ppocr:구조] 최상위 키 =', (raw && typeof raw === 'object') ? Object.keys(raw) : typeof raw);
+        function shape(o, path, d) {
+          if (!o || typeof o !== 'object' || d > 2) return;
+          Object.keys(o).forEach(function (k) {
+            var v = o[k], p2 = path ? path + '.' + k : k;
+            if (Array.isArray(v)) {
+              console.log('[ppocr:구조] ' + p2 + ' = 배열(' + v.length + ')');
+              if (v.length && v[0] && typeof v[0] === 'object') shape(v[0], p2 + '[0]', d + 1);
+            } else if (v && typeof v === 'object') {
+              console.log('[ppocr:구조] ' + p2 + ' = 객체 {' + Object.keys(v).slice(0, 8).join(',') + '}');
+              shape(v, p2, d + 1);
+            }
+          });
+        }
+        shape(raw, '', 0);
+        var ex = null;
+        for (var q = 1; q < rows.length; q++) {
+          if (rows[q].text === rows[q - 1].text) { ex = [rows[q - 1], rows[q]]; break; }
+        }
+        if (ex) console.log('[ppocr:구조] 남은 동일문자열 쌍 =', JSON.stringify(ex));
+      }
     } catch (e) {}
 
     var tokens = rowsToTokens(rows, canvas.width, canvas.height, opts);
