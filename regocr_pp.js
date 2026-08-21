@@ -148,16 +148,16 @@
   // ---------- 결과 평탄화 ----------
   /* 라이브러리 결과 구조를 가정하지 않는다(하네스에서 검증된 방식).
      최상위 text(페이지 전체 문자열)는 건너뛰고 줄 단위 노드를 모은다. */
-  function collect(node, out, isRoot, seen) {
+  function collect(node, out, isRoot, seen, path) {
     if (node == null) return;
-    /* 결과 객체는 같은 줄 배열을 두 군데 이상에서 참조한다(실측: 278줄 중 192줄이 중복).
-       그대로 두면 주소 같은 긴 값이 반복 연결되고, 뒤늦게 좌표로 지우면 멀쩡한 값까지
-       날아간다. 이미 본 객체는 다시 훑지 않는 것이 유일하게 안전한 해법이다. */
     if (typeof node === 'object') {
       if (!seen) seen = (typeof WeakSet !== 'undefined') ? new WeakSet() : null;
       if (seen) { if (seen.has(node)) return; seen.add(node); }
     }
-    if (Array.isArray(node)) { node.forEach(function (n) { collect(n, out, false, seen); }); return; }
+    if (Array.isArray(node)) {
+      node.forEach(function (n) { collect(n, out, false, seen, path); });
+      return;
+    }
     if (typeof node !== 'object') return;
     var t = null;
     if (typeof node.text === 'string') t = node.text;
@@ -167,14 +167,37 @@
       out.push({
         text: t,
         score: (node.mean != null ? node.mean : (node.score != null ? node.score : null)),
-        box: node.box || node.points || node.bbox || null
+        box: node.box || node.points || node.bbox || null,
+        group: path || '(root)'
       });
       return;
     }
     Object.keys(node).forEach(function (k) {
       if (k === 'canvas' || k === 'image' || k === 'img') return;
-      collect(node[k], out, false, seen);
+      collect(node[k], out, false, seen, path ? path + '.' + k : k);
     });
+  }
+
+  /* 한 페이지에 대해 여러 벌의 결과가 동시에 들어온다(실측 2026.08.21):
+     줄 단위로 제대로 읽은 한 벌 + 같은 내용을 다르게 묶은 판이 두 벌 더.
+     전부 합치면 '고다영고다영', 주소 5회 반복이 되고, 묶음이 다르므로
+     중복 제거로는 잡히지 않는다. 가장 충실한 한 벌만 남긴다. */
+  function pickBestGroup(rows) {
+    var g = Object.create(null);
+    rows.forEach(function (r) {
+      var k = r.group;
+      (g[k] || (g[k] = { rows: [], chars: 0 }));
+      g[k].rows.push(r); g[k].chars += r.text.length;
+    });
+    var keys = Object.keys(g);
+    if (keys.length <= 1) return rows;
+    keys.sort(function (a, b) { return g[b].chars - g[a].chars; });
+    try {
+      console.log('[ppocr:묶음] ' + keys.map(function (k) {
+        return k + '=' + g[k].rows.length + '줄/' + g[k].chars + '자';
+      }).join(' · ') + ' → ' + keys[0] + ' 채택');
+    } catch (e) {}
+    return g[keys[0]].rows;
   }
 
   /* 표 괘선이 글자로 읽히는 것은 regparse 의 stripRule 이 처리하므로 여기선 안 건드린다.
@@ -290,46 +313,21 @@
        같은 줄을 두 군데에 담아 두면 같은 값이 두 번 들어온다. 그대로 두면
        주소 같은 긴 값이 반복 연결되어 나온다(실측 증상).
        같은 문자열이 같은 자리에 있으면 한 번만 남긴다. */
-    /* 같은 줄이 여러 벌 들어온다(실측: 241줄 중 172줄). 겹친 토큰을 regparse 의
-       joinRow 가 간격 없이 이어붙여 '고다영고다영', 주소 5회 반복이 나온다.
-       좌표를 4px 버킷으로 뭉개 지웠더니 멀쩡한 값까지 사라진 적이 있으므로,
-       글자와 상자가 '정확히' 같을 때만 지운다. 다른 칸을 같은 것으로 볼 여지가 없다. */
-    var seen = Object.create(null), before = rows.length, dup = 0;
+    var before = rows.length;
+    if (opts.allGroups !== true) rows = pickBestGroup(rows);
+
+    /* 같은 벌 안에서도 완전히 같은 줄이 남을 수 있다. 글자와 상자가 모두 같을 때만 지운다. */
+    var seenK = Object.create(null), dup = 0;
     rows = rows.filter(function (r) {
       var rc = boxToRect(r.box);
       var key = r.text + '@' + (rc ? [Math.round(rc.x0), Math.round(rc.y0),
                                       Math.round(rc.x1), Math.round(rc.y1)].join(',') : '-');
-      if (seen[key]) { dup++; return (opts.dedup === false); }
-      seen[key] = 1; return true;
+      if (seenK[key]) { dup++; return false; }
+      seenK[key] = 1; return true;
     });
     try {
-      console.log('[ppocr] ' + canvas.width + 'px · ' + (Date.now() - t0) + 'ms · 줄 ' + before +
-                  ' → ' + rows.length + ' (완전동일 중복 ' + dup + ')');
-      /* 한 번만: 라이브러리가 결과를 어떤 모양으로 주는지 남긴다.
-         이걸 모르면 계속 추측으로 고치게 된다. */
-      if (!recognize._probed) {
-        recognize._probed = 1;
-        console.log('[ppocr:구조] 최상위 키 =', (raw && typeof raw === 'object') ? Object.keys(raw) : typeof raw);
-        function shape(o, path, d) {
-          if (!o || typeof o !== 'object' || d > 2) return;
-          Object.keys(o).forEach(function (k) {
-            var v = o[k], p2 = path ? path + '.' + k : k;
-            if (Array.isArray(v)) {
-              console.log('[ppocr:구조] ' + p2 + ' = 배열(' + v.length + ')');
-              if (v.length && v[0] && typeof v[0] === 'object') shape(v[0], p2 + '[0]', d + 1);
-            } else if (v && typeof v === 'object') {
-              console.log('[ppocr:구조] ' + p2 + ' = 객체 {' + Object.keys(v).slice(0, 8).join(',') + '}');
-              shape(v, p2, d + 1);
-            }
-          });
-        }
-        shape(raw, '', 0);
-        var ex = null;
-        for (var q = 1; q < rows.length; q++) {
-          if (rows[q].text === rows[q - 1].text) { ex = [rows[q - 1], rows[q]]; break; }
-        }
-        if (ex) console.log('[ppocr:구조] 남은 동일문자열 쌍 =', JSON.stringify(ex));
-      }
+      console.log('[ppocr] ' + canvas.width + 'px · ' + (Date.now() - t0) + 'ms · 줄 ' +
+                  before + ' → ' + rows.length + ' (동일줄 ' + dup + ')');
     } catch (e) {}
 
     var tokens = rowsToTokens(rows, canvas.width, canvas.height, opts);
@@ -368,7 +366,7 @@
     preload: function (opts) { return ensureEngine(opts || {}); },
     useMobileDet: function () { MODELS.det = MODELS.detMobile; _enginePromise = null; },
     useServerDet: function () { MODELS.det = MODELS.detServer; _enginePromise = null; },
-    _internal: { boxToRect: boxToRect, rowsToTokens: rowsToTokens, collect: collect, fixChars: fixChars, toCanvas: toCanvas }
+    _internal: { boxToRect: boxToRect, rowsToTokens: rowsToTokens, collect: collect, pickBestGroup: pickBestGroup, fixChars: fixChars, toCanvas: toCanvas }
   };
 
   if (typeof module !== 'undefined' && module.exports) module.exports = RegOCRPP;
