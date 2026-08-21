@@ -1572,6 +1572,7 @@ window.SR=window.SR||(function(){
 <script src="regparse.js"></script>
 <script src="regocr.js"></script>
 <script src="regocr_pp.js"></script>
+<script src="regfields.js"></script>
 <script>
 /* ── 자료에서 읽어오기 (2026.8.16) ─────────────────────────────────
    RegParse(텍스트 PDF) / RegOCR(이미지·사진)로 등기부를 읽고,
@@ -1811,7 +1812,16 @@ window.SR=window.SR||(function(){
       logger:function(m){ if(m&&m.status&&typeof m.progress==='number'){
         say('판독기 준비: '+m.status); bar(0.1+0.15*m.progress); } }
     });
-    var tokAll = [], confirm = [];
+    var tokAll = [], txtAll = [], confirm = [];
+    /* 사진 경로는 라벨 앵커(regfields)로 뽑는다.
+       좌표 기반 표 판정은 OCR 이 한 페이지를 여러 벌로 묶어 내놓을 때 값이 반복된다.
+       라벨 앵커는 '첫 일치만' 취하므로 몇 벌이 들어오든 값이 늘지 않는다.
+       텍스트 레이어 PDF는 좌표가 진짜이므로 regparse 를 그대로 쓴다. */
+    var useFields = usePP && window.RegFields;
+    function parseAll(toks, txts){
+      if(useFields) return RegFields.extract(txts);
+      return RegParse.parseTokens(ENG.combinePages(toks), { ocr: true });
+    }
     try{
       for(var i=0;i<sources.length;i++){
         var src = sources[i];
@@ -1829,6 +1839,7 @@ window.SR=window.SR||(function(){
           }
         });
         if(out && out.tokens && out.tokens.length) tokAll.push(out.tokens);
+        if(out && typeof out.text === 'string') txtAll.push(out.text);
         if(out && out.confirmList && out.confirmList.length) confirm = confirm.concat(out.confirmList);
 
         /* 부동산 정보는 전부 1페이지 표제부에 있다. 매도인·지분만 뒤쪽에 있으므로
@@ -1836,7 +1847,7 @@ window.SR=window.SR||(function(){
            총 소요시간은 그대로지만 빈 화면을 보는 시간이 4분의 1로 줄어든다. */
         if(i===0 && sources.length>1 && onPartial && tokAll.length){
           try{
-            var p1 = RegParse.parseTokens(ENG.combinePages([tokAll[0]]), {ocr:true});
+            var p1 = parseAll([tokAll[0]], txtAll.slice(0,1));
             if(p1 && p1.ok){ p1._ocr = true; p1._confirm = []; p1._partial = true; onPartial(p1); }
           }catch(e){}
         }
@@ -1844,11 +1855,11 @@ window.SR=window.SR||(function(){
     } finally { try{ await worker.terminate(); }catch(e){} }
     if(!tokAll.length) throw new Error('사진에서 글자를 찾지 못했습니다. 더 밝고 또렷한 사진으로 다시 시도해 주세요.');
     var comb = ENG.combinePages(tokAll);
-    var parsed = RegParse.parseTokens(comb, { ocr: true });
+    var parsed = parseAll(tokAll, txtAll);
     parsed._ocr = true;
     parsed._confirm = confirm;
     /* 진단용 원문. 파싱이 실패해도 무엇이 읽혔는지 볼 수 있어야 한다. */
-    parsed._raw = comb.map(function(t){ return t.str; }).join(' ');
+    parsed._raw = useFields ? txtAll.join('\n') : comb.map(function(t){ return t.str; }).join(' ');
     bar(1);
     return parsed;
   }
