@@ -1723,6 +1723,12 @@ window.SR=window.SR||(function(){
     (res.warnings||[]).forEach(function(w){
       if(!/압류|신탁|말소/.test(w)) note('addr', esc(w));
     });
+    /* 아직 읽는 중인데 「못 읽었습니다」가 뜨면 고장 난 것처럼 보인다.
+       뒤 페이지에서 채워질 값이므로 중간 경고는 내보내지 않는다. */
+    if(res._partial){
+      al = '<div class="ntc inf" style="margin-top:12px">'
+         + '먼저 읽은 부분입니다. 나머지 페이지를 계속 읽는 중이라 아래 칸은 더 채워집니다.</div>';
+    }
     $('ocr-flags').innerHTML = al;
 
     $('ocr-raw').textContent = res._raw || '(원문 없음)';
@@ -1797,6 +1803,7 @@ window.SR=window.SR||(function(){
       if(/[?&]det=server/.test(location.search)) window.RegOCRPP.useServerDet();
       var mw = (location.search.match(/[?&]w=(\d{3,5})/)||[])[1];
       if(mw) ppOpt.maxWidth = +mw;
+      if(/[?&]dedup=1/.test(location.search)) ppOpt.dedup = true;
     }
     if(!usePP) await loadTess();
     say('한국어 판독기를 준비하는 중입니다…');
@@ -1813,6 +1820,7 @@ window.SR=window.SR||(function(){
         var out = await ENG.recognize(src.el, window.Tesseract, {
           worker: worker,
           maxWidth: ppOpt.maxWidth,
+          dedup: ppOpt.dedup,
           maxPasses: src.clean ? 1 : 2,
           presets: src.clean ? [{name:'그대로', blur:0, width:(src.el.width||src.el.naturalWidth)}] : null,
           onProgress:function(p){

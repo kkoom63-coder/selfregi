@@ -283,16 +283,21 @@
        같은 줄을 두 군데에 담아 두면 같은 값이 두 번 들어온다. 그대로 두면
        주소 같은 긴 값이 반복 연결되어 나온다(실측 증상).
        같은 문자열이 같은 자리에 있으면 한 번만 남긴다. */
-    var seen = Object.create(null), before = rows.length;
-    rows = rows.filter(function (r) {
+    var seen = Object.create(null), before = rows.length, dup = 0;
+    var kept = rows.filter(function (r) {
       var rc = boxToRect(r.box);
       var key = r.text + '@' + (rc ? Math.round(rc.x0 / 4) + ',' + Math.round(rc.y0 / 4) : '-');
-      if (seen[key]) return false;
+      if (seen[key]) { dup++; return false; }
       seen[key] = 1; return true;
     });
+    /* 실측(2026.08.21): 이 제거를 켜면 신당동 대지권비율이 통째로 사라졌다.
+       같은 좌표·같은 글자를 지우는 것이 왜 값을 없애는지 확인되기 전에는 켜지 않는다.
+       세는 것만 유지한다 — 중복이 실제로 몇 건인지가 원인 판별의 근거다.
+       ?dedup=1 로만 켠다. */
+    if (opts.dedup) rows = kept;
     try {
-      console.log('[ppocr] ' + canvas.width + 'px · ' + (Date.now() - t0) + 'ms · 줄 ' +
-                  before + (before !== rows.length ? ' → ' + rows.length + ' (중복 제거)' : ''));
+      console.log('[ppocr] ' + canvas.width + 'px · ' + (Date.now() - t0) + 'ms · 줄 ' + before +
+                  ' · 같은자리 중복 ' + dup + (opts.dedup ? ' (제거함)' : ' (그대로 둠)'));
     } catch (e) {}
 
     var tokens = rowsToTokens(rows, canvas.width, canvas.height, opts);
