@@ -753,9 +753,16 @@
     /* 머리글은 페이지마다 반복되는데 OCR이 서로 다르게 읽는다
        (실측: 「상계리 395」 / 「상계리 295」, 「제3층 제307호」 / 「제23층 제207호」).
        다수결로 자동확정하지 않고 불일치 사실만 올린다. 판단은 사람이 한다. */
+    /* 머리글 뒤에 표 제목 같은 군더더기가 붙어 읽히면(실측: '…제207호1.소유지분현황()')
+       같은 물건인데도 페이지마다 다른 값으로 잡혀 「확인 필요」가 헛뜬다.
+       식별자(제N층 제N호)까지만 잘라 비교한다. 295/395 같은 진짜 차이는 그대로 남는다. */
+    function identKey(t) {
+      var s = squash(t), m = s.match(/제\d+층제\d+(?:-\d+)?호/);
+      return m ? s.slice(0, m.index + m[0].length) : s;
+    }
     o0.variants = [];
     all0.forEach(function (c) {
-      var k0 = squash(c.text);
+      var k0 = identKey(c.text);
       if (o0.variants.indexOf(k0) < 0) o0.variants.push(k0);
     });
     var raw = best.text, o = { kind: best.kind, variants: o0.variants };
@@ -794,7 +801,12 @@
         out.warnings.push('페이지마다 소재지번·호수가 다르게 읽혔습니다(' +
           hd.variants.slice(0, 3).join(' / ') + '). 원본과 대조해 주세요.');
         out.confidence.jibunAddress = 'low';
-        if (hd.exclusiveNo) out.confidence.exclusiveNo = 'low';
+        if (hd.exclusiveNo) {
+          out.confidence.exclusiveNo = 'low';
+          /* 원인을 남긴다. 같은 'low'라도 '페이지마다 다름'과 '층↔호 불일치'는
+             사용자가 확인해야 할 지점이 다르다. */
+          (out.confidenceWhy || (out.confidenceWhy = {})).exclusiveNo = 'pagediff';
+        }
       }
     }
 

@@ -25,8 +25,12 @@
      mobile(5MB)로 같은 점수가 나오는지는 아직 미검증이다.
      실서비스 전환 시 HF 직접 fetch 대신 Vercel 미러 + 캐시 헤더로 바꾼다. */
   var MODELS = {
-    det: 'https://huggingface.co/monkt/paddleocr-onnx/resolve/main/detection/v5/det.onnx',
-    detMobile: 'https://huggingface.co/PT-Perkasa-Pilar-Utama/ppu-paddle-ocr-models/resolve/main/detection/PP-OCRv5_mobile_det_infer.onnx',
+    /* 기본은 mobile det. 실측(2026.08.21, 신당동 집합건물)에서 server det 와
+       판정값이 동일했고 체감 20~25초가 줄었다. 84MB → 4.83MB.
+       ※ 종전 PT-Perkasa 경로는 401(Unauthorized)로 죽었다. 재도입 금지. */
+    det: 'https://huggingface.co/ilaylow/PP_OCRv5_mobile_onnx/resolve/main/ppocrv5_det.onnx',
+    detMobile: 'https://huggingface.co/ilaylow/PP_OCRv5_mobile_onnx/resolve/main/ppocrv5_det.onnx',
+    detServer: 'https://huggingface.co/monkt/paddleocr-onnx/resolve/main/detection/v5/det.onnx',
     rec: 'https://huggingface.co/monkt/paddleocr-onnx/resolve/main/languages/korean/rec.onnx',
     dic: 'https://huggingface.co/monkt/paddleocr-onnx/resolve/main/languages/korean/dict.txt'
   };
@@ -262,6 +266,7 @@
     var onProgress = opts.onProgress || function () {};
     var Paddle = await ensureEngine(opts);
 
+    var t0 = Date.now();
     var canvas = toCanvas(src, opts.maxWidth);
     onProgress({ phase: 'ocr', progress: 0.1 });
 
@@ -273,6 +278,22 @@
     if (!rows.length && raw && typeof raw.text === 'string') {
       raw.text.split('\n').forEach(function (t) { rows.push({ text: t, score: null, box: null }); });
     }
+
+    /* collect() 는 결과 객체를 훑어 text 를 가진 노드를 모으므로, 라이브러리가
+       같은 줄을 두 군데에 담아 두면 같은 값이 두 번 들어온다. 그대로 두면
+       주소 같은 긴 값이 반복 연결되어 나온다(실측 증상).
+       같은 문자열이 같은 자리에 있으면 한 번만 남긴다. */
+    var seen = Object.create(null), before = rows.length;
+    rows = rows.filter(function (r) {
+      var rc = boxToRect(r.box);
+      var key = r.text + '@' + (rc ? Math.round(rc.x0 / 4) + ',' + Math.round(rc.y0 / 4) : '-');
+      if (seen[key]) return false;
+      seen[key] = 1; return true;
+    });
+    try {
+      console.log('[ppocr] ' + canvas.width + 'px · ' + (Date.now() - t0) + 'ms · 줄 ' +
+                  before + (before !== rows.length ? ' → ' + rows.length + ' (중복 제거)' : ''));
+    } catch (e) {}
 
     var tokens = rowsToTokens(rows, canvas.width, canvas.height, opts);
     var noBox = tokens.filter(function (t) { return t._nobox; }).length;
@@ -309,6 +330,7 @@
     combinePages: combinePages,
     preload: function (opts) { return ensureEngine(opts || {}); },
     useMobileDet: function () { MODELS.det = MODELS.detMobile; _enginePromise = null; },
+    useServerDet: function () { MODELS.det = MODELS.detServer; _enginePromise = null; },
     _internal: { boxToRect: boxToRect, rowsToTokens: rowsToTokens, collect: collect, fixChars: fixChars, toCanvas: toCanvas }
   };
 
