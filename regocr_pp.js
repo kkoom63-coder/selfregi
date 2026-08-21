@@ -148,9 +148,16 @@
   // ---------- 결과 평탄화 ----------
   /* 라이브러리 결과 구조를 가정하지 않는다(하네스에서 검증된 방식).
      최상위 text(페이지 전체 문자열)는 건너뛰고 줄 단위 노드를 모은다. */
-  function collect(node, out, isRoot) {
+  function collect(node, out, isRoot, seen) {
     if (node == null) return;
-    if (Array.isArray(node)) { node.forEach(function (n) { collect(n, out, false); }); return; }
+    /* 결과 객체는 같은 줄 배열을 두 군데 이상에서 참조한다(실측: 278줄 중 192줄이 중복).
+       그대로 두면 주소 같은 긴 값이 반복 연결되고, 뒤늦게 좌표로 지우면 멀쩡한 값까지
+       날아간다. 이미 본 객체는 다시 훑지 않는 것이 유일하게 안전한 해법이다. */
+    if (typeof node === 'object') {
+      if (!seen) seen = (typeof WeakSet !== 'undefined') ? new WeakSet() : null;
+      if (seen) { if (seen.has(node)) return; seen.add(node); }
+    }
+    if (Array.isArray(node)) { node.forEach(function (n) { collect(n, out, false, seen); }); return; }
     if (typeof node !== 'object') return;
     var t = null;
     if (typeof node.text === 'string') t = node.text;
@@ -166,7 +173,7 @@
     }
     Object.keys(node).forEach(function (k) {
       if (k === 'canvas' || k === 'image' || k === 'img') return;
-      collect(node[k], out, false);
+      collect(node[k], out, false, seen);
     });
   }
 
