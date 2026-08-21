@@ -1571,6 +1571,7 @@ window.SR=window.SR||(function(){
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script src="regparse.js"></script>
 <script src="regocr.js"></script>
+<script src="regocr_pp.js"></script>
 <script>
 /* ── 자료에서 읽어오기 (2026.8.16) ─────────────────────────────────
    RegParse(텍스트 PDF) / RegOCR(이미지·사진)로 등기부를 읽고,
@@ -1783,9 +1784,14 @@ window.SR=window.SR||(function(){
   }
 
   async function runOcr(sources){
-    await loadTess();
+    /* ?pp=1 이면 PP-OCRv5, 기본은 기존 tesseract.
+       21MB 모델을 모든 방문자에게 내려받게 하지 않기 위해 기본값을 바꾸지 않는다.
+       같은 화면에서 두 엔진을 번갈아 돌려 파싱 결과를 비교하는 것이 목적이다. */
+    var usePP = /[?&]pp=1/.test(location.search) && window.RegOCRPP;
+    var ENG = usePP ? window.RegOCRPP : window.RegOCR;
+    if(!usePP) await loadTess();
     say('한국어 판독기를 준비하는 중입니다…');
-    var worker = await RegOCR.makeWorker(window.Tesseract, {
+    var worker = await ENG.makeWorker(window.Tesseract, {
       logger:function(m){ if(m&&m.status&&typeof m.progress==='number'){
         say('판독기 준비: '+m.status); bar(0.1+0.15*m.progress); } }
     });
@@ -1795,7 +1801,7 @@ window.SR=window.SR||(function(){
         var src = sources[i];
         say('판독 중… ('+(i+1)+'/'+sources.length+')');
         /* 장마다 해상도가 다를 수 있으므로 프리셋을 매 장 다시 계산한다. */
-        var out = await RegOCR.recognize(src.el, window.Tesseract, {
+        var out = await ENG.recognize(src.el, window.Tesseract, {
           worker: worker,
           maxPasses: src.clean ? 1 : 2,
           presets: src.clean ? [{name:'그대로', blur:0, width:(src.el.width||src.el.naturalWidth)}] : null,
@@ -1809,7 +1815,7 @@ window.SR=window.SR||(function(){
       }
     } finally { try{ await worker.terminate(); }catch(e){} }
     if(!tokAll.length) throw new Error('사진에서 글자를 찾지 못했습니다. 더 밝고 또렷한 사진으로 다시 시도해 주세요.');
-    var comb = RegOCR.combinePages(tokAll);
+    var comb = ENG.combinePages(tokAll);
     var parsed = RegParse.parseTokens(comb, { ocr: true });
     parsed._ocr = true;
     parsed._confirm = confirm;
