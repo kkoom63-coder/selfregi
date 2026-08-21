@@ -113,7 +113,7 @@
         OCR 이 한 곳에서 틀려도 다른 곳에서 건진다. */
     var head = null;
     for (var i = 0; i < S.length; i++) {
-      var mh = S[i].match(/^\[?(집합건물|토지|건물)\]?(.+)$/);
+      var mh = S[i].match(/^\[(집합건물|토지|건물)\](.+)$/);
       if (!mh) continue;
       var body = mh[2];
       /* 머리글 뒤에 표 제목이 붙어 읽히는 경우가 있다(실측: '…제207호1.소유지분현황').
@@ -136,7 +136,9 @@
     /* 표에서는 라벨과 값이 다른 줄·다른 칸에 있다. 라벨 뒤를 읽으면 옆 칸의
        층별 면적이 딸려온다. 그래서 '시도…로/길 번호' 꼴인 줄을 직접 찾는다. */
     for (var ri = 0; ri < K.length; ri++) {
-      var mrd = K[ri].match(new RegExp('(' + SIDO + '.*?(?:로|길)\\s*\\d+(?:-\\d+)?)(?![\\d-])'));
+      var kl = K[ri], lb = kl.indexOf('도로명주소');
+      if (lb >= 0) kl = kl.slice(lb + 5).replace(/^[\]\s]+/, '');   // 라벨 뒤만 본다
+      var mrd = kl.match(new RegExp('(' + SIDO + '.*?(?:로|길)\\s*\\d+(?:-\\d+)?)(?![\\d-])'));
       if (mrd && !/층|m2/.test(mrd[1])) { P.roadAddress = respaceAddr(mrd[1]); break; }
     }
 
@@ -184,7 +186,8 @@
     // (9) 별도등기 · 압류 등 · 신탁
     if (/별도등기/.test(ALL)) P.separateReg = { value: true };
     if (/(가압류|가처분|압류|경매개시결정|임의경매|강제경매)/.test(ALL)) out.hasBlocker = true;
-    if (/신탁(?:등기|재산|원부)/.test(ALL)) out.isTrust = true;
+    /* '1번신탁등기말소'는 신탁이 이미 풀렸다는 뜻이다. 현재 수탁자인 경우만 잡는다. */
+    if (/수탁자/.test(ALL) || (/신탁등기/.test(ALL) && !/신탁등기말소/.test(ALL))) out.isTrust = true;
 
     // (10) 소유자
     out.owners = extractOwners(S, K);
@@ -254,16 +257,18 @@
     }
 
     /* (a) 요약표 */
+    /* 요약표가 한 줄로 압축되면 두 사람이 한 줄에 들어온다(실측:
+       '고다영(공유자)911029-*******2분의 1 양두경(공유자)920716-*******2분의 1').
+       첫 일치만 보면 한 명을 놓치므로 줄 전체를 훑는다. */
     S.forEach(function (t) {
-      var m = t.match(/([가-힣]{2,6}|주식회사[가-힣]{2,12})\((?:소유자|공유자)\)/);
-      if (!m) return;
-      var rest = t.slice(m.index + m[0].length);
-      var share = null;
-      /* '2분의 1' 처럼 띄어 읽히므로 공백을 허용한다. */
-      var msh = rest.match(/(단독소유|(\d+)\s*분의\s*(\d+))/);
-      if (msh) share = msh[1] === '단독소유' ? '단독소유' : (msh[2] + '분의 ' + msh[3]);
-      var addr = pickAddr(rest);
-      push(m[1], share, addr);
+      var re = /([가-힣]{2,6}|주식회사[가-힣]{2,12})\((?:소유자|공유자)\)/g, m;
+      while ((m = re.exec(t))) {
+        var rest = t.slice(re.lastIndex, re.lastIndex + 140);
+        var share = null;
+        var msh = rest.match(/(단독소유|(\d+)\s*분의\s*(\d+))/);
+        if (msh) share = msh[1] === '단독소유' ? '단독소유' : (msh[2] + '분의 ' + msh[3]);
+        push(m[1], share, pickAddr(rest));
+      }
     });
 
     /* (b) 갑구 본문 — 요약표를 못 읽었을 때만 */

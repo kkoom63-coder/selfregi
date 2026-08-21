@@ -191,7 +191,14 @@
     });
     var keys = Object.keys(g);
     if (keys.length <= 1) return rows;
-    keys.sort(function (a, b) { return g[b].chars - g[a].chars; });
+    /* 글자 수가 아니라 줄 수로 고른다.
+       실측(2026.08.21): columns.src=65줄/673자(줄 단위 원본) vs
+       columns.parragraphs.parse=36줄/702자(문단 병합본).
+       글자 수로 고르면 칸 경계가 뭉개진 병합본이 뽑혀 표가 통째로 무너진다.
+       등기부는 표 문서이므로 항상 잘게 쪼개진 쪽이 옳다. */
+    keys.sort(function (a, b) {
+      return (g[b].rows.length - g[a].rows.length) || (g[b].chars - g[a].chars);
+    });
     try {
       console.log('[ppocr:묶음] ' + keys.map(function (k) {
         return k + '=' + g[k].rows.length + '줄/' + g[k].chars + '자';
