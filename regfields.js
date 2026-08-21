@@ -26,7 +26,10 @@
       .replace(/[０-９]/g, function (c) { return String.fromCharCode(c.charCodeAt(0) - 0xFEE0); })
       .replace(/[㎡]/g, 'm2').replace(/m²/g, 'm2').replace(/m'/g, 'm2')
       .replace(/[ㅣ｜|丨︱]/g, ' ')      // 표 세로 괘선이 글자로 읽힌 것
-      .replace(/[，､]/g, ',');
+      .replace(/[，､]/g, ',')
+      /* OCR 은 소수점 뒤에 공백을 넣는다(실측: '20. 16 m²', '568. 3 m2', '75. 809').
+         이걸 두면 전유면적·대지권비율이 통째로 안 잡힌다. */
+      .replace(/(\d)\.\s+(\d)/g, '$1.$2');
   }
   function sq(s) { return fix(s).replace(/\s+/g, ''); }        // 공백 제거본 — 라벨 매칭 전용
   /* 값 추출용. 한글끼리 벌어진 공백만 붙이고 숫자 앞뒤 공백은 남긴다.
@@ -133,13 +136,24 @@
     }
 
     // (4) 도로명주소
-    /* 표에서는 라벨과 값이 다른 줄·다른 칸에 있다. 라벨 뒤를 읽으면 옆 칸의
-       층별 면적이 딸려온다. 그래서 '시도…로/길 번호' 꼴인 줄을 직접 찾는다. */
-    for (var ri = 0; ri < K.length; ri++) {
-      var kl = K[ri], lb = kl.indexOf('도로명주소');
-      if (lb >= 0) kl = kl.slice(lb + 5).replace(/^[\]\s]+/, '');   // 라벨 뒤만 본다
-      var mrd = kl.match(new RegExp('(' + SIDO + '.*?(?:로|길)\\s*\\d+(?:-\\d+)?)(?![\\d-])'));
-      if (mrd && !/층|m2/.test(mrd[1])) { P.roadAddress = respaceAddr(mrd[1]); break; }
+    /* 표에서 라벨과 값은 다른 줄이고, 값 사이에 옆 칸(층별 면적)이 끼어든다.
+         [도로명주소] / 2층 313.836m² / 서울특별시 서초구 / 3층 313.836m2 / 효령로 79길 1
+       그래서 라벨 아래로 내려가며 면적 줄은 건너뛰고 주소 조각만 이어 붙인다.
+       라벨이 없으면 도로명주소가 없는 것이다 — 아무 줄이나 주워오면
+       토지 등기부에서 옛 소유자 주소를 도로명주소로 넣게 된다(실측). */
+    var lbIdx = -1;
+    for (var li = 0; li < S.length; li++) { if (S[li].indexOf('도로명주소') >= 0) { lbIdx = li; break; } }
+    if (lbIdx >= 0) {
+      var acc = '', reSido = new RegExp('^' + SIDO);
+      for (var li2 = lbIdx; li2 < Math.min(S.length, lbIdx + 12); li2++) {
+        var kl = K[li2];
+        if (li2 === lbIdx) kl = kl.slice(kl.indexOf('도로명주소') + 5).replace(/^[\]\s]+/, '');
+        if (!kl || /층|m2|번호|표시/.test(kl)) continue;
+        if (!acc && !reSido.test(kl)) continue;
+        acc = acc ? (acc + ' ' + kl) : kl;
+        if (/(?:로|길)\s*\d/.test(acc)) break;      // 도로명 + 번호까지 모이면 끝
+      }
+      if (acc) P.roadAddress = respaceAddr(acc);
     }
 
     // (5) 전유부분 — 구조 · 전유면적
@@ -156,11 +170,38 @@
 
     // (6) 대지권의 비율
     /*  「55분의 1」 「63527.1분의 2025」 — 형태를 분류하지 않고 적힌 그대로 옮긴다. */
-    var lrIdx = ALLK.indexOf('대지권비율');
-    if (lrIdx < 0) lrIdx = ALLK.indexOf('대지권의표시');
+    /* 「63527.1분의」 와 「75.809」 가 다른 줄에 있고 그 사이에 등기원인·표시번호가 끼어든다.
+       한 줄 안에서만 찾으면 못 잡고, 아무 숫자나 집으면 옆 칸의 '2분의 1'(소유지분)을
+       대지권비율로 넣게 된다(실측). 분모를 먼저 확정하고 분자를 아래로 찾아 내려간다. */
+    var lrIdx = -1;
+    for (var pi = 0; pi < K.length; pi++) {
+      /* '전유부분의 건물의 표시'에도 '분의'가 들어 있다. 숫자를 요구한다.
+         '지분 2분의 1'(소유지분)은 대지권비율이 아니므로 뺀다. */
+      if (/\d\s*분의/.test(K[pi]) && !/지분\s*\d+\s*분의/.test(K[pi])) { lrIdx = pi; break; }
+    }
     if (lrIdx >= 0) {
-      var mlr = ALLK.slice(lrIdx, lrIdx + 300).match(/([\d,]+(?:\.\d+)?)\s*분의\s*([\d,]+(?:\.\d+)?)/);
-      if (mlr) P.landRightRatio = { denom: mlr[1].replace(/,/g, ''), num: mlr[2].replace(/,/g, '') };
+      var lrLine = K[lrIdx], mden = lrLine.match(/([\d,]+(?:\.\d+)?)\s*분의/);
+      if (mden) {
+        var denom = mden[1].replace(/,/g, ''), num = null, guessed = false;
+        var after = lrLine.slice(lrLine.indexOf('분의') + 2);
+        var mnum = after.match(/^\s*([\d,]+(?:\.\d+)?)/);
+        if (mnum) num = mnum[1];
+        else {
+          /* 같은 줄에 없으면 아래로 내려간다. 날짜와 표시번호는 건너뛴다. */
+          for (var ni = lrIdx + 1; ni < Math.min(K.length, lrIdx + 8); ni++) {
+            var t2 = K[ni];
+            if (/년|월|일|등기|별도/.test(t2)) continue;
+            if (/^\d{1,2}\s*(소유권|대지권|표시)/.test(t2)) continue;
+            var mn2 = t2.match(/([\d,]+\.\d+|\d+)/);
+            if (mn2) { num = mn2[1]; guessed = true; break; }
+          }
+        }
+        if (num) {
+          P.landRightRatio = { denom: denom, num: num.replace(/,/g, '') };
+          /* 다른 줄에서 주워 온 값은 확신할 수 없다. 「확인 필요」로 내린다. */
+          if (guessed) out.confidence.landRightRatio = 'low';
+        }
+      }
     }
 
     // (7) 토지 — 지목 · 면적
@@ -190,7 +231,7 @@
     if (/수탁자/.test(ALL) || (/신탁등기/.test(ALL) && !/신탁등기말소/.test(ALL))) out.isTrust = true;
 
     // (10) 소유자
-    out.owners = extractOwners(S, K);
+    out.owners = extractOwners(S, K, out);
     out.ownerCount = out.owners.length;
     out.isJointOwnership = out.ownerCount > 1;
 
@@ -221,6 +262,7 @@
       .replace(/([가-힣])(\d)/g, function (all, a, b) {
         return a === '제' ? all : (a + ' ' + b);      // '제101동'은 붙여 둔다
       })
+      .replace(/(로|길)\s+(\d+번(?:길|가))/g, '$1$2')   // '상무민주로 32번길' → '상무민주로32번길'
       .replace(/\s{2,}/g, ' ')
       .trim();
   }
@@ -231,71 +273,93 @@
        고다영(공유자)2분의1...
      못 찾으면 갑구 본문 「소유자 홍길동 901029-***…」로 되돌아간다.
      이름으로 중복을 제거하므로 같은 소유자가 여러 벌 들어와도 한 번만 남는다. */
-  function extractOwners(S, K) {
+  /* 요약표에서 한 소유자의 정보는 여러 줄에 흩어져 있고 순서도 일정하지 않다.
+       2분의 1 / 고다영(공유자) / 광주광역시…201호 / 2 / 911029-*** / (쌍촌동, …아파트)
+     그래서 이름을 기준점으로 삼아 '다음 이름 전까지'를 한 사람의 구간으로 보고,
+     지분은 구간에 없으면 이름 바로 위 두 줄까지 거슬러 본다. */
+  function extractOwners(S, K, out) {
     var owners = [], byName = Object.create(null);
-    /* 지분·주민번호·주소는 숫자 경계가 살아 있어야 갈린다.
-       공백을 다 지운 문자열에서 읽으면 '2분의 1 850101' 이 '2분의1850101' 이 된다.
-       다만 괄호 앞뒤 공백은 남아 있어 '(공유자 )' 가 되므로 그것만 붙인다. */
-    S = K.map(function (t) { return t.replace(/\s*([()])\s*/g, '$1'); });
-    /* 서식 라벨이 이름 앞에 붙어 읽힌다(실측: '등기명의인허민(소유자)' → 이름을 '기명의인허민'으로).
-       라벨은 고정 문구이므로 먼저 떼어낸다. */
-    var LABEL = /(등기명의인|주민등록번호|최종지분|순위번호|대상소유자|주요등기사항|소유지분현황|권리자및기타사항|등기목적|접수정보)/g;
-    S = S.map(function (t) { return t.replace(LABEL, ' '); });
+    var reSido = new RegExp('^' + SIDO);
 
-    function push(name, shareRaw, addr) {
-      name = String(name || '').replace(/[^가-힣A-Za-z0-9()주식회사]/g, '').trim();
-      if (!name || name.length > 20) return;
-      if (byName[name]) {                       // 같은 사람이 또 나오면 정보만 보강
+    /* 서식 라벨이 이름 앞에 붙어 읽힌다('등기명의인허민'). 참고사항의
+       '소유자 혹은 공유자 현황' 같은 안내문도 이름으로 잡힌다. 먼저 걷어낸다. */
+    var LABEL = /(등기명의인|등기명의|주민등록번호|최종지분|순위번호|대상소유자|주요등기사항|소유지분현황|권리자및기타사항|등기목적|접수정보|혹은)/g;
+    var L = K.map(function (t) { return t.replace(/\s*([()])\s*/g, '$1').replace(LABEL, ' ').trim(); });
+
+    /* 참고사항 이하는 안내문이라 소유자가 없다. */
+    var stop = L.length;
+    for (var si = 0; si < L.length; si++) {
+      if (/^\[?참고사항/.test(L[si].replace(/\s/g, ''))) { stop = si; break; }
+    }
+
+    function addrFrom(seg) {
+      var a = '';
+      for (var q = 0; q < seg.length; q++) {
+        var t = seg[q];
+        if (/^\d{1,2}$/.test(t) || /^\d{6}\s*[-—]\s*\*+$/.test(t)) continue;   // 순위번호·주민번호
+        if (!a) { if (reSido.test(t)) a = t; continue; }
+        /* 괄호가 안 닫혔거나 다음 줄이 괄호로 시작하면 같은 주소의 이어짐이다. */
+        var open = (a.split('(').length - a.split(')').length) > 0;
+        if (open || /^\(/.test(t)) { a += (open ? ' ' : '') + t; continue; }
+        break;
+      }
+      if (!a) return null;
+      a = a.replace(/(고유번호|순위번호|열람일시|출력일시).*$/, '');
+      a = respaceAddr(a).replace(/\s*,\s*/g, ', ').replace(/\(\s*/g, '(').replace(/\s*\)/g, ')');
+      return a.length >= 8 ? a.trim() : null;
+    }
+    function shareIn(txt) {
+      var m = String(txt).match(/(단독소유|(\d+)\s*분의\s*(\d+))/);
+      if (!m) return null;
+      return m[1] === '단독소유' ? '단독소유' : (m[2] + '분의 ' + m[3]);
+    }
+    function push(name, share, addr) {
+      name = String(name || '').replace(/\s/g, '');
+      if (!name || name.length < 2 || name.length > 20) return;
+      if (byName[name]) {
         var o0 = byName[name];
-        if (!o0.shareRaw && shareRaw) o0.shareRaw = shareRaw;
+        if (!o0.shareRaw && share) o0.shareRaw = share;
         if (!o0.registryAddress && addr) o0.registryAddress = addr;
         return;
       }
-      var o = { name: name, shareRaw: shareRaw || null, share: null,
-                address: null, registryAddress: addr || null };
+      var o = { name: name, shareRaw: share || null, share: null, address: null, registryAddress: addr || null };
       byName[name] = o; owners.push(o);
     }
 
-    /* (a) 요약표 */
-    /* 요약표가 한 줄로 압축되면 두 사람이 한 줄에 들어온다(실측:
-       '고다영(공유자)911029-*******2분의 1 양두경(공유자)920716-*******2분의 1').
-       첫 일치만 보면 한 명을 놓치므로 줄 전체를 훑는다. */
-    S.forEach(function (t) {
-      var re = /([가-힣]{2,6}|주식회사[가-힣]{2,12})\((?:소유자|공유자)\)/g, m;
-      while ((m = re.exec(t))) {
-        var rest = t.slice(re.lastIndex, re.lastIndex + 140);
-        var share = null;
-        var msh = rest.match(/(단독소유|(\d+)\s*분의\s*(\d+))/);
-        if (msh) share = msh[1] === '단독소유' ? '단독소유' : (msh[2] + '분의 ' + msh[3]);
-        push(m[1], share, pickAddr(rest));
-      }
+    /* (a) 요약표 — 이름 뒤에 (소유자)/(공유자) 가 붙는다. 가장 깨끗한 출처다. */
+    var marks = [];
+    for (var i2 = 0; i2 < stop; i2++) {
+      var mm = L[i2].match(/([가-힣]{2,6}|주식회사[가-힣]{2,14})\((?:소유자|공유자)\)/);
+      if (mm) marks.push({ line: i2, name: mm[1], rest: L[i2].slice(mm.index + mm[0].length) });
+    }
+    marks.forEach(function (mk, n) {
+      var end = (n + 1 < marks.length) ? marks[n + 1].line : Math.min(stop, mk.line + 8);
+      var seg = [mk.rest].concat(L.slice(mk.line + 1, end)).filter(function (t) { return t; });
+      var share = shareIn(seg.join(' '));
+      if (!share) share = shareIn(L.slice(Math.max(0, mk.line - 2), mk.line).join(' '));
+      push(mk.name, share, addrFrom(seg));
     });
+    if (owners.length) return owners;
 
-    /* (b) 갑구 본문 — 요약표를 못 읽었을 때만 */
-    if (!owners.length) {
-      S.forEach(function (t) {
-        var m = t.match(/(?:소유자|공유자)([가-힣]{2,6}|주식회사[가-힣]{2,12})/);
-        if (!m) return;
-        var rest = t.slice(m.index + m[0].length);
-        var msh = rest.match(/(\d+)\s*분의\s*(\d+)/);
-        push(m[1], msh ? (msh[1] + '분의 ' + msh[2]) : null, pickAddr(rest));
-      });
+    /* (b) 요약표가 없을 때만 갑구 본문. 말소사항 포함 발급본에는 과거 소유자가
+       전부 남아 있으므로 '마지막 소유권이전/보존' 이후만 본다.
+       (실측: 토지 등기부에서 옛 소유자 5명이 매도인으로 올라왔다) */
+    var last = -1;
+    for (var i3 = 0; i3 < stop; i3++) {
+      if (/^\d{0,2}\s*소유권(이전|보존)/.test(L[i3]) || /소유권(이전|보존)$/.test(L[i3])) last = i3;
+    }
+    var from = last >= 0 ? last : 0;
+    for (var i4 = from; i4 < stop; i4++) {
+      var mo = L[i4].match(/(?:소유자|공유자)\s*(주식회사[가-힣]{2,14}|[가-힣]{2,6})/);
+      if (!mo) continue;
+      var seg2 = [L[i4].slice(mo.index + mo[0].length)].concat(L.slice(i4 + 1, i4 + 6));
+      push(mo[1], shareIn(seg2.join(' ')), addrFrom(seg2));
+    }
+    if (owners.length && out) {
+      out.confidence.owners = 'low';
+      out.warnings.push('요약표를 찾지 못해 갑구 본문에서 소유자를 읽었습니다. 최종 소유자가 맞는지 원본과 대조해 주세요.');
     }
     return owners;
-  }
-
-  /* 주소는 시·도 이름에서 시작해 줄 끝까지다.
-     뒤에 붙는 표 라벨(고유번호·순위번호 등)은 잘라낸다 — 이게 안 되면
-     '…207호(신당동)고유번호1103-1996-279658순위번호' 같은 꼬리가 남는다. */
-  function pickAddr(s) {
-    var m = String(s || '').match(new RegExp('(' + SIDO + '.*)$'));
-    if (!m) return null;
-    var a = m[1]
-      .replace(/(고유번호|순위번호|최종지분|등기명의인|주요등기사항|대상소유자|접수정보|출력일시|열람일시).*$/, '')
-      .replace(/\d{6}-\*+/g, '')
-      .replace(/[\u0001].*$/, '');
-    a = respaceAddr(a).replace(/\s*,\s*/g, ', ').replace(/\(\s*/g, '(').replace(/\s*\)/g, ')');
-    return a.length >= 8 ? a.trim() : null;
   }
 
   // ---------- 교차검증 ----------
@@ -342,7 +406,7 @@
     }
   }
 
-  var RegFields = { extract: extract, _internal: { respaceAddr: respaceAddr, pickAddr: pickAddr, snap: snap, extractOwners: extractOwners, sq: sq } };
+  var RegFields = { extract: extract, _internal: { respaceAddr: respaceAddr, snap: snap, extractOwners: extractOwners, sq: sq } };
   if (typeof module !== 'undefined' && module.exports) module.exports = RegFields;
   if (root) root.RegFields = RegFields;
 })(typeof window !== 'undefined' ? window : this);
