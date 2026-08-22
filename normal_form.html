@@ -27,7 +27,12 @@ nav{background:rgba(248,250,252,.86);backdrop-filter:saturate(140%) blur(8px);-w
 .nav-a.here{color:var(--navy);font-weight:700;background:#F1F5F9;cursor:default}
 .nav-a:hover{color:var(--navy);background:#F1F5F9}
 @media(max-width:560px){.nav-inner{overflow-x:auto;white-space:nowrap;-webkit-overflow-scrolling:touch}}
-body{font-family:'Noto Sans KR','Malgun Gothic',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6}
+/* 한국어 줄바꿈 (2026.08.22) — 어절 단위로 끊는다.
+   지정하지 않으면 브라우저 기본값이 글자 사이 아무 데서나 끊어
+   '다/릅니다', '옮/겨' 처럼 한 단어가 두 줄로 갈라진다.
+   overflow-wrap 은 안전판 — 띄어쓰기 없는 긴 문자열(고유번호·URL)이
+   keep-all 때문에 상자를 뚫고 나가는 것을 막는다. */
+body{font-family:'Noto Sans KR','Malgun Gothic',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6;word-break:keep-all;overflow-wrap:break-word}
 header{background:var(--bg);color:var(--text)}
 .back-bar{background:var(--bg);padding:10px 20px 0}.back-bar-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center}
 .back-a{display:inline-flex;align-items:center;gap:4px;color:#075985;background:#E0F2FE;font-size:11.5px;font-weight:700;text-decoration:none;padding:5px 12px;border-radius:20px;transition:background .12s}
@@ -77,8 +82,6 @@ padding:14px 0;border-top:1px solid #F1F5F9;border-bottom:1px solid #F1F5F9;marg
 label{font-size:11px;font-weight:500;color:#334155}
 .req{color:#DC2626;margin-left:2px}
 .hint{color:var(--muted);font-weight:400;margin-left:3px}
-.addr-tip{font-size:11px;color:var(--muted);line-height:1.6;margin-top:6px;padding:7px 10px;background:#f4f6fb;border-radius:6px;border-left:3px solid var(--blue)}
-.addr-tip b{color:var(--navy)}
 input[type=text],input[type=number],input[type=email],select{height:44px;border:1px solid var(--border);border-radius:8px;padding:0 12px;font-size:16px;font-family:inherit;color:var(--text);background:#FFFFFF;outline:none;transition:border-color .15s,box-shadow .15s;width:100%}
 input:focus,select:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(3,105,161,.12);background:#fff}
 input::placeholder{color:#c0c8d8;font-size:12px}
@@ -277,9 +280,8 @@ gtag('js',new Date());gtag('config','G-DR3W5XWF50');
   <div class="slots">
     <div class="drop" id="dz-reg">
       <div class="slot-t">등기사항전부증명서</div>
-      <div class="sub">인터넷등기소에서 발급한 PDF는 글자를 그대로 가져옵니다.
-        출력물을 찍은 사진이나 스캔본도 읽습니다.<br>
-        <b>여러 장이면 한꺼번에 골라 주세요.</b> 등기부가 3~4장으로 나뉘어 있어도 한 번에 읽습니다.</div>
+      <div class="sub">부동산등기부등본 PDF 또는 사진을 업로드해주세요.<br>
+        <b>사진이 여러 장이면 한꺼번에 업로드</b></div>
       <label class="fb" for="fi-reg">파일 선택</label>
       <input type="file" id="fi-reg" accept="application/pdf,image/*" multiple style="display:none">
       <div class="pr" id="pr-reg"><i></i></div>
@@ -287,12 +289,10 @@ gtag('js',new Date());gtag('config','G-DR3W5XWF50');
     </div>
     <div class="drop alt" id="dz-deal">
       <div class="slot-t">매매계약서</div>
-      <div class="sub">거래가액과 잔금일을 읽습니다. 계약서는 서식이 제각각이라
-        <b>인식이 어긋나는 경우가 있습니다.</b> 읽은 값은 반드시 확인해 주세요.</div>
+      <div class="sub"><br><br>준비 중입니다. 지금은 등기부만 읽습니다.</div>
       <label class="fb" for="fi-deal">파일 선택</label>
       <input type="file" id="fi-deal" accept="application/pdf,image/*" style="display:none">
       <div class="pr" id="pr-deal"><i></i></div>
-      <div class="plg" id="lg-deal">준비 중입니다. 지금은 등기부만 읽습니다.</div>
     </div>
   </div>
 
@@ -334,17 +334,11 @@ gtag('js',new Date());gtag('config','G-DR3W5XWF50');
     <div style="display:flex;align-items:center;gap:10px">
       <div class="ci">2</div><div><div class="ct">부동산 정보</div><div class="cs">등기부등본(등기사항전부증명서) 표제부에서 확인</div></div>
     </div>
-    <button type="button" class="guide-link" onclick="openRegGuide()" aria-haspopup="dialog">? 등기부 어디서 봐요</button>
+    <button type="button" class="guide-link" onclick="openRegGuide()" aria-haspopup="dialog">부동산 등기부 확인 방법</button>
   </div>
   <div class="fg s1"><div class="f">
     <label>지번 주소 <span class="req">*</span></label>
     <input type="text" id="jibun-address" placeholder="예: 경기도 화성시 반월동 974">
-    <div class="addr-tip">
-      <b>등기사항전부증명서(등기부등본)의 표제부 기재 지번</b>을 입력해 주세요.<br>
-      위임장·신청서의 부동산 표시는 등기부 기준으로 작성해야 합니다(부동산등기규칙 제43조).<br>
-      매매계약서 주소와 다를 수 있으니 반드시 등기부등본을 먼저 확인하세요.<br>
-      또한 <b>시·군까지 반드시 포함</b>해 입력해 주세요. (예: '분당구' ✕ → '성남시 분당구' ○)
-    </div>
   </div></div>
   <div class="divider"></div>
   <div class="fg">
@@ -356,7 +350,6 @@ gtag('js',new Date());gtag('config','G-DR3W5XWF50');
   <div class="fg s1"><div class="f">
     <label>아파트/건물명</label>
     <input type="text" id="apt-name" placeholder="예: 반월아이파크">
-    <span class="fn">등기부 표제부의 '건물명칭 및 번호' 기준입니다. (예: OO아파트)</span>
   </div></div>
   <div class="divider"></div>
   <div class="fg">
@@ -394,10 +387,13 @@ gtag('js',new Date());gtag('config','G-DR3W5XWF50');
   <div class="fg s1"><div class="f">
     <label>부동산 도로명주소</label>
     <input type="text" id="prop-road-address" placeholder="예: 경기도 화성시 반월천로 100">
-    <span class="fn">등기부 표제부에 도로명주소가 있으면 입력하세요. 비워두면 신청서에 빈 칸으로 남습니다.</span>
   </div></div>
   <div class="divider"></div>
-  
+  <div class="fg s1"><div class="f">
+    <label>부동산고유번호</label>
+    <input type="text" id="property-uid" placeholder="예: 1354-2017-002088">
+  </div></div>
+  <div class="divider"></div>
 </div>
 
 <!-- ④ 대지지분 -->
@@ -407,26 +403,22 @@ gtag('js',new Date());gtag('config','G-DR3W5XWF50');
     <div class="f">
       <label>대지권의 비율 · 분모 <span class="req">*</span></label>
       <input type="text" id="total-land" placeholder="예: 63066.9">
-      <span class="fn">등기부 표제부 「대지권의 비율」의 <b>분모를 그대로</b>. 아파트는 보통 단지 전체 대지면적(㎡)입니다.</span>
     </div>
     <div class="f">
       <label>대지권의 비율 · 분자 <span class="req">*</span></label>
       <input type="text" id="unit-land" placeholder="예: 39.4783">
-      <span class="fn">같은 줄의 <b>분자를 그대로</b>. 소수점까지 한 자리도 빠뜨리지 마세요.</span>
     </div>
   </div>
   <div class="ntc inf">
-    <strong>대지권의 비율은 계산하지 않습니다</strong> · 등기부 표제부 「대지권의 표시」 칸에 <b>「○○○분의 △△△」</b> 형태로 적혀 있습니다. 그 숫자를 <b>그대로</b> 옮겨 적으세요. 신청서의 부동산 표시는 등기부 기재와 동일해야 합니다. 「63527.1분의 75.809」, 「638분의 79.093」, 「55분의 1」 등 형태가 여러 가지인데 <b>어느 쪽이든 그대로</b>입니다. 분모가 정수라고 해서 면적이 아닌 것도 아닙니다(토지면적이 638㎡면 분모가 638이 됩니다).</div>
+<strong>대지권의 비율은 계산하지 않습니다.</strong> 등기부 표제부 「대지권의 표시」 칸에 <b>「○○○분의 △△△」</b> 형태로 적혀 있습니다.</div>
 </div>
 
 <!-- ② 매도인 정보 -->
 <div class="card">
-  <div class="ch"><div class="ci">3</div><div><div class="ct">매도인 정보</div><div class="cs">매매(분양)계약서의 매도인 정보를 입력하세요</div></div>
-  <div class="ntc addr" style="margin-bottom:14px">
-    주소는 <b>매도인의 주민등록초본에 적힌 주소 그대로</b> 입력해 주세요. 등기부에 적힌 주소는 매도인이 소유권을 얻을 당시의 주소라,
-    이사한 경우 지금 주소와 다릅니다. <b>초본 주소와 다르게 적으면 보정 사유가 될 수 있습니다.</b>
-    주소가 바뀌었다면 <b>변동 이력이 전부 나온 초본</b>을 받아 두시기 바랍니다.
-  </div></div>
+  <div class="ch"><div class="ci">3</div><div><div class="ct">매도인 정보</div><div class="cs">매매계약서상 매도인 정보 · 일반매매의 매도인은 개인(자연인)입니다</div></div></div>
+  <div class="ntc inf" style="margin-top:0;margin-bottom:14px">
+    매도인 주소는 <b>매도인의 주민등록초본상 주소가 기준입니다.</b> 등기부상 주소와 상이할 경우 <b>변동 이력이 전부 나온 초본</b>을 매도인에게 받아 두세요.
+  </div>
 
   <!-- 신탁해지 매도인 영역 -->
   <div id="seller-trust" style="display:none">
@@ -492,10 +484,6 @@ gtag('js',new Date());gtag('config','G-DR3W5XWF50');
 
   <!-- 일반매매 매도인 영역 -->
   <div id="seller-sale">
-    <div class="ntc wrn" style="margin-bottom:14px">
-      <strong>매매계약서를 확인하세요.</strong> 일반매매의 매도인은 개인(자연인)입니다. 매매계약서상 매도인 정보를 입력하세요.
-    </div>
-
     <label class="jt-toggle" for="seller-joint">
       <input type="checkbox" id="seller-joint" onchange="toggleJoint('seller')">
       <span>
@@ -551,19 +539,18 @@ gtag('js',new Date());gtag('config','G-DR3W5XWF50');
       </div>
     </div>
 
-    <div class="ntc inf2" style="margin-top:12px">
-      <strong>매도인 주민등록번호는 별도로 입력받지 않습니다.</strong> 매도인은 본 서비스 이용약관에 동의한 당사자가 아니므로, 매수인이 대신 입력하는 방식으로 매도인의 개인정보를 수집하지 않습니다. 서류 출력 후 매도인 본인 확인 하에 직접 기재하시거나, 중개사를 통해 기재해 주세요.
+    <div class="ntc inf" style="margin-top:12px">
+      <strong>매도인 주민등록번호는 받지 않습니다.</strong> 서류 출력 후 매도인 본인이나 중개사가 직접 기재해 주세요.
     </div>
   </div>
 </div>
 
 <!-- ① 매수인 정보 -->
 <div class="card">
-  <div class="ch"><div class="ci">4</div><div><div class="ct">매수인 정보</div><div class="cs">등기권리자(매수인)의 기본 정보</div></div>
-  <div class="ntc addr" style="margin-bottom:14px">
-    주소는 <b>주민등록등본·초본에 적힌 주소 그대로</b> 입력해 주세요. 도로명주소로 바뀐 뒤 옛 지번주소를 쓰거나,
-    상세주소(동·호)를 빠뜨리는 경우가 많습니다.
-  </div></div>
+  <div class="ch"><div class="ci">4</div><div><div class="ct">매수인 정보</div><div class="cs">등기권리자(매수인)의 기본 정보</div></div></div>
+  <div class="ntc inf" style="margin-top:0;margin-bottom:14px">
+    매수인 주소는 <b>주민등록등본·초본에 적힌 주소 그대로 입력해 주세요.</b> 
+  </div>
 
   <label class="jt-toggle" for="buyer-joint">
     <input type="checkbox" id="buyer-joint" onchange="toggleJoint('buyer')">
@@ -586,8 +573,8 @@ gtag('js',new Date());gtag('config','G-DR3W5XWF50');
   <div class="fg s1"><div class="f">
     <label>주민등록번호</label>
     <input type="text" id="owner-rrn" placeholder="예: 900101-1234567" maxlength="14">
-    <span class="fn">입력하면 소유권이전등기신청서에 자동으로 채워집니다. <b>비워두면 직접 손으로 기재</b>할 수 있도록 신청서에 빈 칸으로 남습니다. 이 값은 서버로 전송되지 않고, 이 기기(브라우저)에서 서류 생성에만 사용됩니다.</span>
   </div></div>
+  <div class="ntc inf"><strong>주민번호를 비워둘 경우 신청서에 수기로 직접 기재하시기 바랍니다.</strong> 입력하셔도 이 브라우저 안에서만 쓰이고 서버로 전송되지 않습니다.</div>
 
   <!-- 공동명의 시에만 표시 -->
   <div class="jt-body" id="buyer-joint-body">
@@ -666,12 +653,6 @@ gtag('js',new Date());gtag('config','G-DR3W5XWF50');
   <span class="fn" style="margin-top:2px;display:block">※ 위임장 하단 작성일에 쓰입니다. 일(day)은 공란으로 출력되며, 잔금 당일 직접 기재합니다.</span>
   <div class="divider"></div>
   <div class="fg s1"><div class="f">
-    <label>부동산고유번호</label>
-    <input type="text" id="property-uid" placeholder="예: 1354-2017-002088">
-    <span class="fn">등기사항전부증명서 상단 바코드 옆에 적힌 번호입니다.</span>
-  </div></div>
-  <div class="divider"></div>
-  <div class="fg s1"><div class="f">
     <label>거래(매매)가액</label>
     <input type="text" id="deal-price" placeholder="예: 350000000">
     <span class="fn">숫자만 입력하면 됩니다. 매매계약서 또는 신고필증 기준 금액입니다.</span>
@@ -686,7 +667,7 @@ gtag('js',new Date());gtag('config','G-DR3W5XWF50');
     <button type="button" class="deal-tab-btn" id="ts-btn-part" onclick="setTransfer('part', this)">일부만 이전</button>
   </div>
   <div class="ntc inf" id="ts-desc" style="margin-top:12px">
-    <strong>대부분의 매매가 여기 해당합니다.</strong> 매매계약서에 지분에 관한 특약이 없고 해당 부동산의 소유권을 통째로 넘겨받는다면 '전부 이전'입니다. 위임장에는 <b>전부</b>로 기재됩니다.
+    매매계약서에 지분에 관한 특약이 없고 <strong>해당 부동산의 소유권을 통째로 넘겨받는다면 '전부 이전'입니다.</strong> 위임장에는 <b>전부</b>로 기재됩니다.
   </div>
   <div id="ts-part-body" style="display:none">
     <div class="divider"></div>
@@ -736,14 +717,13 @@ gtag('js',new Date());gtag('config','G-DR3W5XWF50');
   <!-- 대조 확인 게이트 (2026.08.22) · 자동으로 채워진 칸이 있을 때만 나타납니다.
        자동입력은 검수 주의를 떨어뜨리므로(automation bias) 확인 없이는 내려받지 못하게 합니다.
        약관 제7조(이용자의 확인 책임)와 화면상으로 연결되는 지점입니다. -->
-  <label id="ocr-gate" for="ocr-confirm" style="display:none;align-items:flex-start;gap:10px;
+  <label id="ocr-gate" for="ocr-confirm" style="display:flex;align-items:flex-start;gap:10px;
          background:#FFFBEB;border:1px solid #FDE68A;border-radius:12px;
          padding:14px 16px;margin-bottom:14px;cursor:pointer;font-size:14px;
          line-height:1.6;color:#92400E">
     <input type="checkbox" id="ocr-confirm" style="width:18px;height:18px;margin-top:2px;flex:none;accent-color:#92400E">
-    <span><b>자료에서 읽어온 부동산 정보를 등기사항전부증명서 원본과 하나씩 비교했습니다.</b><br>
-      사진·스캔에서 읽은 값은 글자가 바뀌어 들어갈 수 있습니다. 서류에 그대로 인쇄되므로
-      소재지번 · 면적 · 대지권 비율 · 성명을 원본과 대조해 주세요.</span>
+    <span><b>가지고 계신 원본 서류와 위에 입력된 내용을 대조해, 다른 곳이 없음을 확인했습니다.</b><br>
+      입력된 주소 · 면적 · 성명 등을 보유하신 서류와 최종적으로 대조하여 주시기 바랍니다.</span>
   </label>
 
   <!-- 신탁해지: 위임장 + 해지증서 -->
@@ -1619,9 +1599,10 @@ window.SR=window.SR||(function(){
   function gate(){
     var box = $('ocr-gate'), cb = $('ocr-confirm');
     if(!box || !cb) return;
-    var any = document.querySelectorAll('.ocr').length > 0;
-    box.style.display = any ? 'flex' : 'none';
-    var lock = any && !cb.checked;
+    /* 2026.08.22 — 자동입력이 있을 때만 잠그던 것을 항상 잠그도록 바꿨다.
+       직접 입력한 값도 오타는 그대로 인쇄된다. 확인 책임이 걸린 지점은 같다. */
+    box.style.display = 'flex';
+    var lock = !cb.checked;
     ['dl-trust','dl-sale'].forEach(function(id){
       var b = $(id); if(!b) return;
       b.disabled = lock;
@@ -1806,8 +1787,8 @@ window.SR=window.SR||(function(){
       note('addr','<b>현재 소유자가 신탁 수탁자입니다.</b> 일반 매매와 절차가 다릅니다.');
     if(res.property && res.property.separateReg && res.property.separateReg.value)
       note('addr','<b>표제부에 「별도등기 있음」 기재가 있습니다.</b> 이 화면은 매매 소유권이전 기준이므로, 해당 여부를 <a href="guide.html" style="color:#92400e;font-weight:700">가이드</a>에서 먼저 확인해 보시기 바랍니다.');
-    if(res.scope === '말소사항포함')
-      note('addr','<b>「말소사항 포함」 발급본입니다.</b> 취소선이 그어진 옛 기재사항도 글자로는 그대로 읽힙니다. 소유자·주소가 옛 값일 수 있으니 반드시 원본과 대조하세요.');
+    /* 「말소사항 포함」 안내는 삭제(2026.08.22). 다운로드 직전 대조 체크박스가
+       같은 역할을 하고, 경고가 겹치면 어느 것도 읽히지 않는다. */
     if(res.isJointOwnership)
       note('inf','매도인이 <b>'+res.ownerCount+'명</b>입니다. 위임장은 매도인 수만큼 필요합니다.');
     /* 단어 신뢰도가 낮은 필드는 따로 모아 대조를 요구한다.
