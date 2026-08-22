@@ -1,0 +1,8 @@
+# 사이트 동작과 무관한 개발 자산 — 배포에서 제외한다.
+# Vercel 은 저장소 루트의 모든 파일을 정적 파일로 서빙하므로,
+# 이 설정이 없으면 selfregi24.com/sindang.txt 로 누구나 내려받을 수 있다.
+fixtures/
+test.js
+*.md
+ppocr_test.html
+regparse-test.html
