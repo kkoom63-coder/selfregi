@@ -1,5 +1,5 @@
 /* 회귀 테스트 — 실제 OCR 원문 4종. 한 군데 고칠 때마다 전부 통과해야 한다. */
-var fs=require('fs'), R=require('/home/claude/regfields.js');
+var fs=require('fs'), R=require('./regfields.js');
 var CASES=[
  {f:'sindang', exp:{docType:'집합건물',uid:'1103-1996-279658',
    jibunAddress:'서울특별시 중구 신당동 372-13', exclusiveNo:'제2층 제207호',
@@ -28,7 +28,7 @@ function eq(tag,got,want){
   return ok;
 }
 CASES.forEach(function(c){
-  var txt=fs.readFileSync('/home/claude/fixtures/'+c.f+'.txt','utf8');
+  var txt=fs.readFileSync(__dirname+'/fixtures/'+c.f+'.txt','utf8');
   var r=R.extract(txt), P=r.property, e=c.exp, n0=fail;
   console.log('['+c.f+']');
   eq('docType',r.docType,e.docType); eq('uid',r.uid,e.uid);
@@ -47,5 +47,19 @@ CASES.forEach(function(c){
   });
   if(fail===n0) console.log('  ✓ 통과');
 });
+/* 토지 머리글 오염 (2026.08.22 실측 재현, 경주)
+   '[토지]…상계리295답2301m2' 처럼 표 안의 지목·면적이 머리글에 붙어 읽히면
+   소재지번 뒤가 건물명으로 갈라져 「아파트·건물명」 칸에 '답 2301m' 이 들어갔다.
+   픽스처는 원문 발췌라 이 줄이 없으므로 합성 입력으로 잠가 둔다. */
+console.log('[토지머리글오염]');
+(function(){
+  var n0=fail;
+  var t=R.extract('[토지] 경상북도 경주시 양남면 상계리 295 답 2301m2\n지 목\n면 적\n');
+  eq('소재지번', t.property.jibunAddress, '경상북도 경주시 양남면 상계리 295');
+  eq('지목', t.property.landCategory, '답');
+  eq('면적', t.property.landArea, '2301');
+  if(fail===n0) console.log('  \u2713 통과');
+})();
+
 console.log(fail? '\n실패 '+fail+'건' : '\n전부 통과');
 process.exit(fail?1:0);
