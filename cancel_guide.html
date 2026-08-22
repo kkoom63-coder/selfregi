@@ -81,7 +81,7 @@ header{background:var(--navy)}
 .sec-label{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;color:var(--blue);letter-spacing:.6px;margin-bottom:10px}
 .sec-label::before{content:'';display:block;width:3px;height:12px;background:var(--blue);border-radius:2px}
 .sec-title{font-size:22px;font-weight:700;color:var(--navy);margin-bottom:6px;line-height:1.4;word-break:keep-all}
-.sec-sub{font-size:13.5px;color:var(--muted);line-height:1.7;margin-bottom:22px;max-width:640px;word-break:keep-all}
+.sec-sub{font-size:13.5px;color:var(--muted);line-height:1.7;margin-bottom:22px;max-width:840px;word-break:keep-all}
 
 /* ── 대상 확인 ── */
 .fit-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
@@ -349,6 +349,9 @@ p,.tl-d,.faq .a,.pitem small,.addr-tip,.dl-warn,.appform-note,.srcs li span,.gm-
 .receipt-note,.foot-copy,.bridge p{text-wrap:pretty}
 .pitem,.pitem small,.fit-card h3,.fit-card li small,.appform-dlbtn .dl-t,.appform-dlbtn .dl-s,
 .dl-warn b,.srcs li b,.cost-side .point b,.hero .kicker,.sec-label,.tl-n,.appform-hd .sub,.fgrp-h{word-break:keep-all}
+/* 실측(1920/1440)에서 꼬리줄이 남던 3종. .rj-why 는 .pitem small(pretty)에 특이도로 밀리므로
+   .pitem small.rj-why 로 올려야 적용된다. 적용 전후: 997/313 → 685/625, 339/91 → 219/211 */
+.srcs li span,.faq .a,.pitem small.rj-why{text-wrap:balance}
 
 /* ── 비용 섹션 좌우 컬럼 하단 정렬 (2026.8.23) ──
    좌측 영수증 카드가 우측 4장보다 길어 우측 아래에 죽은 여백이 생겼다.
@@ -366,6 +369,8 @@ p,.tl-d,.faq .a,.pitem small,.addr-tip,.dl-warn,.appform-note,.srcs li span,.gm-
   .ffield input,.ffield textarea,.ffield select,.tl-save input,.vslot input{font-size:16px}
 }
 .tl-save button{min-height:44px}
+/* 모바일에서 nav 는 CTA 하나만 보인다. 실측 36px → 44px (nav 높이 47→55px, 오버플로 없음) */
+@media(max-width:680px){.nav-a.cta{min-height:44px;display:inline-flex;align-items:center}}
 </style>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-DR3W5XWF50"></script>
 <script>
