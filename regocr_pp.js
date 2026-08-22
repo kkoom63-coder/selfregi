@@ -21,19 +21,92 @@
   var PAGE_GAP = 1000;      // regocr.js 와 동일해야 페이지 병합 좌표가 맞는다
 
   /* 모델 경로. 전부 Apache 2.0.
-     det 는 server 판을 기본으로 둔다 — 4/4 판정을 낸 쪽이 이것이고
-     mobile(5MB)로 같은 점수가 나오는지는 아직 미검증이다.
-     실서비스 전환 시 HF 직접 fetch 대신 Vercel 미러 + 캐시 헤더로 바꾼다. */
-  var MODELS = {
-    /* 기본은 mobile det. 실측(2026.08.21, 신당동 집합건물)에서 server det 와
-       판정값이 동일했고 체감 20~25초가 줄었다. 84MB → 4.83MB.
-       ※ 종전 PT-Perkasa 경로는 401(Unauthorized)로 죽었다. 재도입 금지. */
-    det: 'https://huggingface.co/ilaylow/PP_OCRv5_mobile_onnx/resolve/main/ppocrv5_det.onnx',
+     기본은 mobile det. 실측(2026.08.21, 신당동 집합건물)에서 server det 와
+     판정값이 동일했고 체감 20~25초가 줄었다. 84MB → 4.83MB.
+     ※ 종전 PT-Perkasa 경로는 401(Unauthorized)로 죽었다. 재도입 금지.
+
+     ── 미러 우선 · HF 폴백 (2026.08.22) ──
+     HF 직접 fetch 는 실서비스에서 단일 장애점이다. HF 가 느리거나 죽으면
+     OCR 기능 전체가 죽는다. 같은 도메인 /ocr/ 에 파일이 있으면 그쪽을 먼저 쓰고,
+     없으면(404) 자동으로 HF 로 넘어간다. 저장소 /ocr/ 에 파일을 넣는 순간
+     코드 수정 없이 미러가 켜진다. */
+  var MIRROR = '/ocr/';
+  var HF = {
     detMobile: 'https://huggingface.co/ilaylow/PP_OCRv5_mobile_onnx/resolve/main/ppocrv5_det.onnx',
     detServer: 'https://huggingface.co/monkt/paddleocr-onnx/resolve/main/detection/v5/det.onnx',
     rec: 'https://huggingface.co/monkt/paddleocr-onnx/resolve/main/languages/korean/rec.onnx',
     dic: 'https://huggingface.co/monkt/paddleocr-onnx/resolve/main/languages/korean/dict.txt'
   };
+  /* 미러에 둘 파일 이름. 저장소 /ocr/ 에 이 이름 그대로 넣으면 된다. */
+  var MIRROR_NAME = {
+    detMobile: 'ppocrv5_det_mobile.onnx',
+    detServer: 'ppocrv5_det_server.onnx',
+    rec: 'ppocrv5_rec_korean.onnx',
+    dic: 'ppocrv5_dict_korean.txt'
+  };
+  var _detKey = 'detMobile';
+  /* 하위호환 — 콘솔에서 RegOCRPP.MODELS 로 현재 경로를 확인하던 용도 */
+  var MODELS = {
+    get det() { return HF[_detKey]; },
+    detMobile: HF.detMobile, detServer: HF.detServer, rec: HF.rec, dic: HF.dic
+  };
+
+  var CACHE_NAME = 'selfregi-ocr-v1';
+  var _asset = {};   // key → Uint8Array (같은 세션에서 재사용)
+
+  function candidates(key) { return [MIRROR + MIRROR_NAME[key], HF[key]]; }
+
+  /* 진행률을 보여주기 위해 스트림으로 받는다. content-length 가 없으면 통째로 받는다. */
+  async function fetchBytes(url, onPct) {
+    var r = await fetch(url, { mode: 'cors', credentials: 'omit' });
+    if (!r.ok) throw new Error(r.status + ' ' + url);
+    var total = +(r.headers.get('content-length') || 0);
+    if (!r.body || !total) return new Uint8Array(await r.arrayBuffer());
+    var reader = r.body.getReader(), chunks = [], got = 0, s;
+    for (;;) {
+      s = await reader.read();
+      if (s.done) break;
+      chunks.push(s.value); got += s.value.length;
+      if (onPct) onPct(Math.min(1, got / total));
+    }
+    var buf = new Uint8Array(got), off = 0;
+    chunks.forEach(function (c) { buf.set(c, off); off += c.length; });
+    return buf;
+  }
+
+  /* 모델은 한 번 받으면 내용이 바뀌지 않는다. Cache Storage 에 넣어 두 번째
+     방문부터는 네트워크를 타지 않는다(18MB). 사생활 보호 모드처럼 캐시가 막힌
+     환경에서는 조용히 건너뛰고 매번 받는다 — 기능이 죽지는 않는다. */
+  async function assetBytes(key, onPct) {
+    if (_asset[key]) return _asset[key];
+    var urls = candidates(key), cache = null, bytes = null, lastErr = null, i, hit;
+    try { if (root.caches && location.protocol === 'https:') cache = await caches.open(CACHE_NAME); }
+    catch (e) { cache = null; }
+    if (cache) {
+      for (i = 0; i < urls.length; i++) {
+        try { hit = await cache.match(urls[i]); } catch (e) { hit = null; }
+        if (hit) { bytes = new Uint8Array(await hit.arrayBuffer()); break; }
+      }
+    }
+    if (!bytes) {
+      for (i = 0; i < urls.length; i++) {
+        try { bytes = await fetchBytes(urls[i], onPct); }
+        catch (e) { lastErr = e; bytes = null; continue; }
+        if (cache) {
+          try {
+            await cache.put(urls[i], new Response(bytes, {
+              headers: { 'content-type': 'application/octet-stream', 'content-length': String(bytes.length) }
+            }));
+          } catch (e) {}
+        }
+        break;
+      }
+    }
+    if (!bytes) throw new Error('판독 모델을 내려받지 못했습니다. 인터넷 연결을 확인해 주세요.'
+      + (lastErr ? ' (' + lastErr.message + ')' : ''));
+    _asset[key] = bytes;
+    return bytes;
+  }
   var LIBS = {
     ort: 'https://cdn.jsdelivr.net/npm/onnxruntime-web/dist/ort.min.js',
     cv: 'https://docs.opencv.org/4.8.0/opencv.js',
@@ -87,12 +160,22 @@
       }
 
       say({ status: '한국어 사전 내려받는 중', progress: 0.28 });
-      var dic = await (await fetch(MODELS.dic)).text();
+      var dic = new TextDecoder('utf-8').decode(await assetBytes('dic'));
 
-      say({ status: '모델 내려받는 중(처음 한 번만 오래 걸립니다)', progress: 0.35 });
+      /* ort 는 URL 문자열과 Uint8Array 를 모두 받는다. 바이트를 직접 넘겨
+         캐시에서 꺼낸 것을 그대로 쓴다(두 번째 방문부터 네트워크 0). */
+      say({ status: '글자 찾기 모델 내려받는 중', progress: 0.30 });
+      var detBuf = (opts && opts.detPath) || await assetBytes(_detKey, function (p) {
+        say({ status: '글자 찾기 모델 ' + Math.round(p * 100) + '%', progress: 0.30 + 0.05 * p });
+      });
+      say({ status: '글자 읽기 모델 내려받는 중(처음 한 번만 오래 걸립니다)', progress: 0.35 });
+      var recBuf = (opts && opts.recPath) || await assetBytes('rec', function (p) {
+        say({ status: '글자 읽기 모델 ' + Math.round(p * 100) + '%', progress: 0.35 + 0.12 * p });
+      });
+
       await Paddle.init({
-        detPath: (opts && opts.detPath) || MODELS.det,
-        recPath: (opts && opts.recPath) || MODELS.rec,
+        detPath: detBuf,
+        recPath: recBuf,
         dic: dic,
         ort: root.ort,
         node: false,
@@ -371,8 +454,13 @@
     recognize: recognize,
     combinePages: combinePages,
     preload: function (opts) { return ensureEngine(opts || {}); },
-    useMobileDet: function () { MODELS.det = MODELS.detMobile; _enginePromise = null; },
-    useServerDet: function () { MODELS.det = MODELS.detServer; _enginePromise = null; },
+    useMobileDet: function () { _detKey = 'detMobile'; _enginePromise = null; },
+    useServerDet: function () { _detKey = 'detServer'; _enginePromise = null; },
+    /* 콘솔에서 캐시를 비운다 — 모델을 교체했는데 옛 파일이 계속 잡힐 때 */
+    clearCache: async function () {
+      _asset = {}; _enginePromise = null;
+      try { await caches.delete(CACHE_NAME); return true; } catch (e) { return false; }
+    },
     _internal: { boxToRect: boxToRect, rowsToTokens: rowsToTokens, collect: collect, pickBestGroup: pickBestGroup, fixChars: fixChars, toCanvas: toCanvas }
   };
 

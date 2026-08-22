@@ -49,6 +49,11 @@
   var JIMOK = ['전', '답', '과수원', '목장용지', '임야', '광천지', '염전', '대', '공장용지', '학교용지',
     '주차장', '주유소용지', '창고용지', '도로', '철도용지', '제방', '하천', '구거', '유지', '양어장',
     '수도용지', '공원', '체육용지', '유원지', '종교용지', '사적지', '묘지', '잡종지'];
+  /* 긴 지목이 먼저 걸리도록 길이 내림차순(대|공장용지 순서면 '공장용지'가 '대'로 잘린다).
+     면적 단위는 ㎡ 가 m2 · m² · m 으로 읽히는 경우가 모두 관측됐다. */
+  var RE_JIMOK_AREA = new RegExp(
+    '(' + JIMOK.slice().sort(function (a, b) { return b.length - a.length; }).join('|') + ')'
+    + '\\s*[\\d,]+(?:\\.\\d+)?\\s*(?:m2|m²|㎡|m)');
 
   function dist(a, b) {                                   // 편집거리(짧은 문자열 전용)
     var m = a.length, n = b.length, i, j, prev = [], cur = [];
@@ -123,6 +128,15 @@
          식별자까지만 자른다. */
       var cut = body.match(/제\d+층제[0-9가-힣]+호/);
       if (cut) body = body.slice(0, cut.index + cut[0].length);
+      /* 토지 머리글 뒤에 표 안의 지목·면적이 붙어 읽히는 경우가 있다
+         (실측 2026.08.22, 경주: '[토지]경상북도경주시양남면상계리295답2301m2').
+         그대로 두면 소재지번 뒤가 건물명으로 갈라져 「아파트·건물명」 칸에
+         '답 2301m' 이 들어간다. 지목은 28종 닫힌 집합이므로
+         '지목 + 숫자 + 면적단위' 꼴이 뒤에 붙어 있으면 잘라낸다. */
+      if (!cut) {
+        var mtail = body.match(RE_JIMOK_AREA);
+        if (mtail && mtail.index > 0) body = body.slice(0, mtail.index);
+      }
       if (!/\d/.test(body)) continue;
       if (!head || body.length > head.length) head = body;
     }

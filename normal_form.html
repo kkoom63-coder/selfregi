@@ -278,9 +278,10 @@ gtag('js',new Date());gtag('config','G-DR3W5XWF50');
     <div class="drop" id="dz-reg">
       <div class="slot-t">등기사항전부증명서</div>
       <div class="sub">인터넷등기소에서 발급한 PDF는 글자를 그대로 가져옵니다.
-        출력물을 찍은 사진이나 스캔본도 읽습니다.</div>
+        출력물을 찍은 사진이나 스캔본도 읽습니다.<br>
+        <b>여러 장이면 한꺼번에 골라 주세요.</b> 등기부가 3~4장으로 나뉘어 있어도 한 번에 읽습니다.</div>
       <label class="fb" for="fi-reg">파일 선택</label>
-      <input type="file" id="fi-reg" accept="application/pdf,image/*" style="display:none">
+      <input type="file" id="fi-reg" accept="application/pdf,image/*" multiple style="display:none">
       <div class="pr" id="pr-reg"><i></i></div>
       <div class="plg" id="lg-reg"></div>
     </div>
@@ -308,7 +309,10 @@ gtag('js',new Date());gtag('config','G-DR3W5XWF50');
     <div id="ocr-rows"></div>
     <div id="ocr-flags"></div>
     <button type="button" class="ocr-all" id="ocr-all">읽은 값 모두 넣기</button>
-    <details class="raw-d"><summary>추출한 원문 보기</summary><pre id="ocr-raw"></pre></details>
+    <!-- 「추출한 원문 보기」는 개발·진단용입니다. 등기부 원문에는 매도인 실명과
+         주민등록번호 마스킹이 그대로 들어 있어 일반 화면에 띄울 이유가 없습니다.
+         ?pp=1 · ?pp=0 · ?raw=1 로 들어왔을 때만 나타납니다. -->
+    <details class="raw-d" id="ocr-raw-box" hidden><summary>추출한 원문 보기</summary><pre id="ocr-raw"></pre></details>
   </div>
 </div>
 
@@ -371,6 +375,20 @@ gtag('js',new Date());gtag('config','G-DR3W5XWF50');
   <div class="fg">
     <div class="f"><label>구조</label><input type="text" id="prop-struct" placeholder="예: 철근콘크리트구조"></div>
     <div class="f"><label>전유면적 (㎡)</label><input type="text" id="prop-area" placeholder="예: 84.99"></div>
+  </div>
+  <!-- 토지 전용 · 「부동산 종류 = 토지」일 때만 나타납니다 (2026.08.22) -->
+  <div id="land-only" style="display:none">
+    <div class="divider"></div>
+    <div class="fg">
+      <div class="f"><label>지목</label>
+        <input type="text" id="land-category" placeholder="예: 대">
+        <span class="fn">등기부 표제부 「토지의 표시」의 <b>지목을 그대로</b>. (대 · 답 · 전 · 임야 · 잡종지 등)</span>
+      </div>
+      <div class="f"><label>토지 면적 (㎡)</label>
+        <input type="text" id="land-area" placeholder="예: 2301">
+        <span class="fn">같은 줄의 <b>면적을 그대로</b>. 신청서의 부동산 표시는 등기부 기재와 같아야 하므로 <b>쉼표 없이 숫자만</b> 적습니다.</span>
+      </div>
+    </div>
   </div>
   <div class="divider"></div>
   <div class="fg s1"><div class="f">
@@ -714,6 +732,19 @@ gtag('js',new Date());gtag('config','G-DR3W5XWF50');
 <!-- ⑦ 다운로드 -->
 <div class="card" id="dl-section">
   <div style="font-size:13px;font-weight:700;color:var(--navy);margin-bottom:12px">서류 생성 및 다운로드</div>
+
+  <!-- 대조 확인 게이트 (2026.08.22) · 자동으로 채워진 칸이 있을 때만 나타납니다.
+       자동입력은 검수 주의를 떨어뜨리므로(automation bias) 확인 없이는 내려받지 못하게 합니다.
+       약관 제7조(이용자의 확인 책임)와 화면상으로 연결되는 지점입니다. -->
+  <label id="ocr-gate" for="ocr-confirm" style="display:none;align-items:flex-start;gap:10px;
+         background:#FFFBEB;border:1px solid #FDE68A;border-radius:12px;
+         padding:14px 16px;margin-bottom:14px;cursor:pointer;font-size:14px;
+         line-height:1.6;color:#92400E">
+    <input type="checkbox" id="ocr-confirm" style="width:18px;height:18px;margin-top:2px;flex:none;accent-color:#92400E">
+    <span><b>자료에서 읽어온 부동산 정보를 등기사항전부증명서 원본과 하나씩 비교했습니다.</b><br>
+      사진·스캔에서 읽은 값은 글자가 바뀌어 들어갈 수 있습니다. 서류에 그대로 인쇄되므로
+      소재지번 · 면적 · 대지권 비율 · 성명을 원본과 대조해 주세요.</span>
+  </label>
 
   <!-- 신탁해지: 위임장 + 해지증서 -->
   <button id="dl-trust" class="dbtn d1" onclick="downloadAll()" style="display:none;width:100%;flex-direction:row;align-items:center;justify-content:center;gap:12px;padding:18px 20px">
@@ -1482,7 +1513,7 @@ window.SR=window.SR||(function(){
   var LK='selfregi_events_v1',MAX=500;
   function readLog(){try{return JSON.parse(localStorage.getItem(LK)||'[]')||[];}catch(e){return[];}}
   function writeLog(a){try{localStorage.setItem(LK,JSON.stringify(a.slice(-MAX)));}catch(e){}}
-  var ALLOW=['key','from','doc','track','step'];           /* 허용된 키만 통과 */
+  var ALLOW=['key','from','doc','track','step','type','mode']; /* 허용된 키만 통과 */
   var DENY=/\d{6}\s*-\s*\d{7}|\d{10,}|@/;                  /* 주민번호·긴 숫자열·이메일 차단 */
   function sane(d){ /* 개인정보 차단 + 키 2개 제한(Vercel Pro 상한) */
     var out={},n=0;
@@ -1538,7 +1569,7 @@ window.SR=window.SR||(function(){
   var REQ=['owner-name','owner-address','s-name','s-addr','jibun-address','dong','ho',
            'total-land','unit-land','transfer-denom','transfer-num','user-email'];
   var OPT=['owner-rrn','apt-name','floor','prop-struct','prop-area','prop-road-address',
-           'property-uid','deal-price'];
+           'property-uid','deal-price','land-category','land-area'];
   function frac(a,b){var x=v(a),y=v(b);return (x&&y)?(x+'분의 '+y):'';}
   function render(){
     var addr=v('jibun-address'), apt=v('apt-name'), dong=v('dong'), ho=v('ho');
@@ -1568,6 +1599,46 @@ window.SR=window.SR||(function(){
   else document.addEventListener('DOMContentLoaded',render);
 })();
 </script>
+<script>
+/* 토지 전용 칸 표시 · 대조 확인 게이트 (2026.08.22) */
+(function(){
+  'use strict';
+  function $(id){ return document.getElementById(id); }
+
+  /* ① 부동산 종류가 「토지」일 때만 지목·면적 칸을 보여준다.
+        집합건물 전용 칸(동·호·전유면적·대지권)은 이번에는 건드리지 않는다 —
+        토지 전용 폼 재설계는 별건이다. */
+  function land(){
+    var k = $('prop-kind'), box = $('land-only');
+    if(!k || !box) return;
+    box.style.display = (k.value === '토지') ? 'block' : 'none';
+  }
+
+  /* ② 자동으로 채워진 칸이 하나라도 있으면 대조 확인 체크 전까지 다운로드를 잠근다.
+        빈칸보다 위험한 것은 그럴싸하게 틀린 값이 그대로 인쇄되는 것이다. */
+  function gate(){
+    var box = $('ocr-gate'), cb = $('ocr-confirm');
+    if(!box || !cb) return;
+    var any = document.querySelectorAll('.ocr').length > 0;
+    box.style.display = any ? 'flex' : 'none';
+    var lock = any && !cb.checked;
+    ['dl-trust','dl-sale'].forEach(function(id){
+      var b = $(id); if(!b) return;
+      b.disabled = lock;
+      b.style.opacity = lock ? '0.45' : '';
+      b.style.cursor  = lock ? 'not-allowed' : '';
+      b.title = lock ? '위 확인란에 체크하시면 내려받을 수 있습니다.' : '';
+    });
+  }
+
+  function sync(){ land(); gate(); }
+  document.addEventListener('change', sync, true);
+  document.addEventListener('input', sync, true);
+  window.SRSync = sync;
+  if(document.readyState !== 'loading') sync();
+  else document.addEventListener('DOMContentLoaded', sync);
+})();
+</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script src="regparse.js"></script>
 <script src="regocr.js"></script>
@@ -1591,6 +1662,14 @@ window.SR=window.SR||(function(){
 
   var TESS_SRC = 'https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js';
   var R = null, PENDING = null;
+
+  /* ── 원문 보기 게이트 (2026.08.22) ──
+     등기부 원문에는 매도인 실명·주소·주민등록번호 마스킹이 그대로 들어 있다.
+     화면 캡처·화면 공유로 새어 나갈 이유가 없고, 일반 이용자에게 필요한 정보도 아니다.
+     진단 파라미터로 들어왔을 때만 DOM 에 쓴다 — 숨기는 것이 아니라 아예 넣지 않는다.
+       ?raw=1  원문만 보기        ?pp=1 · ?pp=0  엔진 전환 겸 진단 모드
+     ※ 회귀 테스트 픽스처는 이 화면에서 통째로 복사한다(§3). 진단 모드로 열 것. */
+  var RAW_ON = /[?&](?:raw=1|pp=[01])/.test(location.search);
 
   function say(t){ var e=$('lg-reg'); if(e) e.textContent = t||''; }
   function bar(v){
@@ -1629,6 +1708,13 @@ window.SR=window.SR||(function(){
      신청서의 부동산 표시는 등기부 기재와 동일해야 하므로(국가기록원 절차안내),
      「63527.1분의 75.809」든 「55분의 1」이든 적힌 그대로 옮긴다. */
 
+  /* 천단위 쉼표 — 화면 표시 전용. 입력칸·서류에 들어가는 값에는 쓰지 않는다. */
+  function comma(n){
+    var s = String(n).split('.');
+    s[0] = s[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    return s.join('.');
+  }
+
   function buildRows(res){
     var P = res.property||{}, jb = splitJibun(P.jibunAddress), ex = splitExcl(P.exclusiveNo);
     var struct = String(P.exclusiveStruct||'').replace(/[\d.,]+\s*(?:㎡|m2|m²).*$/,'').trim();
@@ -1655,6 +1741,14 @@ window.SR=window.SR||(function(){
     add('prop-road-address','도로명주소', P.roadAddress);
     add('property-uid','부동산고유번호', res.uid);
     add('prop-kind','부동산 종류', kindOf(res));
+
+    /* 토지 — 지목 · 면적 (2026.08.22)
+       화면에는 읽기 쉽도록 천단위 쉼표와 ㎡ 를 붙여 보여주되,
+       입력칸에 들어가는 값은 등기부 기재 그대로(쉼표 없는 숫자)다.
+       신청서의 부동산 표시는 등기부와 같아야 하므로 서류에 갈 값은 손대지 않는다. */
+    add('land-category','지목', P.landCategory);
+    if(P.landArea) rows.push({ id:'land-area', label:'토지 면적(㎡)',
+      v: String(P.landArea), show: comma(P.landArea)+'㎡', note:'', cls:'' });
 
     var r = P.landRightRatio;
     if(r){
@@ -1688,7 +1782,7 @@ window.SR=window.SR||(function(){
       var wide = /주소|성명|아파트|소재지번/.test(r.label) || String(r.v).length > 22;
       html += '<div class="fr'+(wide?' wide':'')+'"><b>'+esc(r.label)+'</b><span class="val'
            +  (/주소|성명|구조|아파트|소재지번|지분/.test(r.label)?' txt':'')+'">'
-           +  esc(r.v)
+           +  esc(r.show || r.v)
            +  '<span class="tag '+(r.cls==='warn'?'t-no':src[0])+'">'
            +  (r.cls==='warn'?'확인 필요':src[1])+'</span>'
            +  (r.note?'<span class="sub2">'+r.note+'</span>':'')
@@ -1696,14 +1790,18 @@ window.SR=window.SR||(function(){
            +  (r.id?'<button type="button" class="mini" data-i="'+idx+'">넣기</button>':'<span></span>')
            +  '</div>';
     });
-    if(!rows.length) html = '<div class="nt" style="margin-top:14px">읽어낸 항목이 없습니다. 아래 「추출한 원문 보기」를 열어 무엇이 읽혔는지 확인하실 수 있습니다. 칸은 직접 입력해 주세요.</div>';
+    if(!rows.length) html = '<div class="nt" style="margin-top:14px">읽어낸 항목이 없습니다.'
+      + (RAW_ON ? ' 아래 「추출한 원문 보기」를 열어 무엇이 읽혔는지 확인하실 수 있습니다.' : '')
+      + ' 아래 칸은 직접 입력하셔도 서류 발급에는 아무 지장이 없습니다.</div>';
     $('ocr-rows').innerHTML = rows.length ? '<div class="rows2">'+html+'</div>' : html;
     R._rows = rows;
 
     var al = '';
     function note(kind, t){ al += '<div class="ntc '+kind+'" style="margin-top:12px">'+t+'</div>'; }
     if(res.hasBlocker)
-      note('addr','<b>소유권에 압류·가처분 등이 기재되어 있습니다.</b> 그대로 진행하면 등기가 접수되지 않을 수 있습니다. 매도인·중개사를 통해 말소 여부를 먼저 확인해 주세요.');
+      /* 사실 표시까지만 한다. 「접수되지 않을 수 있습니다」는 개별 사안에 대한
+         예측이라 변호사법 경계에 걸리고, 근거도 확인되지 않았다. */
+      note('addr','<b>갑구에 압류 · 가처분 등의 기재가 있습니다.</b> 말소 여부와 처리 방법은 개별 사안마다 다르므로, 매도인 · 중개사에게 먼저 확인해 보시기 바랍니다.');
     if(res.isTrust)
       note('addr','<b>현재 소유자가 신탁 수탁자입니다.</b> 일반 매매와 절차가 다릅니다.');
     if(res.property && res.property.separateReg && res.property.separateReg.value)
@@ -1732,7 +1830,9 @@ window.SR=window.SR||(function(){
     }
     $('ocr-flags').innerHTML = al;
 
-    $('ocr-raw').textContent = res._raw || '(원문 없음)';
+    var rawBox = $('ocr-raw-box');
+    if(RAW_ON){ $('ocr-raw').textContent = res._raw || '(원문 없음)'; if(rawBox) rawBox.hidden = false; }
+    else { $('ocr-raw').textContent = ''; if(rawBox) rawBox.hidden = true; }
     $('ocr-out').hidden = false;
     var b = $('ocr-all');
     b.textContent = fillable ? ('읽은 값 '+fillable+'개 모두 넣기') : '넣을 값이 없습니다';
@@ -1748,6 +1848,8 @@ window.SR=window.SR||(function(){
     if(R._ocr) el.classList.add('ocr');
     el.dispatchEvent(new Event('input',{bubbles:true}));
     el.dispatchEvent(new Event('change',{bubbles:true}));
+    /* 토지 칸 표시 · 대조 확인 게이트를 즉시 반영한다. */
+    try{ window.SRSync && window.SRSync(); }catch(e){}
     return true;
   }
 
@@ -1778,7 +1880,7 @@ window.SR=window.SR||(function(){
     var buf = await readBuf(file);
     var res = await RegParse.parseRegistry(pdfjsLib, buf);
     bar(1);
-    if(res && res.ok && !res._raw){
+    if(RAW_ON && res && res.ok && !res._raw){
       try{
         var doc = await pdfjsLib.getDocument({data: buf.slice(0)}).promise;
         var txt = [], n = Math.min(doc.numPages, 20), i, pg, tc;
@@ -1792,10 +1894,17 @@ window.SR=window.SR||(function(){
   }
 
   async function runOcr(sources, onPartial){
-    /* ?pp=1 이면 PP-OCRv5, 기본은 기존 tesseract.
-       21MB 모델을 모든 방문자에게 내려받게 하지 않기 위해 기본값을 바꾸지 않는다.
-       같은 화면에서 두 엔진을 번갈아 돌려 파싱 결과를 비교하는 것이 목적이다. */
-    var usePP = /[?&]pp=1/.test(location.search) && window.RegOCRPP;
+    /* PP-OCRv5 를 기본으로 쓴다 (2026.08.22 전환).
+       모바일은 아직 tesseract 를 유지한다 — 18MB 모델 + onnxruntime-web 이
+       폰 브라우저에서 끝까지 도는지 실측 전이고, 중간에 죽으면 폴백 없이 백지가 된다.
+       데스크톱을 먼저 최적화하고 모바일은 실측 후에 넘긴다.
+       ?pp=0  데스크톱에서도 즉시 tesseract 로 되돌린다 (사고 시 롤백 경로)
+       ?pp=1  모바일에서도 강제로 PP-OCR 을 쓴다 (모바일 실측용) */
+    var isMobile = /Android|iPhone|iPad|iPod|IEMobile|Opera Mini/i.test(navigator.userAgent)
+      || (window.matchMedia && window.matchMedia('(pointer:coarse)').matches && screen.width < 900);
+    var usePP = !!window.RegOCRPP
+      && !/[?&]pp=0/.test(location.search)
+      && (/[?&]pp=1/.test(location.search) || !isMobile);
     var ENG = usePP ? window.RegOCRPP : window.RegOCR;
     var ppOpt = {};
     if(usePP){
@@ -1864,17 +1973,51 @@ window.SR=window.SR||(function(){
     return parsed;
   }
 
-  async function handle(file){
-    if(!file) return;
-    if(/heic|heif/i.test(file.type) || /\.hei[cf]$/i.test(file.name)){
-      say('HEIC 형식은 아직 읽지 못합니다. 아이폰 [설정 > 카메라 > 포맷]을 「높은 호환성」으로 바꾸거나 JPG로 저장해 올려 주세요.');
-      return;
+  /* ── 여러 장 업로드 (2026.08.22) ──
+     등기부를 3~4장으로 나눠 찍는 경우가 흔하다. 한 장씩 올리면 뒤 장이 앞 장을
+     덮어써 매도인·지분이 영영 안 잡힌다. runOcr 은 이미 sources 배열을 받으므로
+     묶어서 한 번에 넘긴다. */
+  var MAX_SHOTS = 8;                       // 이미지 PDF 렌더 상한과 같은 값
+  function isPdfFile(f){ return /pdf/i.test(f.type) || /\.pdf$/i.test(f.name); }
+  function isHeicFile(f){ return /heic|heif/i.test(f.type) || /\.hei[cf]$/i.test(f.name); }
+  /* 파일명 안의 숫자를 숫자로 비교한다 — IMG_9 가 IMG_10 뒤로 가면 페이지가 뒤집힌다.
+     선택 순서는 브라우저마다 달라 믿을 수 없다. */
+  function natCmp(a,b){
+    return String(a.name).localeCompare(String(b.name), 'ko', {numeric:true, sensitivity:'base'});
+  }
+
+  async function handle(files){
+    var list = [].slice.call(files && files.length !== undefined ? files : [files]).filter(Boolean);
+    if(!list.length) return;
+
+    var pdfs = list.filter(isPdfFile);
+    var imgs = list.filter(function(f){ return !isPdfFile(f); });
+    var heics = imgs.filter(isHeicFile);
+    imgs = imgs.filter(function(f){ return !isHeicFile(f); });
+    var pre = [];   // 사용자에게 알려야 할 처리 결과(무엇을 빼고 무엇을 읽었는지)
+
+    if(pdfs.length){
+      /* 등기부 PDF 한 개에 전 페이지가 들어 있다. 여러 개를 받을 이유가 없다. */
+      if(list.length > 1) pre.push('PDF 「' + esc(pdfs[0].name) + '」 하나만 읽었습니다. 인터넷등기소 발급 PDF에는 전 페이지가 들어 있어 나머지 파일은 필요하지 않습니다.');
+    } else {
+      if(heics.length) pre.push('HEIC 형식 ' + heics.length + '장은 아직 읽지 못해 건너뛰었습니다. 아이폰 [설정 > 카메라 > 포맷]을 「높은 호환성」으로 바꾸거나 JPG로 저장해 올려 주세요.');
+      if(!imgs.length){
+        say('HEIC 형식은 아직 읽지 못합니다. 아이폰 [설정 > 카메라 > 포맷]을 「높은 호환성」으로 바꾸거나 JPG로 저장해 올려 주세요.');
+        return;
+      }
+      imgs.sort(natCmp);
+      if(imgs.length > MAX_SHOTS){
+        pre.push('사진이 ' + imgs.length + '장이라 파일 이름 순으로 앞 ' + MAX_SHOTS + '장만 읽었습니다.');
+        imgs = imgs.slice(0, MAX_SHOTS);
+      }
+      if(imgs.length > 1) pre.push('사진 ' + imgs.length + '장을 <b>파일 이름 순</b>으로 이어 읽었습니다 (' + esc(imgs.map(function(f){return f.name;}).join(' → ')) + '). 순서가 다르면 파일 이름을 바꿔 다시 올려 주세요.');
     }
+
     var dz = $('dz-reg'); dz.classList.add('busy');
-    trk('ocr_upload',{type: /pdf/i.test(file.type) ? 'pdf' : 'image'});
+    trk('ocr_upload',{type: pdfs.length ? 'pdf' : 'image'});
     try{
-      var res = null, isPdf = /pdf/i.test(file.type) || /\.pdf$/i.test(file.name);
-      if(isPdf){
+      var res = null, file = pdfs.length ? pdfs[0] : null;
+      if(file){
         res = await runText(file);
         if(!res.ok && res.reason === 'NO_TEXT_LAYER'){
           say('사진으로 만들어진 PDF입니다. 이미지 판독으로 넘어갑니다…');
@@ -1897,7 +2040,15 @@ window.SR=window.SR||(function(){
           });
         }
       }else{
-        res = await runOcr([{el: await toImage(file), clean:false}]);
+        var ss = [], si;
+        for(si=0; si<imgs.length; si++){
+          if(imgs.length>1) say('사진을 여는 중… ('+(si+1)+'/'+imgs.length+')');
+          ss.push({el: await toImage(imgs[si]), clean:false});
+        }
+        res = await runOcr(ss, imgs.length>1 ? function(part){
+          render(part);
+          say('먼저 읽은 내용입니다. 나머지 사진을 계속 읽는 중입니다…');
+        } : null);
       }
 
       if(!res || !res.ok){
@@ -1907,6 +2058,11 @@ window.SR=window.SR||(function(){
         throw new Error(why);
       }
       render(res);
+      if(pre.length){
+        $('ocr-flags').innerHTML =
+          pre.map(function(t){ return '<div class="ntc inf" style="margin-top:12px">'+t+'</div>'; }).join('')
+          + $('ocr-flags').innerHTML;
+      }
       say(res._ocr ? '사진에서 읽었습니다. 값이 정확한지 원본과 반드시 대조하세요.'
                    : '발급 원본에서 글자를 그대로 가져왔습니다.');
     }catch(e){
@@ -1916,20 +2072,25 @@ window.SR=window.SR||(function(){
         + esc(e && e.message ? e.message : e)
         + '<br>아래 칸은 직접 입력하셔도 서류 발급에는 아무 지장이 없습니다.</div>';
       $('ocr-flags').innerHTML = ''; $('ocr-raw').textContent = '';
+      var rb = $('ocr-raw-box'); if(rb) rb.hidden = !RAW_ON;
       trk('ocr_result',{mode:'fail'});
     }finally{ dz.classList.remove('busy'); }
   }
 
   var fi = $('fi-reg'), dz = $('dz-reg');
-  if(fi) fi.addEventListener('change', function(){ handle(fi.files && fi.files[0]); });
+  if(fi) fi.addEventListener('change', function(){
+    var fl = fi.files; handle(fl);
+    /* 같은 파일을 다시 고를 때도 change 가 뜨도록 비운다. */
+    try{ fi.value = ''; }catch(e){}
+  });
   if(dz){
     ['dragenter','dragover'].forEach(function(t){
       dz.addEventListener(t,function(e){ e.preventDefault(); dz.classList.add('over'); }); });
     ['dragleave','drop'].forEach(function(t){
       dz.addEventListener(t,function(e){ e.preventDefault(); dz.classList.remove('over'); }); });
     dz.addEventListener('drop', function(e){
-      var f = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
-      if(f) handle(f);
+      var fl = e.dataTransfer && e.dataTransfer.files;
+      if(fl && fl.length) handle(fl);
     });
   }
 
