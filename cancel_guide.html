@@ -32,7 +32,7 @@
 {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
 {"@type":"Question","name":"근저당권 말소를 꼭 해야 하나요? 기한이 있나요?","acceptedAnswer":{"@type":"Answer","text":"근저당권 말소등기에는 소유권이전등기와 같은 신청 기한 규정이 없습니다. 다만 신청하지 않으면 등기부 을구에 근저당권이 그대로 남아, 이후 매매·전세 계약이나 추가 대출 과정에서 해당 기재에 대한 확인을 요청받을 수 있습니다."}},
 {"@type":"Question","name":"비용은 얼마나 드나요?","acceptedAnswer":{"@type":"Answer","text":"직접 신청 시 공과금 실비만 듭니다. 등기대상 1건 기준 등록면허세 6,000원과 지방교육세 1,200원, 등기신청수수료 4,000원으로 합계 11,200원입니다. 아파트 등 집합건물은 통상 1건이며, 토지·건물이 따로 등기된 주택은 건수만큼 계산됩니다."}},
-{"@type":"Question","name":"근저당권자가 대신 해주는 것 아닌가요?","acceptedAnswer":{"@type":"Answer","text":"근저당권 말소등기는 등기권리자와 등기의무자가 공동으로 신청하거나, 한쪽이 상대방에게 위임장을 받아 혼자 신청할 수 있습니다. 근저당권자에게 위임장과 해지증서를 받으면 본인이 직접 접수할 수 있습니다."}},
+{"@type":"Question","name":"근저당권자가 대신 해주는 것 아닌가요?","acceptedAnswer":{"@type":"Answer","text":"근저당권 말소등기는 등기권리자와 등기의무자가 공동으로 신청하거나, 한쪽이 상대방에게 위임장을 받아 혼자 신청할 수 있습니다. 위임장과 해지증서에 근저당권자의 날인을 받으면 본인이 직접 접수할 수 있습니다."}},
 {"@type":"Question","name":"등기소에 꼭 방문해야 하나요?","acceptedAnswer":{"@type":"Answer","text":"방문 접수가 기본이지만, 인터넷등기소 전자신청으로 방문 없이 처리하는 방법도 있습니다. 단, 전자신청은 최초 1회 등기소를 방문해 사용자등록을 마쳐야 이용할 수 있습니다."}}
 ]}
 </script>
@@ -223,6 +223,7 @@ header{background:var(--navy)}
 .pgrp-tag{flex-shrink:0;font-size:10px;font-weight:800;letter-spacing:.04em;padding:3px 10px;border-radius:20px}
 .pgrp-tag.bank{background:#E0F2FE;color:#075985}
 .pgrp-tag.me{background:#F1F5F9;color:#334155}
+.pgrp-tag.seal{background:#FEF3C7;color:#92400E}
 .pgrp-s{font-size:12px;color:var(--muted);margin-bottom:8px;word-break:keep-all}
 .pitem{display:flex;gap:9px;padding:11px 0;border-top:1px solid #edf1f5;font-size:13.5px;color:var(--text)}
 .pitem::before{content:'✓';flex-shrink:0;width:19px;height:19px;border-radius:6px;background:#E0F2FE;color:var(--navy);font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center;margin-top:2px}
@@ -371,6 +372,58 @@ p,.tl-d,.faq .a,.pitem small,.addr-tip,.dl-warn,.appform-note,.srcs li span,.gm-
 .tl-save button{min-height:44px}
 /* 모바일에서 nav 는 CTA 하나만 보인다. 실측 36px → 44px (nav 높이 47→55px, 오버플로 없음) */
 @media(max-width:680px){.nav-a.cta{min-height:44px;display:inline-flex;align-items:center}}
+/* ── 자료에서 읽어오기 (normal_form 이식, 2026.08.23) ──
+   cancel_guide 의 기존 클래스와 충돌하지 않도록 전부 #ocr-card 아래로 가둔다.
+   변수명(--navy/--blue/--muted/--border/--bg/--card/--radius/--shadow)은
+   양쪽이 동일하므로 그대로 쓴다. */
+:root{--ocr-bg:#FFFBEB;--ocr-bd:#FDE68A;--ocr:#92400E}
+#ocr-card{background:var(--card);border-radius:var(--radius);border:1px solid var(--border);padding:22px;box-shadow:var(--shadow)}
+#ocr-card .ch{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+#ocr-card .ci{width:26px;height:26px;background:var(--navy);color:#fff;border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:'SFMono-Regular',Consolas,monospace;font-size:13px;font-weight:700;flex-shrink:0;letter-spacing:-.02em}
+#ocr-card .ct{font-size:14px;font-weight:700;color:var(--navy)}
+#ocr-card .cs{font-size:11px;color:var(--muted);margin-top:1px}
+#ocr-card .slots{display:grid;grid-template-columns:1fr;gap:14px}
+#ocr-card .drop{border:1.5px dashed var(--blue);border-radius:10px;background:#F0F9FF;padding:20px;text-align:center;transition:background .15s}
+#ocr-card .drop.over{background:#E0F2FE;border-color:#075985}
+#ocr-card .drop.busy{opacity:.7;pointer-events:none}
+#ocr-card .slot-t{font-size:17px;font-weight:800;color:var(--navy);margin-bottom:9px;letter-spacing:-.3px}
+#ocr-card .drop .sub{font-size:12.5px;color:var(--muted);line-height:1.7;word-break:keep-all}
+#ocr-card .fb{display:inline-block;margin-top:13px;min-height:44px;line-height:44px;padding:0 22px;font-size:14px;font-weight:700;color:#fff;background:var(--blue);border-radius:8px;cursor:pointer}
+#ocr-card .pr{height:5px;background:#E2E8F0;border-radius:3px;margin-top:14px;overflow:hidden;display:none}
+#ocr-card .pr.on{display:block}
+#ocr-card .pr i{display:block;height:100%;width:0;background:var(--blue);transition:width .25s}
+#ocr-card .plg{font-size:12.5px;color:var(--muted);margin-top:8px;min-height:18px;word-break:keep-all}
+#ocr-card .nt{font-size:11.5px;line-height:1.65;color:var(--muted);word-break:keep-all}
+#ocr-card .nt b{font-weight:700;color:#475569}
+#ocr-card .legend{display:flex;gap:16px;margin:18px 0 2px;font-size:12.5px;color:var(--muted);flex-wrap:wrap}
+#ocr-card .legend b{display:inline-flex;align-items:center;gap:6px;font-weight:600;color:var(--navy)}
+#ocr-card .dot{width:9px;height:9px;border-radius:3px;display:inline-block}
+#ocr-card .d-ok{background:#047857}#ocr-card .d-oc{background:#B45309}#ocr-card .d-no{background:#DC2626}
+#ocr-card .rows2{display:grid;grid-template-columns:1fr 1fr;gap:0 22px}
+#ocr-card .fr{display:grid;grid-template-columns:112px minmax(0,1fr) auto;gap:8px;align-items:center;padding:9px 0;border-top:1px solid #F1F5F9;font-size:13.5px}
+#ocr-card .fr.wide{grid-column:1/-1}
+#ocr-card .fr>b{font-size:12.5px;font-weight:700;color:var(--muted)}
+#ocr-card .fr .val{font-family:'SFMono-Regular',Consolas,monospace;font-size:14px;word-break:break-all}
+#ocr-card .fr .val.txt{font-family:inherit}
+#ocr-card .tag{font-size:11.5px;font-weight:700;border-radius:5px;padding:2px 7px;margin-left:7px;white-space:nowrap}
+#ocr-card .t-ok{color:#047857;background:#ECFDF5}
+#ocr-card .t-oc{color:#B45309;background:var(--ocr-bg)}
+#ocr-card .t-no{color:#DC2626;background:#FEF2F2}
+#ocr-card .fr .sub2{display:block;font-size:12px;color:#B45309;margin-top:3px;font-family:inherit}
+#ocr-card .mini{min-height:44px;padding:0 13px;font-family:inherit;font-size:12.5px;font-weight:700;color:var(--blue);background:#fff;border:1px solid var(--border);border-radius:7px;cursor:pointer}
+#ocr-card .mini:disabled{color:var(--muted);background:var(--bg);cursor:default}
+#ocr-card .ocr-all{display:block;width:100%;min-height:46px;margin-top:15px;font-family:inherit;font-size:14.5px;font-weight:800;color:var(--blue);background:#fff;border:1px solid var(--blue);border-radius:9px;cursor:pointer}
+#ocr-card .ocr-all:disabled{color:var(--muted);border-color:var(--border);cursor:default}
+#ocr-card .ntc{border-radius:8px;padding:10px 12px;font-size:11.5px;line-height:1.6;margin-top:10px}
+#ocr-card .ntc.inf{background:#E0F2FE;border:1px solid #BAE6FD;color:#075985}
+#ocr-card .ntc.addr{background:var(--ocr-bg);border:1px solid var(--ocr-bd);color:var(--ocr)}
+#ocr-card .ntc.addr b{color:#78350F}
+#ocr-card .raw-d{margin-top:14px}
+#ocr-card .raw-d summary{font-size:13px;color:var(--muted);cursor:pointer}
+#ocr-card .raw-d pre{margin-top:9px;max-height:230px;overflow:auto;font-family:'SFMono-Regular',Consolas,monospace;font-size:12px;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:11px;white-space:pre-wrap;line-height:1.7}
+input.ocr{background:var(--ocr-bg);border-color:var(--ocr-bd)}
+@media(max-width:820px){#ocr-card .rows2{grid-template-columns:1fr}}
+@media(max-width:600px){#ocr-card .fr{grid-template-columns:1fr;gap:4px}#ocr-card .fr>b{font-size:11.5px}}
 </style>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-DR3W5XWF50"></script>
 <script>
@@ -455,7 +508,7 @@ gtag('js',new Date());gtag('config','G-DR3W5XWF50');
     <div class="cost-side">
       <div class="point"><b>취득세가 없습니다</b><p>말소등기는 권리를 취득하는 등기가 아니므로 취득세 신고 대상이 아닙니다. 정액의 등록면허세만 납부합니다.</p></div>
       <div class="point"><b>국민주택채권을 사지 않습니다</b><p>채권 매입은 보존·이전·설정등기에 적용됩니다. 말소등기는 대상이 아니므로 채권 즉시매도 손실 계산도 필요 없습니다.</p></div>
-      <div class="point"><b>인감증명서·주민등록등본이 필요 없습니다</b><p>말소등기는 등기권리자·등기의무자의 인감증명서와 주민등록등본을 첨부하지 않습니다. 근저당권자가 주는 서류와 신분증 위주로 준비가 끝납니다.</p></div>
+      <div class="point"><b>인감증명서·주민등록등본이 필요 없습니다</b><p>말소등기는 등기권리자·등기의무자의 인감증명서와 주민등록등본을 첨부하지 않습니다. 근저당권자의 날인을 받은 서류와 신분증 위주로 준비가 끝납니다.</p></div>
       <div class="point"><b>대행을 맡기는 경우</b><p>실비 외에 대리인 보수가 별도로 발생합니다. 보수 금액은 사무소마다 다르므로 직접 확인이 필요합니다. 위 표의 금액은 대행 여부와 관계없이 동일하게 납부되는 공과금입니다.</p></div>
     </div>
   </div>
@@ -464,16 +517,21 @@ gtag('js',new Date());gtag('config','G-DR3W5XWF50');
 <!-- ③ 준비서류 -->
 <div class="section" id="docs">
   <div class="sec-label">준비서류</div>
-  <h2 class="sec-title">서류는 두 묶음이면 됩니다</h2>
-  <p class="sec-sub">대부분은 근저당권자가 만들어 줍니다. 상환할 때 "말소는 직접 진행하겠습니다"라고 요청하면 아래 서류를 받을 수 있습니다.</p>
+  <h2 class="sec-title">서류는 세 묶음이면 됩니다</h2>
+  <p class="sec-sub">근저당권자에게 받는 것, 내가 만들어 날인을 받는 것, 내가 온라인으로 준비하는 것으로 나뉩니다. 상환할 때 "말소는 직접 진행하겠습니다"라고 먼저 알려 두세요.</p>
 
   <div class="pgrp">
     <div class="pgrp-h"><span class="pgrp-tag bank">근저당권자에게 받는 것</span>대출 상환 후 요청</div>
     <p class="pgrp-s">말소등기의 등기의무자는 <b>근저당권자</b>입니다. 대부분 은행 등 금융기관이지만 상호금융·보험사·개인일 수도 있어, 아래에서는 '근저당권자'로 적습니다. 지점 방문 수령 또는 등기우편 발송 중 선택할 수 있는 경우가 많습니다.</p>
-    <div class="pitem"><div><b>해지증서 (근저당권 해지증서)</b><small>등기원인을 증명하는 서류 · 근저당권자의 인감(법인이면 법인인감) 날인 확인</small></div></div>
     <div class="pitem warn"><div><b>등기필증 (근저당권 설정 당시)</b> <span class="rj-badge">자주 반려되는 항목</span><small>일련번호와 비밀번호가 기재된 서류 · 신청서에 옮겨 적을 때 필요</small><small class="rj-why">보안스티커를 <b>접수 직전에</b> 벗겨 일련번호·비밀번호를 신청서에 정확히 옮겨 적으세요. 번호가 틀리면 보정 요구를 받는 경우가 많습니다. 근저당권자가 등기필증을 분실한 경우에는 처리 방법이 달라지므로 먼저 확인하세요.</small></div></div>
-    <div class="pitem"><div><b>위임장 (근저당권자 → 신청인)</b><small>등기의무자인 근저당권자가 신청 권한을 위임하는 서류 · 근저당권자가 작성해 줍니다</small></div></div>
     <div class="pitem warn"><div><b>법인등기사항증명서</b> <span class="rj-badge">자주 반려되는 항목</span><small>위임장에 날인한 권한자(지배인 등)가 표시된 것</small><small class="rj-why">위임장에 찍힌 도장의 주인(예: 지점 지배인)이 <b>법인등기사항증명서에 등재</b>되어 있어야 합니다. 서류를 받을 때 "지배인 표시된 등기사항증명서"인지 확인하면 한 번에 끝납니다. 근저당권자가 개인이라면 이 서류 대신 인감증명서를, 법인등록번호 대신 주민등록번호를 확인하게 됩니다.</small></div></div>
+  </div>
+
+  <div class="pgrp">
+    <div class="pgrp-h"><span class="pgrp-tag seal">내가 만들어 날인을 받는 것</span>양식 준비 후 근저당권자 방문</div>
+    <p class="pgrp-s">아래 두 서류는 <b>신청인이 양식을 준비해 근저당권자의 날인을 받는</b> 서류입니다. 이 페이지 아래에서 등기부 정보를 입력하면 두 서류를 한 번에 내려받을 수 있습니다. 근저당권자가 자체 양식을 쓰는 곳도 있으니, 상환 시 "말소 서류 양식이 따로 있는지" 먼저 물어보고 있으면 그 양식을 쓰세요.</p>
+    <div class="pitem"><div><b>해지증서 (근저당권 해지증서)</b><small>등기원인을 증명하는 서류 · 근저당권자의 인감(법인이면 법인인감) 날인이 있어야 효력이 있습니다</small></div></div>
+    <div class="pitem"><div><b>위임장 (근저당권자 → 신청인)</b><small>등기의무자인 근저당권자가 신청 권한을 위임하는 서류 · 위임인란에 근저당권자의 날인을 받습니다</small></div></div>
   </div>
 
   <div class="pgrp">
@@ -497,7 +555,7 @@ gtag('js',new Date());gtag('config','G-DR3W5XWF50');
       <div class="tl-n">1</div>
       <span class="tl-place">근저당권자</span>
       <div class="tl-t">대출 완납 후 말소 서류 요청</div>
-      <div class="tl-d">상환을 마치면서 <b>"말소등기는 직접 진행하겠습니다"</b>라고 요청합니다. 위 준비서류의 '근저당권자에게 받는 것' 네 가지를 수령하고, 받은 자리에서 <b>실인 날인 여부</b>와 <b>지배인 표시 등기사항증명서</b>인지 확인하세요.</div>
+      <div class="tl-d">상환을 마치면서 <b>"말소등기는 직접 진행하겠습니다"</b>라고 요청합니다. 이 페이지에서 만든 <b>해지증서·위임장</b>을 가져가 날인을 받고, 준비서류의 '근저당권자에게 받는 것' 두 가지를 함께 수령합니다. 받은 자리에서 <b>실인 날인 여부</b>와 <b>지배인 표시 등기사항증명서</b>인지 확인하세요.</div>
     </div>
     <div class="tl-step">
       <div class="tl-n">2</div>
@@ -525,6 +583,51 @@ gtag('js',new Date());gtag('config','G-DR3W5XWF50');
 </div>
 
 <!-- ⑤ 신청서 작성 -->
+<!-- ⓪ 자료에서 읽어오기 (normal_form 이식, 2026.08.23) -->
+<div class="section" id="ocr-sec">
+  <div class="sec-label">자동 채우기</div>
+  <h2 class="sec-title">등기부를 올리면 아래 신청서가 채워집니다</h2>
+  <p class="sec-sub">인터넷등기소에서 발급·열람한 PDF가 가장 정확합니다. 사진도 읽지만 값이 틀릴 수 있어 원본과 대조가 필요합니다.</p>
+
+  <div id="ocr-card">
+    <div class="ch"><div class="ci">0</div><div>
+      <div class="ct">등기사항전부증명서 읽기</div>
+      <div class="cs">표제부·갑구·을구를 읽어 부동산·근저당권·소유자 칸을 채웁니다</div>
+    </div></div>
+
+    <div class="slots">
+      <div class="drop" id="dz-reg">
+        <div class="slot-t">등기사항전부증명서</div>
+        <div class="sub">부동산등기부등본 PDF 또는 사진을 업로드해주세요.<br>
+          <b>사진이 여러 장이면 한꺼번에 업로드</b></div>
+        <label class="fb" for="fi-reg">파일 선택</label>
+        <input type="file" id="fi-reg" accept="application/pdf,image/*" multiple style="display:none">
+        <div class="pr" id="pr-reg"><i></i></div>
+        <div class="plg" id="lg-reg"></div>
+      </div>
+    </div>
+
+    <div class="nt" style="margin-top:12px"><b>저품질 복사본이나 팩스본은 인식이 어렵습니다.</b>
+      휴대전화로 찍으실 때는 그림자가 지지 않게, 글자가 또렷하게 나오도록 찍어 주세요.
+      올리신 파일은 <b>이 브라우저 안에서만</b> 열리며 서버로 전송·저장되지 않습니다.</div>
+
+    <div id="ocr-out" hidden>
+      <div class="legend">
+        <b><i class="dot d-ok"></i>원문에서 그대로</b>
+        <b><i class="dot d-oc"></i>사진에서 인식 · 대조 필요</b>
+        <b><i class="dot d-no"></i>확인 필요 · 직접 입력</b>
+      </div>
+      <div id="ocr-rows"></div>
+      <div id="ocr-flags"></div>
+      <button type="button" class="ocr-all" id="ocr-all">읽은 값 모두 넣기</button>
+      <!-- 「추출한 원문 보기」는 개발·진단용입니다. 등기부 원문에는 소유자 실명과
+           주민등록번호 마스킹이 그대로 들어 있어 일반 화면에 띄울 이유가 없습니다.
+           ?pp=1 · ?pp=0 · ?raw=1 로 들어왔을 때만 나타납니다. -->
+      <details class="raw-d" id="ocr-raw-box" hidden><summary>추출한 원문 보기</summary><pre id="ocr-raw"></pre></details>
+    </div>
+  </div>
+</div>
+
 <div class="section" id="appform-sec">
   <div class="sec-label">신청서 작성</div>
   <h2 class="sec-title">근저당권말소등기신청서, 여기서 바로 완성합니다</h2>
@@ -699,15 +802,15 @@ gtag('js',new Date());gtag('config','G-DR3W5XWF50');
           <button type="button" class="appform-dlbtn alt" onclick="downloadCancelWimi()">
             <span class="dl-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><circle cx="12" cy="15" r="2.4"/><path d="M12 17.4V21l1.6-1 1.4 1v-3.6"/></svg></span>
             <span class="dl-body">
-              <span class="dl-t">위임장 및 해지증서 <span class="dl-badge">예비용</span></span>
-              <span class="dl-s">근저당권자가 양식을 주지 않을 때만 · .docx</span>
+              <span class="dl-t">위임장 및 해지증서</span>
+              <span class="dl-s">근저당권자 날인용 · .docx</span>
             </span>
           </button>
         </div>
         <div class="dl-warn">
-          <b>위임장·해지증서는 근저당권자의 날인이 있어야 효력이 있습니다.</b>
-          두 서류는 근저당권자가 함께 발급해 주는 것이 일반적이며, 이 파일은 양식을 따로 주지 않을 때 쓰는 예비용입니다. 자체 양식만 받는 곳도 있으니 상환 시 먼저 문의해 보세요.
-          위임인란과 해지증서 모두 인감이 날인되고 인감증명서(또는 사용인감계)의 인영과 일치해야 접수됩니다.
+          <b>두 서류는 신청인이 준비해 근저당권자의 날인을 받는 서류입니다.</b>
+          내려받아 내용을 확인한 뒤 근저당권자를 방문해 위임인란과 해지증서에 날인을 받으세요. 날인이 없으면 효력이 없습니다.
+          다만 근저당권자가 자체 양식을 쓰는 곳도 있으니, 상환할 때 "말소 서류 양식이 따로 있는지" 먼저 확인하고 있으면 그 양식을 사용하세요.
         </div>
         <p class="appform-note">신청일자와 신청인 서명란은 공란으로 발급됩니다 — 등기소 방문 당일 자필로 기재하셔야 합니다. 생성된 서류는 작성 보조 목적이며, 최종 확인은 관할 등기소 안내를 따라 주세요.</p>
       </div>
@@ -838,7 +941,7 @@ gtag('js',new Date());gtag('config','G-DR3W5XWF50');
       </div>
 
       <div class="gm-note">
-        <b>해지일 · 등기필정보 일련번호 · 비밀번호</b>는 등기부가 아니라 <b>근저당권자에게 받은 해지증서와 등기필증</b>에 적혀 있습니다. 등록면허세·수수료 납부번호는 위택스와 인터넷등기소에서 납부한 뒤 받게 됩니다.
+        <b>해지일 · 등기필정보 일련번호 · 비밀번호</b>는 등기부가 아니라 <b>근저당권자의 날인을 받은 해지증서와 근저당권자에게 받은 등기필증</b>에 적혀 있습니다. 등록면허세·수수료 납부번호는 위택스와 인터넷등기소에서 납부한 뒤 받게 됩니다.
       </div>
     </div>
   </div>
@@ -854,7 +957,7 @@ gtag('js',new Date());gtag('config','G-DR3W5XWF50');
     </details>
     <details>
       <summary>근저당권자가 대신 해주는 것 아닌가요?</summary>
-      <div class="a">근저당권 말소등기는 <b>등기권리자와 등기의무자가 공동으로 신청</b>하거나, 한쪽이 상대방에게 위임장을 받아 혼자 신청할 수 있습니다. 즉 근저당권자에게 위임장과 해지증서를 받으면 본인이 직접 접수할 수 있습니다. 대행을 맡길지 직접 할지는 선택 사항이며, 처리 방식은 금융기관마다 다를 수 있으므로 상환 시 문의해 보세요.</div>
+      <div class="a">근저당권 말소등기는 <b>등기권리자와 등기의무자가 공동으로 신청</b>하거나, 한쪽이 상대방에게 위임장을 받아 혼자 신청할 수 있습니다. 즉 위임장과 해지증서를 준비해 근저당권자의 날인을 받으면 본인이 직접 접수할 수 있습니다. 대행을 맡길지 직접 할지는 선택 사항이며, 처리 방식은 금융기관마다 다를 수 있으므로 상환 시 문의해 보세요.</div>
     </details>
     <details>
       <summary>매도(잔금)를 앞두고 있는데, 언제 말소하나요?</summary>
@@ -1590,7 +1693,7 @@ function afTogglePw(btn){
   btn.textContent = show ? '숨김' : '표시';
 }
 
-/* ── 위임장 및 해지증서 (근저당권자 날인용, 예비 양식) ── */
+/* ── 위임장 및 해지증서 (신청인 작성 · 근저당권자 날인용) ── */
 async function downloadCancelWimi(){
   if (typeof JSZip === 'undefined') { cgToast('라이브러리를 불러오는 중입니다. 잠시 후 다시 시도해 주세요'); return; }
   try{window.SR&&SR.track('doc_download',{doc:'cancelwimi'});}catch(e){}
@@ -1675,6 +1778,535 @@ function cgBridge(to){
   try{SR.track('guide_open',{key:'cancel'});}catch(e){}
 })();
 
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="regparse.js"></script>
+<script src="regocr.js"></script>
+<script src="regocr_pp.js"></script>
+<script src="regfields.js"></script>
+<script>
+/* ── 자료에서 읽어오기 (normal_form 이식, 2026.08.23) ────────────────
+   RegParse(텍스트 PDF) / RegOCR(이미지·사진)로 등기부를 읽고,
+   사용자가 확인한 뒤에만 기존 입력칸에 넣는다. 폼을 자동으로 바꾸지 않는다. */
+(function(){
+  'use strict';
+  var $ = function(id){ return document.getElementById(id); };
+  function esc(t){ return String(t==null?'':t).replace(/[&<>"]/g,function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+  function trk(n,d){ try{ window.SR && SR.track(n,d); }catch(e){} }
+
+  if(window.pdfjsLib){ try{
+    pdfjsLib.GlobalWorkerOptions.workerSrc =
+      'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  }catch(e){} }
+
+  var TESS_SRC = 'https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js';
+  var R = null, PENDING = null;
+
+  /* ── 원문 보기 게이트 (2026.08.22) ──
+     등기부 원문에는 소유자 실명·주소·주민등록번호 마스킹이 그대로 들어 있다.
+     화면 캡처·화면 공유로 새어 나갈 이유가 없고, 일반 이용자에게 필요한 정보도 아니다.
+     진단 파라미터로 들어왔을 때만 DOM 에 쓴다 — 숨기는 것이 아니라 아예 넣지 않는다.
+       ?raw=1  원문만 보기        ?pp=1 · ?pp=0  엔진 전환 겸 진단 모드
+     ※ 회귀 테스트 픽스처는 이 화면에서 통째로 복사한다(§3). 진단 모드로 열 것. */
+  var RAW_ON = /[?&](?:raw=1|pp=[01])/.test(location.search);
+
+  function say(t){ var e=$('lg-reg'); if(e) e.textContent = t||''; }
+  function bar(v){
+    var p=$('pr-reg'); if(!p) return;
+    if(v==null){ p.classList.remove('on'); return; }
+    p.classList.add('on'); p.firstElementChild.style.width = Math.round(v*100)+'%';
+  }
+
+  /* ── 등기부 값 → 폼 필드 ──
+     등기부는 「소재지번 + 건물명 + 제N동」이 한 덩어리라 쪼개야 한다. */
+  function splitJibun(j){
+    var out = { addr:j||'', apt:'', dong:'' };
+    if(!j) return out;
+    var m = j.match(/^(.*?)\s*([가-힣A-Za-z0-9·\.]+)\s*제\s*([0-9가-힣]+)\s*동\s*$/);
+    if(m){ out.addr = m[1].trim(); out.apt = m[2].trim(); out.dong = m[3]; return out; }
+    m = j.match(/^(.*?\d+(?:-\d+)?)\s+(.+)$/);
+    if(m){ out.addr = m[1].trim(); out.apt = m[2].trim(); }
+    return out;
+  }
+  /* 부동산 종류 — 건물내역·전유부 구조 문자열에서 고른다.
+     드롭다운 값과 정확히 같은 문자열만 반환한다(아니면 select에 안 들어간다). */
+  function kindOf(res){
+    if(res.docType === '토지') return '토지';
+    var t = [ (res.property && res.property.buildingDetail || []).join(' '),
+              (res.property && res.property.exclusiveStruct) || '' ].join(' ');
+    if(/오피스텔|업무시설/.test(t)) return '오피스텔';
+    if(/아파트|공동주택|연립주택|다세대주택|주상복합/.test(t)) return '주택';
+    if(/근린생활시설|상가|판매시설/.test(t)) return '근린생활시설';
+    return '';
+  }
+  function splitExcl(e){
+    var m = String(e||'').match(/제\s*(\d+)\s*층\s*제\s*([0-9가-힣]+)\s*호/);
+    return m ? { floor:m[1], ho:m[2] } : { floor:'', ho:'' };
+  }
+  /* 대지권의 비율은 환산하지 않는다.
+     신청서의 부동산 표시는 등기부 기재와 동일해야 하므로(국가기록원 절차안내),
+     「63527.1분의 75.809」든 「55분의 1」이든 적힌 그대로 옮긴다. */
+
+  /* 천단위 쉼표 — 화면 표시 전용. 입력칸·서류에 들어가는 값에는 쓰지 않는다. */
+  function comma(n){
+    var s = String(n).split('.');
+    s[0] = s[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    return s.join('.');
+  }
+
+  /* ── 등기부 값 → 근저당권말소 신청서 칸 ──
+     normal_form(소유권이전)과 매핑이 다르다. 여기서 쓰는 것은
+       표제부  → 부동산 표시
+       을구    → 지울 근저당권(접수일·접수번호·순위번호·근저당권자)
+       갑구    → 신청인(등기권리자 = 소유자)
+     채무자는 읽어도 쓰지 않는다. 말소등기의 등기권리자는 소유자이지 채무자가 아니다. */
+  function buildRows(res){
+    var P = res.property||{}, jb = splitJibun(P.jibunAddress), ex = splitExcl(P.exclusiveNo);
+    var struct = String(P.exclusiveStruct||'').replace(/[\d.,]+\s*(?:㎡|m2|m²).*$/,'').trim();
+    var rows = [];
+    /* noAll: 「모두 넣기」에서 제외한다. 같은 칸을 두 행이 노리는 경우
+       (공유자 2인의 성명이 모두 af-oname 을 노림) 마지막 값이 덮어써 버린다. */
+    function add(id,label,val,note,cls,noAll){
+      if(val) rows.push({id:id,label:label,v:String(val),note:note||'',cls:cls||'',noAll:!!noAll});
+    }
+    var CF = res.confidence || {};
+    function addK(id,label,val,key,msg){
+      if(CF[key]==='low') add(id,label,val,msg,'warn'); else add(id,label,val);
+    }
+    var M_ID = '페이지마다 다르게 읽힌 값이 있습니다. 원본과 대조해 주세요.';
+    var M_EX = '층과 호수가 서로 맞지 않습니다. 원본과 대조해 주세요.';
+    var M_AR = '표제부의 한 층 면적보다 큽니다. ㎡ 기호가 숫자로 읽혔을 수 있습니다.';
+
+    // ── 1. 부동산 정보 ──
+    addK('af-jibun','지번 주소', jb.addr, 'jibunAddress', M_ID);
+    addK('af-apt','아파트 · 건물명', jb.apt, 'jibunAddress', M_ID);
+    addK('af-dong','동', jb.dong, 'jibunAddress', M_ID);
+    var M_EXQ = (res.confidenceWhy && res.confidenceWhy.exclusiveNo === 'pagediff') ? M_ID : M_EX;
+    addK('af-floor','층', ex.floor, 'exclusiveNo', M_EXQ);
+    addK('af-ho','호', ex.ho, 'exclusiveNo', M_EXQ);
+    add('af-struct','구조', struct);
+    addK('af-area','전유면적(㎡)', P.exclusiveArea, 'exclusiveArea', M_AR);
+    add('af-road','도로명주소', P.roadAddress);
+    add('af-uid','부동산고유번호', res.uid);
+    var r = P.landRightRatio;
+    if(r){
+      var rl = CF.landRightRatio==='low';
+      add('af-landtotal','대지권의 비율 · 분모', r.denom,
+          '등기부에 <b>'+esc(r.denom+'분의 '+r.num)+'</b>으로 적혀 있습니다.', rl?'warn':'');
+      add('af-landunit','대지권의 비율 · 분자', r.num, '', rl?'warn':'');
+    }
+    /* 관할 등기소는 신청서를 접수할 곳(부동산 소재지 관할)이므로 등기부 머리의 값을 쓴다.
+       반면 「등기한 법원」(af-court-name)은 근저당권 설정 당시 법원이라 다를 수 있어
+       자동으로 넣지 않는다. */
+    add('af-court','관할 등기소', res.court);
+
+    // ── 2. 지울 근저당권 (을구) ──
+    var act = res.activeLiens || [];
+    var one = act.length === 1 ? act[0] : null;
+    function ymd(s){
+      var m = String(s||'').match(/(\d{4})년\s*(\d{1,2})월\s*(\d{1,2})일/);
+      return m ? { y:m[1], m:m[2], d:m[3] } : null;
+    }
+    if(one){
+      var d = ymd(one.receiptDate);
+      if(d){
+        add('af-reg-y','근저당권 접수 연', d.y);
+        add('af-reg-m','근저당권 접수 월', d.m);
+        add('af-reg-d','근저당권 접수 일', d.d);
+      }
+      add('af-receipt-no','접수번호', one.receiptNo);
+      /* 순위번호는 라벨이 아니라 칸 위치로 잡은 값이다. 항상 대조 대상으로 내린다. */
+      add('af-rank-no','순위번호', one.rank,
+          '순위번호는 표의 칸 위치로 읽은 값입니다. 등기부 을구와 한 번 대조해 주세요.', 'warn');
+      add('af-bname','근저당권자 상호', one.creditor);
+      add('af-breg','근저당권자 등록번호', one.creditorRegNo);
+      /* 신청서의 「본점(주사무소) 소재지」에는 지점 주소가 아니라 본점 주소가 들어간다.
+         등기부의 근저당권자 주소가 지점 주소인 경우가 있어 확인을 요구한다. */
+      add('af-baddr','근저당권자 소재지', one.creditorAddress,
+          '등기부에 적힌 주소입니다. 신청서에는 <b>법인등기사항증명서상 본점 소재지</b>를 씁니다. 다르면 그쪽을 쓰세요.', 'warn');
+      /* 지점 표기는 참고용으로만 보여준다. 신청서 어느 칸에도 들어가지 않는다. */
+      if(one.creditorBranch)
+        rows.push({id:null,label:'근저당권자 지점', v:one.creditorBranch,
+          note:'참고용입니다. 신청서에는 넣지 않습니다. 서류를 받을 지점을 확인할 때 쓰세요.'});
+      if(one.maxAmount)
+        rows.push({id:null,label:'채권최고액', v:one.maxAmount+'원',
+          note:'참고용입니다. 말소등기 신청서에는 금액을 적지 않습니다.'});
+    } else {
+      /* 근저당권이 여러 건이면 어느 것을 지울지는 이용자만 안다.
+         하나를 골라 넣으면 그럴싸하게 틀린 값이 되므로 목록만 보여준다. */
+      act.forEach(function(L,i){
+        rows.push({id:null,label:'근저당권 '+(i+1),
+          v:(L.rank?('순위 '+L.rank+' · '):'')+(L.receiptDate||'')+(L.receiptNo?(' 제'+L.receiptNo+'호'):'')
+            +(L.creditor?(' · '+L.creditor):''),
+          cls:'warn',
+          note:'근저당권이 여러 건이라 자동으로 넣지 않았습니다. 이번에 지울 것 하나를 골라 직접 옮겨 적어 주세요.'});
+      });
+    }
+
+    // ── 4. 신청인(소유자) ──
+    var owners = res.owners||[];
+    var C = res.cancel || {};
+    var multi = owners.length > 1;
+    owners.forEach(function(o,i){
+      /* 공유자가 2인이면 둘 다 「넣기」 버튼을 달되 「모두 넣기」에서는 뺀다.
+         공유물 전부에 설정된 근저당권은 공유자 1인이 보존행위로 단독 신청할 수 있으므로
+         (민법 265조 단서 / 대법원 92다52870 / 2024 등기선례 부동산등기과-2604)
+         둘 중 누구를 신청인으로 할지는 이용자가 고른다. */
+      var canFill = C.supported !== false && owners.length <= 2;
+      add(canFill ? 'af-oname' : null,
+          '소유자'+(multi?(' '+(i+1)):'')+' 성명', o.name,
+          multi ? '공유자 중 신청인이 될 분의 「넣기」를 눌러 주세요.' : '',
+          '', multi);
+      if(o.shareRaw && multi)
+        rows.push({id:null,label:'소유자'+(i+1)+' 지분', v:o.shareRaw});
+      if(o.registryAddress)
+        rows.push({id:null,label:'등기부상 주소', v:o.registryAddress, cls:'warn',
+          note:'등기부에 적힌 주소입니다. 이사하셨다면 지금 주소와 다릅니다. 신청서에는 <b>주민등록초본상 현재 주소</b>를 쓰셔야 하니 초본과 대조해 주세요.'});
+    });
+    return rows;
+  }
+
+  function render(res){
+    R = res;
+    var rows = buildRows(res), html = '', fillable = 0;
+    var src = res._ocr ? ['t-oc','사진에서 인식'] : ['t-ok','원문'];
+    rows.forEach(function(r,idx){
+      if(r.id && !r.noAll) fillable++;
+      var wide = /주소|성명|아파트|소재지번/.test(r.label) || String(r.v).length > 22;
+      html += '<div class="fr'+(wide?' wide':'')+'"><b>'+esc(r.label)+'</b><span class="val'
+           +  (/주소|성명|구조|아파트|소재지번|지분/.test(r.label)?' txt':'')+'">'
+           +  esc(r.show || r.v)
+           +  '<span class="tag '+(r.cls==='warn'?'t-no':src[0])+'">'
+           +  (r.cls==='warn'?'확인 필요':src[1])+'</span>'
+           +  (r.note?'<span class="sub2">'+r.note+'</span>':'')
+           +  '</span>'
+           +  (r.id?'<button type="button" class="mini" data-i="'+idx+'">넣기</button>':'<span></span>')
+           +  '</div>';
+    });
+    if(!rows.length) html = '<div class="nt" style="margin-top:14px">읽어낸 항목이 없습니다.'
+      + (RAW_ON ? ' 아래 「추출한 원문 보기」를 열어 무엇이 읽혔는지 확인하실 수 있습니다.' : '')
+      + ' 아래 칸은 직접 입력하셔도 서류 발급에는 아무 지장이 없습니다.</div>';
+    $('ocr-rows').innerHTML = rows.length ? '<div class="rows2">'+html+'</div>' : html;
+    R._rows = rows;
+
+    var al = '';
+    function note(kind, t){ al += '<div class="ntc '+kind+'" style="margin-top:12px">'+t+'</div>'; }
+    var C = res.cancel || {};
+    if(C.supported === false){
+      note('addr','<b>이 등기부는 셀프 말소로 진행하기 어렵습니다.</b> '
+        + (C.reasons||[]).map(esc).join(' ')
+        + ' 법무사 등 대리인에게 문의하시기를 권합니다.');
+    }
+    if(C.partialShare)
+      note('addr','<b>공유지분에 설정된 근저당권입니다.</b> 공유물 전부에 설정된 경우와 달리 해당 지분권자만 신청할 수 있습니다. 등기부 을구의 등기목적과 신청인이 같은지 확인해 주세요.');
+    else if(C.applicantMode === 'choose')
+      note('inf','<b>공유자가 '+esc(String(res.ownerCount))+'명입니다.</b> 공유물 전부에 설정된 근저당권은 공유자 중 <b>1인이 단독으로</b> 전부 말소를 신청할 수 있습니다(민법 제265조 단서). 위에서 신청인이 될 분의 「넣기」를 눌러 주세요.');
+    if(res.hasBlocker)
+      note('addr','<b>갑구에 압류 · 가처분 등의 기재가 있습니다.</b> 처리 방법은 개별 사안마다 다르므로 등기소나 대리인에게 먼저 확인해 보시기 바랍니다.');
+    if(res.isTrust)
+      note('addr','<b>현재 소유자가 신탁 수탁자입니다.</b> 일반 말소와 절차가 다릅니다.');
+    if(res.eulPresent === false)
+      note('addr','<b>을구 본문을 읽지 못했습니다.</b> 접수번호 · 순위번호 · 근저당권자는 등기부 을구를 보고 직접 입력해 주세요.');
+    if(res._confirm && res._confirm.length){
+      var names = res._confirm.map(function(f){ return esc(f.label || f.key || ''); })
+                              .filter(Boolean).join(', ');
+      note('addr','<b>다음 항목은 글자가 흐릿해 확신하기 어렵습니다.</b>'
+        + (names ? ' (' + names + ')' : '')
+        + ' 원본과 한 글자씩 대조해 주세요. 숫자 0과 O, 1과 l이 특히 자주 바뀝니다.');
+    }
+    (res.warnings||[]).forEach(function(w){ note('addr', esc(w)); });
+    /* 아직 읽는 중인데 「못 읽었습니다」가 뜨면 고장 난 것처럼 보인다.
+       뒤 페이지에서 채워질 값이므로 중간 경고는 내보내지 않는다. */
+    if(res._partial){
+      al = '<div class="ntc inf" style="margin-top:12px">'
+         + '먼저 읽은 부분입니다. 나머지 페이지를 계속 읽는 중이라 아래 칸은 더 채워집니다.</div>';
+    }
+    $('ocr-flags').innerHTML = al;
+
+    var rawBox = $('ocr-raw-box');
+    if(RAW_ON){ $('ocr-raw').textContent = res._raw || '(원문 없음)'; if(rawBox) rawBox.hidden = false; }
+    else { $('ocr-raw').textContent = ''; if(rawBox) rawBox.hidden = true; }
+    $('ocr-out').hidden = false;
+    var b = $('ocr-all');
+    b.textContent = fillable ? ('읽은 값 '+fillable+'개 모두 넣기') : '넣을 값이 없습니다';
+    b.disabled = !fillable; b.dataset.n = fillable;
+    trk('ocr_result',{mode: res._ocr ? 'ocr' : 'text'});
+  }
+
+  function put(i){
+    if(!R || !R._rows) return false;
+    var r = R._rows[i]; if(!r || !r.id) return false;
+    var el = $(r.id); if(!el) return false;
+    el.value = r.v;
+    if(R._ocr) el.classList.add('ocr');
+    el.dispatchEvent(new Event('input',{bubbles:true}));
+    el.dispatchEvent(new Event('change',{bubbles:true}));
+    return true;
+  }
+
+  /* ── 읽기 ── */
+  function readBuf(f){ return new Promise(function(res,rej){
+    var r=new FileReader(); r.onload=function(){res(r.result)};
+    r.onerror=function(){rej(new Error('파일을 읽지 못했습니다.'))}; r.readAsArrayBuffer(f); }); }
+  function toImage(f){ return new Promise(function(res,rej){
+    var r=new FileReader();
+    r.onload=function(){ var im=new Image();
+      im.onload=function(){res(im)}; im.onerror=function(){rej(new Error('이미지를 열지 못했습니다.'))};
+      im.src=r.result; };
+    r.onerror=function(){rej(new Error('파일을 읽지 못했습니다.'))}; r.readAsDataURL(f); }); }
+
+  function loadTess(){
+    if(window.Tesseract) return Promise.resolve();
+    say('사진 판독기를 내려받는 중입니다. 처음 한 번만 시간이 걸립니다…');
+    return new Promise(function(res,rej){
+      var t=document.createElement('script'); t.src=TESS_SRC;
+      t.onload=res; t.onerror=function(){rej(new Error('사진 판독기를 내려받지 못했습니다. 인터넷 연결을 확인해 주세요.'))};
+      document.head.appendChild(t);
+    });
+  }
+
+  async function runText(file){
+    if(!window.pdfjsLib) throw new Error('PDF 판독 모듈을 불러오지 못했습니다. 새로고침 후 다시 시도해 주세요.');
+    say('발급 원본을 여는 중…'); bar(0.1);
+    var buf = await readBuf(file);
+    var res = await RegParse.parseRegistry(pdfjsLib, buf);
+    bar(1);
+    if(RAW_ON && res && res.ok && !res._raw){
+      try{
+        var doc = await pdfjsLib.getDocument({data: buf.slice(0)}).promise;
+        var txt = [], n = Math.min(doc.numPages, 20), i, pg, tc;
+        for(i=1;i<=n;i++){ pg=await doc.getPage(i); tc=await pg.getTextContent();
+          txt.push('===== ' + i + '쪽 =====');
+          txt.push(tc.items.map(function(t){ return t.str; }).join(' ')); }
+        res._raw = txt.join('\n');
+      }catch(e){}
+    }
+    return res;
+  }
+
+  async function runOcr(sources, onPartial){
+    /* PP-OCRv5 를 기본으로 쓴다 (2026.08.22 전환).
+       모바일은 아직 tesseract 를 유지한다 — 18MB 모델 + onnxruntime-web 이
+       폰 브라우저에서 끝까지 도는지 실측 전이고, 중간에 죽으면 폴백 없이 백지가 된다.
+       데스크톱을 먼저 최적화하고 모바일은 실측 후에 넘긴다.
+       ?pp=0  데스크톱에서도 즉시 tesseract 로 되돌린다 (사고 시 롤백 경로)
+       ?pp=1  모바일에서도 강제로 PP-OCR 을 쓴다 (모바일 실측용) */
+    var isMobile = /Android|iPhone|iPad|iPod|IEMobile|Opera Mini/i.test(navigator.userAgent)
+      || (window.matchMedia && window.matchMedia('(pointer:coarse)').matches && screen.width < 900);
+    var usePP = !!window.RegOCRPP
+      && !/[?&]pp=0/.test(location.search)
+      && (/[?&]pp=1/.test(location.search) || !isMobile);
+    var ENG = usePP ? window.RegOCRPP : window.RegOCR;
+    var ppOpt = {};
+    if(usePP){
+      /* ?det=server 로 예전 84MB 검출모델과 비교할 수 있다(기본은 mobile).
+         ?w=1600 처럼 입력 해상도 상한을 바꿔 속도·정확도를 실측한다(기본 2400). */
+      if(/[?&]det=server/.test(location.search)) window.RegOCRPP.useServerDet();
+      var mw = (location.search.match(/[?&]w=(\d{3,5})/)||[])[1];
+      if(mw) ppOpt.maxWidth = +mw;
+      if(/[?&]dedup=1/.test(location.search)) ppOpt.dedup = true;
+    }
+    if(!usePP) await loadTess();
+    say('한국어 판독기를 준비하는 중입니다…');
+    var worker = await ENG.makeWorker(window.Tesseract, {
+      logger:function(m){ if(m&&m.status&&typeof m.progress==='number'){
+        say('판독기 준비: '+m.status); bar(0.1+0.15*m.progress); } }
+    });
+    var tokAll = [], txtAll = [], confirm = [];
+    /* 사진 경로는 라벨 앵커(regfields)로 뽑는다.
+       좌표 기반 표 판정은 OCR 이 한 페이지를 여러 벌로 묶어 내놓을 때 값이 반복된다.
+       라벨 앵커는 '첫 일치만' 취하므로 몇 벌이 들어오든 값이 늘지 않는다.
+       텍스트 레이어 PDF는 좌표가 진짜이므로 regparse 를 그대로 쓴다. */
+    var useFields = usePP && window.RegFields;
+    function parseAll(toks, txts){
+      if(useFields) return RegFields.extract(txts);
+      return RegParse.parseTokens(ENG.combinePages(toks), { ocr: true });
+    }
+    try{
+      for(var i=0;i<sources.length;i++){
+        var src = sources[i];
+        say('판독 중… ('+(i+1)+'/'+sources.length+')');
+        /* 장마다 해상도가 다를 수 있으므로 프리셋을 매 장 다시 계산한다. */
+        var out = await ENG.recognize(src.el, window.Tesseract, {
+          worker: worker,
+          maxWidth: ppOpt.maxWidth,
+          dedup: ppOpt.dedup,
+          maxPasses: src.clean ? 1 : 2,
+          presets: src.clean ? [{name:'그대로', blur:0, width:(src.el.width||src.el.naturalWidth)}] : null,
+          onProgress:function(p){
+            var base = 0.25 + 0.7*(i/sources.length);
+            bar(Math.min(0.97, base + (p.phase==='ocr'?0.05:0)));
+          }
+        });
+        if(out && out.tokens && out.tokens.length) tokAll.push(out.tokens);
+        if(out && typeof out.text === 'string') txtAll.push(out.text);
+        if(out && out.confirmList && out.confirmList.length) confirm = confirm.concat(out.confirmList);
+
+        /* 부동산 정보는 전부 1페이지 표제부에 있다. 소유자·지분만 뒤쪽에 있으므로
+           1페이지를 읽는 즉시 보여주고 나머지는 계속 읽는다.
+           총 소요시간은 그대로지만 빈 화면을 보는 시간이 4분의 1로 줄어든다. */
+        if(i===0 && sources.length>1 && onPartial && tokAll.length){
+          try{
+            var p1 = parseAll([tokAll[0]], txtAll.slice(0,1));
+            if(p1 && p1.ok){ p1._ocr = true; p1._confirm = []; p1._partial = true; onPartial(p1); }
+          }catch(e){}
+        }
+      }
+    } finally { try{ await worker.terminate(); }catch(e){} }
+    if(!tokAll.length) throw new Error('사진에서 글자를 찾지 못했습니다. 더 밝고 또렷한 사진으로 다시 시도해 주세요.');
+    var comb = ENG.combinePages(tokAll);
+    var parsed = parseAll(tokAll, txtAll);
+    parsed._ocr = true;
+    parsed._confirm = confirm;
+    /* 진단용 원문. 파싱이 실패해도 무엇이 읽혔는지 볼 수 있어야 한다. */
+    parsed._raw = useFields ? txtAll.join('\n') : comb.map(function(t){ return t.str; }).join(' ');
+    bar(1);
+    return parsed;
+  }
+
+  /* ── 여러 장 업로드 (2026.08.22) ──
+     등기부를 3~4장으로 나눠 찍는 경우가 흔하다. 한 장씩 올리면 뒤 장이 앞 장을
+     덮어써 소유자·지분이 영영 안 잡힌다. runOcr 은 이미 sources 배열을 받으므로
+     묶어서 한 번에 넘긴다. */
+  var MAX_SHOTS = 8;                       // 이미지 PDF 렌더 상한과 같은 값
+  function isPdfFile(f){ return /pdf/i.test(f.type) || /\.pdf$/i.test(f.name); }
+  function isHeicFile(f){ return /heic|heif/i.test(f.type) || /\.hei[cf]$/i.test(f.name); }
+  /* 파일명 안의 숫자를 숫자로 비교한다 — IMG_9 가 IMG_10 뒤로 가면 페이지가 뒤집힌다.
+     선택 순서는 브라우저마다 달라 믿을 수 없다. */
+  function natCmp(a,b){
+    return String(a.name).localeCompare(String(b.name), 'ko', {numeric:true, sensitivity:'base'});
+  }
+
+  async function handle(files){
+    var list = [].slice.call(files && files.length !== undefined ? files : [files]).filter(Boolean);
+    if(!list.length) return;
+
+    var pdfs = list.filter(isPdfFile);
+    var imgs = list.filter(function(f){ return !isPdfFile(f); });
+    var heics = imgs.filter(isHeicFile);
+    imgs = imgs.filter(function(f){ return !isHeicFile(f); });
+    var pre = [];   // 사용자에게 알려야 할 처리 결과(무엇을 빼고 무엇을 읽었는지)
+
+    if(pdfs.length){
+      /* 등기부 PDF 한 개에 전 페이지가 들어 있다. 여러 개를 받을 이유가 없다. */
+      if(list.length > 1) pre.push('PDF 「' + esc(pdfs[0].name) + '」 하나만 읽었습니다. 인터넷등기소 발급 PDF에는 전 페이지가 들어 있어 나머지 파일은 필요하지 않습니다.');
+    } else {
+      if(heics.length) pre.push('HEIC 형식 ' + heics.length + '장은 아직 읽지 못해 건너뛰었습니다. 아이폰 [설정 > 카메라 > 포맷]을 「높은 호환성」으로 바꾸거나 JPG로 저장해 올려 주세요.');
+      if(!imgs.length){
+        say('HEIC 형식은 아직 읽지 못합니다. 아이폰 [설정 > 카메라 > 포맷]을 「높은 호환성」으로 바꾸거나 JPG로 저장해 올려 주세요.');
+        return;
+      }
+      imgs.sort(natCmp);
+      if(imgs.length > MAX_SHOTS){
+        pre.push('사진이 ' + imgs.length + '장이라 파일 이름 순으로 앞 ' + MAX_SHOTS + '장만 읽었습니다.');
+        imgs = imgs.slice(0, MAX_SHOTS);
+      }
+      if(imgs.length > 1) pre.push('사진 ' + imgs.length + '장을 <b>파일 이름 순</b>으로 이어 읽었습니다 (' + esc(imgs.map(function(f){return f.name;}).join(' → ')) + '). 순서가 다르면 파일 이름을 바꿔 다시 올려 주세요.');
+    }
+
+    var dz = $('dz-reg'); dz.classList.add('busy');
+    trk('ocr_upload',{type: pdfs.length ? 'pdf' : 'image'});
+    try{
+      var res = null, file = pdfs.length ? pdfs[0] : null;
+      if(file){
+        res = await runText(file);
+        if(!res.ok && res.reason === 'NO_TEXT_LAYER'){
+          say('사진으로 만들어진 PDF입니다. 이미지 판독으로 넘어갑니다…');
+          var doc = await pdfjsLib.getDocument({data: await readBuf(file)}).promise;
+          var n = Math.min(doc.numPages, 8), srcs = [];
+          for(var p=1;p<=n;p++){
+            say('페이지를 이미지로 바꾸는 중… ('+p+'/'+n+')'); bar(0.1+0.1*p/n);
+            var pg = await doc.getPage(p);
+            /* 이미지 PDF는 200dpi 렌더가 최적(실측: 200dpi 100% / 500dpi 92%).
+               PDF 좌표는 72dpi 기준이므로 배율은 200/72. */
+            var vp = pg.getViewport({scale:200/72});
+            var cv = document.createElement('canvas');
+            cv.width = vp.width; cv.height = vp.height;
+            await pg.render({canvasContext:cv.getContext('2d'), viewport:vp}).promise;
+            srcs.push({el:cv, clean:true});
+          }
+          res = await runOcr(srcs, function(part){
+            render(part);
+            say('먼저 읽은 내용입니다. 나머지 페이지를 계속 읽는 중입니다…');
+          });
+        }
+      }else{
+        var ss = [], si;
+        for(si=0; si<imgs.length; si++){
+          if(imgs.length>1) say('사진을 여는 중… ('+(si+1)+'/'+imgs.length+')');
+          ss.push({el: await toImage(imgs[si]), clean:false});
+        }
+        res = await runOcr(ss, imgs.length>1 ? function(part){
+          render(part);
+          say('먼저 읽은 내용입니다. 나머지 사진을 계속 읽는 중입니다…');
+        } : null);
+      }
+
+      if(!res || !res.ok){
+        var why = (res && res.reason === 'NOT_REGISTRY')
+          ? '등기사항전부증명서로 보이지 않습니다. 다른 파일을 올리셨는지 확인해 주세요.'
+          : ((res && res.warnings && res.warnings[0]) || '내용을 알아보지 못했습니다.');
+        throw new Error(why);
+      }
+      render(res);
+      if(pre.length){
+        $('ocr-flags').innerHTML =
+          pre.map(function(t){ return '<div class="ntc inf" style="margin-top:12px">'+t+'</div>'; }).join('')
+          + $('ocr-flags').innerHTML;
+      }
+      say(res._ocr ? '사진에서 읽었습니다. 값이 정확한지 원본과 반드시 대조하세요.'
+                   : '발급 원본에서 글자를 그대로 가져왔습니다.');
+    }catch(e){
+      bar(null); say('');
+      $('ocr-out').hidden = false;
+      $('ocr-rows').innerHTML = '<div class="ntc addr" style="margin-top:14px"><b>읽지 못했습니다.</b> '
+        + esc(e && e.message ? e.message : e)
+        + '<br>아래 칸은 직접 입력하셔도 서류 발급에는 아무 지장이 없습니다.</div>';
+      $('ocr-flags').innerHTML = ''; $('ocr-raw').textContent = '';
+      var rb = $('ocr-raw-box'); if(rb) rb.hidden = !RAW_ON;
+      trk('ocr_result',{mode:'fail'});
+    }finally{ dz.classList.remove('busy'); }
+  }
+
+  var fi = $('fi-reg'), dz = $('dz-reg');
+  if(fi) fi.addEventListener('change', function(){
+    var fl = fi.files; handle(fl);
+    /* 같은 파일을 다시 고를 때도 change 가 뜨도록 비운다. */
+    try{ fi.value = ''; }catch(e){}
+  });
+  if(dz){
+    ['dragenter','dragover'].forEach(function(t){
+      dz.addEventListener(t,function(e){ e.preventDefault(); dz.classList.add('over'); }); });
+    ['dragleave','drop'].forEach(function(t){
+      dz.addEventListener(t,function(e){ e.preventDefault(); dz.classList.remove('over'); }); });
+    dz.addEventListener('drop', function(e){
+      var fl = e.dataTransfer && e.dataTransfer.files;
+      if(fl && fl.length) handle(fl);
+    });
+  }
+
+  document.addEventListener('click', function(e){
+    var b = e.target.closest && e.target.closest('.mini[data-i]');
+    if(b){ if(put(+b.dataset.i)){ b.textContent='넣었습니다'; b.disabled=true; } return; }
+    if(e.target.id === 'ocr-all'){
+      var n=0; (R && R._rows || []).forEach(function(r,i){ if(!r.noAll && put(i)) n++; });
+      e.target.textContent = n+'개를 넣었습니다'; e.target.disabled = true;
+      document.querySelectorAll('#ocr-card .mini[data-i]').forEach(function(x){
+        var rr=(R&&R._rows||[])[+x.dataset.i];
+        if(rr && rr.noAll) return;
+        x.textContent='넣었습니다'; x.disabled=true; });
+      trk('ocr_accept',{key:String(n)});
+    }
+  });
+
+  var boot = [];
+  if(!window.pdfjsLib) boot.push('PDF 판독 모듈');
+  if(!window.RegParse) boot.push('등기부 파서');
+  if(!window.RegOCR)   boot.push('사진 판독 모듈');
+  if(boot.length) say(boot.join(' · ') + '을(를) 불러오지 못했습니다. 새로고침 후 다시 시도해 주세요.');
+})();
 </script>
 </body>
 </html>

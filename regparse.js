@@ -550,7 +550,155 @@
     return res;
   }
 
-  // ---------- 6) 본체 ----------
+  // ---------- 5-2) 을구 본문 (근)저당권 추출 ----------
+  /* 요약표(3.(근)저당권 및 전세권 등)는 "지금 살아 있는 권리"만 싣지만,
+     채권최고액·채무자·근저당권자 주소·지점은 을구 본문에만 있다.
+     그래서 본문에서 읽고, 요약표는 말소 여부 판정용 대조표로만 쓴다.
+
+     OCR 경로(regfields.js)와 달리 텍스트 레이어에는 x좌표가 있어
+     「접수」와 「등기원인」이 별도 칸으로 잡힌다.
+     따라서 OCR 경로에서 쓰던 "이른 날짜=원인일, 늦은 날짜=접수일" 도메인 규칙은
+     여기서 쓰지 않는다. 칸이 곧 정답이므로 추정할 이유가 없다. */
+  var EUL_COLS = ['순위번호', '등기목적', '접수', '등기원인', '권리자 및 기타사항'];
+
+  function eulPickAmount(q) {
+    var m = q.match(/(?:채권최고액|전세금|채권액)금?([\d,]+)원/);
+    return m ? m[1] : null;
+  }
+
+  /* 「권리자 및 기타사항」 칸은 라벨이 붙은 줄들의 묶음이다.
+       채권최고액 금240,000,000원
+       채무자 김ㅇㅇ  서울특별시 ...
+       근저당권자 주식회사ㅇㅇ은행 110111-...
+                 서울특별시 ... (ㅇㅇ지점)
+     라벨 줄을 찾고 "다음 라벨 전까지"를 그 사람의 구간으로 본다.
+     구간을 제한하지 않으면 채무자 주소를 근저당권자 주소로 집는다. */
+  function eulParty(cellLinesArr, label) {
+    var LABELS = /^(채권최고액|채무자|근저당권자|저당권자|전세권자|채권자|공동담보|공동담보목록|존속기간|범위|이자|위약금|지연배상|비고)/;
+    var start = -1;
+    for (var i = 0; i < cellLinesArr.length; i++) {
+      if (squash(cellLinesArr[i]).indexOf(label) === 0) { start = i; break; }
+    }
+    if (start < 0) return null;
+    var seg = [cellLinesArr[start].replace(new RegExp('^\\s*' + label + '\\s*'), '')];
+    for (var j = start + 1; j < cellLinesArr.length; j++) {
+      if (LABELS.test(squash(cellLinesArr[j]))) break;
+      seg.push(cellLinesArr[j]);
+    }
+    var joined = tidy(seg.join(' '));
+    if (!joined) return null;
+
+    /* 등록번호(법인 6-7 / 개인 6-7)를 기준으로 이름과 주소를 가른다.
+       번호가 없으면 첫 토큰을 이름으로 보고 나머지를 주소 후보로 남긴다. */
+    var out = { name: null, regNo: null, address: null, branch: null, raw: joined };
+    var rn = joined.match(/(\d{6}\s*-\s*\d{7})/);
+    if (rn) {
+      out.regNo = squash(rn[1]);
+      out.name = tidy(joined.slice(0, rn.index));
+      out.address = tidy(joined.slice(rn.index + rn[0].length));
+    } else {
+      var sp = joined.match(/^(\S+)\s+([\s\S]+)$/);
+      if (sp) { out.name = tidy(sp[1]); out.address = tidy(sp[2]); }
+      else out.name = joined;
+    }
+    /* 지점 표기는 주소 끝 괄호에 붙는다: "서울특별시 ... (중앙로지점)".
+       주소에 섞어 두면 신청서 주소칸이 오염되므로 별도 필드로 뺀다. */
+    if (out.address) {
+      var br = out.address.match(/\(([^()]*(?:지점|본점|출장소|지사|영업부|센터))\)\s*$/);
+      if (br) {
+        out.branch = tidy(br[1]);
+        out.address = tidy(out.address.slice(0, br.index));
+      }
+    }
+    if (out.address && !out.address.trim()) out.address = null;
+    return out;
+  }
+
+  function parseEul(secEul) {
+    var res = { liens: [], cancelledRanks: [], present: false };
+    if (!secEul || secEul.length < 2) return res;
+
+    /* 페이지가 넘어가면 머리글 행이 반복된다. 숫자로 시작하지 않아
+       parseSection에서 직전 레코드에 합쳐지므로 미리 걷어낸다. */
+    var body = secEul.filter(function (L) {
+      return squash(L.text).indexOf('순위번호') !== 0;
+    });
+    if (!body.length) return res;
+    var sec = [secEul[0]].concat(body);
+
+    var parsed = parseSection(sec, EUL_COLS);
+    if (!parsed || !parsed.recs.length) return res;
+    res.present = true;
+
+    parsed.recs.forEach(function (r) {
+      var purpose = squash(r.cells[1]);
+      if (!purpose) return;
+
+      /* 말소등기 자체는 권리가 아니다. 다만 "1번근저당권설정등기말소"에서
+         대상 순위번호를 뽑아 두면 요약표가 없어도 말소를 잡을 수 있다. */
+      if (/말소/.test(purpose)) {
+        var tgt = purpose.match(/(\d+)번/);
+        if (tgt) res.cancelledRanks.push(parseInt(tgt[1], 10));
+        return;
+      }
+      if (!/(근)?저당권설정|전세권설정/.test(purpose)) return;
+
+      var recvCell = cellLines(r.cells[2]).join(' ');
+      var causeCell = cellLines(r.cells[3]).join(' ');
+      var infoLines = cellLines(r.cells[4]);
+      var infoFlat = squash(infoLines.join(''));
+
+      var creditor = eulParty(infoLines, '근저당권자') ||
+                     eulParty(infoLines, '저당권자') ||
+                     eulParty(infoLines, '전세권자');
+      var debtor = eulParty(infoLines, '채무자');
+
+      res.liens.push({
+        rank: squash(r.cells[0]) || null,
+        /* 순위번호는 칸 위치로 잡은 값이라 라벨 근거가 없다. 항상 확인 대상. */
+        rankNeedsCheck: true,
+        purpose: purpose,
+        /* "갑구 2번 김ㅇㅇ지분전부근저당권설정"이면 공유물 전부가 아니라 지분 근저당이다.
+           보존행위 법리(공유자 1인 단독 신청)가 적용되지 않으므로 반드시 구분한다. */
+        isPartialShare: /지분/.test(purpose),
+        receiptDate: (recvCell.match(/(\d{4}년\s*\d{1,2}월\s*\d{1,2}일)/) || [])[1] || null,
+        receiptNo: (squash(recvCell).match(/제(\d+)호/) || [])[1] || null,
+        causeDate: (causeCell.match(/(\d{4}년\s*\d{1,2}월\s*\d{1,2}일)/) || [])[1] || null,
+        causeType: tidy(causeCell.replace(/\d{4}년\s*\d{1,2}월\s*\d{1,2}일/, '')) || null,
+        maxAmount: eulPickAmount(infoFlat),
+        creditor: creditor ? creditor.name : null,
+        creditorRegNo: creditor ? creditor.regNo : null,
+        creditorAddress: creditor ? creditor.address : null,
+        creditorBranch: creditor ? creditor.branch : null,
+        /* 채무자는 읽기만 하고 신청서 어디에도 쓰지 않는다.
+           말소등기의 등기권리자는 소유자(근저당권설정자)이지 채무자가 아니다.
+           물상보증(부모 집 담보로 자녀 대출)에서 채무자 ≠ 소유자인 경우가 실제로 있다. */
+        debtorName: debtor ? debtor.name : null,
+        inSummary: null,
+        cancelled: false,
+        source: 'eul'
+      });
+    });
+    return res;
+  }
+
+  /* 본문에서 읽은 근저당을 요약표와 대조한다.
+     요약표에 없으면 이미 말소된 등기일 가능성이 높다.
+     (열람용 "말소사항 포함" 등기부에는 말소된 근저당도 본문에 그대로 남는다.) */
+  function markCancelled(eul, summaryLiens) {
+    var set = {};
+    (summaryLiens || []).forEach(function (s) { if (s.receiptNo) set[String(s.receiptNo)] = true; });
+    var haveSummary = Object.keys(set).length > 0;
+    eul.liens.forEach(function (L) {
+      if (eul.cancelledRanks.indexOf(parseInt(L.rank, 10)) >= 0) { L.cancelled = true; }
+      if (!haveSummary) { L.inSummary = null; return; }
+      L.inSummary = !!(L.receiptNo && set[String(L.receiptNo)]);
+      if (!L.inSummary) L.cancelled = true;
+    });
+    return eul;
+  }
+
+
   function buildResult(lines, opt) {
     var all = lines.map(function (L) { return L.text; }).join('\n');
     var out = {
@@ -671,6 +819,27 @@
       });
     }
     else out.warnings.push('요약 페이지가 없어 소유자·근저당 정보를 추출하지 못했습니다.');
+
+    /* 을구 본문 — 채권최고액·근저당권자 주소·지점은 여기에만 있다.
+       요약표 liens는 대조표로만 남기고, 화면·서식은 본문 결과를 쓴다. */
+    var eul = markCancelled(parseEul(sec.EUL), out.liens);
+    out.summaryLiens = out.liens;
+    if (eul.present) {
+      out.eulPresent = true;
+      out.liens = eul.liens;
+      out.cancelledRanks = eul.cancelledRanks;
+      eul.liens.forEach(function (L) {
+        if (L.cancelled) {
+          out.warnings.push('을구 ' + (L.rank || '?') + '번 근저당권은 이미 말소된 등기일 수 있습니다. 요약표(3.(근)저당권 및 전세권 등)에서 확인하세요.');
+        }
+        if (L.isPartialShare) {
+          out.warnings.push('을구 ' + (L.rank || '?') + '번은 공유지분에 설정된 근저당권입니다(' + L.purpose + '). 해당 지분권자만 말소를 신청할 수 있습니다.');
+        }
+      });
+    } else if (sum.present && (out.liens || []).length) {
+      out.eulPresent = false;
+      out.warnings.push('을구 본문을 읽지 못해 요약표 정보만 사용했습니다. 채권최고액·근저당권자 주소는 등기부에서 직접 확인하세요.');
+    }
 
     if (opt && opt.ocr) ocrFill(out, lines);
     validate(out);
@@ -1049,6 +1218,43 @@
     out.isJointOwnership = out.owners.length > 1;
     out.isTrust = out.owners.some(function (o) { return o.role === '수탁자'; });
     out.hasMortgage = out.liens.length > 0;
+
+    /* ---- 근저당권 말소(Case C) 신청 가능 여부 ----
+       말소등기의 등기권리자는 소유자(근저당권설정자)이지 채무자가 아니다.
+       공유물 전부에 설정된 근저당권이라면 공유자 중 1인이 보존행위로
+       단독 신청할 수 있다(민법 265조 단서 / 대법원 1993.5.11. 92다52870 /
+       2024.9.19. 부동산등기과-2604 질의회답).
+       다만 지분 근저당은 보존행위 법리가 걸리지 않으므로 해당 지분권자로 고정한다.
+       소유자 3인 이상은 화면·서식 구조상 지원하지 않는다(제품 결정). */
+    out.activeLiens = (out.liens || []).filter(function (L) { return !L.cancelled; });
+    out.cancel = {
+      supported: true,
+      reasons: [],
+      applicantMode: null,     // 'single' | 'choose' | 'fixed'
+      applicantCandidates: [],
+      partialShare: (out.liens || []).some(function (L) { return L.isPartialShare; })
+    };
+    if (!out.owners.length) {
+      out.cancel.supported = false;
+      out.cancel.reasons.push('소유자를 읽지 못했습니다.');
+    } else if (out.owners.length > 2) {
+      out.cancel.supported = false;
+      out.cancel.reasons.push('소유자가 ' + out.owners.length + '명입니다. 공유자 3인 이상은 현재 지원하지 않습니다.');
+    } else if (out.owners.length === 2) {
+      out.cancel.applicantMode = 'choose';
+      out.cancel.applicantCandidates = out.owners.map(function (o) { return o.name; });
+    } else {
+      out.cancel.applicantMode = 'single';
+      out.cancel.applicantCandidates = [out.owners[0].name];
+    }
+    if (out.cancel.supported && out.cancel.partialShare) {
+      out.cancel.applicantMode = 'fixed';
+      out.cancel.reasons.push('지분에 설정된 근저당권이므로 해당 지분권자만 신청할 수 있습니다. 등기목적의 지분권자와 신청인이 같은지 확인하세요.');
+    }
+    if (out.cancel.supported && !out.activeLiens.length && out.hasMortgage) {
+      out.cancel.supported = false;
+      out.cancel.reasons.push('현재 유효한 근저당권이 확인되지 않습니다. 이미 말소되었을 수 있습니다.');
+    }
     var BLOCKERS = /압류|가압류|가처분|경매|예고등기|환매|신탁/;
     out.blockers = (out.encumbrances || []).filter(function (r) { return BLOCKERS.test(r.purpose); });
     out.hasBlocker = out.blockers.length > 0;
@@ -1116,7 +1322,7 @@
     parseRegistry: parseRegistry,
     parseTokens: parseTokens,
     compareSellerAddress: compareSellerAddress,
-    _internal: { itemsToLines: itemsToLines, tokensToLines: tokensToLines, sliceSections: sliceSections, parseSection: parseSection, headerBands: headerBands, COLS: COLS, SUB: SUB, splitByBands: splitByBands, parseSummary: parseSummary, headerIdent: headerIdent, looseRatio: looseRatio, respace: respace, judgeSeparateReg: judgeSeparateReg, parseRatio: parseRatio }
+    _internal: { itemsToLines: itemsToLines, tokensToLines: tokensToLines, sliceSections: sliceSections, parseSection: parseSection, headerBands: headerBands, COLS: COLS, SUB: SUB, splitByBands: splitByBands, parseSummary: parseSummary, parseEul: parseEul, eulParty: eulParty, markCancelled: markCancelled, headerIdent: headerIdent, looseRatio: looseRatio, respace: respace, judgeSeparateReg: judgeSeparateReg, parseRatio: parseRatio }
   };
 
   if (typeof module !== 'undefined' && module.exports) module.exports = RegParse;

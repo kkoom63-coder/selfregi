@@ -251,6 +251,8 @@
 
     // (11) 교차검증 — 그럴싸하게 틀린 값을 잡는다
     crossCheck(out, S);
+    extractLiens(S, T, out);
+    judgeCancel(out);
 
     out.ok = !!(P.uid || P.jibunAddress);
     if (!out.ok) out.reason = 'NOT_REGISTRY';
@@ -263,22 +265,281 @@
   // ---------- 주소 공백 복원 ----------
   /* 라벨 매칭을 위해 공백을 지웠으므로 읽을 수 있게 되돌린다.
      행정구역 어미와 지번 앞에서만 띄운다. 과하게 띄우면 오히려 읽기 나쁘다. */
-  function respaceAddr(s) {
-    return String(s || '')
-      .replace(/(특별자치시|특별자치도|특별시|광역시|통합특별시)/g, '$1 ')
-      .replace(/([가-힣])(시|군|구|읍|면|동|리|가|로|길)(?=[가-힣\d])/g, '$1$2 ')
-      .replace(/([가-힣])(도)(?=[가-힣])(?!로|길)/g, '$1$2 ')
-      .replace(/([가-힣])(제\d)/g, '$1 $2')
-      /* 숫자 뒤 한글은 원칙적으로 띄우되, 단위(호·층·동…)는 붙여 둔다.
-         무조건 띄우면 '207호'가 '207 호'가 되고, 무조건 붙이면
-         '1393상무센트럴자이'처럼 지번과 건물명이 뭉친다. */
-      .replace(/(\d)(?![호층동가리길번세대])([가-힣])/g, '$1 $2')
+  /* ---------- 주소 재분절 (2026.08.23 재작성) ----------
+     종전에는 정규식 체인으로 「한글+시/군/구/동…」을 무조건 갈랐다.
+     그러면 도로명 안의 글자가 행정구역 어미로 오인된다.
+       실측: 부산광역시해운대구마린시티1로30 → '마린시 티 1 로'
+     한국 주소는 시도 → 시·군·구 → 읍·면·동·리 → 도로명 → 번호 순서가 고정이므로
+     왼쪽부터 단계별로 한 토큰씩 떼어낸다. 단계를 지나면 그 어미는 더 찾지 않는다.
+     수량자는 반드시 lazy 다 — greedy 면 '해운대구마린시'가 한 덩어리로 잡힌다. */
+  /* 시·도는 17개로 닫힌 집합이다. 패턴으로 추정하면 '경상북도'가 빠지거나
+     도로명 첫 글자를 도(道)로 오인한다. 목록으로 못 박고 긴 것부터 맞춘다. */
+  var SIDO_LIST = ['서울특별시','부산광역시','대구광역시','인천광역시','광주광역시','대전광역시','울산광역시',
+    '세종특별자치시','강원특별자치도','전북특별자치도','제주특별자치도',
+    '충청북도','충청남도','전라북도','전라남도','경상북도','경상남도','경기도','강원도','제주도'];
+  var RE_SIDO_HEAD = new RegExp('^(?:' +
+    SIDO_LIST.slice().sort(function (a, b) { return b.length - a.length; }).join('|') + ')');
+
+  function respaceTail(t) {
+    /* 도로명·지번 뒤의 번호와 건물명만 다룬다.
+       단위(호·층·동·가·리·길·로·번·세대)는 앞 숫자에 붙여 둔다.
+       무조건 띄우면 '207호'가 '207 호'가 되고,
+       무조건 붙이면 '1393상무센트럴자이'처럼 지번과 건물명이 뭉친다. */
+    return String(t || '')
+      .replace(/(\d)(?![호층동가리길번세대로])([가-힣])/g, '$1 $2')
       .replace(/([가-힣])(\d)/g, function (all, a, b) {
         return a === '제' ? all : (a + ' ' + b);      // '제101동'은 붙여 둔다
       })
-      .replace(/(로|길)\s+(\d+번(?:길|가))/g, '$1$2')   // '상무민주로 32번길' → '상무민주로32번길'
+      .replace(/(로|길)\s+(\d+번(?:길|가))/g, '$1$2')  // '상무민주로 32번길' → '상무민주로32번길'
       .replace(/\s{2,}/g, ' ')
       .trim();
+  }
+
+  function respaceAddr(s) {
+    var t = fix(s).replace(/\s+/g, '');
+    if (!t) return '';
+    var parts = [], m;
+
+    // 1단계 — 시·도
+    m = t.match(RE_SIDO_HEAD);
+    if (!m) {
+      /* 시도로 시작하지 않으면 단계를 신뢰할 수 없다. 번호 분절만 하고 돌려준다. */
+      return respaceTail(t);
+    }
+    parts.push(m[0]); t = t.slice(m[0].length);
+
+    /* 2단계 — 시·군·구. '성남시 분당구'처럼 두 번까지 온다.
+       구·군 다음에는 다시 시·군·구가 올 수 없으므로 거기서 멈춘다. */
+    for (var i = 0; i < 2 && t; i++) {
+      m = t.match(/^[가-힣]{1,7}?(시|군|구)(?=[가-힣\d])/);
+      if (!m) break;
+      parts.push(m[0]); t = t.slice(m[0].length);
+      if (m[1] !== '시') break;
+    }
+
+    // 3단계 — 읍·면·동·리·가. '양남면 상계리'처럼 두 번까지 온다.
+    for (var j = 0; j < 2 && t; j++) {
+      m = t.match(/^[가-힣]{1,8}?(?:읍|면|동|리|가)(?=[가-힣\d(,])/);
+      if (!m) break;
+      parts.push(m[0]); t = t.slice(m[0].length);
+    }
+
+    /* 4단계 — 도로명. 이름 안에 숫자가 들어가는 도로가 있다(마린시티1로).
+       \d* 를 이름과 어미 사이에 둬야 통째로 잡힌다. */
+    if (t) {
+      m = t.match(/^[가-힣]+?\d*(?:로|길)(?:\d+번(?:길|가))?(?=[\d(,]|$)/);
+      if (m) { parts.push(m[0]); t = t.slice(m[0].length); }
+    }
+
+    if (t) parts.push(respaceTail(t));
+    return parts.join(' ').replace(/\s{2,}/g, ' ').trim();
+  }
+
+  /* ---------- 을구 (근)저당권 ----------
+     사진 경로에는 좌표가 없다. 표의 칸을 x좌표로 가를 수 없으므로
+     「단독으로 놓인 순위번호 줄」을 블록의 선두로 삼는다.
+
+     앵커를 이것으로 정한 경위(다시 바꾸지 말 것):
+       ① 「근저당권설정」(등기목적)을 앵커로 했더니 쌍촌 실물에서 그 셀 자체가
+          OCR 로 안 읽혀 블록을 못 찾았다.
+       ② 「채권최고액」으로 바꿨더니 접수일·원인일이 앞줄에 있어 블록 밖으로 밀렸다.
+       ③ 순위번호 칸을 선두로 잡아야 날짜까지 한 블록에 들어온다. */
+  var LIEN_LABEL = /^(채권최고액|채무자|근저당권자|저당권자|전세권자|채권자|전세금|공동담보|공동담보목록|존속기간|범위|이자|위약금|지연배상|비고|목적)/;
+
+  function eulRange(S) {
+    /* 을구 본문의 시작·끝. 요약표(3.(근)저당권…)에도 순위번호가 있어
+       범위를 안 자르면 요약표 줄이 본문 블록으로 섞인다. */
+    var start = -1, end = S.length;
+    for (var i = 0; i < S.length; i++) {
+      if (start < 0 && /(소유권이외의권리에관한사항|^【?을\s*구】?$|^을구$)/.test(S[i])) start = i;
+      if (start >= 0 && /^(\[?참고사항|1\.소유지분현황|2\.소유지분을제외한|3\.\(근\)저당권|주요등기사항요약)/.test(S[i])) { end = i; break; }
+    }
+    return start < 0 ? null : { start: start + 1, end: end };
+  }
+
+  function summaryReceiptNos(S) {
+    /* 요약표 「3.(근)저당권 및 전세권 등」은 지금 살아 있는 권리만 싣는다.
+       본문에서 읽은 근저당이 여기 없으면 이미 말소된 등기일 가능성이 높다. */
+    var set = Object.create(null), on = false, found = false;
+    for (var i = 0; i < S.length; i++) {
+      if (/^3\.\(근\)저당권/.test(S[i])) { on = true; found = true; continue; }
+      if (!on) continue;
+      if (/^\[?참고사항/.test(S[i])) break;
+      var re = /제(\d+)호/g, m;
+      while ((m = re.exec(S[i]))) set[m[1]] = true;
+    }
+    return found ? set : null;
+  }
+
+  function pickDates(block) {
+    /* 접수일과 원인일 두 개가 잡힌다. 서식으로는 구분할 수 없다.
+       설정계약이 접수보다 앞설 수밖에 없다는 도메인 규칙으로 가른다.
+       (텍스트 레이어 경로인 regparse 는 칸이 나뉘므로 이 추정을 쓰지 않는다.) */
+    var ds = [], re = /(\d{4})년\s*(\d{1,2})월\s*(\d{1,2})일/g, m;
+    var joined = block.join('\u0001');
+    while ((m = re.exec(joined))) {
+      ds.push({ raw: m[0].replace(/\s/g, ''), key: +m[1] * 10000 + (+m[2]) * 100 + (+m[3]) });
+    }
+    if (!ds.length) return { receiptDate: null, causeDate: null };
+    if (ds.length === 1) return { receiptDate: ds[0].raw, causeDate: null };
+    ds.sort(function (a, b) { return a.key - b.key; });
+    return { causeDate: ds[0].raw, receiptDate: ds[ds.length - 1].raw };
+  }
+
+  function partyIn(block, label) {
+    /* 라벨 줄을 찾고 「다음 라벨 전까지」를 그 사람의 구간으로 본다.
+       라벨 줄 자체를 주소 탐색에 포함하면 '근저당권자광주광역시…'가
+       시도 패턴에 걸려 라벨이 주소에 섞인다. 그래서 라벨은 떼고 시작한다.
+       구간을 안 자르면 채무자 주소를 근저당권자 주소로 집는다. */
+    var st = -1;
+    for (var i = 0; i < block.length; i++) {
+      if (block[i].replace(/\s/g, '').indexOf(label) === 0) { st = i; break; }
+    }
+    if (st < 0) return null;
+    var seg = [block[st].replace(new RegExp('^\\s*' + label + '\\s*'), '')];
+    for (var j = st + 1; j < block.length; j++) {
+      if (LIEN_LABEL.test(block[j].replace(/\s/g, ''))) break;
+      seg.push(block[j]);
+    }
+    var joined = tidy(seg.join(' '));
+    if (!joined) return null;
+
+    var out = { name: null, regNo: null, address: null, branch: null, raw: joined };
+    var rn = joined.match(/(\d{6})\s*[-—–]\s*(\d{7})/);
+    if (rn) {
+      out.regNo = rn[1] + '-' + rn[2];
+      out.name = tidy(joined.slice(0, rn.index)).replace(/\s/g, '');
+      out.address = tidy(joined.slice(rn.index + rn[0].length));
+    } else {
+      var sp = joined.match(/^(\S+)\s+([\s\S]+)$/);
+      if (sp) { out.name = sp[1]; out.address = tidy(sp[2]); }
+      else out.name = joined.replace(/\s/g, '');
+    }
+    /* 지점 표기는 주소 끝 괄호에 붙는다: '서울특별시 … (중앙로지점)'.
+       주소에 섞어 두면 신청서의 본점 소재지 칸이 오염되므로 별도 필드로 뺀다. */
+    if (out.address) {
+      var br = out.address.match(/\(([^()]*(?:지점|본점|출장소|지사|영업부|센터))\)\s*$/);
+      if (br) { out.branch = tidy(br[1]); out.address = tidy(out.address.slice(0, br.index)); }
+      out.address = respaceAddr(out.address) || null;
+    }
+    return out;
+  }
+
+  function extractLiens(S, T, out) {
+    var rg = eulRange(S);
+    if (!rg) return;
+    out.eulPresent = true;
+
+    // 순위번호만 홀로 놓인 줄을 블록 선두로 본다. 부기등기는 '1-1' 꼴.
+    var heads = [];
+    for (var i = rg.start; i < rg.end; i++) {
+      if (/^\d{1,3}(-\d{1,3})?$/.test(S[i])) heads.push(i);
+    }
+    if (!heads.length) return;
+
+    var cancelledRanks = [], liens = [];
+    heads.forEach(function (h, n) {
+      var stop = (n + 1 < heads.length) ? heads[n + 1] : rg.end;
+      var blockS = S.slice(h, stop), blockT = T.slice(h, stop);
+      var flat = blockS.join('');
+      /* 등기목적은 순위번호 바로 다음부터다. 순위번호를 포함한 채로 정규식을 돌리면
+         '2' + '1번근저당권설정등기말소' 가 '21번근저당권설정' 으로 잘려 말소를 놓친다.
+         실측으로 확인한 사고라 선두 한 줄은 반드시 떼고 본다. */
+      var body = blockS.slice(1).join('');
+
+      var mCancel = body.match(/(\d+)번[^\s]{0,12}?(?:근)?저당권설정등기말소/)
+                 || body.match(/^(?:(\d+)번)?[^\s]{0,12}?말소/);
+      if (mCancel) {
+        if (mCancel[1]) cancelledRanks.push(mCancel[1]);
+        return;
+      }
+
+      var purpose = (body.match(/((?:갑구\d+번)?[^\s]{0,24}?(?:근)?저당권설정|전세권설정)/) || [])[1] || '';
+      if (!purpose) return;
+
+      var d = pickDates(blockT);
+      var cred = partyIn(blockT, '근저당권자') || partyIn(blockT, '저당권자') || partyIn(blockT, '전세권자');
+      var debt = partyIn(blockT, '채무자');
+      var amt = (flat.match(/(?:채권최고액|전세금|채권액)금?([\d,]+)원/) || [])[1] || null;
+
+      liens.push({
+        rank: S[h],
+        /* 순위번호는 라벨이 아니라 칸 위치로 추정한 값이다. 항상 확인 대상. */
+        rankNeedsCheck: true,
+        purpose: purpose,
+        /* '갑구2번 ㅇㅇㅇ지분전부근저당권설정'이면 공유물 전부가 아니라 지분 근저당이다.
+           공유자 1인의 보존행위 법리가 적용되지 않으므로 반드시 구분한다. */
+        isPartialShare: /지분/.test(purpose),
+        receiptDate: d.receiptDate,
+        receiptNo: (flat.match(/제(\d+)호/) || [])[1] || null,
+        causeDate: d.causeDate,
+        causeType: /설정계약/.test(flat) ? '설정계약' : null,
+        maxAmount: amt,
+        creditor: cred ? cred.name : null,
+        creditorRegNo: cred ? cred.regNo : null,
+        creditorAddress: cred ? cred.address : null,
+        creditorBranch: cred ? cred.branch : null,
+        /* 채무자는 읽기만 하고 신청서 어디에도 쓰지 않는다.
+           말소등기의 등기권리자는 소유자(근저당권설정자)이지 채무자가 아니다.
+           물상보증(부모 집 담보로 자녀 대출)에서 채무자 ≠ 소유자인 경우가 있다. */
+        debtorName: debt ? debt.name : null,
+        inSummary: null,
+        cancelled: false,
+        source: 'eul'
+      });
+    });
+
+    var set = summaryReceiptNos(S);
+    liens.forEach(function (L) {
+      if (cancelledRanks.indexOf(String(L.rank)) >= 0) L.cancelled = true;
+      if (!set) { L.inSummary = null; return; }
+      L.inSummary = !!(L.receiptNo && set[L.receiptNo]);
+      if (!L.inSummary) L.cancelled = true;
+    });
+
+    out.liens = liens;
+    out.cancelledRanks = cancelledRanks;
+    out.activeLiens = liens.filter(function (L) { return !L.cancelled; });
+    out.hasMortgage = liens.length > 0;
+    liens.forEach(function (L) {
+      if (L.cancelled) out.warnings.push('을구 ' + (L.rank || '?') + '번 근저당권은 이미 말소된 등기일 수 있습니다. 요약표(3.(근)저당권 및 전세권 등)에서 확인하세요.');
+      if (L.isPartialShare) out.warnings.push('을구 ' + (L.rank || '?') + '번은 공유지분에 설정된 근저당권입니다. 해당 지분권자만 말소를 신청할 수 있습니다.');
+    });
+  }
+
+  /* ---------- 근저당권 말소(Case C) 신청 가능 여부 ----------
+     regparse.js 의 validate() 와 같은 규약을 만든다. 화면 코드를 한 벌로 쓰기 위함이다.
+     근거: 민법 265조 단서 / 대법원 1993.5.11. 92다52870 /
+           2024.9.19. 부동산등기과-2604 질의회답.
+     소유자 3인 이상은 화면·서식 구조상 지원하지 않는다(제품 결정). */
+  function judgeCancel(out) {
+    out.activeLiens = out.activeLiens || [];
+    var C = {
+      supported: true, reasons: [], applicantMode: null, applicantCandidates: [],
+      partialShare: (out.liens || []).some(function (L) { return L.isPartialShare; })
+    };
+    var ow = out.owners || [];
+    if (!ow.length) {
+      C.supported = false; C.reasons.push('소유자를 읽지 못했습니다.');
+    } else if (ow.length > 2) {
+      C.supported = false;
+      C.reasons.push('소유자가 ' + ow.length + '명입니다. 공유자 3인 이상은 현재 지원하지 않습니다.');
+    } else if (ow.length === 2) {
+      C.applicantMode = 'choose';
+      C.applicantCandidates = ow.map(function (o) { return o.name; });
+    } else {
+      C.applicantMode = 'single';
+      C.applicantCandidates = [ow[0].name];
+    }
+    if (C.supported && C.partialShare) {
+      C.applicantMode = 'fixed';
+      C.reasons.push('지분에 설정된 근저당권이므로 해당 지분권자만 신청할 수 있습니다. 등기목적의 지분권자와 신청인이 같은지 확인하세요.');
+    }
+    if (C.supported && out.hasMortgage && !out.activeLiens.length) {
+      C.supported = false;
+      C.reasons.push('현재 유효한 근저당권이 확인되지 않습니다. 이미 말소되었을 수 있습니다.');
+    }
+    out.cancel = C;
   }
 
   // ---------- 소유자 ----------
@@ -420,7 +681,7 @@
     }
   }
 
-  var RegFields = { extract: extract, _internal: { respaceAddr: respaceAddr, snap: snap, extractOwners: extractOwners, sq: sq } };
+  var RegFields = { extract: extract, _internal: { respaceAddr: respaceAddr, extractLiens: extractLiens, partyIn: partyIn, pickDates: pickDates, judgeCancel: judgeCancel, eulRange: eulRange, snap: snap, extractOwners: extractOwners, sq: sq } };
   if (typeof module !== 'undefined' && module.exports) module.exports = RegFields;
   if (root) root.RegFields = RegFields;
 })(typeof window !== 'undefined' ? window : this);
