@@ -838,7 +838,7 @@
       });
     } else if (sum.present && (out.liens || []).length) {
       out.eulPresent = false;
-      out.warnings.push('을구 본문을 읽지 못해 요약표 정보만 사용했습니다. 채권최고액·근저당권자 주소는 등기부에서 직접 확인하세요.');
+      /* 화면 경고는 render() 의 eulPresent 분기에서 한 번만 낸다. 여기서 또 밀면 같은 말이 두 줄로 뜬다. */
     }
 
     if (opt && opt.ocr) ocrFill(out, lines);
