@@ -1,25 +1,25 @@
 /* 회귀 테스트 — 실제 OCR 원문 4종. 한 군데 고칠 때마다 전부 통과해야 한다. */
-var fs=require('fs'), R=require('/home/claude/regfields.js');
+var fs=require('fs'), R=require('./regfields.js');
 var CASES=[
  {f:'sindang', exp:{docType:'집합건물',uid:'1103-1996-279658',
    jibunAddress:'서울특별시 중구 신당동 372-13', exclusiveNo:'제2층 제207호',
    exclusiveStruct:'철근콘크리트조', exclusiveArea:'52.69', ratio:'55분의 1',
    roadAddress:'서울특별시 중구 동호로 173',
-   owners:[['허민','단독소유',true]]}},
+   owners:[['김서준','단독소유',true]]}},
  {f:'ssangchon', exp:{docType:'집합건물',uid:'2001-2025-007301',
    jibunAddress:'전남광주통합특별시 서구 쌍촌동 1393 상무센트럴자이 제101동',
    exclusiveNo:'제2층 제201호', exclusiveStruct:'철근콘크리트구조', exclusiveArea:'125.13',
    ratio:'63527.1분의 75.809', roadAddress:'전남광주통합특별시 서구 상무민주로32번길 10',
-   owners:[['고다영','2분의 1',true],['양두경','2분의 1',true]]}},
+   owners:[['박지훈','2분의 1',true],['최유진','2분의 1',true]]}},
  {f:'seocho', exp:{docType:'집합건물',uid:'1101-2017-007622',
    jibunAddress:'서울특별시 서초구 서초동 1338-8 강남역파라디아골드주건축물 제1동',
    exclusiveNo:'제16층 제1606호', exclusiveStruct:'철근콘크리트구조', exclusiveArea:'20.16',
    ratio:'568.3분의 3.6', roadAddress:'서울특별시 서초구 효령로 79길 1',
-   owners:[['변용운','2분의 1',true],['최민선','2분의 1',true]]}},
+   owners:[['정민호','2분의 1',true],['한소영','2분의 1',true]]}},
  {f:'toji', exp:{docType:'토지',uid:'1712-1996-281374',
    jibunAddress:'경상북도 경주시 양남면 상계리 295', exclusiveNo:'', exclusiveStruct:'',
    exclusiveArea:'', ratio:'', roadAddress:'',
-   owners:[['주식회사동경주산업개발',null,false]]}}
+   owners:[['주식회사가나개발',null,false]]}}
 ];
 var fail=0;
 function eq(tag,got,want){
@@ -28,7 +28,7 @@ function eq(tag,got,want){
   return ok;
 }
 CASES.forEach(function(c){
-  var txt=fs.readFileSync('/home/claude/fixtures/'+c.f+'.txt','utf8');
+  var txt=fs.readFileSync(__dirname+'/fixtures/'+c.f+'.txt','utf8');
   var r=R.extract(txt), P=r.property, e=c.exp, n0=fail;
   console.log('['+c.f+']');
   eq('docType',r.docType,e.docType); eq('uid',r.uid,e.uid);
@@ -47,5 +47,19 @@ CASES.forEach(function(c){
   });
   if(fail===n0) console.log('  ✓ 통과');
 });
+/* 토지 머리글 오염 (2026.08.22 실측 재현, 경주)
+   '[토지]…상계리295답2301m2' 처럼 표 안의 지목·면적이 머리글에 붙어 읽히면
+   소재지번 뒤가 건물명으로 갈라져 「아파트·건물명」 칸에 '답 2301m' 이 들어갔다.
+   픽스처는 원문 발췌라 이 줄이 없으므로 합성 입력으로 잠가 둔다. */
+console.log('[토지머리글오염]');
+(function(){
+  var n0=fail;
+  var t=R.extract('[토지] 경상북도 경주시 양남면 상계리 295 답 2301m2\n지 목\n면 적\n');
+  eq('소재지번', t.property.jibunAddress, '경상북도 경주시 양남면 상계리 295');
+  eq('지목', t.property.landCategory, '답');
+  eq('면적', t.property.landArea, '2301');
+  if(fail===n0) console.log('  \u2713 통과');
+})();
+
 console.log(fail? '\n실패 '+fail+'건' : '\n전부 통과');
 process.exit(fail?1:0);
