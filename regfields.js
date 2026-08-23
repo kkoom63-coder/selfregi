@@ -251,7 +251,7 @@
 
     // (11) 교차검증 — 그럴싸하게 틀린 값을 잡는다
     crossCheck(out, S);
-    extractLiens(S, T, out);
+    extractLiens(S, K, out);
     judgeCancel(out);
 
     out.ok = !!(P.uid || P.jibunAddress);
@@ -327,7 +327,7 @@
     /* 4단계 — 도로명. 이름 안에 숫자가 들어가는 도로가 있다(마린시티1로).
        \d* 를 이름과 어미 사이에 둬야 통째로 잡힌다. */
     if (t) {
-      m = t.match(/^[가-힣]+?\d*(?:로|길)(?:\d+번(?:길|가))?(?=[\d(,]|$)/);
+      m = t.match(/^[가-힣]+?\d*(?:로|길)(?:\d+번?(?:길|가))?(?=[\d(,]|$)/);
       if (m) { parts.push(m[0]); t = t.slice(m[0].length); }
     }
 
@@ -346,13 +346,18 @@
        ③ 순위번호 칸을 선두로 잡아야 날짜까지 한 블록에 들어온다. */
   var LIEN_LABEL = /^(채권최고액|채무자|근저당권자|저당권자|전세권자|채권자|전세금|공동담보|공동담보목록|존속기간|범위|이자|위약금|지연배상|비고|목적)/;
 
+  /* 을구 마지막 블록에는 페이지 꼬리말이 통째로 딸려 들어온다.
+     실측(신당): 관할등기소·주의사항 4줄·'2/2'·'열람일시 2023년03월21일'.
+     이걸 안 자르면 열람일시가 접수일로, 주의사항 전문이 근저당권자 주소로 들어간다. */
+  var EUL_STOP = /^(관할\s*등기소|열람일시|출력일시|이?하여백|열람용|제출용|등기사항전부증명서|\[집합건물\]|\[토지\]|\[건물\]|\*|\d+\/\d+$|주요등기사항요약|\[?주의사항)/;
+
   function eulRange(S) {
     /* 을구 본문의 시작·끝. 요약표(3.(근)저당권…)에도 순위번호가 있어
        범위를 안 자르면 요약표 줄이 본문 블록으로 섞인다. */
     var start = -1, end = S.length;
     for (var i = 0; i < S.length; i++) {
       if (start < 0 && /(소유권이외의권리에관한사항|^【?을\s*구】?$|^을구$)/.test(S[i])) start = i;
-      if (start >= 0 && /^(\[?참고사항|1\.소유지분현황|2\.소유지분을제외한|3\.\(근\)저당권|주요등기사항요약)/.test(S[i])) { end = i; break; }
+      if (start >= 0 && /^(\[?참고사항|1\.소유지분현황|2\.소유지분을제외한|3\.\(근\)저당권|주요등기사항요약|관할\s*등기소|이?하여백)/.test(S[i])) { end = i; break; }
     }
     return start < 0 ? null : { start: start + 1, end: end };
   }
@@ -418,14 +423,17 @@
     /* 지점 표기는 주소 끝 괄호에 붙는다: '서울특별시 … (중앙로지점)'.
        주소에 섞어 두면 신청서의 본점 소재지 칸이 오염되므로 별도 필드로 뺀다. */
     if (out.address) {
-      var br = out.address.match(/\(([^()]*(?:지점|본점|출장소|지사|영업부|센터))\)\s*$/);
+      /* OCR 은 괄호 안쪽에 공백을 넣는다(실측: '( 본점 )', '( 중앙로지점 )').
+         공백을 허용하지 않으면 지점이 주소 끝에 그대로 남는다. */
+      out.address = out.address.replace(/\(\s+/g, '(').replace(/\s+\)/g, ')');
+      var br = out.address.match(/\(([^()]{0,20}?(?:지점|본점|출장소|지사|영업부|센터))\)\s*$/);
       if (br) { out.branch = tidy(br[1]); out.address = tidy(out.address.slice(0, br.index)); }
       out.address = respaceAddr(out.address) || null;
     }
     return out;
   }
 
-  function extractLiens(S, T, out) {
+  function extractLiens(S, K, out) {
     var rg = eulRange(S);
     if (!rg) return;
     out.eulPresent = true;
@@ -440,7 +448,8 @@
     var cancelledRanks = [], liens = [];
     heads.forEach(function (h, n) {
       var stop = (n + 1 < heads.length) ? heads[n + 1] : rg.end;
-      var blockS = S.slice(h, stop), blockT = T.slice(h, stop);
+      for (var z = h + 1; z < stop; z++) { if (EUL_STOP.test(S[z])) { stop = z; break; } }
+      var blockS = S.slice(h, stop), blockT = K.slice(h, stop);
       var flat = blockS.join('');
       /* 등기목적은 순위번호 바로 다음부터다. 순위번호를 포함한 채로 정규식을 돌리면
          '2' + '1번근저당권설정등기말소' 가 '21번근저당권설정' 으로 잘려 말소를 놓친다.
@@ -455,7 +464,16 @@
       }
 
       var purpose = (body.match(/((?:갑구\d+번)?[^\s]{0,24}?(?:근)?저당권설정|전세권설정)/) || [])[1] || '';
-      if (!purpose) return;
+      var purposeInferred = false;
+      /* 실측(쌍촌): 「근저당권설정」 셀 자체가 OCR 로 통째로 안 읽힌 등기부가 있다.
+         등기목적 문자열을 필수로 두면 근저당을 통째로 놓친다.
+         을구에만 나오는 라벨(채권최고액·근저당권자)이 있으면 종류를 추정하되,
+         추정했다는 사실을 반드시 남겨 화면에서 확인을 요구한다. */
+      if (!purpose) {
+        if (/채권최고액|근저당권자|저당권자/.test(body)) { purpose = '근저당권설정'; purposeInferred = true; }
+        else if (/전세금|전세권자/.test(body)) { purpose = '전세권설정'; purposeInferred = true; }
+        else return;
+      }
 
       var d = pickDates(blockT);
       var cred = partyIn(blockT, '근저당권자') || partyIn(blockT, '저당권자') || partyIn(blockT, '전세권자');
@@ -467,6 +485,7 @@
         /* 순위번호는 라벨이 아니라 칸 위치로 추정한 값이다. 항상 확인 대상. */
         rankNeedsCheck: true,
         purpose: purpose,
+        purposeInferred: purposeInferred,
         /* '갑구2번 ㅇㅇㅇ지분전부근저당권설정'이면 공유물 전부가 아니라 지분 근저당이다.
            공유자 1인의 보존행위 법리가 적용되지 않으므로 반드시 구분한다. */
         isPartialShare: /지분/.test(purpose),
