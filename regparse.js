@@ -682,6 +682,149 @@
     return res;
   }
 
+  /* ---------- 을구 텍스트 폴백 ----------
+     parseEul 은 표 머리글(순위번호|등기목적|접수|등기원인|권리자및기타사항)을
+     찾아 열 밴드를 만든다. 그런데 실물 등기부는 섹션 제목과 머리글의 줄 구성이
+     발급본마다 달라, 머리글을 못 잡으면 파서 전체가 죽고 요약표로 폴백해 버린다
+     (실측 2026-08-23 신당·쌍촌: 채권최고액·근저당권자 주소·지점이 통째로 누락).
+
+     그래서 좌표를 쓰지 않는 두 번째 경로를 둔다. 라벨 앵커 방식이며
+     regfields.js(사진 경로)의 extractLiens 와 같은 도메인 규칙을 쓴다.
+     한 행에 「순위번호 등기목적 접수일 원인일 채권최고액」이 다 들어오는
+     텍스트 레이어 구조를 그대로 받아들인다. */
+  var EUL_STOP_T = /^(관할\s*등기소|열람일시|출력일시|--?\s*이?하여백|열람용|제출용|등기사항전부증명서|\[집합건물\]|\[토지\]|\[건물\]|\*|\d+\s*\/\s*\d+$|주요등기사항요약|\[?주의사항|\[?참고사항|1\.소유지분현황|2\.소유지분을제외한|3\.\(근\)저당권)/;
+  var EUL_LABEL_T = /^(채권최고액|채무자|근저당권자|저당권자|전세권자|채권자|전세금|공동담보|존속기간|범위|이자|위약금|지연배상|비고|목적)/;
+
+  function eulTextRange(L) {
+    var start = -1, end = L.length;
+    for (var i = 0; i < L.length; i++) {
+      var t = squash(L[i]);
+      if (start < 0) {
+        if (/소유권이외의권리에관한사항/.test(t) || /^【?을\s*구】?$/.test(t)) start = i;
+        continue;
+      }
+      if (EUL_STOP_T.test(t)) { end = i; break; }
+    }
+    return start < 0 ? null : { start: start + 1, end: end };
+  }
+
+  /* 라벨 줄을 찾고 「다음 라벨 전까지」를 그 사람의 구간으로 본다.
+     구간을 안 자르면 채무자 주소를 근저당권자 주소로 집는다. */
+  function eulPartyText(block, label) {
+    var st = -1;
+    for (var i = 0; i < block.length; i++) {
+      if (squash(block[i]).indexOf(label) === 0) { st = i; break; }
+    }
+    if (st < 0) {
+      /* 첫 행처럼 라벨이 줄 중간에 있는 경우도 있다. */
+      for (var k = 0; k < block.length; k++) {
+        if (squash(block[k]).indexOf(label) > 0) { st = k; break; }
+      }
+      if (st < 0) return null;
+    }
+    var head = block[st];
+    var pos = head.replace(/\s+/g, '').indexOf(label);
+    /* 공백이 섞인 라벨('근 저 당권자')도 자를 수 있도록 squash 기준 위치를 되짚는다. */
+    var seen = 0, cut = 0;
+    for (var c = 0; c < head.length; c++) {
+      if (!/\s/.test(head[c])) { if (seen === pos + label.length) { cut = c; break; } seen++; }
+      if (seen === pos + label.length) { cut = c + 1; break; }
+    }
+    var seg = [tidy(head.slice(cut))];
+    for (var j = st + 1; j < block.length; j++) {
+      if (EUL_LABEL_T.test(squash(block[j]))) break;
+      seg.push(block[j]);
+    }
+    var joined = tidy(seg.join(' '));
+    if (!joined) return null;
+
+    var out = { name: null, regNo: null, address: null, branch: null, raw: joined };
+    var rn = joined.match(/(\d{6})\s*[-—–]\s*(\d{7})/);
+    if (rn) {
+      out.regNo = rn[1] + '-' + rn[2];
+      out.name = squash(joined.slice(0, rn.index));
+      out.address = tidy(joined.slice(rn.index + rn[0].length));
+    } else {
+      var sp = joined.match(/^(\S+)\s+([\s\S]+)$/);
+      if (sp) { out.name = sp[1]; out.address = tidy(sp[2]); }
+      else out.name = squash(joined);
+    }
+    if (out.address) {
+      /* OCR·PDF 모두 괄호 안쪽에 공백이 들어간다('( 본점 )', '( 중앙로지점 )'). */
+      out.address = out.address.replace(/\(\s+/g, '(').replace(/\s+\)/g, ')');
+      var br = out.address.match(/\(([^()]{0,20}?(?:지점|본점|출장소|지사|영업부|센터))\)\s*$/);
+      if (br) { out.branch = tidy(br[1]); out.address = tidy(out.address.slice(0, br.index)); }
+      out.address = tidy(out.address.replace(/\s+,/g, ',')) || null;
+    }
+    return out;
+  }
+
+  function parseEulText(lines) {
+    var res = { liens: [], cancelledRanks: [], present: false };
+    var L = lines.map(function (x) { return typeof x === 'string' ? x : x.text; });
+    var rg = eulTextRange(L);
+    if (!rg) return res;
+
+    /* 앵커는 「순위번호로 시작하는 행」. 텍스트 레이어에서는 그 한 행에
+       등기목적·접수일·원인일·채권최고액이 함께 실려 온다. */
+    var heads = [];
+    for (var i = rg.start; i < rg.end; i++) {
+      if (/^\s*\d{1,3}(-\d{1,3})?(\s|$)/.test(L[i]) && !/^순위번호/.test(squash(L[i]))) heads.push(i);
+    }
+    if (!heads.length) return res;
+    res.present = true;
+
+    heads.forEach(function (h, n) {
+      var stop = (n + 1 < heads.length) ? heads[n + 1] : rg.end;
+      var block = L.slice(h, stop);
+      var flat = squash(block.join(''));
+      var body = squash(block.join('').replace(/^\s*\d{1,3}(-\d{1,3})?/, ''));
+
+      var mCancel = body.match(/(\d+)번[^\s]{0,12}?(?:근)?저당권설정등기말소/)
+                 || body.match(/^(?:(\d+)번)?[^\s]{0,12}?말소/);
+      if (mCancel) { if (mCancel[1]) res.cancelledRanks.push(mCancel[1]); return; }
+
+      var purpose = (body.match(/((?:갑구\d+번)?[^\s]{0,24}?(?:근)?저당권설정|전세권설정)/) || [])[1] || '';
+      var inferred = false;
+      if (!purpose) {
+        if (/채권최고액|근저당권자|저당권자/.test(body)) { purpose = '근저당권설정'; inferred = true; }
+        else if (/전세금|전세권자/.test(body)) { purpose = '전세권설정'; inferred = true; }
+        else return;
+      }
+
+      /* 날짜 두 개. 설정계약이 접수보다 앞설 수밖에 없다는 도메인 규칙으로 가른다. */
+      var ds = [], re = /(\d{4})년\s*(\d{1,2})월\s*(\d{1,2})일/g, m;
+      var joined = block.join('\u0001');
+      while ((m = re.exec(joined))) ds.push({ raw: m[0].replace(/\s/g, ''), k: +m[1] * 10000 + (+m[2]) * 100 + (+m[3]) });
+      ds.sort(function (a, b) { return a.k - b.k; });
+
+      var cred = eulPartyText(block, '근저당권자') || eulPartyText(block, '저당권자') || eulPartyText(block, '전세권자');
+      var debt = eulPartyText(block, '채무자');
+
+      res.liens.push({
+        rank: (L[h].match(/^\s*(\d{1,3}(?:-\d{1,3})?)/) || [])[1] || null,
+        rankNeedsCheck: true,
+        purpose: purpose,
+        purposeInferred: inferred,
+        isPartialShare: /지분/.test(purpose),
+        receiptDate: ds.length ? ds[ds.length - 1].raw : null,
+        receiptNo: (flat.match(/제(\d+)호/) || [])[1] || null,
+        causeDate: ds.length > 1 ? ds[0].raw : null,
+        causeType: /설정계약/.test(body) ? '설정계약' : null,
+        maxAmount: (flat.match(/(?:채권최고액|전세금|채권액)금?([\d,]+)원/) || [])[1] || null,
+        creditor: cred ? cred.name : null,
+        creditorRegNo: cred ? cred.regNo : null,
+        creditorAddress: cred ? cred.address : null,
+        creditorBranch: cred ? cred.branch : null,
+        debtorName: debt ? debt.name : null,
+        inSummary: null,
+        cancelled: false,
+        source: 'eul-text'
+      });
+    });
+    return res;
+  }
+
   /* 본문에서 읽은 근저당을 요약표와 대조한다.
      요약표에 없으면 이미 말소된 등기일 가능성이 높다.
      (열람용 "말소사항 포함" 등기부에는 말소된 근저당도 본문에 그대로 남는다.) */
@@ -822,7 +965,15 @@
 
     /* 을구 본문 — 채권최고액·근저당권자 주소·지점은 여기에만 있다.
        요약표 liens는 대조표로만 남기고, 화면·서식은 본문 결과를 쓴다. */
-    var eul = markCancelled(parseEul(sec.EUL), out.liens);
+    /* 1차: 좌표 밴드. 실패하면 2차: 라벨 앵커 텍스트.
+       실물에서 머리글 줄 구성이 발급본마다 달라 1차가 통째로 죽는 사례가 있다
+       (실측 2026-08-23 신당·쌍촌: 요약표로 폴백돼 근저당권자 주소·지점이 누락). */
+    var eulRaw = parseEul(sec.EUL);
+    if (!eulRaw.present || !eulRaw.liens.length) {
+      var alt = parseEulText(denoise(lines));
+      if (alt.present && alt.liens.length) eulRaw = alt;
+    }
+    var eul = markCancelled(eulRaw, out.liens);
     out.summaryLiens = out.liens;
     if (eul.present) {
       out.eulPresent = true;
@@ -1322,7 +1473,7 @@
     parseRegistry: parseRegistry,
     parseTokens: parseTokens,
     compareSellerAddress: compareSellerAddress,
-    _internal: { itemsToLines: itemsToLines, tokensToLines: tokensToLines, sliceSections: sliceSections, parseSection: parseSection, headerBands: headerBands, COLS: COLS, SUB: SUB, splitByBands: splitByBands, parseSummary: parseSummary, parseEul: parseEul, eulParty: eulParty, markCancelled: markCancelled, headerIdent: headerIdent, looseRatio: looseRatio, respace: respace, judgeSeparateReg: judgeSeparateReg, parseRatio: parseRatio }
+    _internal: { itemsToLines: itemsToLines, tokensToLines: tokensToLines, sliceSections: sliceSections, parseSection: parseSection, headerBands: headerBands, COLS: COLS, SUB: SUB, splitByBands: splitByBands, parseSummary: parseSummary, parseEul: parseEul, parseEulText: parseEulText, eulPartyText: eulPartyText, eulParty: eulParty, markCancelled: markCancelled, headerIdent: headerIdent, looseRatio: looseRatio, respace: respace, judgeSeparateReg: judgeSeparateReg, parseRatio: parseRatio }
   };
 
   if (typeof module !== 'undefined' && module.exports) module.exports = RegParse;
