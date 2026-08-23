@@ -692,7 +692,7 @@
      regfields.js(사진 경로)의 extractLiens 와 같은 도메인 규칙을 쓴다.
      한 행에 「순위번호 등기목적 접수일 원인일 채권최고액」이 다 들어오는
      텍스트 레이어 구조를 그대로 받아들인다. */
-  var EUL_STOP_T = /^(관할\s*등기소|열람일시|출력일시|--?\s*이?하여백|열람용|제출용|등기사항전부증명서|\[집합건물\]|\[토지\]|\[건물\]|\*|\d+\s*\/\s*\d+$|주요등기사항요약|\[?주의사항|\[?참고사항|1\.소유지분현황|2\.소유지분을제외한|3\.\(근\)저당권)/;
+  var EUL_STOP_T = /^(관할\s*등기소|열람일시|출력일시|--?\s*이?하\s*여\s*백|이$|여백$|열람용|제출용|등기사항전부증명서|\[집합건물\]|\[토지\]|\[건물\]|\*|\d+\s*\/\s*\d+$|주요등기사항요약|\[?주의사항|\[?참고사항|1\.소유지분현황|2\.소유지분을제외한|3\.\(근\)저당권)/;
   var EUL_LABEL_T = /^(채권최고액|채무자|근저당권자|저당권자|전세권자|채권자|전세금|공동담보|존속기간|범위|이자|위약금|지연배상|비고|목적)/;
 
   function eulTextRange(L) {
@@ -833,7 +833,8 @@
     (summaryLiens || []).forEach(function (s) { if (s.receiptNo) set[String(s.receiptNo)] = true; });
     var haveSummary = Object.keys(set).length > 0;
     eul.liens.forEach(function (L) {
-      if (eul.cancelledRanks.indexOf(parseInt(L.rank, 10)) >= 0) { L.cancelled = true; }
+      /* parseEul 은 숫자, parseEulText 는 문자열을 넣는다. 문자열로 통일해 비교한다. */
+      if (eul.cancelledRanks.map(String).indexOf(String(L.rank)) >= 0) { L.cancelled = true; }
       if (!haveSummary) { L.inSummary = null; return; }
       L.inSummary = !!(L.receiptNo && set[String(L.receiptNo)]);
       if (!L.inSummary) L.cancelled = true;
@@ -969,10 +970,20 @@
        실물에서 머리글 줄 구성이 발급본마다 달라 1차가 통째로 죽는 사례가 있다
        (실측 2026-08-23 신당·쌍촌: 요약표로 폴백돼 근저당권자 주소·지점이 누락). */
     var eulRaw = parseEul(sec.EUL);
-    if (!eulRaw.present || !eulRaw.liens.length) {
-      var alt = parseEulText(denoise(lines));
-      if (alt.present && alt.liens.length) eulRaw = alt;
+    /* 좌표 파서가 「부분 성공」하는 경우가 있다. 블록은 잡았는데 밴드가 어긋나
+       근저당권자와 채권최고액이 통째로 비는 식이다(실측 2026-08-23 쌍촌 텍스트).
+       건수만 보고 폴백을 건너뛰면 껍데기가 그대로 화면에 나간다.
+       그래서 「얼마나 채웠는가」로 두 결과를 비교해 더 나은 쪽을 쓴다. */
+    function eulScore(e) {
+      if (!e || !e.present || !e.liens.length) return -1;
+      var K = ['receiptDate', 'receiptNo', 'causeDate', 'maxAmount',
+               'creditor', 'creditorRegNo', 'creditorAddress'];
+      return e.liens.reduce(function (n, L) {
+        return n + K.reduce(function (m, k) { return m + (L[k] ? 1 : 0); }, 0);
+      }, 0);
     }
+    var alt = parseEulText(denoise(lines));
+    if (eulScore(alt) > eulScore(eulRaw)) eulRaw = alt;
     var eul = markCancelled(eulRaw, out.liens);
     out.summaryLiens = out.liens;
     if (eul.present) {
