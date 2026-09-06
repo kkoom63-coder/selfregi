@@ -2,15 +2,23 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>이용약관 · 셀프등기24</title>
 <meta name="description" content="셀프등기24 이용약관 — 서비스 범위, 재발급 정책, 책임 한계를 안내합니다.">
 <link rel="canonical" href="https://www.selfregi24.com/terms.html">
 <style>
-:root{--navy:#0F172A;--blue:#0369A1;--bg:#F8FAFC;--card:#fff;--text:#020617;--muted:#64748B;--border:#E2E8F0;--radius:12px;--shadow:0 2px 12px rgba(2,6,23,.08)}
+/* 키보드 사용자용 본문 바로가기. position:fixed 로 둔다 —
+   absolute+left:-9999px 는 body{overflow-x:hidden}에 잘려 포커스를 받아도 안 보이는 경우가 있다. */
+.skip-link{position:fixed;top:-64px;left:8px;background:var(--navy);color:#fff;padding:10px 16px;border-radius:8px;font-size:13px;font-weight:700;text-decoration:none;z-index:var(--z-skip);transition:top .15s}
+.skip-link:focus{top:8px}
+:root{
+  /* z-index 스케일 — 다른 페이지와 동일 */
+  --z-nav:100;--z-bar:150;--z-skip:250;--z-overlay:1000;--z-zoom:1100;--z-toast:1200;
+  --navy:#0F172A;--blue:#0369A1;--bg:#F8FAFC;--card:#fff;--text:#020617;--muted:#64748B;--border:#E2E8F0;--radius:12px;--shadow:0 2px 12px rgba(2,6,23,.08)}
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Noto Sans KR','Malgun Gothic',sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
-nav{background:rgba(248,250,252,.86);backdrop-filter:saturate(140%) blur(8px);-webkit-backdrop-filter:saturate(140%) blur(8px);position:sticky;top:0;z-index:100;border-bottom:1px solid var(--border)}
+nav{background:rgba(248,250,252,.86);backdrop-filter:saturate(140%) blur(8px);-webkit-backdrop-filter:saturate(140%) blur(8px);position:sticky;top:0;z-index:var(--z-nav);border-bottom:1px solid var(--border)}
 .nav-inner{max-width:820px;margin:0 auto;display:flex;align-items:center;gap:6px;padding:12px 20px}
 .nav-logo{flex-shrink:0;font-size:16px;font-weight:800;color:var(--navy);text-decoration:none;margin-right:auto;letter-spacing:-.3px}
 .nav-a{flex-shrink:0;color:var(--muted);font-size:12px;padding:5px 11px;border-radius:7px;text-decoration:none;transition:all .15s}
@@ -46,6 +54,7 @@ footer{border-top:1px solid var(--border);background:var(--card);margin-top:60px
 </style>
 </head>
 <body>
+<a href="#content" class="skip-link">본문으로 건너뛰기</a>
 <nav><div class="nav-inner">
   <a href="index.html" class="nav-logo">셀프등기24</a>
   <a href="index.html" class="nav-a">서류 작성하기</a>
@@ -53,7 +62,7 @@ footer{border-top:1px solid var(--border);background:var(--card);margin-top:60px
   <a href="privacy.html" class="nav-a">개인정보처리방침</a>
 </div></nav>
 
-<div class="wrap">
+<div class="wrap" id="content">
   <div class="page-head">
     <h1>이용약관</h1>
     <div class="rev">시행일 2026년 7월 23일 · 최종 개정 2026년 7월 23일</div>

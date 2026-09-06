@@ -11,6 +11,7 @@
   gtag('config', 'G-DR3W5XWF50');
 </script>
 <meta charset="UTF-8">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>소유권이전등기 신청서·위임장 자동생성 | 셀프등기24</title>
 <meta name="description" content="소유권이전등기(일반매매·신탁해지) 신청서와 위임장을 입력값에 맞춰 자동으로 완성합니다. 개인정보를 기재하지 않아도 서류 발급이 가능합니다.">
@@ -28,9 +29,16 @@
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script>emailjs.init('Ry2pyJz_cIirdIRJF');</script>
 <style>
+/* 키보드 사용자용 본문 바로가기. position:fixed 로 둔다 —
+   absolute+left:-9999px 는 body{overflow-x:hidden}에 잘려 포커스를 받아도 안 보이는 경우가 있다. */
+.skip-link{position:fixed;top:-64px;left:8px;background:var(--navy);color:#fff;padding:10px 16px;border-radius:8px;font-size:13px;font-weight:700;text-decoration:none;z-index:var(--z-skip);transition:top .15s}
+.skip-link:focus{top:8px}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--navy:#0F172A;--blue:#0369A1;--gold:#0369A1;--bg:#F8FAFC;--card:#fff;--text:#020617;--muted:#64748B;--border:#E2E8F0;--radius:12px;--shadow:0 2px 12px rgba(2,6,23,.08)}
-nav{background:rgba(248,250,252,.86);backdrop-filter:saturate(140%) blur(8px);-webkit-backdrop-filter:saturate(140%) blur(8px);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100}
+:root{
+  /* z-index 스케일: 아래 순서를 지킨다. 토스트는 모달 위에 떠야 한다. */
+  --z-nav:100;--z-bar:150;--z-skip:250;--z-overlay:1000;--z-zoom:1100;--z-toast:1200;
+  --navy:#0F172A;--blue:#0369A1;--gold:#0369A1;--bg:#F8FAFC;--card:#fff;--text:#020617;--muted:#64748B;--border:#E2E8F0;--radius:12px;--shadow:0 2px 12px rgba(2,6,23,.08)}
+nav{background:rgba(248,250,252,.86);backdrop-filter:saturate(140%) blur(8px);-webkit-backdrop-filter:saturate(140%) blur(8px);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:var(--z-nav)}
 .nav-inner{max-width:1200px;margin:0 auto;padding:0 14px;height:54px;display:flex;align-items:center;gap:2px}
 .nav-logo{flex-shrink:0;font-size:15px;font-weight:800;color:var(--navy);text-decoration:none;margin-right:auto;letter-spacing:-.02em}
 .nav-a{flex-shrink:0;color:var(--muted);font-size:12.5px;font-weight:500;padding:8px 10px;border-radius:7px;text-decoration:none;transition:all .15s}
@@ -192,7 +200,7 @@ select{cursor:pointer;appearance:auto}
 .dn{font-size:13px;font-weight:700}
 .ds{font-size:10px;opacity:.75}
 
-.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(80px);background:#047857;color:#fff;padding:9px 18px;border-radius:8px;font-size:12px;font-weight:500;transition:transform .3s;z-index:999;white-space:nowrap}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(80px);background:#047857;color:#fff;padding:9px 18px;border-radius:8px;font-size:12px;font-weight:500;transition:transform .3s;z-index:var(--z-toast);white-space:nowrap}
 .toast.show{transform:translateX(-50%) translateY(0)}
 
 /* 가이드 버튼 (라벨 옆) */
@@ -201,7 +209,7 @@ select{cursor:pointer;appearance:auto}
 .guide-link:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
 
 /* 가이드 모달 */
-.gm-overlay{display:none;position:fixed;inset:0;background:rgba(20,30,50,.55);z-index:1000;padding:16px;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.gm-overlay{display:none;position:fixed;inset:0;background:rgba(20,30,50,.55);z-index:var(--z-overlay);padding:16px;overflow-y:auto;-webkit-overflow-scrolling:touch}
 .gm-overlay.open{display:flex;align-items:flex-start;justify-content:center}
 .gm-box{background:#fff;border-radius:14px;max-width:760px;width:100%;margin:auto;box-shadow:0 12px 48px rgba(0,0,0,.25);overflow:hidden;animation:gmpop .2s ease}
 @keyframes gmpop{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
@@ -278,6 +286,7 @@ gtag('js',new Date());gtag('config','G-DR3W5XWF50');
 </head>
 <body>
 
+<a href="#main" class="skip-link">본문으로 건너뛰기</a>
 <nav>
   <div class="nav-inner">
     <div class="nav-scroll">
@@ -299,7 +308,7 @@ gtag('js',new Date());gtag('config','G-DR3W5XWF50');
   </header>
 
 <div class="shell">
-<main>
+<main id="main">
 
 <div class="ntc inf" style="margin-bottom:14px">
   <strong>안내:</strong> <span class="req">*</span> 표시 항목 외에는 필수 입력사항이 아닙니다. 다만 입력하지 않은 항목은 서류에 공란으로 출력되며, 이 경우 직접 수기로 작성하셔야 합니다.

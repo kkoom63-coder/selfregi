@@ -18,6 +18,7 @@
 </script>
 <script defer src="/_vercel/insights/script.js"></script>
 <meta charset="UTF-8">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>셀프등기24 | 소유권이전등기 셀프등기 서류 자동생성</title>
 <meta name="description" content="법무사 없이 소유권이전등기를 직접 진행하는 방법을 안내합니다. 온라인 사전처리부터 위임장·신청서 자동생성까지.">
@@ -36,8 +37,15 @@
 {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"셀프등기, 정말 혼자 할 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"부동산등기는 법무사 선임 의무가 없어 본인이 직접 신청할 수 있습니다. 셀프등기24는 복잡한 서류 작성과 절차 안내를 자동화해 그 과정을 돕습니다. 개별 사안의 최종 확인은 관할 등기소 안내를 따라 주세요."}},{"@type":"Question","name":"직접 하면 시간이 얼마나 드나요?","acceptedAnswer":{"@type":"Answer","text":"준비 서류 발급과 온라인으로 처리 가능한 취득세 신고, 국민주택채권 매입 등을 미리 완료해 둘 경우 관할 등기소에 방문하여 서류를 제출하는 것으로 마무리됩니다. 셀프등기24는 절차 A to Z 가이드와 위임장·소유권이전 신청서 자동 발급으로 정보를 직접 찾아보고 검증하는 시간을 줄여드립니다."}},{"@type":"Question","name":"잔금대출이 있어도 셀프등기가 가능한가요?","acceptedAnswer":{"@type":"Answer","text":"대출 은행이 셀프등기를 허용하는 경우에 한해 가능합니다. 이 경우 은행은 근저당 설정 서류만 요구하며, 소유권이전 부분은 본인이 직접 처리할 수 있습니다. 대출 실행 전 담당 행원에게 셀프등기 가능 여부를 반드시 확인하세요."}},{"@type":"Question","name":"근저당권 말소도 직접 할 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"대출금을 전부 상환해도 등기부 을구에 기록된 근저당권은 자동으로 지워지지 않아, 말소등기를 따로 신청해야 합니다. 직접 신청하면 공과금 실비만 들며, 등기 대상 1건 기준 11,200원입니다(등록면허세 6,000원 + 지방교육세 1,200원 + 등기신청수수료 4,000원, 서면 접수 기준). 은행은 대개 협약 법무사를 통한 말소를 안내하며 이 경우 대행 보수가 별도로 발생합니다. 절차와 준비서류는 근저당권 말소 가이드에서 무료로 확인하실 수 있습니다."}},{"@type":"Question","name":"개인정보는 어떻게 처리되나요?","acceptedAnswer":{"@type":"Answer","text":"주민등록번호 등 민감정보는 서버에 저장하지 않으며, 문서 생성은 이용자 기기 안에서 이루어집니다. 민감정보를 기재하지 않아도 서류 발급이 가능하며, 빈칸은 출력 후 손으로 기재하시면 됩니다."}},{"@type":"Question","name":"케이스 A와 B의 차이가 뭔가요?","acceptedAnswer":{"@type":"Answer","text":"케이스 A는 매매계약 체결 후 잔금 납부 이후 소유권을 이전받는 일반적인 경우입니다. 케이스 B는 건물에 대지지분(대지권)이 등기되어 있지 않아 대지권 등기를 함께 진행해야 하는 경우입니다."}}]}
 </script><link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
 <style>
+/* 키보드 사용자용 본문 바로가기. position:fixed 로 둔다 —
+   absolute+left:-9999px 는 body{overflow-x:hidden}에 잘려 포커스를 받아도 안 보이는 경우가 있다. */
+.skip-link{position:fixed;top:-64px;left:8px;background:var(--navy);color:#fff;padding:10px 16px;border-radius:8px;font-size:13px;font-weight:700;text-decoration:none;z-index:var(--z-skip);transition:top .15s}
+.skip-link:focus{top:8px}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
+  /* z-index 스케일: 아래 순서를 지킨다. 토스트는 모달 위에 떠야 한다. */
+  --z-nav:100;--z-bar:150;--z-skip:250;--z-overlay:1000;--z-zoom:1100;--z-toast:1200;
+  
   --navy:#0F172A;--blue:#0369A1;--gold:#0369A1;
   --text:#020617;--muted:#64748B;--border:#e2e8f0;
   --bg:#F8FAFC;--card:#fff;
@@ -48,7 +56,7 @@ body{overflow-x:hidden;font-family:'Noto Sans KR',-apple-system,sans-serif;backg
 img{max-width:100%;display:block}
 
 /* ── 네비게이션 ── */
-nav{background:rgba(248,250,252,.86);backdrop-filter:saturate(140%) blur(8px);-webkit-backdrop-filter:saturate(140%) blur(8px);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100}
+nav{background:rgba(248,250,252,.86);backdrop-filter:saturate(140%) blur(8px);-webkit-backdrop-filter:saturate(140%) blur(8px);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:var(--z-nav)}
 .nav-inner{max-width:1200px;margin:0 auto;padding:0 14px;height:54px;display:flex;align-items:center;gap:2px}
 .nav-logo{flex-shrink:0;font-size:15px;font-weight:800;color:var(--navy);text-decoration:none;margin-right:auto;letter-spacing:-.02em}
 .nav-logo span{display:inline-block;background:#E0F2FE;color:#075985;font-size:9px;font-weight:700;letter-spacing:.08em;padding:2px 7px;border-radius:10px;vertical-align:2px;margin-left:6px}
@@ -89,6 +97,23 @@ header{background:var(--bg)}
 .btn-ghost{display:inline-flex;align-items:center;gap:7px;padding:13px 22px;background:#fff;color:var(--navy);border:1.5px solid var(--border);border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;text-decoration:none;transition:all .15s}
 .btn-ghost:hover{border-color:var(--navy);background:#F1F5F9}
 .hero-trust{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;font-weight:500;color:#334155;background:#F1F5F9;border:1px solid var(--border);padding:8px 16px;border-radius:22px;line-height:1.5}
+/* 히어로 증거 스트립 — 실제 발급 화면 파생본(WebP) */
+.hero-proof{display:block;max-width:760px;margin:34px auto 0;text-decoration:none;color:inherit}
+.hp-shots{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.hp-shot{margin:0;background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden;box-shadow:var(--shadow);transition:border-color .15s,box-shadow .15s,transform .15s}
+.hp-shot img{display:block;width:100%;height:auto;border-bottom:1px solid var(--border)}
+.hp-shot figcaption{font-size:11px;font-weight:700;color:var(--muted);padding:7px 8px;text-align:center;letter-spacing:-.01em}
+.hero-proof:hover .hp-shot{border-color:var(--blue);box-shadow:0 6px 18px rgba(3,105,161,.13);transform:translateY(-2px)}
+.hero-proof:focus-visible{outline:2px solid var(--blue);outline-offset:4px;border-radius:12px}
+.hp-cap{font-size:13px;color:var(--muted);margin-top:12px;word-break:keep-all}
+.hp-cap b{color:var(--navy);font-weight:700}
+.hp-go{color:var(--blue);font-weight:700;margin-left:4px;white-space:nowrap}
+@media(max-width:560px){
+  .hero-proof{margin-top:26px}
+  .hp-shots{gap:7px}
+  .hp-shot figcaption{font-size:10.5px;padding:6px 4px}
+  .hp-cap{font-size:12.5px}
+}
 
 
 /* ── 신뢰 지표 배너 ── */
@@ -270,7 +295,7 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:40px;p
 .foot-copy{font-size:11px;color:var(--muted);line-height:1.9}
 
 /* ── 가이드 안내 다이얼로그 ── */
-.gg-back{position:fixed;inset:0;background:rgba(15,23,32,.66);z-index:500;display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px)}
+.gg-back{position:fixed;inset:0;background:rgba(15,23,32,.66);z-index:var(--z-overlay);display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px)}
 .gg-back.open{display:flex}
 .gg{background:var(--card);border-radius:16px;max-width:460px;width:100%;padding:26px 24px 22px;box-shadow:0 24px 60px -20px rgba(2,6,23,.4);position:relative;animation:ggIn .2s ease-out}
 @keyframes ggIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
@@ -297,7 +322,7 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:40px;p
 }
 @media(prefers-reduced-motion:reduce){.gg{animation:none}}
 
-.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(80px);background:#047857;color:#fff;padding:9px 18px;border-radius:8px;font-size:12px;font-weight:500;transition:transform .3s;z-index:999;white-space:nowrap}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(80px);background:#047857;color:#fff;padding:9px 18px;border-radius:8px;font-size:12px;font-weight:500;transition:transform .3s;z-index:var(--z-toast);white-space:nowrap}
 .toast.show{transform:translateX(-50%) translateY(0)}
 
 @media(max-width:560px){
@@ -371,6 +396,7 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:40px;p
 </head>
 <body>
 
+<a href="#main" class="skip-link">본문으로 건너뛰기</a>
 <!-- 네비게이션 -->
 <nav>
   <div class="nav-inner">
@@ -384,7 +410,7 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:40px;p
     </div>
 </nav>
 
-<main>
+<main id="main">
 <!-- 히어로 -->
 <header>
   <div class="hero">
@@ -398,6 +424,26 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:40px;p
       <a href="#guide-band" class="btn-ghost">셀프등기가 처음이라면</a>
     </div>
     <p class="hero-trust">민감정보는 서버에 저장하지 않습니다 — 기재하지 않아도 서류 발급 가능하나, 출력 후 수기로 직접 작성하셔야 합니다</p>
+
+    <!-- 실제 발급 화면 증거 스트립. 경쟁 블로그가 갖지 못한 자산이라 첫 화면에서 보여준다.
+         원본 캡처(200~400KB)를 그대로 쓰면 모바일 LCP를 해치므로 520px WebP 파생본을 쓴다(3장 합계 약 34KB). -->
+    <a class="hero-proof" href="guide.html">
+      <div class="hp-shots">
+        <figure class="hp-shot">
+          <img src="proof_gov24.webp" width="520" height="322" alt="정부24에서 토지대장·주민등록등본을 발급하는 실제 화면" loading="lazy" decoding="async">
+          <figcaption>정부24</figcaption>
+        </figure>
+        <figure class="hp-shot">
+          <img src="proof_wetax.webp" width="520" height="322" alt="위택스에서 취득세를 신고하는 실제 화면" loading="lazy" decoding="async">
+          <figcaption>위택스</figcaption>
+        </figure>
+        <figure class="hp-shot">
+          <img src="proof_iros.webp" width="520" height="322" alt="인터넷등기소에서 등기신청수수료를 납부하는 실제 화면" loading="lazy" decoding="async">
+          <figcaption>인터넷등기소</figcaption>
+        </figure>
+      </div>
+      <p class="hp-cap"><b>실제 발급 화면 51단계</b>를 그대로 보여드립니다 <span class="hp-go">가이드 보기 →</span></p>
+    </a>
   </div>
 </header>
 

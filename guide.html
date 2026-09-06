@@ -14,6 +14,7 @@
 <script>window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments);};</script>
 <script defer src="/_vercel/insights/script.js"></script>
 <meta charset="UTF-8">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>셀프등기 가이드 | 소유권이전등기 절차·준비서류를 실제 화면으로 — 셀프등기24</title>
 <meta name="description" content="법무사 없이 소유권이전등기 하는 방법. 준비서류 목록부터 위택스 취득세 신고, 전자수입인지, 정부24 서류 발급까지 실제 화면으로 단계별 안내합니다.">
@@ -28,10 +29,75 @@
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"HowTo","name":"셀프등기(소유권이전등기) 진행 방법","step":[{"@type":"HowToStep","name":"온라인으로 서류 발급"},{"@type":"HowToStep","name":"온라인으로 제세공과금 신고·납부"},{"@type":"HowToStep","name":"위임장·신청서 발급"},{"@type":"HowToStep","name":"관할 등기소 접수"}]}
 </script>
+<!-- 반려·보정 사유 FAQ. 답변은 본문(STEP2 반려 배지·등본/초본 콜아웃, STEP4 SHOTS 캡션)에 적힌 내용을
+     그대로 옮긴 것이다. 본문을 고치면 여기도 같이 고쳐야 한다. -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "주민등록등본이 반려되는 이유는 무엇인가요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "주민등록번호 뒷자리가 별표(******)로 가려진 채 발급된 경우입니다. 발급 화면에서 주민등록번호를 '전체 표시'로 선택해야 하며, 뒷자리가 가려진 서류는 본인 확인이 되지 않아 보정 요구를 받는 경우가 많습니다. 최종 확인은 관할 등기소 안내를 따라 주세요."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "매도인 주민등록초본은 주소 이력을 어디까지 넣어야 하나요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "'최근 5년'이 아니라 '전체'로 발급해야 합니다. 등기부에 적힌 옛 주소부터 현재 주소까지 이어지지 않으면 같은 사람인지 확인되지 않아 보정 대상이 됩니다. 주민등록번호 뒷자리도 함께 포함해 발급합니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "매수인은 등본, 매도인은 초본을 내는 이유가 무엇인가요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "매수인은 현재 주소만 증명하면 되므로 주민등록번호 뒷자리가 포함된 등본이면 충분합니다. 매도인은 등기부에 적힌 옛 주소와 현재 주소가 이어진다는 점을 보여야 하므로 주소 변동 이력이 포함된 초본이 필요합니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "매도용 인감증명서는 일반 인감증명서와 무엇이 다른가요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "매도용 인감증명서에는 매수인의 성명·주민등록번호·주소가 기재되어 있습니다. 잔금일에 받을 때 '매도용'으로 발급된 것이 맞는지, 그리고 위임장에 찍힌 인감도장과 일치하는지 함께 확인해야 합니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "전자수입인지는 어떤 종류를 구매해야 하나요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "등기소에 종이로 제출할 서류에 붙이는 것이므로 반드시 '종이문서용 전자수입인지'를 선택해야 합니다. '전자문서용'이 아닙니다. 구매 후 출력은 1회로 제한되며 구매 취소가 되지 않으므로, 결제 전에 프린터 상태를 확인해 두는 것이 좋습니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "건축물대장의 소유자가 매도인과 다르게 나오면 어떻게 하나요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "간혹 지방자치단체 누락으로 전 소유자가 그대로 남아 있는 경우가 있습니다. 중개인을 통해 지자체에 정정을 요청하면 대개 당일 처리됩니다. 발급 직후 소유자 이름이 현재 소유자(매도인)와 같은지 확인하는 편이 안전합니다."
+      }
+    }
+  ]
+}
+</script>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
 <style>
+/* 키보드 사용자용 본문 바로가기. position:fixed 로 둔다 —
+   absolute+left:-9999px 는 body{overflow-x:hidden}에 잘려 포커스를 받아도 안 보이는 경우가 있다. */
+.skip-link{position:fixed;top:-64px;left:8px;background:var(--navy);color:#fff;padding:10px 16px;border-radius:8px;font-size:13px;font-weight:700;text-decoration:none;z-index:var(--z-skip);transition:top .15s}
+.skip-link:focus{top:8px}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
+  /* z-index 스케일: 아래 순서를 지킨다. 토스트는 모달 위에 떠야 한다. */
+  --z-nav:100;--z-bar:150;--z-skip:250;--z-overlay:1000;--z-zoom:1100;--z-toast:1200;
+  
   --navy:#0F172A;--blue:#0369A1;--gold:#0369A1;
   --text:#020617;--muted:#64748B;--border:#e2e8f0;
   --bg:#F8FAFC;--card:#fff;
@@ -42,7 +108,7 @@ body{overflow-x:hidden;font-family:'Noto Sans KR',-apple-system,sans-serif;backg
 img{max-width:100%;display:block}
 
 /* 네비게이션 */
-nav{background:rgba(248,250,252,.86);backdrop-filter:saturate(140%) blur(8px);-webkit-backdrop-filter:saturate(140%) blur(8px);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100}
+nav{background:rgba(248,250,252,.86);backdrop-filter:saturate(140%) blur(8px);-webkit-backdrop-filter:saturate(140%) blur(8px);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:var(--z-nav)}
 .nav-inner{max-width:1200px;margin:0 auto;padding:0 20px;height:54px;display:flex;align-items:center;gap:2px}
 .nav-logo{flex-shrink:0;font-size:15px;font-weight:800;color:var(--navy);text-decoration:none;margin-right:auto;letter-spacing:-.02em}
 .nav-logo span{display:inline-block;background:#E0F2FE;color:#075985;font-size:9px;font-weight:700;letter-spacing:.08em;padding:2px 7px;border-radius:10px;vertical-align:2px;margin-left:6px}
@@ -96,6 +162,9 @@ header{background:var(--navy)}
 .rj-badge{display:inline-block;font-size:9.5px;font-weight:800;color:#9A3412;background:#FFEDD5;border:1px solid #FED7AA;border-radius:20px;padding:2px 8px;margin-left:2px;vertical-align:1px;white-space:nowrap;letter-spacing:-.01em}
 .rj-why{display:block;margin-top:6px;padding:8px 10px;background:#FFF7ED;border-left:3px solid #FB923C;border-radius:0 6px 6px 0;color:#7C2D12;font-size:11.5px;line-height:1.7;word-break:keep-all}
 .rj-why b{font-weight:800;color:#9A3412}
+/* .pitem small(0,1,1)이 .rj-why(0,1,0)를 이겨 본문 색이 muted로 밀렸다 —
+   특이도를 한 단계 올려 의도한 색을 되돌린다. (회색 4.48:1 → 갈색 8.6:1) */
+.pitem small.rj-why{color:#7C2D12}
 /* 반려 항목 딥링크(#r=키) — 블로그에서 해당 항목으로 바로 착지 */
 .pitem[id]{scroll-margin-top:72px}
 .rj-link{display:inline-block;font-size:10px;font-weight:700;color:#9A3412;background:transparent;border:1px solid #FED7AA;border-radius:20px;padding:2px 9px;margin-left:4px;vertical-align:1px;white-space:nowrap;cursor:pointer;font-family:inherit;line-height:1.5}
@@ -132,7 +201,7 @@ header{background:var(--navy)}
 .shot-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
 .shot-ic{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;background:#E0F2FE;color:var(--navy);border-radius:9px;font-size:13px;font-weight:800}
 .shot-cnt{font-size:10.5px;font-weight:700;color:var(--blue);background:#E0F2FE;padding:4px 10px;border-radius:20px}
-.shot-cnt.soon{color:#8a6d1c;background:#faf3dd}
+.shot-cnt.soon{color:#854F0B;background:#faf3dd}
 .shot-t{font-size:14.5px;font-weight:700;color:var(--navy);margin-bottom:5px;line-height:1.35;word-break:keep-all}
 .shot-d{font-size:12px;color:var(--muted);line-height:1.6;flex:1;word-break:keep-all}
 .shot-go{font-size:12px;font-weight:700;color:var(--blue);margin-top:14px}
@@ -175,7 +244,7 @@ header{background:var(--navy)}
 .gm-dots button.on{background:var(--blue);width:20px;border-radius:4px}
 @media(max-width:760px){.gm-dots{display:flex}}
 /* 이미지 줌 라이트박스 — fit-to-width 기본, 휠/핀치/버튼 줌 + 드래그 팬 */
-.zm-back{position:fixed;inset:0;background:rgba(8,12,18,.9);z-index:300;display:none;flex-direction:column}
+.zm-back{position:fixed;inset:0;background:rgba(8,12,18,.9);z-index:var(--z-zoom);display:none;flex-direction:column}
 .zm-back.open{display:flex}
 .zm-top{flex-shrink:0;display:flex;align-items:center;gap:8px;padding:12px 16px}
 .zm-top .zm-title{flex:1;min-width:0;font-size:13px;font-weight:700;color:#E2E8F0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -211,7 +280,7 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:52px;p
 .foot-copy{font-size:11px;color:var(--muted);line-height:1.7}.foot-biz{font-size:11.5px;color:#334155;font-weight:500;margin-bottom:10px}.foot-biz a{color:var(--blue);text-decoration:none}
 
 /* ===== 대형 2-pane 모달 ===== */
-.gm-back{position:fixed;inset:0;background:rgba(15,23,32,.66);z-index:200;display:none;align-items:center;justify-content:center;padding:24px;backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px)}
+.gm-back{position:fixed;inset:0;background:rgba(15,23,32,.66);z-index:var(--z-overlay);display:none;align-items:center;justify-content:center;padding:24px;backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px)}
 .gm-back.open{display:flex;animation:fade .18s ease-out}
 @keyframes fade{from{opacity:0}to{opacity:1}}
 .gm{background:#fff;border-radius:16px;width:min(94vw,1280px);max-height:calc(100dvh - 48px);display:grid;grid-template-columns:260px 1fr;overflow:hidden;animation:pop .2s ease-out}
@@ -279,13 +348,13 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:52px;p
 .vprev-b .row{font-size:12.5px;display:flex;justify-content:space-between;gap:12px;align-items:baseline}
 .vprev-b .k{color:var(--muted);flex-shrink:0}
 .vprev-b .v{font-weight:700;color:var(--navy);text-align:right;word-break:break-all}
-.vprev-b .v.blank{color:#c3ccd6;font-weight:400}
+.vprev-b .v.blank{color:var(--muted);font-weight:400}
 .vprev-lock{border-top:1px dashed var(--border);padding:15px;display:flex;align-items:center;justify-content:space-between;gap:12px;background:#FFFFFF;flex-wrap:wrap}
 .vprev-lock .t{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:6px;line-height:1.5}
 .vprev-cta{padding:12px 18px;border-radius:10px;background:var(--blue);color:#fff;font-size:13px;font-weight:800;text-decoration:none;white-space:nowrap;transition:background .15s}
 .vprev-cta:hover{background:#075985}
 /* 모바일 하단 고정 바 */
-.vbar{position:fixed;left:0;right:0;bottom:0;z-index:150;background:var(--navy);color:#fff;display:none;align-items:center;justify-content:space-between;padding:13px 20px calc(13px + env(safe-area-inset-bottom));box-shadow:0 -4px 16px rgba(15,23,32,.2);cursor:pointer;border:none;width:100%;font-family:inherit}
+.vbar{position:fixed;left:0;right:0;bottom:0;z-index:var(--z-bar);background:var(--navy);color:#fff;display:none;align-items:center;justify-content:space-between;padding:13px 20px calc(13px + env(safe-area-inset-bottom));box-shadow:0 -4px 16px rgba(15,23,32,.2);cursor:pointer;border:none;width:100%;font-family:inherit}
 .vbar .l{font-size:13px;font-weight:700;display:flex;align-items:center;gap:9px}
 .vbar .cnt{background:rgba(255,255,255,.16);padding:2px 10px;border-radius:20px;font-size:12px;font-weight:800}
 .vbar .r{font-size:12.5px;font-weight:700;color:#7DD3FC}
@@ -296,7 +365,7 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:52px;p
 .gm-relay .rin{background:#fff}
 .gm-relay .rin+.rin{margin-top:8px}
 /* 토스트 */
-.toast{position:fixed;left:50%;bottom:78px;transform:translateX(-50%) translateY(12px);background:var(--navy);color:#fff;font-size:12.5px;font-weight:600;padding:11px 18px;border-radius:10px;box-shadow:0 8px 24px rgba(15,23,32,.3);opacity:0;pointer-events:none;transition:.2s;z-index:300;max-width:90vw;text-align:center}
+.toast{position:fixed;left:50%;bottom:78px;transform:translateX(-50%) translateY(12px);background:var(--navy);color:#fff;font-size:12.5px;font-weight:600;padding:11px 18px;border-radius:10px;box-shadow:0 8px 24px rgba(15,23,32,.3);opacity:0;pointer-events:none;transition:.2s;z-index:var(--z-toast);max-width:90vw;text-align:center}
 .toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
 
 /* ── 모바일 최적화 ──────────────────────────────
@@ -331,6 +400,7 @@ gtag('js',new Date());gtag('config','G-DR3W5XWF50');
 </head>
 <body>
 
+<a href="#content" class="skip-link">본문으로 건너뛰기</a>
 <nav>
   <div class="nav-inner">
     <a href="index.html" class="nav-logo">셀프등기24<span>가이드</span></a>
@@ -345,7 +415,7 @@ gtag('js',new Date());gtag('config','G-DR3W5XWF50');
   </div>
 </nav>
 
-<header>
+<header id="content">
   <div class="hero">
     <h1>셀프등기, <em>순서대로 따라오면</em><br>등기소 방문 한 번으로 끝납니다</h1>
     <p class="hero-sub">무엇을 준비하고 어떤 순서로 진행하는지, 실제 화면과 함께 확인하세요.</p>

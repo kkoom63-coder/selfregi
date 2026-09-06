@@ -14,6 +14,7 @@
 <script>window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments);};</script>
 <script defer src="/_vercel/insights/script.js"></script>
 <meta charset="UTF-8">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>근저당권 말소 비용 | 실비 11,200원부터, 셀프 신청 방법 — 셀프등기24</title>
 <meta name="description" content="대출을 전부 상환했다면 근저당권 말소등기는 직접 신청할 수 있습니다. 실비는 1건당 등록면허세·지방교육세 합계 7,200원과 수수료 4,000원. 준비할 서류와 날인받을 서류, 위택스 신고, 등기소 접수까지 순서대로 안내합니다.">
@@ -38,8 +39,15 @@
 </script>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
 <style>
+/* 키보드 사용자용 본문 바로가기. position:fixed 로 둔다 —
+   absolute+left:-9999px 는 body{overflow-x:hidden}에 잘려 포커스를 받아도 안 보이는 경우가 있다. */
+.skip-link{position:fixed;top:-64px;left:8px;background:var(--navy);color:#fff;padding:10px 16px;border-radius:8px;font-size:13px;font-weight:700;text-decoration:none;z-index:var(--z-skip);transition:top .15s}
+.skip-link:focus{top:8px}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
+  /* z-index 스케일: 아래 순서를 지킨다. 토스트는 모달 위에 떠야 한다. */
+  --z-nav:100;--z-bar:150;--z-skip:250;--z-overlay:1000;--z-zoom:1100;--z-toast:1200;
+  
   --navy:#0F172A;--blue:#0369A1;
   --text:#020617;--muted:#64748B;--border:#e2e8f0;
   --bg:#F8FAFC;--card:#fff;
@@ -51,7 +59,7 @@ img{max-width:100%;display:block}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
 
 /* ── 네비게이션 (표준) ── */
-nav{background:rgba(248,250,252,.86);backdrop-filter:saturate(140%) blur(8px);-webkit-backdrop-filter:saturate(140%) blur(8px);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100}
+nav{background:rgba(248,250,252,.86);backdrop-filter:saturate(140%) blur(8px);-webkit-backdrop-filter:saturate(140%) blur(8px);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:var(--z-nav)}
 .nav-inner{max-width:1200px;margin:0 auto;padding:0 20px;height:54px;display:flex;align-items:center;gap:2px}
 .nav-logo{flex-shrink:0;font-size:15px;font-weight:800;color:var(--navy);text-decoration:none;margin-right:auto;letter-spacing:-.02em}
 .nav-logo span{display:inline-block;background:#E0F2FE;color:#075985;font-size:9px;font-weight:700;letter-spacing:.08em;padding:2px 7px;border-radius:10px;vertical-align:2px;margin-left:6px}
@@ -176,7 +184,7 @@ header{background:var(--navy)}
 .guide-link:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
 .guide-link svg{flex-shrink:0}
 /* ── 등기부 판독 모달 ── */
-.gm-overlay{display:none;position:fixed;inset:0;background:rgba(2,6,23,.62);z-index:1000;padding:16px;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.gm-overlay{display:none;position:fixed;inset:0;background:rgba(2,6,23,.62);z-index:var(--z-overlay);padding:16px;overflow-y:auto;-webkit-overflow-scrolling:touch}
 .gm-overlay.open{display:flex;align-items:flex-start;justify-content:center}
 .gm-box{background:#fff;border-radius:14px;max-width:780px;width:100%;margin:auto;box-shadow:0 18px 56px rgba(2,6,23,.32);overflow:hidden}
 .gm-head{position:sticky;top:0;z-index:2;background:var(--navy);color:#fff;padding:15px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px}
@@ -311,7 +319,7 @@ footer{border-top:1px solid var(--border);background:var(--bg)}
 .foot-copy{font-size:11.5px;color:#64748B;line-height:1.8;word-break:keep-all}
 
 /* ── 토스트 ── */
-.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(90px);background:#047857;color:#fff;padding:11px 20px;border-radius:10px;font-size:12.5px;font-weight:600;transition:transform .3s;z-index:999;max-width:calc(100vw - 32px);white-space:normal;text-align:center;padding-bottom:calc(11px + env(safe-area-inset-bottom,0px))}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(90px);background:#047857;color:#fff;padding:11px 20px;border-radius:10px;font-size:12.5px;font-weight:600;transition:transform .3s;z-index:var(--z-toast);max-width:calc(100vw - 32px);white-space:normal;text-align:center;padding-bottom:calc(11px + env(safe-area-inset-bottom,0px))}
 .toast.show{transform:translateX(-50%) translateY(0)}
 
 /* ── 모바일 ── */
@@ -444,6 +452,7 @@ gtag('js',new Date());gtag('config','G-DR3W5XWF50');
 </head>
 <body>
 
+<a href="#content" class="skip-link">본문으로 건너뛰기</a>
 <nav>
   <div class="nav-inner">
     <a href="index.html" class="nav-logo">셀프등기24<span>가이드</span></a>
@@ -458,7 +467,7 @@ gtag('js',new Date());gtag('config','G-DR3W5XWF50');
   </div>
 </nav>
 
-<header>
+<header id="content">
   <div class="hero">
     <span class="kicker">근저당권 말소등기</span>
     <h1>대출을 다 갚으셨다면, 근저당권 말소는 <em>직접 신청할 수 있습니다</em></h1>

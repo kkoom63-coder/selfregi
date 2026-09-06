@@ -2,6 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>대지지분 별도등기 서류 자동생성 | 셀프등기24</title>
 <meta name="description" content="대지지분 별도등기 신청서와 위임장을 입력값에 맞춰 자동으로 완성합니다. 개인정보를 기재하지 않아도 서류 발급이 가능합니다.">
@@ -19,8 +20,15 @@
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script>emailjs.init('Ry2pyJz_cIirdIRJF');</script>
 <style>
+/* 키보드 사용자용 본문 바로가기. position:fixed 로 둔다 —
+   absolute+left:-9999px 는 body{overflow-x:hidden}에 잘려 포커스를 받아도 안 보이는 경우가 있다. */
+.skip-link{position:fixed;top:-64px;left:8px;background:var(--navy);color:#fff;padding:10px 16px;border-radius:8px;font-size:13px;font-weight:700;text-decoration:none;z-index:var(--z-skip);transition:top .15s}
+.skip-link:focus{top:8px}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--navy:#0F172A;--blue:#0369A1;--gold:#0369A1;--bg:#F8FAFC;--card:#fff;--text:#020617;--muted:#64748B;--border:#E2E8F0;--radius:12px;--shadow:0 2px 12px rgba(2,6,23,.08)}
+:root{
+  /* z-index 스케일 — 다른 페이지와 동일 */
+  --z-nav:100;--z-bar:150;--z-skip:250;--z-overlay:1000;--z-zoom:1100;--z-toast:1200;
+  --navy:#0F172A;--blue:#0369A1;--gold:#0369A1;--bg:#F8FAFC;--card:#fff;--text:#020617;--muted:#64748B;--border:#E2E8F0;--radius:12px;--shadow:0 2px 12px rgba(2,6,23,.08)}
 body{font-family:'Noto Sans KR','Malgun Gothic',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6}
 header{background:var(--navy);color:#fff}
 .back-bar{background:var(--navy);border-bottom:1px solid rgba(255,255,255,.06);padding:0 20px}
@@ -86,7 +94,7 @@ select{cursor:pointer;appearance:auto}
 .dn{font-size:13px;font-weight:700}
 .ds{font-size:10px;opacity:.75}
 
-.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(80px);background:#047857;color:#fff;padding:9px 18px;border-radius:8px;font-size:12px;font-weight:500;transition:transform .3s;z-index:999;white-space:nowrap}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(80px);background:#047857;color:#fff;padding:9px 18px;border-radius:8px;font-size:12px;font-weight:500;transition:transform .3s;z-index:var(--z-toast);white-space:nowrap}
 .toast.show{transform:translateX(-50%) translateY(0)}
 footer{text-align:center;padding:18px;font-size:11px;color:#64748B;max-width:720px;margin:0 auto}
 @media(max-width:520px){.fg,.fg.s3{grid-template-columns:1fr}}
@@ -95,6 +103,7 @@ footer{text-align:center;padding:18px;font-size:11px;color:#64748B;max-width:720
 </head>
 <body>
 
+<a href="#main" class="skip-link">본문으로 건너뛰기</a>
 <!-- 홈으로 바 -->
 <div class="back-bar">
   <div class="back-bar-inner">
@@ -110,7 +119,7 @@ footer{text-align:center;padding:18px;font-size:11px;color:#64748B;max-width:720
   </div>
 </header>
 
-<main>
+<main id="main">
 <!-- ① 소유자 정보 -->
 <div class="card">
   <div class="ch"><div class="ci">👤</div><div><div class="ct">소유자 정보</div><div class="cs">등기 신청인(매수인)의 기본 정보</div></div></div>

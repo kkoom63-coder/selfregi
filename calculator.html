@@ -11,6 +11,7 @@
   gtag('config', 'G-DR3W5XWF50');
 </script>
 <meta charset="UTF-8">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>취득세 계산기 | 셀프등기24</title>
 <meta name="description" content="아파트 취득세를 미리 계산하세요. 1주택·다주택·생애최초 및 신생아 출산 감면 기준 반영.">
@@ -98,12 +99,21 @@
 </script>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;800&display=swap" rel="stylesheet">
 <style>
+/* 키보드 사용자용 본문 바로가기. position:fixed 로 둔다 —
+   absolute+left:-9999px 는 body{overflow-x:hidden}에 잘려 포커스를 받아도 안 보이는 경우가 있다. */
+.skip-link{position:fixed;top:-64px;left:8px;background:var(--navy);color:#fff;padding:10px 16px;border-radius:8px;font-size:13px;font-weight:700;text-decoration:none;z-index:var(--z-skip);transition:top .15s}
+.skip-link:focus{top:8px}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--navy:#0F172A;--blue:#0369A1;--gold:#0369A1;--bg:#F8FAFC;--card:#fff;--text:#020617;--muted:#64748B;--border:#E2E8F0;--radius:12px;--shadow:0 2px 12px rgba(2,6,23,.08)}
+:root{
+  /* z-index 스케일: 아래 순서를 지킨다. 토스트는 모달 위에 떠야 한다. */
+  --z-nav:100;--z-bar:150;--z-skip:250;--z-overlay:1000;--z-zoom:1100;--z-toast:1200;
+  /* design.md success 토큰 — 이전에는 #1a6b3c 하드코딩이었다 */
+  --success:#047857;
+  --navy:#0F172A;--blue:#0369A1;--gold:#0369A1;--bg:#F8FAFC;--card:#fff;--text:#020617;--muted:#64748B;--border:#E2E8F0;--radius:12px;--shadow:0 2px 12px rgba(2,6,23,.08)}
 html, body {overflow-x:hidden; touch-action:manipulation;}
 body{font-family:'Noto Sans KR','Malgun Gothic',sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
 
-nav{background:rgba(248,250,252,.86);backdrop-filter:saturate(140%) blur(8px);-webkit-backdrop-filter:saturate(140%) blur(8px);position:sticky;top:0;z-index:100;border-bottom:1px solid var(--border)}
+nav{background:rgba(248,250,252,.86);backdrop-filter:saturate(140%) blur(8px);-webkit-backdrop-filter:saturate(140%) blur(8px);position:sticky;top:0;z-index:var(--z-nav);border-bottom:1px solid var(--border)}
 .nav-inner{
   max-width:1080px;margin:0 auto;padding:0 20px;height:52px;
   display:flex;align-items:center;gap:12px;
@@ -136,7 +146,7 @@ main{max-width:1080px;margin:0 auto;padding:20px 14px 60px}
 .card{background:var(--card);border-radius:var(--radius);border:1px solid var(--border);padding:22px;margin-bottom:14px;box-shadow:var(--shadow)}
 .ch{display:flex;align-items:center;gap:10px;margin-bottom:16px}
 .step-num{width:32px;height:32px;background:var(--navy);color:#fff;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0;letter-spacing:-.3px}
-.step-num.grn{background:#1a6b3c}
+.step-num.grn{background:var(--success)}
 .ct{font-size:14px;font-weight:700;color:var(--navy)}
 .cs{font-size:11px;color:var(--muted);margin-top:1px;word-break:keep-all}
 
@@ -157,6 +167,9 @@ main{max-width:1080px;margin:0 auto;padding:20px 14px 60px}
 .seg{display:flex;gap:6px;flex-wrap:wrap}
 .seg-btn{flex:1;min-width:70px;padding:9px 8px;border:1.5px solid var(--border);background:#fff;border-radius:8px;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;transition:all .15s;text-align:center; word-break:keep-all;}
 .seg-btn:hover{border-color:var(--blue);color:var(--blue)}
+/* 키보드 포커스 표시 — 입력 폼이 있는 페이지라 필수. 마우스 클릭에는 나타나지 않는다. */
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,
+.seg-btn:focus-visible,.toggle-hd:focus-visible{outline:2px solid var(--blue);outline-offset:2px;border-radius:6px}
 .seg-btn.on{border-color:var(--blue);background:var(--blue);color:#fff}
 
 .divider{border:none;border-top:1px solid var(--border);margin:18px 0}
@@ -262,6 +275,7 @@ gtag('js',new Date());gtag('config','G-DR3W5XWF50');
 </head>
 <body>
 
+<a href="#main" class="skip-link">본문으로 건너뛰기</a>
 <nav>
   <div class="nav-inner">
     <div class="nav-scroll">
@@ -288,7 +302,7 @@ gtag('js',new Date());gtag('config','G-DR3W5XWF50');
   </div>
 </div>
 
-<main>
+<main id="main">
   <div class="card">
     <div class="ch">
       <div class="step-num">01</div>
