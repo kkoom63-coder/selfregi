@@ -56,14 +56,19 @@ nav{background:rgba(248,250,252,.86);backdrop-filter:saturate(140%) blur(8px);-w
 .nav-a:hover{color:var(--navy);background:#F1F5F9}
 .nav-a.cta{background:var(--blue);color:#fff;font-weight:700;padding:8px 14px;margin-left:4px}
 .nav-a.cta:hover{background:#075985}
+/* CTA를 가로 스크롤 영역(.nav-scroll) 밖에 둔다 — 안에 두고 position:sticky를 쓰면
+   스크롤이 0일 때 CTA가 뒤 링크 위에 겹쳐 그려진다(모바일에서 메뉴가 가려짐). */
+.nav-scroll{flex:1;min-width:0;display:flex;align-items:center;gap:2px}
+.nav-a.cta{flex-shrink:0}
 /* 모바일에서 링크를 숨기면 가이드·계산기에 도달할 방법이 사라진다 — 가로 스크롤로 전부 유지 */
 @media(max-width:560px){
-  .nav-inner{overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
-  .nav-inner::-webkit-scrollbar{display:none}
+  /* 오른쪽 끝을 흐리게 해 '더 있음'을 알린다 — 스크롤바를 숨겨서 다른 신호가 없다 */
+  .nav-scroll{overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 20px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 20px),transparent)}
+  .nav-scroll::-webkit-scrollbar{display:none}
   .nav-a,.nav-logo{flex-shrink:0}
   .nav-logo{margin-right:8px}
-  /* 링크는 스크롤되더라도 CTA는 오른쪽에 붙여 항상 보이게 한다 */
-  .nav-a.cta{position:sticky;right:0;z-index:1}
+  /* CTA는 스크롤 밖에 있어 항상 보인다. 탭 높이 44px 확보. */
+  .nav-a.cta{min-height:44px;display:inline-flex;align-items:center;margin-left:6px}
   /* 푸터 인라인 링크 탭 높이 24px 확보(WCAG 2.2 AA 2.5.8) */
   .foot-links a,.foot-legal a,.foot-mail a,footer a{display:inline-block;min-height:24px;line-height:24px}
 }
@@ -369,12 +374,14 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:40px;p
 <!-- 네비게이션 -->
 <nav>
   <div class="nav-inner">
+      <div class="nav-scroll">
     <a href="index.html" class="nav-logo">셀프등기24</a>
     <a href="guide.html" class="nav-a">셀프등기 가이드</a>
     <a href="calculator.html" class="nav-a">취득세 계산기</a>
     <a href="https://selfregi.tistory.com" class="nav-a" target="_blank" rel="noopener">블로그</a>
-    <a href="#start" class="nav-a cta">서류 작성하기</a>
-  </div>
+      </div>
+      <a href="#start" class="nav-a cta">서류 작성하기</a>
+    </div>
 </nav>
 
 <main>

@@ -15,6 +15,87 @@
 <title>취득세 계산기 | 셀프등기24</title>
 <meta name="description" content="아파트 취득세를 미리 계산하세요. 1주택·다주택·생애최초 및 신생아 출산 감면 기준 반영.">
 <link rel="canonical" href="https://www.selfregi24.com/calculator.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="셀프등기24">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:url" content="https://www.selfregi24.com/calculator.html">
+<meta property="og:title" content="취득세 계산기 | 셀프등기24">
+<meta property="og:description" content="아파트 취득세를 미리 계산하세요. 1주택·다주택·생애최초 및 신생아 출산 감면 기준 반영.">
+<meta property="og:image" content="https://www.selfregi24.com/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<!-- 계산 로직과 아래 '1주택 표준세율표'에 적힌 값을 그대로 옮긴 것. 로직을 바꾸면 여기도 같이 고쳐야 한다. -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "1주택 6억원 이하 아파트의 취득세율은 얼마인가요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "취득세율은 1.00%입니다. 지방교육세 0.10%가 함께 부과되어 합산 1.10%이며, 전용면적 85㎡를 초과하면 농어촌특별세 0.20%가 더해져 합산 1.30%가 됩니다. 최종 확인은 관할 지방자치단체 또는 위택스 안내를 따라 주세요."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "취득가액 6억원 초과 9억원 이하 구간의 취득세율은 어떻게 계산하나요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "정액이 아니라 사선형 누진입니다. 세율(%) = 취득가액 × 2 ÷ 3억 − 3 으로 계산해 1.01%부터 2.99% 사이의 값이 나옵니다. 예를 들어 7억 5천만원이면 2.00%입니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "취득가액 9억원을 초과하면 취득세율은 얼마인가요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "1주택 기준 취득세율 3.00%입니다. 지방교육세 0.30%를 포함해 합산 3.30%이며, 전용면적 85㎡ 초과 시 농어촌특별세 0.20%가 더해져 3.50%가 됩니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "조정대상지역에서 2주택을 취득하면 취득세가 얼마인가요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "취득세 8%의 중과세율이 적용됩니다. 이때 지방교육세는 취득가액의 0.40%로 계산되며, 전용면적 85㎡ 초과 시 농어촌특별세 0.60%가 추가됩니다. 비조정대상지역의 2주택은 중과 없이 1~3% 일반세율이 적용됩니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "4주택 이상이면 취득세율이 어떻게 되나요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "지역과 무관하게 12%의 최고 중과세율이 적용됩니다. 조정대상지역의 3주택도 동일하게 12%이며, 비조정대상지역 3주택은 8%입니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "생애최초 주택 구입 시 취득세 감면은 얼마나 받나요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "1주택이면서 취득가액 12억원 이하인 경우 최대 200만원 한도로 감면됩니다. 산출된 취득세액이 200만원보다 적으면 그 금액까지만 감면됩니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "출산·양육 가구 취득세 감면 한도는 얼마인가요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "1주택이면서 취득가액 12억원 이하인 경우 최대 500만원 한도로 감면됩니다. 2024년 1월 1일 이후 자녀를 출산하고 출산일부터 5년 이내에 취득한 주택이 대상입니다."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "농어촌특별세는 언제 부과되나요?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "전용면적 85㎡를 초과하는 주택에만 부과되고, 85㎡ 이하는 비과세입니다. 일반세율 구간은 0.20%, 취득세 8% 중과 구간은 0.60%, 12% 중과 구간은 1.00%가 적용됩니다."
+      }
+    }
+  ]
+}
+</script>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;800&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -26,7 +107,8 @@ nav{background:rgba(248,250,252,.86);backdrop-filter:saturate(140%) blur(8px);-w
 .nav-inner{
   max-width:1080px;margin:0 auto;padding:0 20px;height:52px;
   display:flex;align-items:center;gap:12px;
-  overflow-x:auto; white-space:nowrap; -webkit-overflow-scrolling:touch;
+  /* 가로 스크롤은 안쪽 .nav-scroll이 담당한다 — 여기에도 걸면 스크롤러가 중첩된다 */
+  white-space:nowrap;
 }
 .nav-inner::-webkit-scrollbar { display:none; }
 .nav-logo{flex-shrink:0;font-size:16px;font-weight:800;color:var(--navy);text-decoration:none;margin-right:auto;letter-spacing:-.3px}
@@ -35,6 +117,9 @@ nav{background:rgba(248,250,252,.86);backdrop-filter:saturate(140%) blur(8px);-w
 .nav-a:hover{background:#F1F5F9;color:var(--navy)}
 .nav-a.active{background:#E0F2FE;color:#075985;font-weight:700}
 .nav-a.cta{background:var(--blue);color:#fff;font-weight:700}
+/* CTA를 가로 스크롤 영역(.nav-scroll) 밖에 둔다 — 안에 두면 링크 위에 겹쳐 그려진다 */
+.nav-scroll{flex:1;min-width:0;display:flex;align-items:center;gap:2px}
+.nav-a.cta{flex-shrink:0}
 
 .back-bar{background:var(--bg);padding:10px 20px 0}
 .back-bar-inner{max-width:1080px;margin:0 auto;display:flex;align-items:center}
@@ -87,7 +172,18 @@ main{max-width:1080px;margin:0 auto;padding:20px 14px 60px}
 .res-total{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;background:#E0F2FE;border-top:1.5px solid #BAE6FD}
 .res-total .l{font-size:15px;font-weight:700;color:var(--navy)}
 .res-total .v{font-size:22px;font-weight:800;color:var(--navy)}
-.res-ph{text-align:center;padding:28px;color:#b0bcc8;font-size:13px}
+.res-ph{padding:22px 18px;color:var(--muted);font-size:13px}
+.ph-lead{text-align:center;color:#b0bcc8;font-size:13px;margin-bottom:18px}
+.ph-ex{background:#F8FAFC;border:1px solid var(--border);border-radius:10px;padding:16px 18px}
+.ph-ex-h{font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.02em;margin-bottom:12px;word-break:keep-all}
+.ph-ex-l{display:flex;flex-direction:column;gap:8px}
+.ph-ex-l>div{display:flex;justify-content:space-between;align-items:baseline;gap:12px;font-size:13px}
+.ph-ex-l dt{color:var(--muted)}
+.ph-ex-l dd{font-weight:600;color:var(--text);font-variant-numeric:tabular-nums;white-space:nowrap}
+.ph-ex-t{padding-top:8px;border-top:1px solid var(--border)}
+.ph-ex-t dt{color:var(--navy);font-weight:700}
+.ph-ex-t dd{color:var(--navy);font-weight:800}
+.ph-ex-n{font-size:11.5px;color:var(--muted);line-height:1.7;margin-top:12px;word-break:keep-all}
 
 .rate-tag{display:inline-block;background:#E0F2FE;color:var(--blue);font-size:10px;font-weight:700;padding:2px 8px;border-radius:6px;margin-left:6px;vertical-align:middle}
 .heavy-tag{background:#fff0f0;color:#DC2626}
@@ -142,10 +238,14 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:40px;p
 @media(max-width:768px){
   input:not([type=checkbox]):not([type=radio]),select,textarea{font-size:16px !important}
   input[type=checkbox],input[type=radio]{width:24px;height:24px}
-  .nav-inner{overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
-  .nav-inner::-webkit-scrollbar{display:none}
+  /* CTA는 .nav-scroll 밖에 있으므로 스크롤 대상이 아니다 — 항상 보이고 링크를 덮지 않는다.
+     예전엔 CTA를 스크롤 안에 두고 position:sticky로 고정했는데,
+     자기 자리를 확보하지 못해 스크롤이 0일 때 뒤 링크 위에 겹쳐 그려졌다. */
+  /* 오른쪽 끝을 흐리게 해 '더 있음'을 알린다 — 스크롤바를 숨겨서 다른 신호가 없다 */
+  .nav-scroll{overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 20px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 20px),transparent)}
+  .nav-scroll::-webkit-scrollbar{display:none}
   .nav-a,.nav-logo{flex-shrink:0}
-  .nav-a.cta{position:sticky;right:0;z-index:1}
+  .nav-a.cta{min-height:44px;display:inline-flex;align-items:center;margin-left:6px}
   /* 목록형 푸터 링크 24px 확보(WCAG 2.2 AA 2.5.8).
      본문 문장 속 링크는 SC 2.5.8 '인라인' 예외라 대상이 아니다. */
   .foot-links a{display:inline-block;min-height:24px;line-height:24px;min-width:24px;text-align:center}
@@ -164,10 +264,12 @@ gtag('js',new Date());gtag('config','G-DR3W5XWF50');
 
 <nav>
   <div class="nav-inner">
-    <a href="index.html" class="nav-logo">셀프등기24</a>
-    <a href="guide.html" class="nav-a">셀프등기 가이드</a>
-    <a href="calculator.html" class="nav-a active">취득세 계산기</a>
-    <a href="https://selfregi.tistory.com" target="_blank" rel="noopener" class="nav-a">블로그</a>
+    <div class="nav-scroll">
+      <a href="index.html" class="nav-logo">셀프등기24</a>
+      <a href="guide.html" class="nav-a">셀프등기 가이드</a>
+      <a href="calculator.html" class="nav-a active">취득세 계산기</a>
+      <a href="https://selfregi.tistory.com" target="_blank" rel="noopener" class="nav-a">블로그</a>
+    </div>
     <a href="normal_form.html" class="nav-a cta">서류 작성하기</a>
   </div>
 </nav>
@@ -253,7 +355,20 @@ gtag('js',new Date());gtag('config','G-DR3W5XWF50');
       <div><div class="ct">계산 결과</div><div class="cs">입력하신 정보를 바탕으로 한 산출세액입니다</div></div>
     </div>
 
-    <div class="res-ph" id="res-ph">가격을 입력하시면 결과가 자동으로 표시됩니다.</div>
+    <!-- 빈 상태에 실제 예시를 둔다: 입력 전에도 값이 전달되고, 텍스트로 남아 검색·AI가 인용할 수 있다 -->
+    <div class="res-ph" id="res-ph">
+      <p class="ph-lead">가격을 입력하시면 결과가 자동으로 표시됩니다.</p>
+      <div class="ph-ex">
+        <div class="ph-ex-h">예시 · 9억원 아파트 · 전용 84㎡ · 1주택 · 감면 없음</div>
+        <dl class="ph-ex-l">
+          <div><dt>취득세 (3.00%)</dt><dd>27,000,000원</dd></div>
+          <div><dt>지방교육세 (0.30%)</dt><dd>2,700,000원</dd></div>
+          <div><dt>농어촌특별세</dt><dd>비과세 · 전용 85㎡ 이하</dd></div>
+          <div class="ph-ex-t"><dt>합계</dt><dd>29,700,000원</dd></div>
+        </dl>
+        <p class="ph-ex-n">9억원은 3% 구간이 시작되는 지점입니다. 8억 9천만원이면 사선형 누진이 적용되어 세율이 2.93%로 낮아집니다.</p>
+      </div>
+    </div>
 
     <div id="res-body" style="display:none">
       <div class="result-area">

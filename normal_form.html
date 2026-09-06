@@ -11,8 +11,18 @@
   gtag('config', 'G-DR3W5XWF50');
 </script>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>셀프등기 서류 자동생성기</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>소유권이전등기 신청서·위임장 자동생성 | 셀프등기24</title>
+<meta name="description" content="소유권이전등기(일반매매·신탁해지) 신청서와 위임장을 입력값에 맞춰 자동으로 완성합니다. 개인정보를 기재하지 않아도 서류 발급이 가능합니다.">
+<link rel="canonical" href="https://www.selfregi24.com/normal_form.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="셀프등기24">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:url" content="https://www.selfregi24.com/normal_form.html">
+<meta property="og:title" content="소유권이전등기 신청서·위임장 자동생성 | 셀프등기24">
+<meta property="og:description" content="소유권이전등기(일반매매·신탁해지) 신청서와 위임장을 입력값에 맞춰 자동으로 완성합니다.">
+<meta property="og:image" content="https://www.selfregi24.com/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
@@ -26,7 +36,26 @@ nav{background:rgba(248,250,252,.86);backdrop-filter:saturate(140%) blur(8px);-w
 .nav-a{flex-shrink:0;color:var(--muted);font-size:12.5px;font-weight:500;padding:8px 10px;border-radius:7px;text-decoration:none;transition:all .15s}
 .nav-a.here{color:var(--navy);font-weight:700;background:#F1F5F9;cursor:default}
 .nav-a:hover{color:var(--navy);background:#F1F5F9}
-@media(max-width:560px){.nav-inner{overflow-x:auto;white-space:nowrap;-webkit-overflow-scrolling:touch}}
+/* 현재 위치 표시(.here)를 가로 스크롤 영역 밖에 둔다 — 안에 두면 좁은 화면에서
+   화면 밖으로 밀려 '서류…'처럼 잘린다(375px에서 38.6px 초과). */
+.nav-scroll{flex:1;min-width:0;display:flex;align-items:center;gap:2px;white-space:nowrap}
+.nav-a.here{flex-shrink:0}
+@media(max-width:560px){
+  /* 오른쪽 끝을 흐리게 해 '더 있음'을 알린다 — 스크롤바를 숨겨서 다른 신호가 없다 */
+  .nav-scroll{overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 20px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 20px),transparent)}
+  .nav-scroll::-webkit-scrollbar{display:none}
+  .nav-a,.nav-logo{flex-shrink:0}
+  .nav-logo{margin-right:8px}
+  .nav-a.here{min-height:44px;display:inline-flex;align-items:center;margin-left:6px}
+  /* iOS 포커스 자동 확대 차단 — 텍스트 입력 계열은 16px 하한 */
+  input:not([type=checkbox]):not([type=radio]),select,textarea{font-size:16px}
+  /* 공동명의·OCR 확인 체크박스: 오조작하면 서류 결과가 통째로 달라진다.
+     .jt-toggle input(17px)이 동일 특이도로 뒤에 와서 이기므로 선택자를 한 단계 좁힌다. */
+  input[type=checkbox],input[type=radio]{width:24px;height:24px}
+  .jt-toggle input[type=checkbox]{width:24px;height:24px;margin-top:0}
+  /* 목록형 푸터 링크 24px 확보(WCAG 2.2 AA 2.5.8). 본문 인라인 링크는 SC 2.5.8 예외. */
+  footer .foot-links a{display:inline-block;min-height:24px;line-height:24px}
+}
 /* 한국어 줄바꿈 (2026.08.22) — 어절 단위로 끊는다.
    지정하지 않으면 브라우저 기본값이 글자 사이 아무 데서나 끊어
    '다/릅니다', '옮/겨' 처럼 한 단어가 두 줄로 갈라진다.
@@ -91,6 +120,10 @@ select{cursor:pointer;appearance:auto}
 .jt-toggle{display:flex;align-items:flex-start;gap:9px;background:#f4f6fb;border:1px solid var(--border);border-radius:8px;padding:11px 13px;cursor:pointer;margin-bottom:14px;transition:border-color .15s,background .15s}
 .jt-toggle:hover{border-color:var(--blue);background:#eef3fb}
 .jt-toggle input{width:17px;height:17px;margin:1px 0 0;flex-shrink:0;accent-color:var(--blue);cursor:pointer}
+/* 인라인 style에서 옮겨옴 — 모바일에서 미디어쿼리로 키울 수 있게 한다.
+   오버라이드는 반드시 이 뒤에 둔다(상단 미디어쿼리에 두면 동일 특이도라 이 규칙이 이긴다). */
+#ocr-confirm{width:18px;height:18px}
+@media(max-width:560px){#ocr-confirm{width:24px;height:24px}}
 .jt-toggle .jt-t{font-size:12px;font-weight:600;color:var(--navy);line-height:1.5}
 .jt-toggle .jt-s{font-size:10.5px;color:var(--muted);line-height:1.5;margin-top:2px}
 .jt-toggle:focus-within{border-color:var(--blue);box-shadow:0 0 0 3px rgba(3,105,161,.12)}
@@ -247,10 +280,12 @@ gtag('js',new Date());gtag('config','G-DR3W5XWF50');
 
 <nav>
   <div class="nav-inner">
-    <a href="index.html" class="nav-logo">셀프등기24</a>
-    <a href="guide.html" class="nav-a">셀프등기 가이드</a>
-    <a href="calculator.html" class="nav-a">취득세 계산기</a>
-    <a href="https://selfregi.tistory.com" class="nav-a" target="_blank" rel="noopener">블로그</a>
+    <div class="nav-scroll">
+      <a href="index.html" class="nav-logo">셀프등기24</a>
+      <a href="guide.html" class="nav-a">셀프등기 가이드</a>
+      <a href="calculator.html" class="nav-a">취득세 계산기</a>
+      <a href="https://selfregi.tistory.com" class="nav-a" target="_blank" rel="noopener">블로그</a>
+    </div>
     <span class="nav-a here" aria-current="page">서류 작성</span>
   </div>
 </nav>
@@ -721,7 +756,7 @@ gtag('js',new Date());gtag('config','G-DR3W5XWF50');
          background:#FFFBEB;border:1px solid #FDE68A;border-radius:12px;
          padding:14px 16px;margin-bottom:14px;cursor:pointer;font-size:14px;
          line-height:1.6;color:#92400E">
-    <input type="checkbox" id="ocr-confirm" style="width:18px;height:18px;margin-top:2px;flex:none;accent-color:#92400E">
+    <input type="checkbox" id="ocr-confirm" style="margin-top:2px;flex:none;accent-color:#92400E">
     <span><b>가지고 계신 원본 서류와 위에 입력된 내용을 대조해, 다른 곳이 없음을 확인했습니다.</b><br>
       입력된 주소 · 면적 · 성명 등을 보유하신 서류와 최종적으로 대조하여 주시기 바랍니다.</span>
   </label>

@@ -13,6 +13,18 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
 <title>나만의 셀프등기 로드맵 | 셀프등기24</title>
+<!-- 결제 완료 후 개인 진행 상황을 보여주는 화면이라 검색 노출 대상이 아니다.
+     링크는 따르게 두어(follow) 내부 링크 신호는 유지한다. -->
+<meta name="robots" content="noindex, follow">
+<meta name="description" content="결제 후 개인화된 셀프등기 진행 로드맵입니다. 저장한 번호를 순서대로 확인하며 등기소 방문 한 번으로 마무리하세요.">
+<link rel="canonical" href="https://www.selfregi24.com/roadmap.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="셀프등기24">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:url" content="https://www.selfregi24.com/roadmap.html">
+<meta property="og:title" content="나만의 셀프등기 로드맵 | 셀프등기24">
+<meta property="og:description" content="결제 후 개인화된 셀프등기 진행 로드맵입니다.">
+<meta property="og:image" content="https://www.selfregi24.com/og-image.png">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap" rel="stylesheet">
 <style>
@@ -1808,6 +1820,20 @@ function copyTaxTotal(){
 //   가이드에서 저장하는 순간 2인분 값이 1개로 덮여 사라진다.
 //   → 기존 키는 문자열 스키마 그대로 두고(인원 1의 값), 배열은 로드맵 전용 키에 따로 보관한다.
 const RELAY_MULTI_KEY = 'selfregi_relay_multi_v1';
+/* guide.html과 동일한 60일 만료 규칙. 타임스탬프는 별도 키에 둔다
+   ('selfregi_relay_v1' 본문에 넣으면 아래 legacy 재조립에서 매번 사라진다). */
+const RELAY_TS_KEY = 'selfregi_relay_ts_v1', RELAY_TTL = 60*24*3600*1000;
+function stampRelay(){ try{ localStorage.setItem(RELAY_TS_KEY, String(Date.now())); }catch(e){} }
+/* 만료 검사. 타임스탬프가 없으면(구버전 이용자) 지금 찍어 살린다 — 기존 값을 날리지 않는다. */
+function pruneRelay(){
+  let raw=null, ts=null;
+  try{ raw = localStorage.getItem('selfregi_relay_v1'); ts = localStorage.getItem(RELAY_TS_KEY); }catch(e){ return; }
+  if(!raw) return;
+  if(!ts){ stampRelay(); return; }
+  if(Date.now() - Number(ts) > RELAY_TTL){
+    try{ localStorage.removeItem('selfregi_relay_v1'); localStorage.removeItem(RELAY_MULTI_KEY); localStorage.removeItem(RELAY_TS_KEY); }catch(e){}
+  }
+}
 function persistRelay(){
   try{
     const legacy = {};
@@ -1820,9 +1846,11 @@ function persistRelay(){
     const multi = {};
     MULTI_KEYS.forEach(k=>{ multi[k] = Array.isArray(RELAY[k]) ? RELAY[k] : [RELAY[k]||'']; });
     localStorage.setItem(RELAY_MULTI_KEY, JSON.stringify(multi));
+    stampRelay();
   }catch(e){}
 }
 function restoreRelay(){
+  pruneRelay();
   loadParties();
   let legacy = {}, multi = {};
   try{ legacy = JSON.parse(localStorage.getItem('selfregi_relay_v1')||'{}') || {}; }catch(e){}

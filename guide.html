@@ -96,6 +96,14 @@ header{background:var(--navy)}
 .rj-badge{display:inline-block;font-size:9.5px;font-weight:800;color:#9A3412;background:#FFEDD5;border:1px solid #FED7AA;border-radius:20px;padding:2px 8px;margin-left:2px;vertical-align:1px;white-space:nowrap;letter-spacing:-.01em}
 .rj-why{display:block;margin-top:6px;padding:8px 10px;background:#FFF7ED;border-left:3px solid #FB923C;border-radius:0 6px 6px 0;color:#7C2D12;font-size:11.5px;line-height:1.7;word-break:keep-all}
 .rj-why b{font-weight:800;color:#9A3412}
+/* 반려 항목 딥링크(#r=키) — 블로그에서 해당 항목으로 바로 착지 */
+.pitem[id]{scroll-margin-top:72px}
+.rj-link{display:inline-block;font-size:10px;font-weight:700;color:#9A3412;background:transparent;border:1px solid #FED7AA;border-radius:20px;padding:2px 9px;margin-left:4px;vertical-align:1px;white-space:nowrap;cursor:pointer;font-family:inherit;line-height:1.5}
+.rj-link:hover{background:#FFEDD5}
+.rj-link:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.pitem.rj-hit{animation:rjhit 1.8s ease-out}
+@keyframes rjhit{0%,20%{background:#FFE4C7}100%{background:#FFFBF5}}
+@media(prefers-reduced-motion:reduce){.pitem.rj-hit{animation:none;background:#FFE4C7}}
 .ph{font-size:15px;font-weight:800;color:var(--navy);margin-bottom:3px}
 .ps{font-size:11.5px;color:var(--muted);margin-bottom:15px}
 .pitem{display:flex;gap:9px;padding:11px 0;border-top:1px solid #edf1f5;font-size:13.5px;color:var(--text)}
@@ -249,6 +257,8 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:52px;p
 .vault-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:8px}
 .vault-h{font-size:15px;font-weight:800;color:var(--navy)}
 .vault-prog{font-size:11.5px;font-weight:700;color:var(--blue);background:#E0F2FE;padding:4px 12px;border-radius:20px}
+.vault-act{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.vault-act .prog-reset{margin-left:0}
 .vault-grid{display:grid;grid-template-columns:1fr;gap:10px}
 @media(min-width:560px){.vault-grid{grid-template-columns:1fr 1fr}}
 .rin{background:#F8FAFC;border:1px solid var(--border);border-radius:10px;padding:12px 13px;transition:.15s}
@@ -309,7 +319,7 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:52px;p
   /* 목록형 푸터 링크 24px 확보(WCAG 2.2 AA 2.5.8). .foot-links a가 더 구체적이라 클래스로 잡는다.
      본문 문장 속 링크(.fd a)·이메일(.foot-biz a)은 SC 2.5.8 '인라인' 예외라 건드리지 않는다. */
   .foot-links a{display:inline-block;min-height:24px;line-height:24px;min-width:24px;text-align:center}
-  .pgo{font-size:12px;min-height:24px;display:inline-flex;align-items:center}
+  .pgo,.rj-link{font-size:12px;min-height:24px;display:inline-flex;align-items:center}
 }
 </style>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-DR3W5XWF50"></script>
@@ -349,7 +359,7 @@ gtag('js',new Date());gtag('config','G-DR3W5XWF50');
 <!-- STEP 1 -->
 <div class="section" id="what">
   <div class="sec-label">STEP 1 · 셀프등기란</div>
-  <p class="sec-title">매수인 본인이 직접 소유권이전등기를 신청하는 것</p>
+  <h2 class="sec-title">매수인 본인이 직접 소유권이전등기를 신청하는 것</h2>
   <div class="def">
     <p>잔금 납부 후 <b>소유권이전등기</b>를 해야 법적으로 내 집이 됩니다. 부동산등기는 법무사 선임 의무가 없어 <b>본인이 직접 신청할 수 있고</b>, 절차는 정해진 순서를 따라가면 됩니다.</p>
     <p class="basis">부동산등기법상 등기는 당사자 신청이 원칙이며, 대리인 위임은 선택입니다. 개별 사안의 최종 확인은 관할 등기소 안내를 따라 주세요.</p>
@@ -359,7 +369,7 @@ gtag('js',new Date());gtag('config','G-DR3W5XWF50');
 <!-- STEP 2 -->
 <div class="section" id="docs">
   <div class="sec-label">STEP 2 · 준비 서류</div>
-  <p class="sec-title">서류는 세 시점에 나눠 준비하면 됩니다</p>
+  <h2 class="sec-title">서류는 세 시점에 나눠 준비하면 됩니다</h2>
   <p class="sec-sub">한 번에 다 모으는 게 아닙니다. 지금 챙길 것, 절차를 진행하며 만들어지는 것, 잔금일에 받는 것 — 시점별로 나누면 훨씬 가볍습니다.</p>
   <div class="prep">
     <div class="pcol">
@@ -375,7 +385,7 @@ gtag('js',new Date());gtag('config','G-DR3W5XWF50');
       <div class="ptime">절차 진행 중</div>
       <div class="ph">온라인으로 만드는 서류</div>
       <div class="ps">아래 실제 화면 안내를 따라가면 자연스럽게 모입니다</div>
-      <div class="pitem warn"><div><b>주민등록등본</b> <span class="rj-badge">자주 반려되는 항목</span> <a class="pgo" href="#g=gov24" onclick="openShot('gov24');return false">화면 가이드</a><small>매수인 본인 · <b>주민번호 뒷자리 포함</b>으로 발급</small><small class="rj-why">발급 화면에서 주민등록번호를 &lsquo;전체 표시&rsquo;로 선택하세요. 뒷자리가 별표(******)로 가려진 서류는 본인 확인이 되지 않아 보정 요구를 받는 경우가 많습니다.</small></div></div>
+      <div class="pitem warn" id="r-mask"><div><b>주민등록등본</b> <span class="rj-badge">자주 반려되는 항목</span> <button type="button" class="rj-link" onclick="copyRejectLink('mask')" aria-label="주민등록등본 반려 항목 링크 복사">링크</button> <a class="pgo" href="#g=gov24" onclick="openShot('gov24');return false">화면 가이드</a><small>매수인 본인 · <b>주민번호 뒷자리 포함</b>으로 발급</small><small class="rj-why">발급 화면에서 주민등록번호를 &lsquo;전체 표시&rsquo;로 선택하세요. 뒷자리가 별표(******)로 가려진 서류는 본인 확인이 되지 않아 보정 요구를 받는 경우가 많습니다.</small></div></div>
       <div class="pitem"><div><b>토지대장 · 건축물대장(집합·전유부)</b> <a class="pgo" href="#g=gov24" onclick="openShot('gov24');return false">화면 가이드</a><small>정부24 무료 발급</small></div></div>
       <div class="pitem"><div><b>가족관계증명서</b> <a class="pgo" href="#g=gov24" onclick="openShot('gov24');return false">화면 가이드</a><small>취득세 신고용 — 등기신청 시에는 제출하지 않음</small></div></div>
       <div class="pitem"><div><b>취득세 납부확인서</b> <a class="pgo" href="#g=wetax" onclick="openShot('wetax');return false">화면 가이드</a><small>위택스 신고·납부 후 출력</small></div></div>
@@ -388,7 +398,7 @@ gtag('js',new Date());gtag('config','G-DR3W5XWF50');
       <div class="ph">매도인에게 받아 완성</div>
       <div class="ps">잔금을 치르는 그 자리에서 확인하고 받습니다</div>
       <div class="pitem"><div><b>매도용 인감증명서</b><small>매수인 성명·주민번호·주소가 기재된 '매도용'인지, 인감도장과 일치하는지 확인</small></div></div>
-      <div class="pitem warn"><div><b>주민등록초본 (매도인)</b> <span class="rj-badge">자주 반려되는 항목</span><small>주민번호 뒷자리 + <b>주소 변동 이력 포함</b> — 등기부상 주소와 현주소를 잇기 위해 필요</small><small class="rj-why">주소 이력은 &lsquo;최근 5년&rsquo;이 아니라 <b>전체</b>로 발급해야 합니다. 등기부에 적힌 옛 주소부터 현재 주소까지 이어지지 않으면, 같은 사람인지 확인되지 않아 보정 대상이 됩니다.</small></div></div>
+      <div class="pitem warn" id="r-addr"><div><b>주민등록초본 (매도인)</b> <span class="rj-badge">자주 반려되는 항목</span> <button type="button" class="rj-link" onclick="copyRejectLink('addr')" aria-label="매도인 주민등록초본 반려 항목 링크 복사">링크</button><small>주민번호 뒷자리 + <b>주소 변동 이력 포함</b> — 등기부상 주소와 현주소를 잇기 위해 필요</small><small class="rj-why">주소 이력은 &lsquo;최근 5년&rsquo;이 아니라 <b>전체</b>로 발급해야 합니다. 등기부에 적힌 옛 주소부터 현재 주소까지 이어지지 않으면, 같은 사람인지 확인되지 않아 보정 대상이 됩니다.</small></div></div>
       <div class="pitem"><div><b>등기필정보 (구 등기필증·등기권리증)</b><small>일련번호·비밀번호가 기재된 서류 — 잔금일에 원본 수령</small></div></div>
       <div class="pitem"><div><b>위임장에 매도인 인감 날인</b> <a class="pgo" href="#g=seal" onclick="openShot('seal');return false">날인 위치</a><small>셀프등기24에서 미리 출력해 가져가는 그 서류</small></div></div>
     </div>
@@ -400,7 +410,7 @@ gtag('js',new Date());gtag('config','G-DR3W5XWF50');
 <!-- STEP 3 -->
 <div class="section" id="flow">
   <div class="sec-label">STEP 3 · 진행 절차</div>
-  <p class="sec-title">큰 틀에서 네 단계로 진행됩니다</p>
+  <h2 class="sec-title">큰 틀에서 네 단계로 진행됩니다</h2>
   <p class="sec-sub">1~3단계를 온라인으로 미리 끝내두면, 등기소 방문은 마지막 접수 한 번입니다.</p>
   <div class="flow">
     <div class="fcard"><div class="fn">1</div><div class="ft">온라인 서류 발급 <span class="chip">온라인</span></div><div class="fd">등기·취득세 신고에 필요한 증명서를 정부24·인터넷등기소에서 미리 발급받습니다.</div><div class="ftags"><span class="ftag">등기부등본</span><span class="ftag">건축물대장</span><span class="ftag">주민등록초본</span></div></div>
@@ -413,7 +423,7 @@ gtag('js',new Date());gtag('config','G-DR3W5XWF50');
 <!-- STEP 4 -->
 <div class="section" id="shots-sec">
   <div class="sec-label">STEP 4 · 실제 화면 안내</div>
-  <p class="sec-title">각 단계, 실제 화면으로 확인하세요</p>
+  <h2 class="sec-title">각 단계, 실제 화면으로 확인하세요</h2>
   <p class="sec-sub">카드를 누르면 진행 화면이 단계별로 열립니다. 실제 캡처 화면과, 저작권 보호를 위해 재구성한 재현 화면을 함께 사용합니다.</p>
   <p class="sec-sub prog-note">보던 위치는 이 기기에만 저장되며, 60일이 지나면 자동으로 사라집니다. <button type="button" class="prog-reset" onclick="clearGpos()">진행 기록 지우기</button></p>
   <div class="shots" id="shots"></div>
@@ -422,12 +432,15 @@ gtag('js',new Date());gtag('config','G-DR3W5XWF50');
 <!-- 번호 보관함 -->
 <div class="section" id="vault-sec">
   <div class="sec-label">번호 보관함</div>
-  <p class="sec-title">진행하며 받은 번호를 여기에 저장해 두세요</p>
-  <p class="sec-sub">각 단계에서 발급받은 취득세액·시가표준액·채권번호·수수료 납부번호를 저장해 두면, 서류 작성 단계에서 신청서에 자동으로 채워집니다. 옮겨적기 실수를 막아 주는 메모장이라고 생각하시면 됩니다. 입력값은 이 기기(브라우저)에만 저장되며 서버로 전송되지 않습니다.</p>
+  <h2 class="sec-title">진행하며 받은 번호를 여기에 저장해 두세요</h2>
+  <p class="sec-sub">각 단계에서 발급받은 취득세액·시가표준액·채권번호·수수료 납부번호를 저장해 두면, 서류 작성 단계에서 신청서에 자동으로 채워집니다. 옮겨적기 실수를 막아 주는 메모장이라고 생각하시면 됩니다. 입력값은 이 기기(브라우저)에만 저장되며 서버로 전송되지 않습니다. 마지막 저장으로부터 60일이 지나면 자동으로 사라지고, 언제든 <b>번호 지우기</b>로 직접 지울 수 있습니다.</p>
   <div class="vault">
     <div class="vault-head">
       <div class="vault-h">내 등기 번호</div>
-      <div class="vault-prog" id="vaultProg">0 / 7 저장</div>
+      <div class="vault-act">
+        <div class="vault-prog" id="vaultProg">0 / 7 저장</div>
+        <button type="button" class="prog-reset" onclick="clearRelay()">번호 지우기</button>
+      </div>
     </div>
     <div class="vault-grid" id="vaultGrid"></div>
     <div class="vprev">
@@ -610,8 +623,35 @@ function relayInputHTML(k){var m=RMETA[k];
     +'<span class="src">'+m.src+'</span><span class="ok" style="display:none">✓ 저장됨</span></div>'
     +'<div class="rin-row"><input inputmode="'+(m.fmt?'numeric':'text')+'" placeholder="'+(m.fmt?'숫자 입력':'번호 입력')
     +'" aria-label="'+m.label+'"><button type="button" onclick="saveRelay(this)">저장</button></div></div>';}
-function loadRelay(){try{var r=JSON.parse(localStorage.getItem('selfregi_relay_v1')||'{}');RORDER.forEach(function(k){if(r[k])RELAY[k]=r[k];});}catch(e){}}
-function persistRelay(){try{localStorage.setItem('selfregi_relay_v1',JSON.stringify(RELAY));}catch(e){}}
+/* 저장한 번호도 진행기록(GPOS)과 동일하게 60일 후 자동 삭제한다.
+   타임스탬프는 별도 키에 둔다 — 'selfregi_relay_v1' 본문에 넣으면 roadmap.html의
+   persistRelay가 RELAY 키만으로 객체를 새로 만들어 쓰면서 매번 지워버린다. */
+var RELAY_TS_KEY='selfregi_relay_ts_v1',RELAY_MULTI_KEY='selfregi_relay_multi_v1',RELAY_TTL=60*24*3600*1000;
+function stampRelay(){try{localStorage.setItem(RELAY_TS_KEY,String(Date.now()));}catch(e){}}
+function clearRelayStore(){
+  try{localStorage.removeItem('selfregi_relay_v1');localStorage.removeItem(RELAY_MULTI_KEY);localStorage.removeItem(RELAY_TS_KEY);}catch(e){}
+  RORDER.forEach(function(k){RELAY[k]='';});
+}
+/* 만료 검사. 타임스탬프가 없으면(구버전 이용자·타 페이지에서 저장) 지금 찍어 살린다 — 기존 값을 날리지 않는다. */
+function pruneRelay(){
+  var raw=null,ts=null;
+  try{raw=localStorage.getItem('selfregi_relay_v1');ts=localStorage.getItem(RELAY_TS_KEY);}catch(e){return;}
+  if(!raw)return;
+  if(!ts){stampRelay();return;}
+  if(Date.now()-Number(ts)>RELAY_TTL)clearRelayStore();
+}
+function clearRelay(){
+  clearRelayStore();
+  for(var i=0;i<RORDER.length;i++){
+    var box=document.querySelector('[data-relay="'+RORDER[i]+'"]');
+    if(box){var inp=box.querySelector('input');if(inp)inp.value='';}
+    renderRelay(RORDER[i]);
+  }
+  toast('저장한 번호를 지웠습니다');
+  try{window.SR&&SR.track('relay_clear',{from:'guide'});}catch(e){}
+}
+function loadRelay(){pruneRelay();try{var r=JSON.parse(localStorage.getItem('selfregi_relay_v1')||'{}');RORDER.forEach(function(k){if(r[k])RELAY[k]=r[k];});}catch(e){}}
+function persistRelay(){try{localStorage.setItem('selfregi_relay_v1',JSON.stringify(RELAY));stampRelay();}catch(e){}}
 function taxTotal(){var n=function(v){return Number(String(v||'0').replace(/[^\d]/g,''))||0;};return n(RELAY.tax)+n(RELAY.edu)+n(RELAY.rural);}
 function saveRelay(btn){
   var box=btn.closest('[data-relay]');if(!box)return;
@@ -739,6 +779,26 @@ function closeShot(){
   renderShots();
 }
 function goStep(i){step=i;render();}
+/* 반려 항목 딥링크: #r=<키> → 해당 pitem(id="r-<키>")으로 스크롤 + 일시 강조.
+   블로그 글에서 특정 반려 사유로 바로 착지시키기 위한 진입점. 키 추가는 id만 붙이면 된다. */
+function gotoReject(key){
+  var el=document.getElementById('r-'+key);
+  if(!el)return false;
+  el.scrollIntoView({behavior:'smooth',block:'center'});
+  el.classList.remove('rj-hit');
+  void el.offsetWidth;
+  el.classList.add('rj-hit');
+  setTimeout(function(){el.classList.remove('rj-hit');},2000);
+  try{window.SR&&SR.track('reject_open',{key:key});}catch(e){}
+  return true;
+}
+function copyRejectLink(key){
+  var url=location.origin+location.pathname+'#r='+key;
+  function ok(){toast('반려 항목 링크를 복사했습니다');}
+  function fallback(){var ta=document.createElement('textarea');ta.value=url;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');ok();}catch(e){toast(url);}document.body.removeChild(ta);}
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(url).then(ok,fallback);}else{fallback();}
+  try{window.SR&&SR.track('reject_copy',{key:key});}catch(e){}
+}
 function copyGuideLink(key,st){
   var url=location.origin+location.pathname+'#g='+key+(typeof st==='number'?'&s='+(st+1):'');
   function ok(){toast('가이드 링크를 복사했습니다');}
@@ -824,8 +884,17 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape'&&zmBack.clas
 document.getElementById('gmCopy').addEventListener('click',function(){if(cur)copyGuideLink(cur.key,step);});
 (function(){
   var m=location.hash.match(/[#&]g=([a-z0-9]+)(?:&s=(\d+))?/i);
-  if(m)openShot(m[1],m[2]?parseInt(m[2],10)-1:undefined);
+  if(m){openShot(m[1],m[2]?parseInt(m[2],10)-1:undefined);return;}
+  var r=location.hash.match(/[#&]r=([a-z0-9_-]+)/i);
+  if(r)setTimeout(function(){gotoReject(r[1]);},80);
 })();
+/* 같은 문서 안에서 해시만 바뀌는 경우(부트스트랩 IIFE 미재실행) 대응 */
+window.addEventListener('hashchange',function(){
+  var m=location.hash.match(/[#&]g=([a-z0-9]+)(?:&s=(\d+))?/i);
+  if(m){openShot(m[1],m[2]?parseInt(m[2],10)-1:undefined);return;}
+  var r=location.hash.match(/[#&]r=([a-z0-9_-]+)/i);
+  if(r)gotoReject(r[1]);
+});
 gmBack.addEventListener('click',function(e){if(e.target===gmBack)closeShot();});
 document.addEventListener('keydown',function(e){
   if(!gmBack.classList.contains('open'))return;
