@@ -4,14 +4,25 @@
 <meta charset="UTF-8">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>개인정보처리방침 · 셀프등기24</title>
+<title>개인정보처리방침 | 셀프등기24</title>
 <meta name="description" content="셀프등기24 개인정보처리방침 — 어떤 정보를 어떻게 처리하는지, 무엇을 서버에 저장하지 않는지 안내합니다.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="셀프등기24">
+<meta property="og:title" content="개인정보처리방침 | 셀프등기24">
+<meta property="og:description" content="셀프등기24 개인정보처리방침. 어떤 정보를 어떻게 처리하는지, 무엇을 서버에 저장하지 않는지 안내합니다.">
+<meta property="og:url" content="https://www.selfregi24.com/privacy.html">
+<meta name="twitter:card" content="summary">
 <link rel="canonical" href="https://www.selfregi24.com/privacy.html">
 <style>
 /* 키보드 사용자용 본문 바로가기. position:fixed 로 둔다 —
    absolute+left:-9999px 는 body{overflow-x:hidden}에 잘려 포커스를 받아도 안 보이는 경우가 있다. */
 .skip-link{position:fixed;top:-64px;left:8px;background:var(--navy);color:#fff;padding:10px 16px;min-height:44px;display:inline-flex;align-items:center;border-radius:8px;font-size:13px;font-weight:700;text-decoration:none;z-index:var(--z-skip);transition:top .15s}
 .skip-link:focus{top:8px}
+/* 키보드 포커스 가시화(WCAG 2.4.7). 컴포넌트별 규칙이 없는 페이지의 전역 폴백. */
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,
+textarea:focus-visible,summary:focus-visible,[tabindex]:focus-visible{
+  outline:2px solid var(--blue);outline-offset:2px;border-radius:4px}
+
 :root{
   /* z-index 스케일 — 다른 페이지와 동일 */
   --z-nav:100;--z-bar:150;--z-skip:250;--z-overlay:1000;--z-zoom:1100;--z-toast:1200;
@@ -131,7 +142,9 @@ footer{border-top:1px solid var(--border);background:var(--card);margin-top:60px
   <article id="p4">
     <h2><span class="no">4.</span>보유 및 파기</h2>
     <ul>
-      <li>이용자 기기(브라우저)에 저장되는 정보는 이용자가 직접 삭제하거나 브라우저 저장소를 비울 때 파기됩니다.</li>
+      <li>이용자 기기(브라우저)에 저장되는 정보는 이용자가 직접 삭제하거나 브라우저 저장소를 비울 때 파기됩니다. 아래 두 가지는 이용자가 지우지 않아도 기간이 지나면 자동으로 삭제됩니다.</li>
+        <li>「번호 보관함」에 저장한 취득세액·시가표준액·채권번호·수수료 납부번호 등은 <b>마지막 저장으로부터 60일</b>이 지나면 자동으로 삭제됩니다. 가이드 화면의 「번호 지우기」로 언제든 즉시 삭제할 수 있습니다.</li>
+        <li>서류 작성 화면에서 로드맵 화면으로 넘긴 당사자 정보(성명·주소 및 <b>주민등록번호</b> 포함)는 <b>마지막 저장으로부터 30일</b>이 지나면 자동으로 삭제됩니다. 로드맵 화면 3단계의 「입력 정보 지우기」로 언제든 즉시 삭제할 수 있습니다.</li>
       <li>회사 서버에 저장되는 정보(해당하는 경우)는 처리 목적이 달성되면 지체 없이 파기하며, 관계 법령이 보존을 요구하는 경우 해당 기간 동안 보관합니다.</li>
       <li>결제 관련 기록은 「전자상거래 등에서의 소비자보호에 관한 법률」 등 관계 법령이 정한 기간 동안 보존될 수 있습니다.</li>
     </ul>

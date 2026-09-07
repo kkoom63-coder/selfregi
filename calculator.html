@@ -411,14 +411,21 @@ gtag('js',new Date());gtag('config','G-DR3W5XWF50');
       </div>
       <div class="ntc warn" id="r-warn" style="display:none"></div>
 
+      <div class="ntc warn" style="margin-top:12px">
+        <strong>납부 시점: 실질 기한은 등기 접수일입니다</strong><br>
+        지방세법상 신고·납부 기한은 취득일부터 60일이지만, 소유권이전등기 신청서에는 취득세 납부확인서를 첨부합니다.
+        60일이 남아 있어도 <b>등기를 접수하는 날까지 납부가 끝나 있어야</b> 합니다.
+        자세한 순서는 <a href="guide.html#flow" style="color:#92400e;font-weight:700">셀프등기 가이드</a>에서 확인하세요.
+      </div>
+
       <!-- 동적 법무사 비용 CTA Hook -->
       <div class="cta-box">
-        <span class="cta-eyebrow">🚨 잠깐! 이 세금, 법무사에게 맡기실 건가요?</span>
+        <span class="cta-eyebrow">잠깐! 이 세금, 법무사에게 맡기실 건가요?</span>
         <div class="cta-title">
           법무사 대행 시 수수료(보수액)만 약<br>
           <span id="r-lawyer-fee">0원</span>이 추가됩니다.
         </div>
-        <a href="index.html" class="cta-btn">🚀 수수료 <span id="r-lawyer-btn-amt">0원</span> 아끼러 가기 (무료 서류 생성)</a>
+        <a href="index.html" class="cta-btn">수수료 <span id="r-lawyer-btn-amt">0원</span> 아끼러 가기 (무료 서류 생성)</a>
         <p style="font-size:11px; color:var(--muted); margin-top:10px; margin-bottom:0;">개인정보 저장 없이, 브라우저에서 1분 만에 자동 완성</p>
         <p style="font-size:11px; color:rgba(107,114,128,0.7); margin-top:6px; margin-bottom:0; line-height:1.4; word-break:keep-all;">* 상기 법무사 보수는 대한법무사협회 보수표(과세표준에 따른 누진보수 등)를 참고한 추정치로, 실제 보수와는 다를 수 있습니다.</p>
       </div>
@@ -602,7 +609,7 @@ function calc(){
   } 
   else {
     rate = 0.12; heavy = true;
-    warnMsg = '4주택 이상 취득 시 무조건 12% 최고 중과세율이 적용됩니다.';
+    warnMsg = '4주택 이상은 지역과 무관하게 12% 최고 중과세율이 적용됩니다.';
   }
 
   let acq = Math.floor(price * rate); 

@@ -4,14 +4,25 @@
 <meta charset="UTF-8">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>이용약관 · 셀프등기24</title>
+<title>이용약관 | 셀프등기24</title>
 <meta name="description" content="셀프등기24 이용약관 — 서비스 범위, 재발급 정책, 책임 한계를 안내합니다.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="셀프등기24">
+<meta property="og:title" content="이용약관 | 셀프등기24">
+<meta property="og:description" content="셀프등기24 이용약관. 서비스 범위, 재발급 정책, 책임 한계를 안내합니다.">
+<meta property="og:url" content="https://www.selfregi24.com/terms.html">
+<meta name="twitter:card" content="summary">
 <link rel="canonical" href="https://www.selfregi24.com/terms.html">
 <style>
 /* 키보드 사용자용 본문 바로가기. position:fixed 로 둔다 —
    absolute+left:-9999px 는 body{overflow-x:hidden}에 잘려 포커스를 받아도 안 보이는 경우가 있다. */
 .skip-link{position:fixed;top:-64px;left:8px;background:var(--navy);color:#fff;padding:10px 16px;min-height:44px;display:inline-flex;align-items:center;border-radius:8px;font-size:13px;font-weight:700;text-decoration:none;z-index:var(--z-skip);transition:top .15s}
 .skip-link:focus{top:8px}
+/* 키보드 포커스 가시화(WCAG 2.4.7). 컴포넌트별 규칙이 없는 페이지의 전역 폴백. */
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,
+textarea:focus-visible,summary:focus-visible,[tabindex]:focus-visible{
+  outline:2px solid var(--blue);outline-offset:2px;border-radius:4px}
+
 :root{
   /* z-index 스케일 — 다른 페이지와 동일 */
   --z-nav:100;--z-bar:150;--z-skip:250;--z-overlay:1000;--z-zoom:1100;--z-toast:1200;
