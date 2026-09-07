@@ -31,7 +31,7 @@
 <style>
 /* 키보드 사용자용 본문 바로가기. position:fixed 로 둔다 —
    absolute+left:-9999px 는 body{overflow-x:hidden}에 잘려 포커스를 받아도 안 보이는 경우가 있다. */
-.skip-link{position:fixed;top:-64px;left:8px;background:var(--navy);color:#fff;padding:10px 16px;border-radius:8px;font-size:13px;font-weight:700;text-decoration:none;z-index:var(--z-skip);transition:top .15s}
+.skip-link{position:fixed;top:-64px;left:8px;background:var(--navy);color:#fff;padding:10px 16px;min-height:44px;display:inline-flex;align-items:center;border-radius:8px;font-size:13px;font-weight:700;text-decoration:none;z-index:var(--z-skip);transition:top .15s}
 .skip-link:focus{top:8px}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -45,7 +45,7 @@ nav{background:rgba(248,250,252,.86);backdrop-filter:saturate(140%) blur(8px);-w
 .nav-inner{max-width:var(--frame);margin:0 auto;padding:0 20px;height:52px;display:flex;align-items:center;gap:12px;overflow-x:auto;white-space:nowrap;-webkit-overflow-scrolling:touch}
 .nav-inner::-webkit-scrollbar{display:none}
 .nav-logo{flex-shrink:0;font-size:16px;font-weight:800;color:var(--navy);text-decoration:none;margin-right:auto;letter-spacing:-.3px}
-.nav-logo span{display:inline-block;background:#E0F2FE;color:#075985;font-size:9px;font-weight:700;letter-spacing:1.2px;padding:1px 6px;border-radius:10px;vertical-align:middle;margin-left:6px}
+.nav-logo span{display:inline-block;background:#E0F2FE;color:#075985;font-size:11px;font-weight:700;letter-spacing:1.2px;padding:1px 6px;border-radius:10px;vertical-align:middle;margin-left:6px}
 .nav-a{flex-shrink:0;color:var(--muted);font-size:12px;padding:5px 11px;border-radius:7px;text-decoration:none;transition:all .15s}
 .nav-a.cta{background:var(--blue);color:#fff;font-weight:700;padding:6px 13px;margin-left:4px}
 .nav-a:hover:not(.cta){color:var(--navy);background:#F1F5F9}
@@ -64,7 +64,7 @@ nav{background:rgba(248,250,252,.86);backdrop-filter:saturate(140%) blur(8px);-w
   .header-geo .target-address-box,.header-geo .jurisdiction-info,.header-geo .jurisdiction-pdf{margin-top:0}
   .header-geo .quick-nav{margin-top:0;grid-template-columns:1fr 1fr}
 }
-.page-eyebrow{display:inline-block;background:#E0F2FE;border:1px solid #BAE6FD;color:#075985;font-size:10px;font-weight:700;letter-spacing:.8px;padding:3px 12px;border-radius:20px;margin-bottom:12px}
+.page-eyebrow{display:inline-block;background:#E0F2FE;border:1px solid #BAE6FD;color:#075985;font-size:11px;font-weight:700;letter-spacing:.8px;padding:3px 12px;border-radius:20px;margin-bottom:12px}
 .page-header h1{font-size:clamp(22px,3.4vw,26px);font-weight:900;color:var(--navy);margin-bottom:6px;word-break:keep-all;line-height:1.4}
 .page-header p{font-size:13.5px;color:var(--muted);word-break:keep-all;line-height:1.6}
 .target-address-box{background:#fff;padding:14px 16px;border-radius:10px;margin-top:20px;font-size:12px;color:var(--text);border:1px solid var(--border);box-shadow:var(--shadow)}
@@ -113,7 +113,7 @@ main{max-width:var(--read);margin:0 auto;padding:24px 20px 40px;position:relativ
 .action-text label{font-size:13px;font-weight:600;color:var(--text);display:block;cursor:pointer;word-break:keep-all;line-height:1.4}
 .action-desc{font-size:11px;color:var(--muted);margin-top:6px;line-height:1.6;word-break:keep-all}
 
-.tip-badge{display:inline-block;background:#fffbeb;border:1px solid #fde68a;color:#92400e;font-size:10px;font-weight:700;padding:2px 6px;border-radius:4px;margin-top:4px;margin-right:4px}
+.tip-badge{display:inline-block;background:#fffbeb;border:1px solid #fde68a;color:#92400e;font-size:11px;font-weight:700;padding:2px 6px;border-radius:4px;margin-top:4px;margin-right:4px}
 .tip-badge.cash{background:#fff4e5;border-color:#fed7aa;color:#92400e}
 .tip-badge.card{background:#e8f0ff;border-color:#BAE6FD;color:#0369A1}
 
@@ -125,7 +125,7 @@ main{max-width:var(--read);margin:0 auto;padding:24px 20px 40px;position:relativ
 .stamp-row span{font-size:12px;color:var(--muted);white-space:nowrap}
 .stamp-result{font-size:13px;color:var(--navy);font-weight:700;line-height:1.5}
 .stamp-result b{color:var(--blue);font-size:15px}
-.stamp-note{font-size:10.5px;color:var(--muted);margin-top:5px;line-height:1.5}
+.stamp-note{font-size:11px;color:var(--muted);margin-top:5px;line-height:1.5}
 
 /* 번호 릴레이 입력 */
 .relay-input{background:#f8fafc;border:1px dashed #cbd5e1;padding:12px;border-radius:8px;margin-top:10px;transition:all .2s}
@@ -183,7 +183,7 @@ main{max-width:var(--read);margin:0 auto;padding:24px 20px 40px;position:relativ
 .fp-val{flex:1;padding:9px 10px;color:var(--text);word-break:break-all}
 .fp-val.filled{color:var(--blue);font-weight:700;background:#fffdf3}
 .fp-val.blank{color:#b0bcc8}
-.fp-note{font-size:10.5px;color:var(--muted);margin-top:10px;line-height:1.6;word-break:keep-all}
+.fp-note{font-size:11px;color:var(--muted);margin-top:10px;line-height:1.6;word-break:keep-all}
 
 /* ── 푸터 (사업자정보) ── */
 .rm-foot{background:var(--bg);border-top:1px solid var(--border);padding:28px 20px 24px;margin-bottom:96px}
@@ -261,12 +261,12 @@ main{max-width:var(--read);margin:0 auto;padding:24px 20px 40px;position:relativ
 /* ── 트랙 토글 ── */
 .track-toggle{display:grid;grid-template-columns:1fr 1fr;gap:0;margin-top:18px;border-radius:10px;overflow:hidden;border:1.5px solid var(--border);background:#fff;box-shadow:var(--shadow)}
 .track-btn{padding:11px 8px;border:none;background:#fff;color:var(--muted);font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .2s;line-height:1.4;text-align:center;word-break:keep-all}
-.track-btn small{display:block;font-size:10px;font-weight:400;margin-top:2px;opacity:.8}
+.track-btn small{display:block;font-size:11px;font-weight:400;margin-top:2px;opacity:.8}
 .track-btn.active{background:var(--navy);color:#fff}
 .track-btn:disabled{cursor:not-allowed;color:#CBD5E1;background:#FFFFFF}
 .track-btn:disabled small{opacity:.6}
 
-.track-badge{display:inline-block;font-size:9px;font-weight:700;letter-spacing:.6px;padding:1px 6px;border-radius:8px;margin-left:5px;vertical-align:middle}
+.track-badge{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.6px;padding:1px 6px;border-radius:8px;margin-left:5px;vertical-align:middle}
 .track-badge.online{background:#0369A1;color:#fff}
 .track-badge.visit{background:#F1F5F9;color:#64748B}
 
@@ -288,7 +288,7 @@ main{max-width:var(--read);margin:0 auto;padding:24px 20px 40px;position:relativ
 .prep-group{border-bottom:1px solid var(--border)}
 .prep-group:last-child{border-bottom:none}
 .prep-group-hd{padding:9px 12px;background:#f4f7fb;font-size:12px;font-weight:800;color:var(--navy);display:flex;align-items:center;gap:6px}
-.prep-group-hd .pg-side{margin-left:auto;font-size:10.5px;font-weight:600;color:var(--muted)}
+.prep-group-hd .pg-side{margin-left:auto;font-size:11px;font-weight:600;color:var(--muted)}
 .prep-item{display:flex;align-items:flex-start;gap:8px;padding:8px 12px;font-size:12.5px;color:var(--text);line-height:1.5;border-top:1px dashed #F1F5F9;cursor:pointer;-webkit-tap-highlight-color:transparent}
 .prep-item:first-child{border-top:none}
 .prep-item .pi-box{flex:0 0 auto;width:16px;height:16px;border:1.5px solid #c3ccd8;border-radius:4px;margin-top:1px;font-size:11px;line-height:14px;text-align:center;color:#fff;transition:all .15s}
@@ -298,18 +298,18 @@ main{max-width:var(--read);margin:0 auto;padding:24px 20px 40px;position:relativ
 .prep-item .pi-tx{flex:1}
 .prep-item .pi-tx small{display:block;color:var(--muted);font-size:11px;font-weight:400;margin-top:1px}
 .prep-star{color:#dc2626;font-weight:800;margin-right:3px}
-.prep-badge{display:inline-block;font-size:9.5px;font-weight:700;padding:1px 6px;border-radius:6px;margin-left:4px;vertical-align:middle;white-space:nowrap}
+.prep-badge{display:inline-block;font-size:11px;font-weight:700;padding:1px 6px;border-radius:6px;margin-left:4px;vertical-align:middle;white-space:nowrap}
 .prep-badge.gov{background:#e5f0ff;color:var(--blue)}
 .prep-badge.hard{background:#fde8e8;color:#dc2626}
 .prep-badge.gen{background:#f1f5f9;color:#64748b}
 .prep-note{padding:9px 12px;font-size:11px;color:var(--muted);background:#FFFFFF;line-height:1.6;border-top:1px dashed #F1F5F9}
-.prep-legend{display:flex;flex-wrap:wrap;gap:10px;padding:8px 12px;background:#FFFFFF;font-size:10.5px;color:var(--muted);border-top:1px solid var(--border)}
+.prep-legend{display:flex;flex-wrap:wrap;gap:10px;padding:8px 12px;background:#FFFFFF;font-size:11px;color:var(--muted);border-top:1px solid var(--border)}
 .prep-legend span{display:inline-flex;align-items:center;gap:3px}
 
 /* ── [묶음1] 서류 편철 순서 박스 (STEP3) ── */
 .fold-box{margin-top:6px;border:1px solid #d9e2ef;border-radius:10px;overflow:hidden;background:#fff}
 .fold-hd{background:var(--navy);color:#fff;padding:9px 12px;font-size:12.5px;font-weight:800;display:flex;align-items:center;gap:6px}
-.fold-hd .fh-sub{margin-left:auto;font-size:10px;font-weight:500;opacity:.8}
+.fold-hd .fh-sub{margin-left:auto;font-size:11px;font-weight:500;opacity:.8}
 .fold-list{list-style:none;margin:0;padding:0;counter-reset:fold}
 .fold-list li{counter-increment:fold;display:flex;align-items:flex-start;gap:9px;padding:8px 12px;font-size:12.5px;color:var(--text);line-height:1.45;border-top:1px dashed #F1F5F9}
 .fold-list li:first-child{border-top:none}
@@ -616,7 +616,7 @@ gtag('js',new Date());gtag('config','G-DR3W5XWF50');
               <div class="action-text">
                 <label for="chkO_4">등기신청수수료 납부 (인터넷등기소 · 18,000원)</label>
                 <div class="action-desc"><a href="https://www.iros.go.kr" target="_blank" rel="noopener" style="color:var(--blue);font-weight:700;text-decoration:underline">iros.go.kr</a> → 전자납부 → 부동산 등기수수료. 본 서비스가 만든 신청서(서면방문 신청)로 제출하므로 소유권이전등기 기준 <strong>18,000원</strong>을 납부하고 납부번호를 저장하세요.
-                  <br><span style="font-size:10.5px;color:var(--muted)">※ 2025.8.1 인상 기준</span>
+                  <br><span style="font-size:11px;color:var(--muted)">※ 2025.8.1 인상 기준</span>
                 </div>
                 <div class="btn-row"><button class="btn-preview" onclick="openGuide('fee')">🔍 등기신청수수료 납부 가이드</button></div>
                 <div class="relay-input" data-relay="fee" style="margin-top:10px">
@@ -871,7 +871,7 @@ gtag('js',new Date());gtag('config','G-DR3W5XWF50');
               <input type="checkbox" id="chk3_1" onchange="updateProgress('item3_1')">
               <div class="action-text">
                 <label for="chk3_1">등기신청수수료 납부 (18,000원)</label>
-                <div class="action-desc">등기소 내 무인발급기나 은행 창구에서 서면방문용 수수료(1.8만원)를 납부한 뒤 영수필확인서를 챙기세요. <span style="font-size:10.5px;color:var(--muted)">※ 2025.8.1 인상 기준</span></div>
+                <div class="action-desc">등기소 내 무인발급기나 은행 창구에서 서면방문용 수수료(1.8만원)를 납부한 뒤 영수필확인서를 챙기세요. <span style="font-size:11px;color:var(--muted)">※ 2025.8.1 인상 기준</span></div>
                 <!-- 릴레이: 수수료 납부번호 -->
                 <div class="relay-input" data-relay="fee">
                   <label>④ 수수료 납부번호 기록 (필수)</label>
