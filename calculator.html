@@ -75,7 +75,7 @@
       "name": "생애최초 주택 구입 시 취득세 감면은 얼마나 받나요?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "1주택이면서 취득가액 12억원 이하인 경우 최대 200만원 한도로 감면됩니다. 산출된 취득세액이 200만원보다 적으면 그 금액까지만 감면됩니다."
+        "text": "본인과 배우자가 주택을 소유한 사실이 없고 취득가액이 12억원 이하인 경우, 아파트는 산출세액에서 200만원을 공제합니다. 산출세액이 200만원 이하면 취득세가 면제됩니다. 전용면적 60제곱미터 이하이면서 취득가액 3억원(수도권 6억원) 이하인 아파트 외 공동주택·도시형생활주택·다가구주택과 인구감소지역 주택은 300만원 기준이 적용됩니다. 2028년 12월 31일까지 취득분에 적용되며, 취득일부터 3년 이내에 매각·증여하거나 임대하면 추징됩니다."
       }
     },
     {
@@ -83,7 +83,7 @@
       "name": "신생아 출산 가구(출산·양육 가구) 취득세 감면 한도는 얼마인가요?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "1주택이면서 취득가액 12억원 이하인 경우 최대 500만원 한도로 감면됩니다. 2024년 1월 1일 이후 자녀를 출산하고 출산일부터 5년 이내에 취득한 주택이 대상입니다."
+        "text": "취득가액 12억원 이하이고 1가구 1주택인 경우, 산출세액에서 500만원을 공제하며 산출세액이 500만원 이하면 취득세가 면제됩니다. 2028년 12월 31일까지 출산한 부모가 출산일부터 5년 이내에 취득한 주택이 대상이고, 출산일 전 1년 이내에 취득한 경우도 포함됩니다. 자녀 1명당 먼저 신청하는 1개 주택으로 한정되며, 취득일부터 3년 이내에 매각·증여하거나 임대하면 추징됩니다."
       }
     },
     {
@@ -136,6 +136,13 @@ nav{background:rgba(248,250,252,.86);backdrop-filter:saturate(140%) blur(8px);-w
 .back-a{display:inline-flex;align-items:center;gap:4px;color:#075985;background:#E0F2FE;font-size:11.5px;font-weight:700;text-decoration:none;padding:5px 12px;border-radius:20px;transition:background .12s;}
 .back-a:hover{background:#BAE6FD}
 
+
+/* 적용 범위 밖(아파트 외 주택) 안내. 감면 기준이 갈리는 지점이라 감면 안내 바로 뒤에 둔다. */
+.scope-note{margin-top:12px;padding:11px 13px;background:#fffbeb;border:1px solid #fde68a;
+  border-left:3px solid #FB923C;border-radius:0 8px 8px 0;font-size:12px;line-height:1.75;
+  color:#92400e;word-break:keep-all}
+.scope-note b{font-weight:700}
+.scope-note a{color:#92400e;font-weight:700;text-decoration:underline}
 .page-header{background:var(--bg);padding:44px 20px 36px}
 .page-header-inner{max-width:1080px;margin:0 auto}
 .page-eyebrow{display:inline-block;background:#E0F2FE;border:1px solid #BAE6FD;color:#075985;font-size:11px;font-weight:700;letter-spacing:.8px;padding:3px 12px;border-radius:20px;margin-bottom:12px}
@@ -296,7 +303,7 @@ gtag('js',new Date());gtag('config','G-DR3W5XWF50');
 
 <div class="page-header">
   <div class="page-header-inner">
-    <div class="page-eyebrow">2026 현행세법 기준 (참고용)</div>
+    <div class="page-eyebrow">아파트 기준 · 2026 현행세법 (참고용)</div>
     <h1>부동산 취득세 계산기</h1>
     <p>신생아 출산가구 최대 500만원, 생애최초 최대 200만원 감면까지 반영합니다.</p>
   </div>
@@ -306,7 +313,7 @@ gtag('js',new Date());gtag('config','G-DR3W5XWF50');
   <div class="card">
     <div class="ch">
       <div class="step-num">01</div>
-      <div><div class="ct">기본 정보 입력</div><div class="cs">매수하실 부동산의 정보를 입력해 주세요</div></div>
+      <div><div class="ct">기본 정보 입력</div><div class="cs">매수하실 아파트의 정보를 입력해 주세요</div></div>
     </div>
 
     <!-- 취득가액 (원 단위 직관적 입력) -->
@@ -357,8 +364,18 @@ gtag('js',new Date());gtag('config','G-DR3W5XWF50');
         <button class="seg-btn" data-val="baby" onclick="setSeg('seg-benefit',this)">출산·양육 가구</button>
       </div>
       <div class="cs" style="margin-top:6px; color:var(--blue);">
-        * 생애최초: 취득가액 12억 이하 최대 200만 원 한도<br>
-        * 출산가구: '24.1.1. 이후 자녀 출산 후 5년 내 취득 시 최대 500만 원 한도
+        * 생애최초: 본인·배우자 무주택, 취득가액 12억원 이하, 아파트는 200만원 한도<br>
+        * 출산가구: 출산일 전 1년 ~ 후 5년 내 취득, 취득가액 12억원 이하, 1가구 1주택, 자녀 1명당 1주택, 500만원 한도<br>
+        * 두 감면 모두 <b>2028년 12월 31일까지</b> 적용되며, 취득일부터 3년 이내에 매각·증여하거나 임대 등 다른 용도로 사용하면 감면세액이 추징됩니다.<br>
+        <span style="color:var(--muted)">근거: 지방세특례제한법 제36조의3·제36조의5 (2026. 6. 2. 시행 기준)</span>
+      </div>
+      <div class="scope-note">
+        <b>이 계산기는 아파트를 기준으로 합니다.</b> 아파트가 아닌 공동주택·도시형생활주택·다가구주택 중
+        전용면적 60제곱미터 이하이고 취득가액 3억원(수도권 6억원) 이하인 경우, 그리고 인구감소지역 주택은
+        생애최초 감면 기준이 200만원이 아니라 300만원이어서 결과가 달라집니다.
+        오피스텔·상가·토지도 세율 체계가 다릅니다.
+        해당하시면 <a href="https://www.wetax.go.kr" target="_blank" rel="noopener">위택스</a>의
+        「지방세 미리계산」을 이용하시는 편이 정확합니다. 서울은 이택스(etax.seoul.go.kr)입니다.
       </div>
     </div>
   </div>
