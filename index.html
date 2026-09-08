@@ -129,6 +129,9 @@ header{background:var(--bg)}
 .slogan-band{background:var(--navy)}.slogan-inner{max-width:1200px;margin:0 auto;padding:52px 20px;text-align:center}.slogan-band h2{font-size:clamp(20px,3.4vw,30px);font-weight:900;color:#fff;line-height:1.5;letter-spacing:-.02em;word-break:keep-all}.slogan-band h2 span{color:#94A3B8;font-weight:700}
 .feat-conclusion{text-align:center;margin-top:22px;font-size:15px;font-weight:700;color:var(--navy);word-break:keep-all}.feat-conclusion em{font-style:normal;color:var(--blue)}
 .price-box{max-width:520px;margin:0 auto;background:#fff;border:1.5px solid var(--border);border-radius:16px;padding:36px 28px;text-align:center;box-shadow:var(--shadow)}
+/* 출시 기념 무료 배지. 안내 무료(.price-free, 녹색)와 구분되도록 액센트 블루를 쓴다. */
+.price-launch{display:inline-block;font-size:12.5px;font-weight:800;color:#075985;background:#E0F2FE;border:1px solid #BAE6FD;padding:7px 15px;border-radius:20px;margin-bottom:14px}
+.price-was{font-size:19px;font-weight:700;color:var(--muted);text-decoration:line-through;text-decoration-thickness:1.5px}
 .price-free{display:inline-block;font-size:12.5px;font-weight:700;color:#047857;background:#ECFDF5;padding:7px 15px;border-radius:20px;margin-bottom:20px}
 .price-row{display:flex;align-items:baseline;justify-content:center;gap:8px;margin-bottom:18px}
 .price-amt{font-size:40px;font-weight:900;color:var(--navy);letter-spacing:-.02em}
@@ -455,7 +458,7 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:40px;p
       <span class="stat-label">연간 소유권이전등기<br>(이 중 매매 62.8%)</span>
     </div>
     <div class="stat-item">
-      <span class="stat-num up">+58.7%</span>
+      <span class="stat-num up">+51.2%</span>
       <span class="stat-label">당사자 직접신청 증가율<br>(전년 대비)</span>
     </div>
     <div class="stat-item">
@@ -699,17 +702,18 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:40px;p
 <!-- 가격 선공개 -->
 <div class="section" id="price">
   <div class="sec-label">가격을 먼저 밝힙니다</div>
-  <h2 class="sec-title">안내는 무료, 서류 자동생성만 유료입니다</h2>
-  <p class="sec-sub">가이드·체크리스트·로드맵은 전부 무료로 열람할 수 있습니다. 결제는 완성된 서류를 내려받기 직전 한 번뿐입니다.</p>
+  <h2 class="sec-title">지금은 서류 자동생성까지 무료입니다</h2>
+  <p class="sec-sub">가이드·체크리스트·로드맵은 전부 무료로 열람할 수 있습니다. 서류 자동생성은 출시 기간 동안 무료로 제공하며, 정식 요금은 건당 7,000원으로 예정되어 있습니다.</p>
   <div class="price-box">
+    <div class="price-launch">출시 기념 · 지금은 무료</div>
     <div class="price-free">체크리스트 · 로드맵 · 관할등기소 안내 무료</div>
-    <div class="price-row"><span class="price-amt">7,000<em>원</em></span><span class="price-per">/ 부동산 1건</span></div>
+    <div class="price-row"><span class="price-was">7,000원</span><span class="price-amt">무료</span><span class="price-per">/ 부동산 1건</span></div>
     <ul class="price-list">
       <li>위임장 · 소유권이전등기신청서 자동생성 (Word 파일)</li>
       <li>부동산 주소 기반 관할 등기소 자동 반영</li>
       <li>동일 부동산 · 동일 매수인 한정 재발급</li>
     </ul>
-    <p class="price-note">가격은 변동될 수 있습니다 · 결제 전 모든 안내를 무료로 확인하실 수 있습니다</p>
+    <p class="price-note">정식 요금은 건당 7,000원으로 예정되어 있으며, 출시 기간 동안 무료로 제공됩니다 · 요금은 변동될 수 있습니다</p>
   </div>
 </div>
 
