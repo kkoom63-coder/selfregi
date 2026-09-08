@@ -141,6 +141,18 @@ header{background:var(--bg)}
 .price-list li{position:relative;padding-left:22px;font-size:14px;color:#334155;line-height:1.55}
 .price-list li::before{content:'✓';position:absolute;left:0;color:#047857;font-weight:700}
 .price-note{margin-top:14px;font-size:12px;color:var(--muted)}
+/* 서비스 제공 방식·시점 고지 (PG 심사 요건). 결제 직전에 놓이므로 시각적 무게를 낮춘다 —
+   흰 배경·1px 테두리로 카드와 같은 층위에 두고, 강조는 라벨 열에만 준다.
+   dt/dd로 짠 이유: 스캔이 쉽고 스크린리더에 항목-값 관계가 그대로 전달된다. */
+.svc-terms{background:#fff;border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin:16px 0 0}
+.svc-terms-h{font-size:11px;font-weight:800;letter-spacing:.06em;color:var(--blue);margin-bottom:12px}
+.svc-terms-l{display:grid;gap:11px;margin:0}
+.svc-terms-l>div{display:grid;grid-template-columns:60px 1fr;gap:12px;align-items:start}
+.svc-terms-l dt{font-size:12px;font-weight:700;color:var(--navy);line-height:1.6}
+.svc-terms-l dd{font-size:12.5px;color:#334155;line-height:1.7;margin:0;word-break:keep-all}
+.svc-terms-n{margin:13px 0 0;padding-top:11px;border-top:1px solid var(--border);font-size:11.5px;color:var(--muted);line-height:1.7;word-break:keep-all}
+.svc-terms-n a{color:var(--blue);font-weight:700}
+@media(max-width:359px){.svc-terms-l>div{grid-template-columns:1fr;gap:3px}}
 
 .stats-src-wrap{background:#fff;border-bottom:1px solid var(--border)}
 
@@ -421,7 +433,7 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:40px;p
     <h1>법무사 없이 직접 하면,<br><em>약 120만원</em>이 절약됩니다</h1>
     <p class="hero-concept">온라인으로 미리 끝내고, <em>등기소는 단 한 번.</em></p>
         <p class="hero-what">준비서류부터 취득세·국민주택채권 신고까지 온라인으로 미리 처리하고,<br>자동생성한 위임장·신청서로 등기소에서 한 번에 접수합니다.</p>
-    <p class="hero-basis">※ 서울 중위가격 아파트 15억원 기준 법무사 수수료 (2024년 9월 보수표 기준, 법무사마다 상이)</p>
+    <p class="hero-basis">※ 서울 중위가격 아파트 15억원 기준 법무사 수수료 (대한법무사협회 보수기준 별표 2026. 8. 20. 개정 기준, 법무사마다 상이)</p>
     <div class="hero-btns">
       <a href="#start" class="btn-primary">서류 작성 시작하기 →</a>
       <a href="#guide-band" class="btn-ghost">셀프등기가 처음이라면</a>
@@ -467,7 +479,7 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:40px;p
     </div>
   </div>
 </div>
-<div class="stats-src-wrap"><div class="stats-src">출처: 등기정보광장(대법원) 통계 · 법무사 수수료는 2024년 9월 보수표 기준(서울 중위가격 15억원) · 수치는 집계 기준·시점에 따라 달라질 수 있습니다</div></div>
+<div class="stats-src-wrap"><div class="stats-src">출처: 등기정보광장(대법원) 통계 · 법무사 수수료는 대한법무사협회 보수기준 별표(2026. 8. 20. 개정) 기준(서울 중위가격 15억원) · 수치는 집계 기준·시점에 따라 달라질 수 있습니다</div></div>
 
 <!-- 슬로건 밴드 -->
 <div class="slogan-band"><div class="slogan-inner">
@@ -714,6 +726,16 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:40px;p
       <li>동일 부동산 · 동일 매수인 한정 재발급</li>
     </ul>
     <p class="price-note">정식 요금은 건당 7,000원으로 예정되어 있으며, 출시 기간 동안 무료로 제공됩니다 · 요금은 변동될 수 있습니다</p>
+    <div class="svc-terms">
+      <div class="svc-terms-h">서비스 제공 방식과 시점</div>
+      <dl class="svc-terms-l">
+        <div><dt>제공 방식</dt><dd>결제 완료 즉시 브라우저에서 Word(.docx) 파일로 내려받습니다. 별도 배송이나 승인 대기가 없습니다.</dd></div>
+        <div><dt>제공 완료</dt><dd>결제 승인 직후 · 통상 1분 이내</dd></div>
+        <div><dt>재발급</dt><dd>결제일부터 30일 이내, 동일 부동산·동일 매수인에 한해 횟수 제한 없이 무상입니다. 결제 완료 시 안내되는 재발급 링크로 이용하시며 별도 요청 절차는 없습니다.</dd></div>
+        <div><dt>환불</dt><dd>회사 귀책(문서 오류·미제공 등)은 사유를 안 날부터 7일 이내 요청하시면 3영업일 이내 전액 환불합니다. 디지털 콘텐츠 특성상 단순 변심에 따른 환불은 제한됩니다.</dd></div>
+      </dl>
+      <p class="svc-terms-n">현재는 출시 기념 무료 기간으로 결제가 발생하지 않습니다. 위 기준은 유료 전환 시 적용되며, 재발급 링크는 결제 도입과 함께 제공됩니다. 자세한 내용은 <a href="terms.html#a5">이용약관 제5·6조</a>를 확인해 주세요.</p>
+    </div>
   </div>
 </div>
 
