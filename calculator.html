@@ -444,7 +444,7 @@ gtag('js',new Date());gtag('config','G-DR3W5XWF50');
         </div>
         <a href="index.html" class="cta-btn">수수료 <span id="r-lawyer-btn-amt">0원</span> 아끼러 가기 (무료 서류 생성)</a>
         <p style="font-size:11px; color:var(--muted); margin-top:10px; margin-bottom:0;">개인정보 저장 없이, 브라우저에서 1분 만에 자동 완성</p>
-        <p style="font-size:11px; color:rgba(107,114,128,0.7); margin-top:6px; margin-bottom:0; line-height:1.4; word-break:keep-all;">* 상기 법무사 보수는 대한법무사협회 보수표(과세표준에 따른 누진보수 등)를 참고한 추정치로, 실제 보수와는 다를 수 있습니다.</p>
+        <p style="font-size:11px; color:rgba(107,114,128,0.7); margin-top:6px; margin-bottom:0; line-height:1.4; word-break:keep-all;">* 대한법무사협회 「법무사보수기준」 제9조 기본보수표(과세표준액 구간별 누진)로 산출한 <b>기본보수 상한액</b>입니다. 가산보수·교통비 등 실비·부가가치세는 포함되어 있지 않아 실제 청구액은 이보다 클 수 있으며, 법무사마다 다릅니다. (2026년 9월 조회 기준)</p>
       </div>
     </div>
   </div>
@@ -664,16 +664,23 @@ function calc(){
 
   const total = finalAcq + edu + agr;
   
-  /* 동적 법무사 보수액 추정 로직 (대한법무사협회 보수 기준 단순화 모형) 
-     - 기본 보수(약 20만) + 매매가 누진액 + 교통비/대행료(약 10만) + 부가세 등 고려
-     - 단순화 식: 기본 30만원 + (매매가 1억당 약 6~8만원 추가)
-  */
-  let lawyerFee = 300000 + (Math.floor(price / 100000000) * 70000);
-  lawyerFee = Math.floor(lawyerFee / 10000) * 10000; // 만원 단위 절사
-  
-  // 최고/최저 보정 (일반적으로 40만 ~ 150만 사이 형성)
-  if(lawyerFee < 400000) lawyerFee = 400000;
-  if(lawyerFee > 1500000) lawyerFee = 1500000;
+  /* 법무사 기본보수 — 대한법무사협회 「법무사보수기준」 제9조 제1항 [부표] 원문 산정식.
+     이전 구현은 '기본 30만원 + 1억당 7만원'이라는 임의 계수였고 15억에서 135만원이 나와
+     index.html의 120만원(같은 표 기준)과 어긋났다. 표를 그대로 옮겨 두 페이지를 일치시킨다.
+     구간 경계는 전부 연속이다(예: 10억에서 600,000+5억×7/10,000 = 950,000 = 다음 구간 시작액).
+     주의: 이 표는 '기본보수의 상한액'이며 가산보수·실비·부가세는 별도다. 따라서 실제 청구액은
+     이보다 크고, 절약액을 과대표시하지 않는 보수적인 값이다. */
+  function lawyerBaseFee(base){
+    if(base <=     50000000) return   210000;
+    if(base <=    100000000) return   210000 + (base -     50000000) * 10/10000;
+    if(base <=    300000000) return   260000 + (base -    100000000) *  9/10000;
+    if(base <=    500000000) return   440000 + (base -    300000000) *  8/10000;
+    if(base <=   1000000000) return   600000 + (base -    500000000) *  7/10000;
+    if(base <=   2000000000) return   950000 + (base -   1000000000) *  5/10000;
+    if(base <=  20000000000) return  1450000 + (base -   2000000000) *  4/10000;
+    return                          8650000 + (base -  20000000000) *  1/10000;
+  }
+  let lawyerFee = Math.floor(lawyerBaseFee(price) / 10000) * 10000; // 만원 단위 절사
 
   /* 화면 렌더링 */
   const fmt = n => n.toLocaleString('ko-KR') + '원';

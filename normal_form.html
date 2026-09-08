@@ -1154,6 +1154,20 @@ function getParties(who) {
 }
 
 // 지분 입력 시 합계 실시간 갱신
+/* selfregi_form_v1 30일 만료 — roadmap.html의 pruneForm()과 동일 규칙.
+   이 값을 쓰는 곳은 이 페이지인데 만료 코드가 roadmap에만 있어, 로드맵을 한 번도 열지 않은
+   사용자는 주민등록번호가 무기한 남았다. 개인정보처리방침 제4조가 약속한 30일을 실제로
+   지키려면 쓰는 쪽에서도 돌아야 한다. 규칙을 바꿀 때는 roadmap.html 쪽도 같이 고칠 것. */
+(function(){
+  var FORM_KEY='selfregi_form_v1', FORM_TTL=30*24*3600*1000, raw=null, f=null;
+  try{ raw=localStorage.getItem(FORM_KEY); }catch(e){ return; }
+  if(!raw) return;
+  try{ f=JSON.parse(raw); }catch(e){ try{ localStorage.removeItem(FORM_KEY); }catch(_){} return; }
+  if(!f || typeof f!=='object') return;
+  /* ts 없는 구버전 값은 지우지 않고 지금 찍어 살린다(roadmap과 동일 원칙). */
+  if(!f.ts){ f.ts=Date.now(); try{ localStorage.setItem(FORM_KEY,JSON.stringify(f)); }catch(e){} return; }
+  if(Date.now()-Number(f.ts) > FORM_TTL){ try{ localStorage.removeItem(FORM_KEY); }catch(e){} }
+})();
 document.addEventListener('DOMContentLoaded', function () {
   ['buyer1', 'buyer2', 'seller1', 'seller2'].forEach(function (p) {
     ['-share-denom', '-share-num'].forEach(function (s) {
@@ -1483,7 +1497,7 @@ function goRoadmap() {
   // 같은 기기·브라우저 전제.
   // ⚠ 주민등록번호 포함: 서버로는 전송하지 않으나(신청서는 브라우저에서 client-side로만 생성),
   //   이 기기의 localStorage에는 남는다.
-  //   → roadmap.html의 pruneForm()이 f.ts 기준 30일 만료를 처리하고,
+  //   → 이 파일 상단의 만료 블록과 roadmap.html의 pruneForm()이 f.ts 기준 30일 만료를 처리하고,
   //     roadmap 3단계의 「입력 정보 지우기」(clearFormStore)로 즉시 삭제할 수 있다.
   //     그래서 아래 ts는 만료 판정의 기준값이다 — 스키마 변경 시 절대 빼지 말 것.
   try {
