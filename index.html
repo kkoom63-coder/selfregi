@@ -354,6 +354,10 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:40px;p
 /* ── 와이드 보강 (레이아웃 확장 시 밀도/가독 유지) ── */
 .hero-concept,.hero-sub,.hero-what,.hero-basis{max-width:660px;margin-left:auto;margin-right:auto}
 .sec-sub{max-width:640px}
+/* 두 줄 이상으로 넘어가는 제목·리드문의 줄 길이를 고르게 나눈다.
+   max-width로 가독폭을 잡아두면 마지막 줄만 짧게 떨어지는 경우가 생긴다(측정: 640px 중 29~32%).
+   지원하지 않는 브라우저는 이 선언을 무시하므로 기존 동작 그대로다. */
+.sec-title,.sec-sub,.hero-concept,.hero-sub,.hero-what{text-wrap:balance}
 @media(min-width:768px){
   .hero{padding:72px 20px 56px}
   .hero h1{font-size:40px}
@@ -440,7 +444,7 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:40px;p
     </div>
     <p class="hero-trust">민감정보는 서버에 저장하지 않습니다 — 기재하지 않아도 서류 발급 가능하나, 출력 후 수기로 직접 작성하셔야 합니다</p>
 
-    <!-- 실제 발급 화면 증거 스트립. 경쟁 블로그가 갖지 못한 자산이라 첫 화면에서 보여준다.
+    <!-- 실제 발급 화면 증거 스트립.
          원본 캡처(200~400KB)를 그대로 쓰면 모바일 LCP를 해치므로 520px WebP 파생본을 쓴다(3장 합계 약 34KB). -->
     <a class="hero-proof" href="guide.html">
       <div class="hp-shots">

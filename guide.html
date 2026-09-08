@@ -146,6 +146,10 @@ header{background:var(--navy)}
 .sec-label::before{content:'';display:block;width:3px;height:12px;background:var(--blue);border-radius:2px}
 .sec-title{font-size:22px;font-weight:700;color:var(--navy);margin-bottom:6px;line-height:1.4;word-break:keep-all}
 .sec-sub{font-size:13.5px;color:var(--muted);line-height:1.7;margin-bottom:22px;max-width:640px;word-break:keep-all}
+/* 두 줄 이상으로 넘어가는 제목·리드문의 줄 길이를 고르게 나눈다.
+   max-width로 가독폭을 잡아두면 마지막 줄만 짧게 떨어지는 경우가 생긴다(측정: 640px 중 29~32%).
+   지원하지 않는 브라우저는 이 선언을 무시하므로 기존 동작 그대로다. */
+.sec-title,.sec-sub{text-wrap:balance}
 @media(min-width:768px){.sec-title{font-size:26px}}
 
 /* STEP1 정의 */

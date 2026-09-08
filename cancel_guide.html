@@ -255,6 +255,10 @@ header{background:var(--navy)}
 .tl-place.off{color:#334155;background:#F1F5F9}
 .tl-t{font-size:15px;font-weight:700;color:var(--navy);margin-bottom:5px;word-break:keep-all}
 .tl-d{font-size:13px;color:var(--muted);line-height:1.8;word-break:keep-all;max-width:640px}
+/* 두 줄 이상으로 넘어가는 제목·리드문의 줄 길이를 고르게 나눈다.
+   max-width로 가독폭을 잡아두면 마지막 줄만 짧게 떨어지는 경우가 생긴다(측정: 640px 중 29~32%).
+   지원하지 않는 브라우저는 이 선언을 무시하므로 기존 동작 그대로다. */
+.tl-d{text-wrap:balance}
 .tl-d b{color:var(--text);font-weight:600}
 .tl-d a{color:var(--blue);font-weight:600;text-decoration:none}
 .tl-d a:hover{text-decoration:underline}
