@@ -16,7 +16,7 @@
 <meta charset="UTF-8">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>소유권이전등기 셀프로 하는 법 | 준비서류·비용·절차 | 셀프등기24</title>
+<title>소유권이전등기 셀프로 하는 법 | 준비서류·비용 | 셀프등기24</title>
 <meta name="description" content="소유권이전등기를 셀프로 하는 방법. 법무사 선임 의무는 없습니다. 준비서류 발급부터 취득세 신고, 국민주택채권, 전자수입인지, 등기소 접수까지 실제 발급 화면 51단계로 안내합니다.">
 <meta property="og:title" content="셀프등기 가이드 | 절차와 준비서류를 실제 화면으로">
 <meta property="og:description" content="셀프등기가 처음이라면. 무엇을 준비하고 어떤 순서로 진행하는지 실제 화면과 함께 확인하세요.">
@@ -132,6 +132,14 @@ header{background:var(--navy)}
 .hero h1{font-size:28px;font-weight:800;color:#fff;line-height:1.42;letter-spacing:-.02em;margin-bottom:14px;word-break:keep-all}
 .hero h1 em{font-style:normal;color:#7DD3FC}
 .hero-sub{font-size:14.5px;color:rgba(255,255,255,.72);line-height:1.8;margin:0 auto 28px;max-width:520px;word-break:keep-all}
+/* 히어로 결론 스트립. 검색으로 들어온 사람이 스크롤 전에 답을 보게 한다.
+   문장이 아니라 스캔되는 형태로 두어 읽는 부담을 늘리지 않는다. */
+.hero-facts{list-style:none;display:flex;flex-wrap:wrap;justify-content:center;gap:9px 22px;
+  margin:0 auto 26px;padding:13px 18px;max-width:600px;
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);border-radius:12px}
+.hero-facts li{font-size:13.5px;color:rgba(255,255,255,.78);line-height:1.6;word-break:keep-all}
+.hero-facts b{color:#fff;font-weight:800}
+@media(max-width:520px){.hero-facts{gap:7px 0;flex-direction:column;align-items:center}}
 .hero-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
 .btn-primary{display:inline-flex;align-items:center;gap:7px;padding:14px 26px;background:var(--blue);color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;text-decoration:none;transition:background .15s}
 .btn-primary:hover{background:#075985}
@@ -444,6 +452,11 @@ gtag('js',new Date());gtag('config','G-DR3W5XWF50');
   <div class="hero">
     <h1>셀프등기, <em>순서대로 따라오면</em><br>등기소 방문 한 번으로 끝납니다</h1>
     <p class="hero-sub">무엇을 준비하고 어떤 순서로 진행하는지, 실제 화면과 함께 확인하세요.</p>
+    <ul class="hero-facts">
+      <li>등기소 방문 <b>한 번</b></li>
+      <li>준비서류 인터넷 발급 <b>무료</b></li>
+      <li>등기신청수수료 <b>18,000원</b></li>
+    </ul>
     <div class="hero-btns">
       <a href="#what" class="btn-primary">가이드 읽어보기 ↓</a>
       <a href="normal_form.html" class="btn-ghost">바로 서류 작성하기 →</a>
