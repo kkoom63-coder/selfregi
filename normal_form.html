@@ -8,7 +8,8 @@
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
 
-  gtag('config', 'G-DR3W5XWF50');
+  // 운영 도메인에서만 수집 (로컬 미리보기·Vercel 프리뷰 제외)
+  if (/(^|\.)selfregi24\.com$/.test(location.hostname)) gtag('config', 'G-DR3W5XWF50');
 </script>
 <meta charset="UTF-8">
 <script defer src="/_vercel/insights/script.js"></script>
@@ -291,11 +292,6 @@ font-weight:800;color:var(--blue);background:#fff;border:1px solid var(--blue);b
 font-size:12px;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:11px;white-space:pre-wrap;line-height:1.7}
 </style>
 
-<script>
-window.dataLayer=window.dataLayer||[];
-function gtag(){dataLayer.push(arguments);}
-gtag('js',new Date());gtag('config','G-DR3W5XWF50');
-</script>
 </head>
 <body>
 
