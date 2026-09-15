@@ -16,3 +16,7 @@ CLAUDE.local.md
 # OS 부산물
 Thumbs.db
 desktop.ini
+# 로컬 전용 — 옛 HTML 사본·도구 설정. 커밋 시 Vercel이 그대로 공개 서빙한다
+backup/
+.impeccable/
+*.zip
