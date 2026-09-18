@@ -673,11 +673,14 @@ font-size:12px;background:var(--bg);border:1px solid var(--border);border-radius
         <option value="0">매수인 1</option>
         <option value="1">매수인 2</option>
       </select>
-      <span class="fn">위임장은 매도인이 매수인에게 등기신청 권한을 위임하는 서류입니다. 공동명의라도 <b>실제 접수하러 가는 1인</b>을 대리인으로 지정합니다.</span>
+      <span class="fn">위임장은 매도인이 매수인에게 등기신청 권한을 위임하는 서류입니다. 공동명의라도 <b>실제 접수하러 가는 1인</b>을 대리인으로 지정합니다. <b>매도인도 2인이면</b> 신청서가 매수인별로 2건이 되어 위임장도 2장이 만들어지고, 대리인이 아닌 매수인은 자기 신청 건의 위임인으로 들어갑니다.</span>
     </div></div>
 
     <div class="ntc inf2">
-      <strong>공동명의 시 확인하세요.</strong> 지분의 합이 1이 되어야 합니다(예: 2분의 1 + 2분의 1). 매수인 각자의 주민등록등본(초본)이 필요하며, 취득세는 지분에 따라 신고합니다. 구체적인 신고 방법은 관할 지자체·위택스 안내를 확인해 주세요.
+      <strong>공동명의 시 확인하세요.</strong> 지분의 합이 1이 되어야 합니다(예: 2분의 1 + 2분의 1). 매수인 각자의 주민등록등본(초본)이 필요합니다.
+      <br><b>취득세는 신고를 두 번 하지 않습니다.</b> 위택스·이택스에서 <b>대표 매수인 1인 명의로 1건</b>만 신고하며, 고지서와 영수필확인서도 1장입니다(전자고지서 납세자란은 「신고자 외 1인」으로 나옵니다). 지분은 세액 산정에만 반영되고, <b>납부만</b> '일부납부'로 지분대로 나누거나 타인 명의로 낼 수 있습니다.
+      <br><b>국민주택채권은 반대로 각자 2건입니다.</b> 공시가격에 각자 지분율을 곱한 금액으로 따로 산출·매입하므로 매입금액과 발행번호가 2개 생깁니다.
+      <br><b>매도용 인감증명서에는 매수인 2명 전원</b>의 성명·주민등록번호·주소가 정확히 적혀 있어야 합니다. 신청서의 등기권리자와 다르면 각하 사유입니다. 구체적인 신고 방법과 최종 확인은 관할 지자체·위택스, 관할 등기소 안내를 따라 주세요.
     </div>
   </div>
 </div>
@@ -1290,12 +1293,22 @@ const SLOT_MAX = 3;
    3슬롯 템플릿으로 실무 대부분이 커버된다. 매도인 3인 이상은 극히 드물어
    별도 템플릿을 만들지 않고 넘치는 인원을 화면에 알린다.
    ========================================================= */
-function wimiPlan(d) {
+/* 2026.9.18 추가 — 위임장은 신청서에 종속된다.
+   매도인·매수인이 모두 2인이면 등기예규 제1363호에 따라 신청서가 2건으로 갈리고,
+   위임장도 그 건수만큼 나온다. onlyBuyerIdx 가 주어지면 '그 매수인 명의의 신청서 1건'에
+   붙는 위임장을 만든다 — 위임인은 매도인 전원 + (그 매수인이 대리인이 아닐 때만) 그 매수인.
+   onlyBuyerIdx 가 없으면 종전 동작(신청서 1건)이다. */
+function wimiPlan(d, onlyBuyerIdx) {
   const sellers = (d.sellers || []).filter(p => p && p.name);
   const buyers  = (d.buyers  || []).filter(p => p && p.name);
   const ai = Math.min(Math.max(+d.agentIdx || 0, 0), Math.max(buyers.length - 1, 0));
+  // 이 위임장이 커버하는 매수인 범위. 건별 생성이면 해당 1명만, 아니면 전원.
+  const scoped = (typeof onlyBuyerIdx === 'number')
+    ? buyers.filter((p, i) => i === onlyBuyerIdx)
+    : buyers;
+  const scopedAgentIdx = (typeof onlyBuyerIdx === 'number') ? (onlyBuyerIdx === ai ? 0 : -1) : ai;
   const slots = sellers.map(p => ({ role: '매도인', name: p.name, addr: p.addr }))
-    .concat(buyers.filter((p, i) => i !== ai)
+    .concat(scoped.filter((p, i) => i !== scopedAgentIdx)
                   .map(p => ({ role: '매수인', name: p.name, addr: p.addr })));
 
   const n = slots.length;
@@ -1459,7 +1472,15 @@ async function downloadWimiOnly() {
   if (typeof JSZip === 'undefined') { showToast('❌ 라이브러리 로딩 중, 잠시 후 다시 시도해주세요', '#DC2626'); return; }
   try {
     const d = getData();
-    const _wimi = wimiPlan(d);
+    /* 신청서 건수 판정 — 매도인·매수인이 모두 2인일 때만 2건(등기예규 제1363호).
+       1:2 도 2:1 도 1건이다. 건수만큼 위임장을 만든다. */
+    const _sN = (d.sellers || []).filter(p => p && p.name).length;
+    const _bN = (d.buyers  || []).filter(p => p && p.name).length;
+    const jointBoth = (_sN > 1 && _bN > 1);
+    const filings = jointBoth ? _bN : 1;
+
+    for (let k = 0; k < filings; k++) {
+    const _wimi = wimiPlan(d, jointBoth ? k : undefined);
     if (!_wimi.tpl || _wimi.tpl === 'PLACEHOLDER') {
       showToast('위임장 템플릿이 아직 등록되지 않았습니다', '#0369A1');
       return;
@@ -1489,8 +1510,19 @@ async function downloadWimiOnly() {
       SETTLE_YEAR: d.settleYear.trim() ? d.settleYear : '    ',
       SETTLE_MONTH: d.settleMonth.trim() ? d.settleMonth : '  ',
     }, _wimi.tokens));
-    blobDL(blob1, `위임장_${d.ownerName}_${d.dong}동${d.ho}호.docx`);
-    showToast('✅ 위임장 다운로드 완료!');
+    if (jointBoth) {
+      const bn = (d.buyers[k] && d.buyers[k].name) || ('매수인' + (k + 1));
+      blobDL(blob1, `위임장_${k + 1}of${filings}_${bn}_${d.dong}동${d.ho}호.docx`);
+    } else {
+      blobDL(blob1, `위임장_${d.ownerName}_${d.dong}동${d.ho}호.docx`);
+    }
+    }
+
+    if (jointBoth) {
+      showToast('✅ 위임장 ' + filings + '장을 내려받았습니다. 매도인·매수인이 모두 2인이면 신청서가 매수인별로 갈리고(등기예규 제1363호) 위임장도 건별로 따로 냅니다. 2장 이상 인쇄되면 매도인 인감도장으로 간인하세요.', '#047857');
+    } else {
+      showToast('✅ 위임장 다운로드 완료!');
+    }
     sendConfirmEmail();
   } catch(e) { showToast('❌ ' + e.message, '#DC2626'); console.error(e); }
 }
