@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>증여 취득세 계산기 | 시가인정액 기준·중과 판정 | 셀프등기24</title>
+<meta name="description" content="아파트 증여 취득세를 시가인정액 기준으로 계산합니다. 매매와 달리 공시가격이 아닌 시가인정액이 과세표준이며, 조정대상지역 3억원 이상 주택은 중과 대상이 될 수 있습니다. 지방교육세·농어촌특별세까지 지방세법 조문 근거와 함께 계산합니다.">
+<link rel="canonical" href="https://www.selfregi24.com/gift_tax.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="셀프등기24">
+<meta property="og:locale" content="ko_KR">
+<meta property="og:url" content="https://www.selfregi24.com/gift_tax.html">
+<meta property="og:title" content="증여 취득세 계산기 | 시가인정액 기준·중과 판정 | 셀프등기24">
+<meta property="og:description" content="아파트 증여 취득세를 시가인정액 기준으로 계산합니다. 매매와 달리 공시가격이 아닌 시가인정액이 과세표준입니다.">
+<meta property="og:image" content="https://www.selfregi24.com/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<style>
+:root{
+  --z-nav:100;--z-skip:250;
+  --navy:#0F172A;--blue:#0369A1;--bg:#F8FAFC;--card:#fff;--text:#020617;
+  --muted:#64748B;--border:#E2E8F0;--radius:12px;--success:#047857;
+  --shadow:0 2px 12px rgba(2,6,23,.08)
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{overflow-x:hidden;background:var(--bg);color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Apple SD Gothic Neo','Noto Sans KR',sans-serif;
+  line-height:1.6;-webkit-text-size-adjust:100%}
+.skip-link{position:fixed;top:-64px;left:8px;background:var(--navy);color:#fff;padding:10px 16px;min-height:44px;
+  display:inline-flex;align-items:center;border-radius:8px;font-size:13px;font-weight:700;text-decoration:none;
+  z-index:var(--z-skip);transition:top .15s}
+.skip-link:focus{top:8px}
+
+nav{background:rgba(248,250,252,.86);backdrop-filter:saturate(140%) blur(8px);
+  -webkit-backdrop-filter:saturate(140%) blur(8px);position:sticky;top:0;z-index:var(--z-nav);
+  border-bottom:1px solid var(--border)}
+.nav-inner{max-width:1080px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;gap:8px}
+.nav-scroll{display:flex;align-items:center;gap:4px;overflow-x:auto;scrollbar-width:none;flex:1;min-width:0}
+.nav-scroll::-webkit-scrollbar{display:none}
+.nav-logo{flex-shrink:0;font-size:16px;font-weight:800;color:var(--navy);text-decoration:none;
+  margin-right:auto;letter-spacing:-.3px}
+.nav-a{flex-shrink:0;color:var(--muted);font-size:12px;padding:5px 11px;border-radius:7px;
+  text-decoration:none;transition:all .15s;white-space:nowrap}
+.nav-a:hover{background:#F1F5F9;color:var(--navy)}
+.nav-a.active{background:#E0F2FE;color:#075985;font-weight:700}
+.nav-a.cta{flex-shrink:0;background:var(--navy);color:#fff;font-weight:700}
+
+.wrap{max-width:1080px;margin:0 auto;padding:26px 16px 60px}
+.col{max-width:780px}
+h1{font-size:clamp(22px,3.4vw,28px);font-weight:900;color:var(--navy);margin-bottom:8px;word-break:keep-all}
+.lead{font-size:15px;color:var(--muted);margin-bottom:20px;word-break:keep-all;line-height:1.75}
+.card{background:var(--card);border-radius:var(--radius);border:1px solid var(--border);padding:22px;
+  margin-bottom:14px;box-shadow:var(--shadow)}
+.card-t{font-size:15px;font-weight:800;color:var(--navy);margin-bottom:4px}
+.card-s{font-size:13.5px;color:var(--muted);margin-bottom:16px;word-break:keep-all;line-height:1.7}
+
+.field{margin-bottom:16px}
+.field:last-child{margin-bottom:0}
+.l{display:block;font-size:13px;font-weight:700;color:var(--navy);margin-bottom:7px}
+.l em{font-style:normal;font-weight:500;color:var(--muted);font-size:11.5px;margin-left:5px}
+.inp-wrap{position:relative;display:flex;align-items:center}
+input[type=text],input[type=number]{width:100%;padding:11px 44px 11px 13px;border:1.5px solid var(--border);
+  border-radius:8px;font-size:15px;font-weight:600;color:var(--text);background:#fff;font-family:inherit}
+input:focus{outline:none;border-color:var(--blue)}
+.inp-unit{position:absolute;right:13px;font-size:12.5px;color:var(--muted);pointer-events:none}
+.hint{font-size:12.5px;color:var(--muted);margin-top:6px;line-height:1.65;word-break:keep-all}
+
+.seg{display:flex;gap:6px;flex-wrap:wrap}
+.seg-btn{flex:1;min-width:70px;padding:9px 8px;border:1.5px solid var(--border);background:#fff;border-radius:8px;
+  font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;transition:all .15s;text-align:center;
+  word-break:keep-all;font-family:inherit}
+.seg-btn.on{border-color:var(--blue);background:#E0F2FE;color:#075985;font-weight:700}
+
+.result-area{margin-top:4px}
+.res-row{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;font-size:14px;
+  border-bottom:1px solid var(--border);gap:10px}
+.res-row:last-child{border-bottom:none}
+.res-row .k{color:var(--muted);word-break:keep-all}
+.res-row .k b{color:var(--navy);font-weight:700}
+.res-row .k small{display:block;font-size:12px;color:#64748B;margin-top:2px}
+.res-row .v{font-weight:700;color:var(--navy);white-space:nowrap;font-variant-numeric:tabular-nums}
+.res-row.total{background:#F0F9FF;border-top:1.5px solid var(--blue)}
+.res-row.total .k b{font-size:14px}
+.res-row.total .v{font-size:19px;font-weight:900;color:#075985}
+.res-row.muted .v{color:var(--muted);font-weight:600}
+
+.ntc{border-radius:8px;padding:13px 15px;font-size:13px;line-height:1.75;margin-top:14px;word-break:keep-all}
+.ntc.warn{background:#FFFBEB;border:1px solid #FDE68A;color:#78350F}
+.ntc.stop{background:#FEF2F2;border:1px solid #FECACA;color:#7F1D1D}
+.ntc.info{background:#F8FAFC;border:1px solid var(--border);color:#475569}
+.ntc b{font-weight:800}
+.ntc a{color:#075985}
+
+.basis{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:6px}
+.basis th,.basis td{border:1px solid var(--border);padding:8px 10px;text-align:left;vertical-align:top;
+  word-break:keep-all;line-height:1.6}
+.basis th{background:#F8FAFC;color:var(--navy);font-weight:700;white-space:nowrap}
+.basis td:last-child{color:var(--muted)}
+.table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+
+.next{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+.next a{flex:1;min-width:180px;display:block;padding:13px 16px;border-radius:10px;text-decoration:none;
+  font-size:13.5px;font-weight:700;text-align:center;word-break:keep-all}
+.next a.p{background:var(--navy);color:#fff}
+.next a.s{background:#fff;color:var(--navy);border:1.5px solid var(--border)}
+
+footer{border-top:1px solid var(--border);background:#fff;padding:26px 16px 40px;margin-top:20px}
+.foot-inner{max-width:1080px;margin:0 auto;text-align:center}
+.foot-brand{font-size:14px;font-weight:800;color:var(--navy);margin-bottom:10px}
+.foot-links{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:12px}
+.foot-links a{font-size:12px;color:var(--muted);text-decoration:none}
+.foot-biz,.foot-copy{font-size:11px;color:var(--muted);line-height:1.7;word-break:keep-all}
+.foot-biz{margin-bottom:6px}
+.foot-biz a{color:var(--muted)}
+@media(max-width:480px){.card{padding:18px 16px}}
+</style>
+</head>
+<body>
+<a href="#main" class="skip-link">본문으로 건너뛰기</a>
+
+<nav>
+  <div class="nav-inner">
+    <div class="nav-scroll">
+      <a href="index.html" class="nav-logo">셀프등기24</a>
+      <a href="guide.html" class="nav-a">셀프등기 가이드</a>
+      <a href="calculator.html" class="nav-a">취득세 계산기</a>
+      <a href="https://selfregi.tistory.com" target="_blank" rel="noopener" class="nav-a">블로그</a>
+    </div>
+    <a href="normal_form.html" class="nav-a cta">서류 작성하기</a>
+  </div>
+</nav>
+
+<main class="wrap" id="main">
+  <div class="col">
+  <h1>증여 취득세 계산기</h1>
+  <p class="lead">
+    증여는 매매와 과세표준이 다릅니다. 매매는 실제 거래가액으로 계산하지만,
+    <b>증여는 공시가격이 아니라 &lsquo;시가인정액&rsquo;</b>이 원칙입니다(지방세법 제10조의2제1항).
+    공시가격으로 계산했다가 고지서를 받고 당황하시는 경우가 여기서 생깁니다.
+  </p>
+
+  <!-- ── 입력 ─────────────────────────────── -->
+  <div class="card">
+    <div class="card-t">1. 증여받는 부동산</div>
+    <div class="card-s">주택인지 여부에 따라 중과 판정과 농어촌특별세 계산이 달라집니다.</div>
+
+    <div class="field">
+      <span class="l">증여 대상</span>
+      <div class="seg" id="segKind">
+        <button type="button" class="seg-btn on" data-v="house">주택 (아파트·빌라 등)</button>
+        <button type="button" class="seg-btn" data-v="other">주택 외 (토지·상가 등)</button>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="l" for="inMarket">시가인정액 <em>매매사례가액·감정가액·공매가액 등</em></label>
+      <div class="inp-wrap">
+        <input type="text" id="inMarket" inputmode="numeric" placeholder="예: 950,000,000" autocomplete="off">
+        <span class="inp-unit">원</span>
+      </div>
+      <p class="hint">
+        같은 단지·같은 면적의 최근 매매사례가 대표적인 기준입니다.
+        산정이 어려우면 시가표준액이 과세표준이 될 수 있으며, 개별 판단은 관할 지방자치단체에서 확인하시기 바랍니다.
+      </p>
+    </div>
+
+    <div class="field">
+      <label class="l" for="inStd">시가표준액 (공시가격) <em>중과 판정과 저가 특례에 쓰입니다</em></label>
+      <div class="inp-wrap">
+        <input type="text" id="inStd" inputmode="numeric" placeholder="예: 620,000,000" autocomplete="off">
+        <span class="inp-unit">원</span>
+      </div>
+      <p class="hint">
+        지분만 증여하는 경우에도 <b>전체 주택의 시가표준액</b>을 입력하십시오
+        (지방세법 시행령 제28조의6제1항 괄호).
+      </p>
+    </div>
+
+    <div class="field" id="fArea">
+      <label class="l" for="inArea">전용면적 <em>농어촌특별세 비과세 판정</em></label>
+      <div class="inp-wrap">
+        <input type="text" id="inArea" inputmode="decimal" placeholder="예: 84.96" autocomplete="off">
+        <span class="inp-unit">㎡</span>
+      </div>
+      <p class="hint">국민주택 규모(전용 85㎡) 이하이면 농어촌특별세가 비과세됩니다.</p>
+    </div>
+
+    <div class="field">
+      <label class="l" for="inShare">증여하는 지분 <em>전부 증여이면 100</em></label>
+      <div class="inp-wrap">
+        <input type="text" id="inShare" inputmode="decimal" placeholder="100" value="100" autocomplete="off">
+        <span class="inp-unit">%</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-t">2. 중과 판정에 필요한 사항</div>
+    <div class="card-s">
+      조정대상지역에 있는 시가표준액 3억원 이상 주택을 무상취득하면 중과 대상이 될 수 있습니다
+      (지방세법 제13조의2제2항, 시행령 제28조의6제1항).
+    </div>
+
+    <div class="field">
+      <span class="l">조정대상지역 여부</span>
+      <div class="seg" id="segZone">
+        <button type="button" class="seg-btn" data-v="yes">조정대상지역</button>
+        <button type="button" class="seg-btn on" data-v="no">조정대상지역 아님</button>
+        <button type="button" class="seg-btn" data-v="unknown">모르겠습니다</button>
+      </div>
+      <p class="hint">
+        지정 현황은 시점에 따라 달라집니다. 확실하지 않으면 &lsquo;모르겠습니다&rsquo;를 선택하십시오.
+      </p>
+    </div>
+
+    <div class="field">
+      <span class="l">증여자가 1세대 1주택자이고, 받는 사람이 배우자 또는 직계존비속인가</span>
+      <div class="seg" id="segExempt">
+        <button type="button" class="seg-btn" data-v="yes">그렇습니다</button>
+        <button type="button" class="seg-btn on" data-v="no">아닙니다</button>
+      </div>
+      <p class="hint">
+        이에 해당하면 조정대상지역·3억원 이상이어도 중과에서 제외됩니다
+        (지방세법 제13조의2제2항 단서, 시행령 제28조의6제2항제1호).
+      </p>
+    </div>
+
+    <div class="field">
+      <span class="l">전세보증금이나 대출 등 채무를 함께 넘기는가 <em>부담부증여</em></span>
+      <div class="seg" id="segDebt">
+        <button type="button" class="seg-btn" data-v="yes">채무를 함께 넘깁니다</button>
+        <button type="button" class="seg-btn on" data-v="no">채무 없이 순수 증여입니다</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 결과 ─────────────────────────────── -->
+  <div class="card">
+    <div class="card-t">계산 결과</div>
+    <div class="card-s">2026년 현행 지방세법 기준입니다. 최종 세액은 관할 지방자치단체의 고지에 따릅니다.</div>
+    <div class="result-area" id="out"></div>
+  </div>
+
+  <!-- ── 근거 ─────────────────────────────── -->
+  <div class="card">
+    <div class="card-t">계산 근거</div>
+    <div class="card-s">모든 세율은 법령 원문에서 확인한 값입니다.</div>
+    <div class="table-scroll">
+      <table class="basis">
+        <tr><th>항목</th><th>내용</th><th>근거</th></tr>
+        <tr><td>과세표준</td><td>시가인정액<br>(시가표준액 1억원 이하이면 시가인정액과 시가표준액 중 납세자가 정하는 가액)</td>
+            <td>지방세법 제10조의2제1항·제2항제2호<br>시행령 제14조의2</td></tr>
+        <tr><td>취득세</td><td>1천분의 35 (3.5%)</td><td>지방세법 제11조제1항제2호</td></tr>
+        <tr><td>취득세 (중과)</td><td>1천분의 40에 중과기준세율(1천분의 20)의 400%를 더한 세율 → 12%<br>조정대상지역 + 시가표준액 3억원 이상 주택</td>
+            <td>지방세법 제13조의2제2항<br>제6조제19호, 시행령 제28조의6제1항</td></tr>
+        <tr><td>중과 제외</td><td>1세대 1주택자가 소유한 주택을 배우자 또는 직계존비속이 무상취득하는 경우</td>
+            <td>지방세법 제13조의2제2항 단서<br>시행령 제28조의6제2항제1호</td></tr>
+        <tr><td>지방교육세</td><td>취득세 표준세율에서 1천분의 20을 뺀 세율로 산출한 금액의 100분의 20<br>→ (3.5% − 2%) × 20% = 0.3%</td>
+            <td>지방세법 제151조제1항제1호</td></tr>
+        <tr><td>농어촌특별세</td><td>표준세율을 100분의 2로 적용하여 산출한 취득세액의 100분의 10<br>→ 0.2%. 국민주택 규모(전용 85㎡) 이하는 비과세</td>
+            <td>농어촌특별세법 제5조제1항제6호<br>제4조제11호, 시행령 제4조제5항</td></tr>
+        <tr><td>부담부증여</td><td>인수하는 채무액에 상당하는 부분은 유상승계취득의 과세표준을 적용하고, 나머지에 무상취득 과세표준을 적용</td>
+            <td>지방세법 제10조의2제6항<br>시행령 제14조의4</td></tr>
+      </table>
+    </div>
+    <div class="ntc info">
+      본 계산기는 취득세와 그 부가세목만 계산합니다. <b>증여세(국세)는 포함되어 있지 않습니다.</b>
+      증여세는 세무 영역이며, 본 서비스는 세무 자문을 제공하지 않습니다.
+    </div>
+  </div>
+
+  <!-- ── 다음 단계 ─────────────────────────── -->
+  <div class="card">
+    <div class="card-t">세금을 확인하셨다면</div>
+    <div class="card-s">
+      증여로 인한 소유권이전등기는 법무사 선임 의무가 없어 본인이 직접 신청할 수 있습니다.
+      절차와 준비서류는 무료로 확인하실 수 있습니다.
+    </div>
+    <div class="next">
+      <a href="guide.html" class="s">셀프등기 절차 가이드 보기</a>
+      <a href="calculator.html" class="s">매매 취득세 계산기</a>
+    </div>
+    <div class="ntc info">
+      증여 등기 서류 자동생성은 준비 중입니다. 현재는 매매(소유권이전)와 근저당권 말소를 지원합니다.
+    </div>
+  </div>
+  </div>
+</main>
+
+<footer>
+  <div class="foot-inner">
+    <div class="foot-brand">셀프등기24</div>
+    <div class="foot-links">
+      <a href="index.html">홈</a>
+      <a href="https://selfregi.tistory.com" target="_blank" rel="noopener">블로그</a>
+      <a href="privacy.html">개인정보처리방침</a>
+      <a href="terms.html">면책고지</a>
+    </div>
+    <div class="foot-biz">셀프등기24 · 사업자등록번호 164-20-02315 · 이메일 <a href="mailto:selfregi999@gmail.com">selfregi999@gmail.com</a></div>
+    <div class="foot-copy">
+      © 2026 셀프등기24 · 개인정보를 별도로 저장하지 않습니다 · 본 서비스는 법률/세무 자문을 제공하지 않습니다.
+    </div>
+  </div>
+</footer>
+
+<script>
+/* 증여 취득세 계산 — 세율은 전부 법령 원문 확인값이다. 추정치를 넣지 않는다.
+ *
+ * 설계 원칙 하나: 중과(12%) 구간은 계산하지 않는다.
+ *   이유 ① 조정대상지역 지정 현황은 시점에 따라 달라져 사이트가 단정할 수 없다.
+ *        ② 중과 시 농어촌특별세 취급이 농어촌특별세법 제5조 문언(제6호 단일)과
+ *           실무 안내표 사이에서 갈린다. 확정하지 못한 값을 숫자로 내보이지 않는다.
+ *   대신 판정 결과와 근거 조문을 제시하고 관할 확인을 안내한다. (domain.md 「추측 금지」)
+ */
+(function () {
+  'use strict';
+
+  var RATE = {
+    ACQ_GIFT: 0.035,      // 지방세법 제11조제1항제2호
+    HEAVY: 0.12,          // 제13조의2제2항 (4% + 2%×400%)
+    SURTAX_BASE: 0.02,    // 중과기준세율 — 제6조제19호
+    EDU_MULT: 0.20,       // 제151조제1항제1호
+    RURAL_RATE: 0.02,     // 농특세법 제5조제1항제6호 (표준세율 2% 적용)
+    RURAL_MULT: 0.10,
+    HEAVY_STD_MIN: 300000000,   // 시행령 제28조의6제1항 — 시가표준액 3억원
+    LOW_VALUE_MAX: 100000000,   // 시행령 제14조의2 — 1억원 이하
+    NATIONAL_AREA: 85           // 국민주택 규모 (전용 85㎡)
+  };
+
+  var state = { kind: 'house', zone: 'no', exempt: 'no', debt: 'no' };
+
+  var $ = function (id) { return document.getElementById(id); };
+  var out = $('out');
+
+  function num(el) {
+    var v = String(el.value || '').replace(/[^0-9.]/g, '');
+    if (!v) return 0;
+    var n = parseFloat(v);
+    return isFinite(n) && n > 0 ? n : 0;
+  }
+  function won(n) { return Math.floor(n).toLocaleString('ko-KR') + '원'; }
+
+  /* 금액 입력칸은 입력 중에도 천단위 구분을 유지한다 */
+  function commafy(el) {
+    var raw = String(el.value || '').replace(/[^0-9]/g, '');
+    el.value = raw ? parseInt(raw, 10).toLocaleString('ko-KR') : '';
+  }
+
+  function seg(id, key) {
+    var box = $(id);
+    box.addEventListener('click', function (e) {
+      var b = e.target.closest('.seg-btn');
+      if (!b) return;
+      box.querySelectorAll('.seg-btn').forEach(function (x) { x.classList.remove('on'); });
+      b.classList.add('on');
+      state[key] = b.dataset.v;
+      if (key === 'kind') $('fArea').style.display = (state.kind === 'house') ? '' : 'none';
+      calc();
+    });
+  }
+
+  function row(k, sub, v, cls) {
+    return '<div class="res-row' + (cls ? ' ' + cls : '') + '">' +
+      '<div class="k"><b>' + k + '</b>' + (sub ? '<small>' + sub + '</small>' : '') + '</div>' +
+      '<div class="v">' + v + '</div></div>';
+  }
+
+  function calc() {
+    var market = num($('inMarket'));
+    var std    = num($('inStd'));
+    var area   = num($('inArea'));
+    var share  = num($('inShare'));
+    if (!share) share = 100;
+    share = Math.min(share, 100) / 100;
+
+    if (!market && !std) {
+      out.innerHTML = '<div class="ntc info">시가인정액 또는 시가표준액을 입력하시면 계산됩니다.</div>';
+      return;
+    }
+
+    var html = '';
+
+    /* 부담부증여 — 범위 밖임을 먼저 알린다 */
+    if (state.debt === 'yes') {
+      out.innerHTML =
+        '<div class="ntc stop"><b>부담부증여는 이 계산기의 범위를 벗어납니다.</b><br>' +
+        '인수하는 채무액에 상당하는 부분은 유상승계취득으로 보아 별도의 과세표준과 세율이 적용되고' +
+        '(지방세법 제10조의2제6항, 시행령 제14조의4), 증여자에게는 양도소득세가 발생할 수 있습니다. ' +
+        '양도소득세는 세무 영역이므로 세무 전문가나 관할 세무서에서 확인하시기 바랍니다.</div>';
+      return;
+    }
+
+    /* 과세표준 결정 */
+    var base, baseNote;
+    var lowValue = std > 0 && std <= RATE.LOW_VALUE_MAX;
+    if (lowValue && market > 0) {
+      base = Math.min(market, std);
+      baseNote = '시가표준액이 1억원 이하여서 시가인정액과 시가표준액 중 낮은 값을 적용했습니다 (시행령 제14조의2). 납세자가 정하는 가액으로 신고할 수 있습니다.';
+    } else if (market > 0) {
+      base = market;
+      baseNote = '시가인정액을 적용했습니다 (지방세법 제10조의2제1항).';
+    } else {
+      base = std;
+      baseNote = '시가인정액이 입력되지 않아 시가표준액으로 계산했습니다. 시가인정액을 산정할 수 있는 경우에는 그 가액이 과세표준이 됩니다.';
+    }
+    var taxBase = base * share;
+
+    /* 중과 판정 — 주택에만 적용된다 */
+    var heavyTarget = (state.kind === 'house') && std >= RATE.HEAVY_STD_MIN;
+    var heavyExempt = (state.exempt === 'yes');
+
+    if (heavyTarget && state.zone === 'yes' && !heavyExempt) {
+      out.innerHTML =
+        row('과세표준', baseNote, won(taxBase)) +
+        '<div class="ntc stop" style="margin-top:12px">' +
+        '<b>중과 대상에 해당할 수 있어 세액을 계산하지 않았습니다.</b><br>' +
+        '조정대상지역에 있는 시가표준액 3억원 이상 주택을 무상취득하는 경우, ' +
+        '1천분의 40의 세율에 중과기준세율(1천분의 20)의 400%를 더한 <b>12%</b>가 적용됩니다 ' +
+        '(지방세법 제13조의2제2항, 시행령 제28조의6제1항).<br><br>' +
+        '다만 <b>1세대 1주택자가 소유한 주택을 배우자 또는 직계존비속이 무상취득</b>하는 경우에는 중과에서 제외되므로, ' +
+        '위 2번 항목을 다시 확인해 보십시오.<br><br>' +
+        '중과가 적용될 때의 지방교육세·농어촌특별세 산출 방식은 사안에 따라 달라질 수 있어 ' +
+        '본 계산기가 단정하지 않습니다. <b>관할 지방자치단체 세무과 또는 위택스에서 확인하시기 바랍니다.</b>' +
+        '</div>';
+      return;
+    }
+
+    /* 표준세율 계산 */
+    var acq = taxBase * RATE.ACQ_GIFT;
+    var edu = taxBase * (RATE.ACQ_GIFT - RATE.SURTAX_BASE) * RATE.EDU_MULT;
+
+    var ruralExempt = (state.kind === 'house') && area > 0 && area <= RATE.NATIONAL_AREA;
+    var ruralUnknown = (state.kind === 'house') && area === 0;
+    var rural = ruralExempt ? 0 : taxBase * RATE.RURAL_RATE * RATE.RURAL_MULT;
+
+    html += row('과세표준', baseNote, won(taxBase));
+    html += row('취득세', '3.5% · 지방세법 제11조제1항제2호', won(acq));
+    html += row('지방교육세', '(3.5% − 2%) × 20% = 0.3% · 제151조제1항제1호', won(edu));
+
+    if (ruralExempt) {
+      html += row('농어촌특별세', '전용 ' + area + '㎡ — 국민주택 규모 이하로 비과세', '해당 없음', 'muted');
+    } else {
+      html += row('농어촌특별세', '0.2% · 농특세법 제5조제1항제6호' +
+        (ruralUnknown ? ' (면적 미입력 — 과세 가정)' : ''), won(rural));
+    }
+    html += row('합계', '', won(acq + edu + rural), 'total');
+
+    out.innerHTML = html;
+
+    var tail = '';
+    if (ruralUnknown) {
+      tail += '<div class="ntc warn">전용면적을 입력하지 않아 농어촌특별세를 과세로 가정했습니다. ' +
+        '국민주택 규모(전용 85㎡) 이하이면 비과세입니다.</div>';
+    }
+    if (heavyTarget && state.zone === 'unknown' && !heavyExempt) {
+      tail += '<div class="ntc warn"><b>조정대상지역 여부를 확인해 보십시오.</b><br>' +
+        '시가표준액이 3억원 이상인 주택입니다. 해당 주택이 조정대상지역에 있다면 ' +
+        '취득세가 12%로 중과될 수 있습니다(지방세법 제13조의2제2항). ' +
+        '위 계산은 조정대상지역이 아닌 경우를 전제로 한 값입니다.</div>';
+    }
+    if (heavyTarget && state.zone === 'yes' && heavyExempt) {
+      tail += '<div class="ntc warn">1세대 1주택자의 주택을 배우자 또는 직계존비속이 무상취득하는 경우로 보아 ' +
+        '중과를 적용하지 않았습니다(지방세법 제13조의2제2항 단서). ' +
+        '1세대 1주택 해당 여부는 관할 지방자치단체에서 확인하시기 바랍니다.</div>';
+    }
+    if (!market && std) {
+      tail += '<div class="ntc warn">시가인정액이 입력되지 않았습니다. ' +
+        '증여의 과세표준은 시가표준액이 아니라 시가인정액이 원칙이므로(지방세법 제10조의2제1항), ' +
+        '실제 세액은 위 금액보다 커질 수 있습니다.</div>';
+    }
+    tail += '<div class="ntc info">본 계산은 참고용이며 최종 세액은 관할 지방자치단체의 고지에 따릅니다. ' +
+      '취득세 신고·납부는 위택스 또는 관할 구청 세무과에서 하실 수 있습니다. ' +
+      '증여세(국세)는 포함되어 있지 않습니다.</div>';
+
+    out.insertAdjacentHTML('beforeend', tail);
+  }
+
+  ['inMarket', 'inStd'].forEach(function (id) {
+    $(id).addEventListener('input', function () { commafy(this); calc(); });
+  });
+  ['inArea', 'inShare'].forEach(function (id) {
+    $(id).addEventListener('input', calc);
+  });
+  seg('segKind', 'kind');
+  seg('segZone', 'zone');
+  seg('segExempt', 'exempt');
+  seg('segDebt', 'debt');
+
+  calc();
+})();
+</script>
+</body>
+</html>
