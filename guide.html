@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-DR3W5XWF50"></script>
 <script>
@@ -8,8 +10,7 @@
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
 
-  // 운영 도메인에서만 수집 (로컬 미리보기·Vercel 프리뷰 제외)
-  if (/(^|\.)selfregi24\.com$/.test(location.hostname)) gtag('config', 'G-DR3W5XWF50');
+  gtag('config', 'G-DR3W5XWF50');
 </script>
 <meta name="google-site-verification" content="0Q51gTkzJTX1g5WdTZomNbVdIhC4WIdP04v1WOFmGIo" />
 <script>window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments);};</script>
@@ -17,9 +18,9 @@
 <meta charset="UTF-8">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>소유권이전등기 셀프 방법 · 절차와 준비서류 실제 화면 가이드 | 셀프등기24</title>
-<meta name="description" content="법무사 없이 소유권이전등기를 셀프로 하는 방법. 준비서류 목록부터 위택스 취득세 신고, 전자수입인지, 정부24 서류 발급까지 실제 화면으로 단계별 안내합니다.">
-<meta property="og:title" content="소유권이전등기 셀프 방법 | 절차와 준비서류를 실제 화면으로">
+<title>셀프등기 가이드 · 소유권이전등기 절차와 준비서류 | 셀프등기24</title>
+<meta name="description" content="법무사 없이 소유권이전등기 하는 방법. 준비서류 목록부터 위택스 취득세 신고, 전자수입인지, 정부24 서류 발급까지 실제 화면으로 단계별 안내합니다.">
+<meta property="og:title" content="셀프등기 가이드 | 절차와 준비서류를 실제 화면으로">
 <meta property="og:description" content="셀프등기가 처음이라면. 무엇을 준비하고 어떤 순서로 진행하는지 실제 화면과 함께 확인하세요.">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://www.selfregi24.com/guide.html">
@@ -88,7 +89,8 @@
   ]
 }
 </script>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap"></noscript>
 <style>
 /* 키보드 사용자용 본문 바로가기. position:fixed 로 둔다 —
    absolute+left:-9999px 는 body{overflow-x:hidden}에 잘려 포커스를 받아도 안 보이는 경우가 있다. */
@@ -145,13 +147,15 @@ header{background:var(--navy)}
 @media(min-width:768px){.section{padding-top:60px}}
 .sec-label{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;color:var(--blue);letter-spacing:.6px;margin-bottom:10px}
 .sec-label::before{content:'';display:block;width:3px;height:12px;background:var(--blue);border-radius:2px}
-.sec-title{font-size:22px;font-weight:700;color:var(--navy);margin-bottom:6px;line-height:1.4;word-break:keep-all}
-.sec-sub{font-size:13.5px;color:var(--muted);line-height:1.7;margin-bottom:22px;max-width:640px;word-break:keep-all}
+.sec-title{font-size:20px;font-weight:700;color:var(--navy);margin-bottom:6px;line-height:1.45;word-break:keep-all}
+/* 섹션 설명문(deck) 규격 — index 와 동일.
+   1줄 56자 / 2줄 112자 안에서 쓰고, balance 가 두 줄 길이를 맞춘다. */
+.sec-sub{font-size:13.5px;color:var(--muted);line-height:1.75;margin-bottom:22px;max-width:640px;word-break:keep-all;text-wrap:balance}
 /* 두 줄 이상으로 넘어가는 제목·리드문의 줄 길이를 고르게 나눈다.
    max-width로 가독폭을 잡아두면 마지막 줄만 짧게 떨어지는 경우가 생긴다(측정: 640px 중 29~32%).
    지원하지 않는 브라우저는 이 선언을 무시하므로 기존 동작 그대로다. */
-.sec-title,.sec-sub{text-wrap:balance}
-@media(min-width:768px){.sec-title{font-size:26px}}
+.sec-title{text-wrap:balance}
+@media(min-width:768px){.sec-title{font-size:26px}.sec-sub{font-size:14.5px;margin-bottom:26px}}
 
 /* STEP1 정의 */
 .def{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:26px 28px}
@@ -238,7 +242,7 @@ header{background:var(--navy)}
 .shot-flow{position:absolute;top:9px;left:12px;font-size:11px;font-weight:700;color:var(--muted);background:rgba(255,255,255,.92);border:1px solid var(--border);padding:2px 8px;border-radius:20px;letter-spacing:.02em}
 .shot-body{padding:16px 20px 18px;display:flex;flex-direction:column;flex:1}
 .shot-chips{display:flex;flex-wrap:wrap;gap:5px;margin:9px 0 0}
-.shot-chip{font-size:11px;font-weight:600;color:var(--muted);background:#F1F5F9;padding:3px 9px;border-radius:20px;line-height:1.4}
+.shot-chip{font-size:11px;font-weight:600;color:#475569;background:#F1F5F9;padding:3px 9px;border-radius:20px;line-height:1.4}
 .shot-chip.n{color:var(--blue);background:#E0F2FE}
 .shot-prog{margin-top:12px}
 .shot-prog .pr-t{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-bottom:4px}
@@ -293,13 +297,14 @@ header{background:var(--navy)}
 .finish-note{font-size:11px;color:rgba(255,255,255,.62);text-align:center;margin-top:11px;line-height:1.7}
 
 /* 푸터 */
-footer{background:var(--bg);border-top:1px solid var(--border);margin-top:52px;padding:32px 20px 28px}
+/* 푸터 규격 — index 기준 */
+footer{background:var(--bg);border-top:1px solid var(--border);margin-top:40px;padding:32px 20px 28px}
 .foot-inner{max-width:1200px;margin:0 auto}
 .foot-brand{font-size:14px;font-weight:800;color:var(--navy);margin-bottom:8px}
-.foot-links{display:flex;gap:6px 16px;margin-bottom:12px;flex-wrap:wrap}
+.foot-links{display:flex;gap:6px 14px;margin-bottom:12px;flex-wrap:wrap}
 .foot-links a{color:var(--muted);font-size:12px;text-decoration:none;padding:2px 0}
 .foot-links a:hover{color:var(--navy)}
-.foot-copy{font-size:11px;color:var(--muted);line-height:1.7}.foot-biz{font-size:11.5px;color:#334155;font-weight:500;margin-bottom:10px}.foot-biz a{color:var(--blue);text-decoration:none}
+.foot-copy{font-size:11px;color:var(--muted);line-height:1.9;word-break:keep-all}.foot-biz{font-size:11.5px;color:#334155;font-weight:500;margin-bottom:10px}.foot-biz a{color:var(--blue);text-decoration:underline}
 
 /* ===== 대형 2-pane 모달 ===== */
 .gm-back{position:fixed;inset:0;background:rgba(15,23,32,.66);z-index:var(--z-overlay);display:none;align-items:center;justify-content:center;padding:24px;backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px)}
@@ -355,7 +360,7 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:52px;p
 .rin{background:#F8FAFC;border:1px solid var(--border);border-radius:10px;padding:12px 13px;transition:.15s}
 .rin.saved{background:#f0f8f3;border-color:#bfe6cf}
 .rin-l{font-size:12px;font-weight:700;color:var(--navy);margin-bottom:8px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
-.rin-l .src{font-size:11px;font-weight:600;color:var(--muted);background:#eef2f6;padding:1px 6px;border-radius:5px}
+.rin-l .src{font-size:11px;font-weight:600;color:#475569;background:#eef2f6;padding:1px 6px;border-radius:5px}
 .rin-l .ok{font-size:11px;font-weight:700;color:#047857;margin-left:auto}
 .rin-row{display:flex;gap:6px}
 .rin-row input{flex:1;min-width:0;height:36px;border:1px solid var(--border);border-radius:8px;padding:0 11px;font-family:inherit;font-size:13px;color:var(--text);background:#fff}
@@ -415,6 +420,12 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:52px;p
   .pgo,.rj-link{font-size:12px;min-height:24px;display:inline-flex;align-items:center}
 }
 </style>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-DR3W5XWF50"></script>
+<script>
+window.dataLayer=window.dataLayer||[];
+function gtag(){dataLayer.push(arguments);}
+gtag('js',new Date());gtag('config','G-DR3W5XWF50');
+</script>
 </head>
 <body>
 
@@ -435,6 +446,7 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:52px;p
   </div>
 </nav>
 
+<main>
 <header id="content">
   <div class="hero">
     <h1>셀프등기, <em>순서대로 따라오면</em><br>등기소 방문 한 번으로 끝납니다</h1>
@@ -521,7 +533,7 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:52px;p
 <div class="section" id="shots-sec">
   <div class="sec-label">STEP 4 · 실제 화면 안내</div>
   <h2 class="sec-title">각 단계, 실제 화면으로 확인하세요</h2>
-  <p class="sec-sub">카드를 누르면 진행 화면이 단계별로 열립니다. 실제 캡처 화면과, 저작권 보호를 위해 재구성한 재현 화면을 함께 사용합니다.</p>
+  <p class="sec-sub">카드를 누르면 단계별 화면이 열립니다. 실제 캡처와, 저작권 때문에 재구성한 화면을 함께 씁니다.</p>
   <p class="sec-sub prog-note">보던 위치는 이 기기에만 저장되며, 60일이 지나면 자동으로 사라집니다. <button type="button" class="prog-reset" onclick="clearGpos()">진행 기록 지우기</button></p>
   <div class="shots" id="shots"></div>
 </div>
@@ -530,7 +542,7 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:52px;p
 <div class="section" id="vault-sec">
   <div class="sec-label">번호 보관함</div>
   <h2 class="sec-title">진행하며 받은 번호를 여기에 저장해 두세요</h2>
-  <p class="sec-sub">각 단계에서 발급받은 취득세액·시가표준액·채권번호·수수료 납부번호를 저장해 두면, 서류 작성 단계에서 신청서에 자동으로 채워집니다. 옮겨적기 실수를 막아 주는 메모장이라고 생각하시면 됩니다. 입력값은 이 기기(브라우저)에만 저장되며 서버로 전송되지 않습니다. 마지막 저장으로부터 60일이 지나면 자동으로 사라지고, 언제든 <b>번호 지우기</b>로 직접 지울 수 있습니다.</p>
+  <p class="sec-sub">각 단계에서 받은 취득세액·시가표준액·채권번호·수수료 납부번호를 저장해 두면 신청서에 자동으로 채워집니다. 입력값은 이 기기에만 저장되고 서버로 전송되지 않으며, 60일이 지나면 자동으로 사라집니다.</p>
   <div class="vault">
     <div class="vault-head">
       <div class="vault-h">내 등기 번호</div>
@@ -574,6 +586,7 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:52px;p
     </div>
   </div>
 </div>
+</main>
 
 <footer>
   <div class="foot-inner">
@@ -949,7 +962,7 @@ document.getElementById('gmX').addEventListener('click',closeShot);
 /* ===== 이미지 줌 라이트박스 ===== */
 var zmBack=document.getElementById('zmBack'),zmBody=document.getElementById('zmBody'),zmImg=document.getElementById('zmImg'),zmScale=1,zmFitW=0;
 function openZoom(src,title){
-  zmImg.src=src;zmImg.alt=title||'';document.getElementById('zmTitle').textContent=title||'';
+  zmImg.src=src;zmImg.alt=title||'확대한 화면';document.getElementById('zmTitle').textContent=title||'';
   zmBack.classList.add('open');
   zmImg.onload=function(){zmFitW=Math.min(zmBody.clientWidth-32,zmImg.naturalWidth*2);zmScale=1;applyZoom();};
   if(zmImg.complete&&zmImg.naturalWidth)zmImg.onload();
