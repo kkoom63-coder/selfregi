@@ -965,7 +965,7 @@ main{max-width:var(--read);margin:0 auto;padding:24px 20px 40px;position:relativ
       <a href="terms.html">이용약관</a>
       <a href="privacy.html">개인정보처리방침</a>
     </div>
-    <div class="rm-foot-biz">셀프등기24 · 사업자등록번호 164-20-02315 · 이메일 <a href="mailto:selfregi999@gmail.com">selfregi999@gmail.com</a></div>
+    <div class="rm-foot-biz">셀프등기24 · 대표 허민 · 사업자등록번호 164-20-02315 · 주소 서울특별시 중구 동호로 173, 207호 · 이메일 <a href="mailto:selfregi999@gmail.com">selfregi999@gmail.com</a></div>
     <div class="rm-foot-copy">
       © 2026 셀프등기24 · 개인정보를 별도로 저장하지 않으며, 개인정보를 기재하지 않아도 서류 발급이 가능합니다.<br>
       본 서비스는 법률 자문을 제공하지 않으며 등기 신청을 대행하지 않습니다. 최종 확인은 관할 등기소 안내를 따라 주세요.
@@ -1074,6 +1074,7 @@ function fmtWon(v){
 }
 
 async function downloadSinchungseo(){
+  if (window.SRPay && !SRPay.requirePaid()) return;
   if (typeof JSZip === 'undefined') { showToast('❌ 라이브러리 로딩 중, 잠시 후 다시 시도해주세요', '#DC2626'); return; }
   if (SINCHUNGSEO_B64 === 'PLACEHOLDER') { showToast('⚠️ 신청서 템플릿이 아직 등록되지 않았습니다', '#0369A1'); return; }
   try{window.SR&&SR.track('doc_download',{doc:'sinchungseo'});}catch(e){}
@@ -1363,6 +1364,7 @@ async function buildMaemaeMokrok(dealPrice, items){
 }
 
 async function downloadMaemaeMokrok(){
+  if (window.SRPay && !SRPay.requirePaid()) return;
   if (typeof JSZip === 'undefined') { showToast('❌ 라이브러리 로딩 중, 잠시 후 다시 시도해주세요', '#DC2626'); return; }
   let f = {};
   try { f = JSON.parse(localStorage.getItem('selfregi_form_v1') || '{}') || {}; } catch(e) {}
@@ -2586,5 +2588,6 @@ window.SR=window.SR||(function(){
 })();
 </script>
 <script>try{window.SR&&SR.track('roadmap_enter',{track:(new URLSearchParams(location.search)).get('track')||'online'});}catch(e){}</script>
+<script src="pay.js"></script>
 </body>
 </html>

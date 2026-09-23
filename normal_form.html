@@ -752,25 +752,26 @@ font-size:12px;background:var(--bg);border:1px solid var(--border);border-radius
   </div></div>
 </div>
 
-<!-- ⑥ 결제 — 현재는 무료 발급 경로(goFreeIssue)로 연결한다. -->
-<div class="card">
-  <button id="btn-pay" class="pay-btn" onclick="goFreeIssue()">
-        <div style="text-align:left">
-      <div class="dn">지금은 무료로 서류를 받으실 수 있습니다</div>
-      <div class="ds">출시 기념 무료 · 아래에서 위임장·신청서 다운로드</div>
+<!-- ⑥ 결제 — 토스페이 9,900원. pay.js가 결제·이용권을 처리하고, 결제 전 다운로드는 안내창으로 막는다. -->
+<div class="card" id="pay-card">
+  <button id="btn-pay" class="pay-btn" onclick="SRPay.start()">
+    <div style="text-align:left">
+      <div class="dn" id="pay-dn">토스페이로 9,900원 결제하고 서류 받기</div>
+      <div class="ds" id="pay-ds">부동산 1건 · 부가세 포함 · 추가 요금 없음</div>
     </div>
-    <span class="pay-arrow">↓</span>
+    <span class="pay-arrow" id="pay-arrow">→</span>
   </button>
-  <p class="pay-note">정식 요금은 건당 7,000원으로 예정되어 있으며, 출시 기간 동안 무료로 제공됩니다.</p>
+  <p class="pay-note" id="pay-note">결제는 새 창에서 진행되며, 입력하신 내용은 이 화면에 그대로 남습니다.</p>
   <div class="svc-terms">
     <div class="svc-terms-h">서비스 제공 방식과 시점</div>
     <dl class="svc-terms-l">
+      <div><dt>요금</dt><dd>부동산 1건당 9,900원(부가세 포함). 위임장·소유권이전등기신청서·매매목록(해당 시)이 모두 포함됩니다.</dd></div>
       <div><dt>제공 방식</dt><dd>결제 완료 즉시 브라우저에서 Word(.docx) 파일로 내려받습니다. 별도 배송이나 승인 대기가 없습니다.</dd></div>
       <div><dt>제공 완료</dt><dd>결제 승인 직후 · 통상 1분 이내</dd></div>
-      <div><dt>재발급</dt><dd>결제일부터 30일 이내, 동일 부동산·동일 매수인에 한해 횟수 제한 없이 무상입니다. 결제 완료 시 안내되는 재발급 링크로 이용하시며 별도 요청 절차는 없습니다.</dd></div>
+      <div><dt>재발급</dt><dd>결제일부터 30일 이내, 동일 부동산·동일 매수인에 한해 횟수 제한 없이 무상입니다. 결제 완료 화면의 재발급 링크로 이용하시며 별도 요청 절차는 없습니다.</dd></div>
       <div><dt>환불</dt><dd>회사 귀책(문서 오류·미제공 등)은 사유를 안 날부터 7일 이내 요청하시면 3영업일 이내 전액 환불합니다. 디지털 콘텐츠 특성상 단순 변심에 따른 환불은 제한됩니다.</dd></div>
     </dl>
-    <p class="svc-terms-n">현재는 출시 기념 무료 기간으로 결제가 발생하지 않습니다. 위 기준은 유료 전환 시 적용되며, 재발급 링크는 결제 도입과 함께 제공됩니다. 자세한 내용은 <a href="terms.html#a5">이용약관 제5·6조</a>를 확인해 주세요.</p>
+    <p class="svc-terms-n">자세한 내용은 <a href="terms.html#a5">이용약관 제5·6조</a>를 확인해 주세요.</p>
   </div>
 </div>
 
@@ -864,7 +865,7 @@ font-size:12px;background:var(--bg);border:1px solid var(--border);border-radius
 </div>
 <footer>
   셀프등기 서류 및 상세 절차 안내는 <a href="https://selfregi.tistory.com" target="_blank" rel="noopener" style="color:#64748B;text-decoration:underline">블로그</a>를 참고하시기 바랍니다.<br>
-  셀프등기24 · 사업자등록번호 164-20-02315 · 이메일 <a href="mailto:selfregi999@gmail.com" style="color:#0369A1;text-decoration:none">selfregi999@gmail.com</a><br>© 2026 셀프등기24 셀프등기 서류 자동생성기 · 본 서비스는 법률 자문을 제공하지 않습니다
+  셀프등기24 · 대표 허민 · 사업자등록번호 164-20-02315 · 주소 서울특별시 중구 동호로 173, 207호 · 이메일 <a href="mailto:selfregi999@gmail.com" style="color:#0369A1;text-decoration:none">selfregi999@gmail.com</a><br>© 2026 셀프등기24 셀프등기 서류 자동생성기 · 본 서비스는 법률 자문을 제공하지 않습니다
 </footer>
 <div class="toast" id="toast"></div>
 
@@ -1088,11 +1089,27 @@ document.addEventListener('keydown', e => {
   }
 });
 
-function goFreeIssue(){
-  showToast('출시 기간 무료입니다 — 아래에서 서류를 다운로드하세요', '#0369A1');
-  var sec=document.getElementById('dl-section');
-  if(sec){ sec.scrollIntoView({behavior:'smooth', block:'start'}); }
+// 결제 상태에 따라 결제 카드 문구를 바꾼다(pay.js가 srpay:change를 보낸다).
+function renderPayState(){
+  var paid=window.SRPay&&SRPay.has();
+  var card=document.getElementById('pay-card'); if(!card) return;
+  var btn=document.getElementById('btn-pay');
+  document.getElementById('pay-dn').textContent=paid?'결제 완료 — 아래에서 서류를 내려받으세요':'토스페이로 9,900원 결제하고 서류 받기';
+  document.getElementById('pay-ds').textContent=paid?'결제일부터 30일, 동일 부동산·동일 매수인 재발급 무상':'부동산 1건 · 부가세 포함 · 추가 요금 없음';
+  document.getElementById('pay-arrow').textContent=paid?'↓':'→';
+  btn.onclick=paid?function(){var sec=document.getElementById('dl-section');if(sec)sec.scrollIntoView({behavior:'smooth',block:'start'});}:function(){SRPay.start();};
+  var note=document.getElementById('pay-note');
+  if(paid){
+    var url=SRPay.reissueUrl();
+    note.innerHTML='재발급 링크: <a href="'+url+'" style="word-break:break-all">'+url.replace(/^https?:\/\//,'').slice(0,48)+'…</a> — 다른 기기에서도 이 링크로 다시 받으실 수 있습니다.';
+  } else {
+    note.textContent='결제는 새 창에서 진행되며, 입력하신 내용은 이 화면에 그대로 남습니다.';
+  }
 }
+window.addEventListener('srpay:change', function(e){
+  var was=renderPayState._paid; renderPayState(); renderPayState._paid=!!(window.SRPay&&SRPay.has());
+  if(!was&&renderPayState._paid&&e.detail){ showToast('결제가 완료되었습니다. 아래에서 서류를 내려받으세요.'); var sec=document.getElementById('dl-section'); if(sec) sec.scrollIntoView({behavior:'smooth',block:'start'}); }
+});
 function showToast(msg, bg) {
   const t = document.getElementById('toast');
   t.textContent = msg; t.style.background = bg || '#047857';
@@ -1394,6 +1411,7 @@ async function fillTemplate(b64, replacements) {
 // 위임장 + 신탁일부해지증서 동시 다운로드
 // =============================================
 async function downloadAll() {
+  if (!SRPay.requirePaid()) return;
   if (!validate()) return;
   try{window.SR&&SR.track('doc_download',{doc:'all'});}catch(e){}
   if (typeof JSZip === 'undefined') { showToast('❌ 라이브러리 로딩 중, 잠시 후 다시 시도해주세요', '#DC2626'); return; }
@@ -1467,6 +1485,7 @@ async function downloadAll() {
 // 위임장 단독 다운로드 (일반매매)
 // =============================================
 async function downloadWimiOnly() {
+  if (!SRPay.requirePaid()) return;
   if (!validate()) return;
   try{window.SR&&SR.track('doc_download',{doc:'wimijang'});}catch(e){}
   if (typeof JSZip === 'undefined') { showToast('❌ 라이브러리 로딩 중, 잠시 후 다시 시도해주세요', '#DC2626'); return; }
@@ -1529,10 +1548,7 @@ async function downloadWimiOnly() {
 
 // =============================================
 // 로드맵 네비게이션
-// ※ 현재(무료 버전): 버튼 항상 활성 — 클릭 시 입력된 주소를 들고 roadmap.html로 이동
-// ※ 결제 연동 후: 기본 disabled 처리해두고, 결제 승인 콜백에서
-//    document.getElementById('btn-roadmap').disabled = false; 로 활성화하면 됨
-//    (버튼 자체 구조·goRoadmap() 로직은 그대로 재사용)
+// 로드맵(절차 안내)은 무료 — 버튼은 항상 활성. 유료인 신청서 다운로드는 roadmap.html에서 SRPay로 잠근다.
 // =============================================
 function goRoadmap() {
   const jibun = gv('jibun-address');
@@ -1541,8 +1557,8 @@ function goRoadmap() {
   let fullAddr = jibun;
   if (dong && ho) fullAddr += ` ${dong}동 ${ho}호`;
 
-  // [신청서 릴레이] 무료베타: localStorage로 form→roadmap 데이터 전달.
-  // (결제 도입 시 이 한 겹만 서버 token으로 교체 — 나머지 구조 그대로 재사용)
+  // [신청서 릴레이] localStorage로 form→roadmap 데이터 전달.
+  // 결제 여부는 별도 이용권(selfregi_pass_v1, pay.js)으로 판정한다.
   // 같은 기기·브라우저 전제.
   // ⚠ 주민등록번호 포함: 서버로는 전송하지 않으나(신청서는 브라우저에서 client-side로만 생성),
   //   이 기기의 localStorage에는 남는다.
@@ -1735,6 +1751,7 @@ window.SR=window.SR||(function(){
 <script src="regocr.js"></script>
 <script src="regocr_pp.js"></script>
 <script src="regfields.js"></script>
+<script src="pay.js"></script>
 <script>
 /* ── 자료에서 읽어오기 (2026.8.16) ─────────────────────────────────
    RegParse(텍스트 PDF) / RegOCR(이미지·사진)로 등기부를 읽고,

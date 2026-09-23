@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-DR3W5XWF50"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  if (/(^|\.)selfregi24\.com$/.test(location.hostname)) gtag('config', 'G-DR3W5XWF50');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<title>결제 확인 | 셀프등기24</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0F172A;--blue:#0369A1;--bg:#F8FAFC;--card:#fff;--text:#020617;--muted:#64748B;--border:#E2E8F0;--ok:#047857;--err:#B91C1C}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:'Noto Sans KR',-apple-system,BlinkMacSystemFont,sans-serif;word-break:keep-all}
+.wrap{max-width:480px;margin:0 auto;padding:40px 16px 60px}
+.logo{font-size:15px;font-weight:800;color:var(--navy);text-decoration:none}
+.card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:24px 20px;margin-top:18px}
+h1{font-size:20px;margin:0 0 10px;color:var(--navy)}
+p{font-size:14.5px;line-height:1.7;color:#334155;margin:0 0 12px}
+.st-ok h1{color:var(--ok)} .st-err h1{color:var(--err)}
+.btn{display:flex;align-items:center;justify-content:center;width:100%;min-height:50px;border-radius:12px;background:var(--navy);color:#fff;font-size:15.5px;font-weight:800;text-decoration:none;border:0;cursor:pointer;font-family:inherit;margin-top:6px}
+.btn.sub{background:#F1F5F9;color:var(--navy)}
+.re{background:#F0F9FF;border:1px solid #BAE6FD;border-radius:10px;padding:14px;margin:14px 0}
+.re b{display:block;font-size:13.5px;color:#075985;margin-bottom:6px}
+.re input{width:100%;font-size:12.5px;padding:10px;border:1px solid #BAE6FD;border-radius:8px;background:#fff;color:#0F172A}
+.re small{display:block;font-size:12px;color:#475569;margin-top:6px;line-height:1.6}
+.meta{font-size:12.5px;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="logo" href="/">셀프등기24</a>
+  <div class="card" id="box" aria-live="polite">
+    <h1>결제를 확인하고 있습니다</h1>
+    <p>잠시만 기다려 주세요. 이 창을 닫지 마세요.</p>
+  </div>
+</div>
+<script>
+(function(){
+  var PASS_KEY='selfregi_pass_v1', PENDING_KEY='selfregi_pay_pending';
+  var box=document.getElementById('box');
+  var q=new URLSearchParams(location.search);
+  function get(k){try{return JSON.parse(localStorage.getItem(k)||'null');}catch(e){return null;}}
+  function set(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
+  function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  var pending=get(PENDING_KEY)||{};
+  var from=(pending.from&&/^\/[\w\-./]*$/.test(pending.from))?pending.from:'/normal_form.html';
+  var hasOpener=false; try{hasOpener=!!(window.opener&&window.opener.location.origin===location.origin);}catch(e){}
+
+  function backBtn(label){
+    return hasOpener
+      ? '<button class="btn" onclick="window.close()">'+label+'</button>'
+      : '<a class="btn" href="'+esc(from)+'">'+label+'</a>';
+  }
+  function fail(msg){
+    box.className='card st-err';
+    box.innerHTML='<h1>결제가 완료되지 않았습니다</h1><p>'+esc(msg)+'</p><p class="meta">결제 금액이 빠져나갔는데 이 화면이 보인다면 결제 시각과 함께 selfregi999@gmail.com으로 알려 주세요.</p>'+backBtn(hasOpener?'창 닫고 돌아가기':'서류 작성 화면으로 돌아가기');
+  }
+
+  if(q.get('cancel')){ fail('결제를 취소하셨습니다. 입력하신 내용은 원래 화면에 그대로 있습니다.'); return; }
+  var orderNo=q.get('orderNo')||pending.orderNo;
+  if(!orderNo){ fail('주문 정보를 찾지 못했습니다.'); return; }
+
+  function confirm(tries){
+    fetch('/api/pay/confirm',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({orderNo:orderNo})})
+      .then(function(r){return r.json();})
+      .then(function(d){
+        if(!d||!d.ok){ fail((d&&d.msg)||'결제 승인에 실패했습니다.'); return; }
+        set(PASS_KEY,{token:d.token,orderNo:d.orderNo,exp:d.exp});
+        try{localStorage.removeItem(PENDING_KEY);}catch(e){}
+        try{ if(typeof gtag==='function') gtag('event','purchase',{transaction_id:d.orderNo,value:d.amount,currency:'KRW',items:[{item_name:'서류 자동완성',price:d.amount,quantity:1}]}); }catch(e){}
+        try{ if(hasOpener) window.opener.postMessage({type:'srpay:paid'},location.origin); }catch(e){}
+        var link=location.origin+'/normal_form.html?pass='+encodeURIComponent(d.token);
+        var until=new Date(d.exp); var ud=until.getFullYear()+'. '+(until.getMonth()+1)+'. '+until.getDate()+'.';
+        box.className='card st-ok';
+        box.innerHTML='<h1>결제가 완료되었습니다</h1>'+
+          '<p>'+(hasOpener?'원래 화면으로 돌아가 서류를 내려받으세요. 이 창은 닫으셔도 됩니다.':'아래 버튼으로 돌아가 서류를 내려받으세요.')+'</p>'+
+          '<div class="re"><b>재발급 링크 ('+ud+'까지)</b><input readonly value="'+esc(link)+'" onclick="this.select()" aria-label="재발급 링크">'+
+          '<small>다른 기기에서 열거나 브라우저 기록을 지운 뒤에도 이 링크로 서류를 다시 내려받으실 수 있습니다. 메모장이나 카카오톡 나에게 보내기로 보관해 두세요.</small>'+
+          '<button class="btn sub" id="cp" type="button">링크 복사</button></div>'+
+          backBtn(hasOpener?'창 닫고 서류 받으러 가기':'서류 받으러 돌아가기')+
+          '<p class="meta" style="margin-top:12px">주문번호 '+esc(d.orderNo)+' · '+Number(d.amount).toLocaleString('ko-KR')+'원</p>';
+        var cp=document.getElementById('cp');
+        if(cp) cp.onclick=function(){ (navigator.clipboard?navigator.clipboard.writeText(link):Promise.reject()).then(function(){cp.textContent='복사했습니다';},function(){cp.textContent='위 칸을 길게 눌러 복사해 주세요';}); };
+      })
+      .catch(function(){
+        if(tries<2) setTimeout(function(){confirm(tries+1);},1500);
+        else fail('결제 확인 중 네트워크 오류가 발생했습니다. 이 화면을 새로고침해 주세요.');
+      });
+  }
+  confirm(0);
+})();
+</script>
+</body>
+</html>

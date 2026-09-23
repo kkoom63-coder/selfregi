@@ -316,7 +316,7 @@ footer{text-align:center;padding:18px;font-size:11px;color:#64748B;max-width:720
 </main>
 <footer>
   셀프등기 서류 및 상세 절차 안내는 <a href="https://selfregi.tistory.com" target="_blank" rel="noopener" style="color:#64748B;text-decoration:underline">블로그</a>를 참고하시기 바랍니다.<br>
-  셀프등기24 · 사업자등록번호 164-20-02315 · 이메일 <a href="mailto:selfregi999@gmail.com" style="color:#0369A1;text-decoration:none">selfregi999@gmail.com</a><br>© 2026 셀프등기24 셀프등기 서류 자동생성기 · 본 서비스는 법률 자문을 제공하지 않습니다
+  셀프등기24 · 대표 허민 · 사업자등록번호 164-20-02315 · 주소 서울특별시 중구 동호로 173, 207호 · 이메일 <a href="mailto:selfregi999@gmail.com" style="color:#0369A1;text-decoration:none">selfregi999@gmail.com</a><br>© 2026 셀프등기24 셀프등기 서류 자동생성기 · 본 서비스는 법률 자문을 제공하지 않습니다
 </footer>
 <div class="toast" id="toast"></div>
 
@@ -454,6 +454,7 @@ async function fillTemplate(b64, data) {
 }
 
 async function downloadAll() {
+  if (window.SRPay && !SRPay.requirePaid()) return;
   if (!validate()) return;
   if (!MERGED_B64) {
     alert("개발자 모드: MERGED_B64 변수에 Word 파일 Base64를 등록해주세요.");
@@ -511,9 +512,7 @@ async function downloadAll() {
 
 // =============================================
 // 로드맵 네비게이션
-// ※ 현재(무료 버전): 버튼 항상 활성 — 클릭 시 입력된 주소를 들고 roadmap.html로 이동
-// ※ 결제 연동 후: 기본 disabled 처리해두고, 결제 승인 콜백에서
-//    document.getElementById('btn-roadmap').disabled = false; 로 활성화하면 됨
+// 로드맵(절차 안내)은 무료 — 버튼은 항상 활성. 서류 다운로드만 SRPay 이용권으로 잠근다.
 // =============================================
 function goRoadmap() {
   const jibun = gv('jibun-address');
@@ -544,5 +543,6 @@ function sendConfirmEmail() {
   }).catch(err => console.warn('EmailJS 오류:', err));
 }
 </script>
+<script src="pay.js"></script>
 </body>
 </html>
