@@ -11,6 +11,11 @@ const ROUTES = { '/api/pay/create': create, '/api/pay/confirm': confirm, '/api/p
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
+    // 대표 주소는 www (canonical·sitemap 기준). Vercel 때처럼 루트 도메인은 www 로 영구 이동.
+    if (url.hostname === 'selfregi24.com') {
+      url.hostname = 'www.selfregi24.com';
+      return Response.redirect(url.toString(), 301);
+    }
     const route = ROUTES[url.pathname];
     if (route) {
       return request.method === 'POST' ? route.onRequestPost({ request, env }) : route.onRequest();

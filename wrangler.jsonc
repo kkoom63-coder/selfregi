@@ -12,8 +12,9 @@
     // .html 주소를 그대로 유지한다(색인·canonical·sitemap 이 모두 .html).
     "html_handling": "none",
     "not_found_handling": "404-page",
-    // 결제 API와 홈(/, /index.html)만 워커가 먼저 받는다. 나머지는 정적 파일이 바로 응답한다(워커 호출 한도 미소모).
-    "run_worker_first": ["/api/*", "/", "/index.html"]
+    // 모든 요청을 워커가 먼저 받는다: 루트 도메인 → www 이동, 결제 API, 홈(/) 처리 때문.
+    // 무료 한도(하루 10만 요청) 대비 현재 트래픽은 매우 작다.
+    "run_worker_first": true
   },
   "observability": { "enabled": true }
 }
