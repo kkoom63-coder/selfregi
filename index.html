@@ -271,7 +271,7 @@ header{background:var(--bg)}
 .cmp-seed{display:inline-flex;align-items:center;gap:10px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.18);border-radius:10px;padding:11px 16px}
 .cmp-seed b{font-size:14px;font-weight:700;color:#fff}
 .cmp-seed span{font-size:12px;color:#94A3B8}
-.cmp-fork{font-size:12px;color:#94A3B8;margin:10px 0 16px}
+.cmp-seed+.cmp-cols{margin-top:20px}
 .cmp-cols{display:grid;grid-template-columns:1fr;gap:12px}
 .cmp-col{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.14);border-radius:12px;padding:20px 18px}
 .cmp-col.ok{background:rgba(3,105,161,.2);border-color:rgba(125,211,252,.42)}
@@ -622,7 +622,6 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:40px;p
     <h2 class="cmp-h" id="cmp-h">같은 등기부 한 장인데, 여기서 갈립니다</h2>
     <p class="cmp-d">등기 서류에 들어갈 값은 대부분 등기부에 이미 있습니다. 옮겨 적는지, 읽어서 채우는지가 차이입니다.</p>
     <div class="cmp-seed"><b>등기사항전부증명서 1장</b> <span>여기서 두 갈래로 나뉩니다</span></div>
-    <p class="cmp-fork">↓</p>
     <div class="cmp-cols">
       <div class="cmp-col">
         <h3><span class="cmp-mark" aria-hidden="true">✕</span>양식을 직접 내려받아 작성할 때</h3>
@@ -929,7 +928,7 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:40px;p
       <a href="terms.html">이용약관</a>
       <a href="privacy.html">개인정보처리방침</a>
     </div>
-    <div class="foot-biz">셀프등기24 · 대표 허민 · 사업자등록번호 164-20-02315 · 주소 서울특별시 중구 동호로 173, 207호 · 이메일 <a href="mailto:selfregi999@gmail.com">selfregi999@gmail.com</a></div>
+    <div class="foot-biz">셀프등기24 · 사업자등록번호 164-20-02315 · 주소 서울특별시 중구 동호로 173 · 이메일 <a href="mailto:selfregi999@gmail.com">selfregi999@gmail.com</a></div>
     <div class="foot-copy">
       © 2026 셀프등기24 · 개인정보를 별도로 저장하지 않으며, 개인정보를 기재하지 않아도 서류 생성이 가능합니다.<br>
       본 서비스는 법률 자문을 제공하지 않으며 등기 신청을 대행하지 않습니다. 최종 확인은 관할 등기소 안내를 따라 주세요.
