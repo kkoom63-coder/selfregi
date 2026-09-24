@@ -1,6 +1,6 @@
 // POST /api/pay/create — 결제 건을 만들고 토스페이 결제창 URL을 돌려준다.
 // autoExecute:false — 구매자 인증 후 /api/pay/confirm 에서 가맹점이 직접 승인한다(콜백·저장소 불필요).
-import { PRICE, PRODUCT, json, apiKey, secret, tossPost, makeOrderNo } from '../../../lib/paycore.js';
+import { PRICE, PRODUCT, json, apiKey, secret, tossPost, makeOrderNo } from '../../lib/paycore.js';
 
 export async function onRequestPost({ request, env }) {
   const key = apiKey(env);

@@ -6,8 +6,8 @@ test.js
 *.md
 ppocr_test.html
 regparse-test.html
-functions/
+worker/
+wrangler.jsonc
 lib/
 build_cf.sh
-_redirects
 _headers

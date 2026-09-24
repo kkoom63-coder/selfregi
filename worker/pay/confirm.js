@@ -1,7 +1,7 @@
 // POST /api/pay/confirm { orderNo } — 구매자 인증이 끝난 결제를 승인하고 이용권을 발급한다.
 // retUrl 파라미터만 믿지 않는다(토스 문서 권고). 상태 API로 금액·상태를 서버가 직접 확인한다.
 // 같은 주문으로 여러 번 호출돼도 안전하다: 이미 완료된 건은 승인 없이 이용권만 다시 발급한다.
-import { PRICE, ORDER_RE, DONE, json, apiKey, secret, tossPost, signPass, modeAllowed, readJson } from '../../../lib/paycore.js';
+import { PRICE, ORDER_RE, DONE, json, apiKey, secret, tossPost, signPass, modeAllowed, readJson } from '../../lib/paycore.js';
 
 export async function onRequestPost({ request, env }) {
   const key = apiKey(env);

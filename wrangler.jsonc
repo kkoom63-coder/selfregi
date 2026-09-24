@@ -1,0 +1,19 @@
+// Cloudflare Workers 배포 설정 (Workers Builds: Build command = bash build_cf.sh, Deploy command = npx wrangler deploy)
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "selfregi",
+  "main": "worker/index.js",
+  "compatibility_date": "2026-09-01",
+  // 대시보드에서 넣은 환경변수·시크릿(TOSSPAY_API_KEY 등)을 배포 때 지우지 않는다.
+  "keep_vars": true,
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    // .html 주소를 그대로 유지한다(색인·canonical·sitemap 이 모두 .html).
+    "html_handling": "none",
+    "not_found_handling": "404-page",
+    // 결제 API와 홈(/, /index.html)만 워커가 먼저 받는다. 나머지는 정적 파일이 바로 응답한다(워커 호출 한도 미소모).
+    "run_worker_first": ["/api/*", "/", "/index.html"]
+  },
+  "observability": { "enabled": true }
+}
