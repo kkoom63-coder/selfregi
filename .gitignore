@@ -20,3 +20,8 @@ desktop.ini
 backup/
 .impeccable/
 *.zip
+
+dist/
+.playwright-mcp/
+.dev.vars
+.wrangler/

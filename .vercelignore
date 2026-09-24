@@ -6,3 +6,8 @@ test.js
 *.md
 ppocr_test.html
 regparse-test.html
+functions/
+lib/
+build_cf.sh
+_redirects
+_headers
