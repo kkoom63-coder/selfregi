@@ -127,15 +127,6 @@ header{background:var(--bg)}
 
 /* ── 신뢰 지표 배너 ── */
 /* 재배치 후 .section(하단 패딩 0) 뒤에 오므로 위쪽 간격을 직접 준다 */
-.stats-bar{background:#fff;border-top:1px solid var(--border);border-bottom:1px solid var(--border);margin-top:40px}
-.stats-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr)}
-.stat-item{padding:20px 12px;text-align:center;border-right:1px solid var(--border)}
-.stat-item:last-child{border-right:none}
-.stat-num{display:block;font-size:clamp(20px,3vw,26px);font-weight:900;color:var(--navy);margin-bottom:3px;letter-spacing:-.02em}
-.stat-num.up{color:#047857}
-.stat-num.gold{color:var(--blue)}
-.stat-label{font-size:11.5px;color:var(--muted);line-height:1.45}
-.stats-src{max-width:1200px;margin:0 auto;padding:8px 14px 12px;font-size:11px;color:var(--muted);text-align:center}
 .slogan-band{background:var(--navy)}.slogan-inner{max-width:1200px;margin:0 auto;padding:52px 20px;text-align:center}.slogan-band h2{font-size:clamp(20px,3.4vw,30px);font-weight:900;color:#fff;line-height:1.5;letter-spacing:-.02em;word-break:keep-all}.slogan-band h2 span{color:#94A3B8;font-weight:700}
 .feat-conclusion{text-align:center;margin-top:22px;font-size:15px;font-weight:700;color:var(--navy);word-break:keep-all}.feat-conclusion em{font-style:normal;color:var(--blue)}
 .price-box{max-width:520px;margin:0 auto;background:#fff;border:1.5px solid var(--border);border-radius:16px;padding:36px 28px;text-align:center;box-shadow:var(--shadow)}
@@ -165,7 +156,6 @@ header{background:var(--bg)}
 .svc-terms-n a{color:var(--blue);font-weight:700}
 @media(max-width:359px){.svc-terms-l>div{grid-template-columns:1fr;gap:3px}}
 
-.stats-src-wrap{background:#fff;border-bottom:1px solid var(--border)}
 
 /* ── 공통 섹션 ── */
 /* 좌우 20px·상단 44px — guide·cancel_guide 와 같은 값 */
@@ -435,7 +425,6 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:40px;p
   .purpose-grid{grid-template-columns:1fr}
   .steps{grid-template-columns:1fr}
   .hero-btns{flex-direction:column;align-items:stretch}
-  .stats-inner{grid-template-columns:repeat(3,1fr)}
 }
 
 /* ── 와이드 보강 (레이아웃 확장 시 밀도/가독 유지) ── */
@@ -449,8 +438,6 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:40px;p
   .hero h1{font-size:40px}
   .hero-concept{font-size:19px}
   .hero-what{font-size:15px}
-  .stat-num{font-size:24px}
-  .stat-label{font-size:11.5px}
   .section{padding-top:60px}
   .sec-title{font-size:26px}
   .sec-sub,.cmp-d,.guide-band-d{font-size:14.5px;margin-bottom:26px}
@@ -493,9 +480,9 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:40px;p
 
 /* ── 모바일 가독 하한 ──────────────────────────────
    출처·배지 라벨이 9.5~10.5px로 실측됐다. 30~60대 타깃에 너무 작다.
-   기본 규칙(.stats-src 101행 등)보다 뒤에 와야 동일 특이도에서 이긴다. */
+   기본 규칙보다 뒤에 와야 동일 특이도에서 이긴다. */
 @media(max-width:560px){
-  .stats-src,.evi-src,.purpose-badge,.guide-a-n,.feat-t .tag{font-size:11px}
+  .evi-src,.purpose-badge,.guide-a-n,.feat-t .tag{font-size:11px}
 }
 
 /* ── 마무리 블록 ──
@@ -670,25 +657,6 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:40px;p
     </div>
   </div>
 </div>
-
-<!-- 신뢰 지표 배너 -->
-<div class="stats-bar">
-  <div class="stats-inner">
-    <div class="stat-item">
-      <span class="stat-num">192만 건</span>
-      <span class="stat-label">연간 소유권이전등기<br>(이 중 매매 62.8%)</span>
-    </div>
-    <div class="stat-item">
-      <span class="stat-num up">+51.2%</span>
-      <span class="stat-label">당사자 직접신청 증가율<br>(전년 대비)</span>
-    </div>
-    <div class="stat-item">
-      <span class="stat-num gold">약 120만원</span>
-      <span class="stat-label">서울 15억 아파트 기준<br>아끼는 법무사 수수료</span>
-    </div>
-  </div>
-</div>
-<div class="stats-src-wrap"><div class="stats-src">출처: 등기정보광장(대법원) 통계 · 법무사 수수료는 대한법무사협회 보수기준 별표(2026. 8. 20. 개정) 기준(서울 중위가격 15억원) · 수치는 집계 기준·시점에 따라 달라질 수 있습니다</div></div>
 
 <!-- ① 왜 셀프등기인가 -->
 <div class="section" id="why">
@@ -928,7 +896,7 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:40px;p
       <a href="terms.html">이용약관</a>
       <a href="privacy.html">개인정보처리방침</a>
     </div>
-    <div class="foot-biz">셀프등기24 · 사업자등록번호 164-20-02315 · 주소 서울특별시 중구 동호로 173 · 이메일 <a href="mailto:selfregi999@gmail.com">selfregi999@gmail.com</a></div>
+    <div class="foot-biz">셀프등기24 · 대표 허민 · 사업자등록번호 164-20-02315 · 주소 서울특별시 중구 동호로 173 · 이메일 <a href="mailto:selfregi999@gmail.com">selfregi999@gmail.com</a></div>
     <div class="foot-copy">
       © 2026 셀프등기24 · 개인정보를 별도로 저장하지 않으며, 개인정보를 기재하지 않아도 서류 생성이 가능합니다.<br>
       본 서비스는 법률 자문을 제공하지 않으며 등기 신청을 대행하지 않습니다. 최종 확인은 관할 등기소 안내를 따라 주세요.
