@@ -185,6 +185,13 @@ select{cursor:pointer;appearance:auto}
 /* 서비스 제공 방식·시점 고지 (PG 심사 요건). 결제 직전에 놓이므로 시각적 무게를 낮춘다 —
    흰 배경·1px 테두리로 카드와 같은 층위에 두고, 강조는 라벨 열에만 준다.
    dt/dd로 짠 이유: 스캔이 쉽고 스크린리더에 항목-값 관계가 그대로 전달된다. */
+.pay-seq{background:#F0F9FF;border:1px solid #BAE6FD;border-radius:12px;padding:14px 16px;margin:16px 0 0;text-align:left}
+.pay-seq-h{font-size:13.5px;font-weight:800;color:#075985;margin-bottom:8px}
+.pay-seq ol{margin:0;padding-left:18px;display:grid;gap:6px}
+.pay-seq li{font-size:13px;color:#334155;line-height:1.65;word-break:keep-all}
+.pay-seq li b{color:#0F172A}
+.pay-seq p{margin:8px 0 0;font-size:12.5px;color:#475569}
+#pay-card .pay-seq{margin:0 0 14px}
 .svc-terms{background:#fff;border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin:16px 0 0}
 .svc-terms-h{font-size:11px;font-weight:800;letter-spacing:.06em;color:var(--blue);margin-bottom:12px}
 .svc-terms-l{display:grid;gap:11px;margin:0}
@@ -753,6 +760,15 @@ font-size:12px;background:var(--bg);border:1px solid var(--border);border-radius
 
 <!-- ⑥ 결제 — 토스페이 9,900원. pay.js가 결제·이용권을 처리하고, 결제 전 다운로드는 안내창으로 막는다. -->
 <div class="card" id="pay-card">
+  <div class="pay-seq">
+      <div class="pay-seq-h">결제 후 서류는 두 번에 나눠 받습니다</div>
+      <ol>
+        <li><b>위임장</b> — 결제 직후 바로 받습니다.</li>
+        <li><b>소유권이전등기신청서</b>(해당 시 매매목록 포함) — 취득세·국민주택채권·등기신청수수료 등 제세공과금을 납부한 뒤, 납부하면서 받은 번호(취득세액·채권발행번호·수수료 납부번호 등)를 입력하면 완성됩니다.</li>
+      </ol>
+      <p>한 번 결제로 두 서류가 모두 포함됩니다.</p>
+    </div>
+
   <button id="btn-pay" class="pay-btn" onclick="SRPay.start()">
     <div style="text-align:left">
       <div class="dn" id="pay-dn">토스페이로 9,900원 결제하고 서류 받기</div>
@@ -765,8 +781,8 @@ font-size:12px;background:var(--bg);border:1px solid var(--border);border-radius
     <div class="svc-terms-h">서비스 제공 방식과 시점</div>
     <dl class="svc-terms-l">
       <div><dt>요금</dt><dd>부동산 1건당 9,900원(부가세 포함). 위임장·소유권이전등기신청서·매매목록(해당 시)이 모두 포함됩니다.</dd></div>
-      <div><dt>제공 방식</dt><dd>결제 완료 즉시 브라우저에서 Word(.docx) 파일로 내려받습니다. 별도 배송이나 승인 대기가 없습니다.</dd></div>
-      <div><dt>제공 완료</dt><dd>결제 승인 직후 · 통상 1분 이내</dd></div>
+      <div><dt>제공 방식</dt><dd>브라우저에서 Word(.docx) 파일로 내려받습니다. 별도 배송이나 승인 대기가 없습니다.</dd></div>
+      <div><dt>제공 시점</dt><dd>위임장은 결제 승인 직후, 신청서는 제세공과금 납부 후 번호를 입력하는 즉시 내려받습니다.</dd></div>
       <div><dt>재발급</dt><dd>결제일부터 30일 이내, 동일 부동산·동일 매수인에 한해 횟수 제한 없이 무상입니다. 결제 완료 화면의 재발급 링크로 이용하시며 별도 요청 절차는 없습니다.</dd></div>
       <div><dt>환불</dt><dd>회사 귀책(문서 오류·미제공 등)은 사유를 안 날부터 7일 이내 요청하시면 3영업일 이내 전액 환불합니다. 디지털 콘텐츠 특성상 단순 변심에 따른 환불은 제한됩니다.</dd></div>
     </dl>
@@ -1093,7 +1109,7 @@ function renderPayState(){
   var paid=window.SRPay&&SRPay.has();
   var card=document.getElementById('pay-card'); if(!card) return;
   var btn=document.getElementById('btn-pay');
-  document.getElementById('pay-dn').textContent=paid?'결제 완료 — 아래에서 서류를 내려받으세요':'토스페이로 9,900원 결제하고 서류 받기';
+  document.getElementById('pay-dn').textContent=paid?'결제 완료 — 아래에서 위임장부터 내려받으세요':'토스페이로 9,900원 결제하고 서류 받기';
   document.getElementById('pay-ds').textContent=paid?'결제일부터 30일, 동일 부동산·동일 매수인 재발급 무상':'부동산 1건 · 부가세 포함 · 추가 요금 없음';
   document.getElementById('pay-arrow').textContent=paid?'↓':'→';
   btn.onclick=paid?function(){var sec=document.getElementById('dl-section');if(sec)sec.scrollIntoView({behavior:'smooth',block:'start'});}:function(){SRPay.start();};
@@ -1107,7 +1123,7 @@ function renderPayState(){
 }
 window.addEventListener('srpay:change', function(e){
   var was=renderPayState._paid; renderPayState(); renderPayState._paid=!!(window.SRPay&&SRPay.has());
-  if(!was&&renderPayState._paid&&e.detail){ showToast('결제가 완료되었습니다. 아래에서 서류를 내려받으세요.'); var sec=document.getElementById('dl-section'); if(sec) sec.scrollIntoView({behavior:'smooth',block:'start'}); }
+  if(!was&&renderPayState._paid&&e.detail){ showToast('결제가 완료되었습니다. 아래에서 위임장부터 내려받으세요.'); var sec=document.getElementById('dl-section'); if(sec) sec.scrollIntoView({behavior:'smooth',block:'start'}); }
 });
 function showToast(msg, bg) {
   const t = document.getElementById('toast');
