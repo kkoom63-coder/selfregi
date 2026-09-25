@@ -26,8 +26,6 @@
 <meta name="twitter:card" content="summary_large_image">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-<script>emailjs.init('Ry2pyJz_cIirdIRJF');</script>
 <style>
 /* 키보드 사용자용 본문 바로가기. position:fixed 로 둔다 —
    absolute+left:-9999px 는 body{overflow-x:hidden}에 잘려 포커스를 받아도 안 보이는 경우가 있다. */
@@ -250,15 +248,6 @@ footer{text-align:center;padding:18px;font-size:11px;color:#64748B;max-width:720
   </div>
 </div>
 
-<!-- ⑤ 이메일 -->
-<div class="card blue-card">
-  <div class="ch"><div class="ci" style="background:#dce8ff">✉️</div><div><div class="ct">셀프등기 체크리스트 안내 수령 이메일</div></div></div>
-  <div class="fg s1"><div class="f">
-    <label>이메일 주소</label>
-    <input type="email" id="user-email" placeholder="예: hong@example.com">
-  </div></div>
-</div>
-
 <!-- ⑥ 체크리스트 -->
 <div class="card">
   <div class="ch"><div class="ci">✅</div><div><div class="ct">등기소 방문 전 체크리스트</div><div class="cs">대지지분 별도등기 준비 항목</div></div></div>
@@ -403,9 +392,6 @@ function blobDL(blob, name) {
 }
 
 function validate() {
-  if (!gv('user-email')) {
-    showToast('⚠️ 이메일을 입력하면 체크리스트 안내를 받을 수 있습니다 (건너뛰어도 다운로드는 진행됩니다)', '#0369A1');
-  }
   return true;
 }
 
@@ -501,7 +487,6 @@ async function downloadAll() {
     blobDL(blob, filename);
 
     showToast('✅ 통합 서류 다운로드가 완료되었습니다!');
-    sendConfirmEmail();
 
   } catch (e) {
     showToast('❌ 서류 생성 중 오류가 발생했습니다.', '#DC2626');
@@ -527,20 +512,6 @@ function goRoadmap() {
   window.location.href = 'roadmap.html' + (qs ? '?' + qs : '');
 }
 
-function sendConfirmEmail() {
-  const email = gv('user-email');
-  if (!email) return;
-
-  const d = getData();
-  emailjs.send('service_selfregi', 'template_selfregi', {
-    owner_name:    d.ownerName,
-    to_email:      email,
-    address:       d.jibun,
-    building:      d.dong,
-    unit:          d.ho,
-    trust_company: d.tName,
-  }).catch(err => console.warn('EmailJS 오류:', err));
-}
 </script>
 <script src="pay.js"></script>
 </body>

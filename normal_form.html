@@ -27,8 +27,6 @@
 <meta name="twitter:card" content="summary_large_image">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-<script>emailjs.init('Ry2pyJz_cIirdIRJF');</script>
 <style>
 /* 키보드 사용자용 본문 바로가기. position:fixed 로 둔다 —
    absolute+left:-9999px 는 body{overflow-x:hidden}에 잘려 포커스를 받아도 안 보이는 경우가 있다. */
@@ -749,15 +747,6 @@ font-size:12px;background:var(--bg);border:1px solid var(--border);border-radius
   </div>
 </div>
 
-<!-- ⑤ 이메일 -->
-<div class="card blue-card">
-  <div class="ch"><div class="ci">7</div><div><div class="ct">셀프등기 체크리스트 안내 수령 이메일</div></div></div>
-  <div class="fg s1"><div class="f">
-    <label>이메일 주소 <span class="req">*</span></label>
-    <input type="email" id="user-email" placeholder="예: hong@example.com">
-  </div></div>
-</div>
-
 <!-- ⑥ 결제 — 토스페이 9,900원. pay.js가 결제·이용권을 처리하고, 결제 전 다운로드는 안내창으로 막는다. -->
 <div class="card" id="pay-card">
   <div class="pay-seq">
@@ -1141,9 +1130,6 @@ function blobDL(blob, name) {
 
 function validate() {
   // 베타테스트: 입력값이 비어 있어도 다운로드 가능 (빈 항목은 출력 후 직접 기재)
-  if (!gv('user-email')) {
-    showToast('⚠️ 이메일을 입력하면 체크리스트 안내를 받을 수 있습니다 (건너뛰어도 다운로드는 진행됩니다)', '#0369A1');
-  }
   return true;
 }
 
@@ -1492,7 +1478,6 @@ async function downloadAll() {
     blobDL(blob2, `신탁일부해지증서_${d.ownerName}_${d.dong}동${d.ho}호.docx`);
 
     showToast('✅ 2개 서류 다운로드 완료!');
-    sendConfirmEmail();
   } catch(e) { showToast('❌ ' + e.message, '#DC2626'); console.error(e); }
 }
 
@@ -1557,7 +1542,6 @@ async function downloadWimiOnly() {
     } else {
       showToast('✅ 위임장 다운로드 완료!');
     }
-    sendConfirmEmail();
   } catch(e) { showToast('❌ ' + e.message, '#DC2626'); console.error(e); }
 }
 
@@ -1608,20 +1592,6 @@ function goRoadmap() {
 
 
 
-function sendConfirmEmail() {
-  const email = gv('user-email');
-  if (!email) return;
-
-  const d = getData();
-  emailjs.send('service_selfregi', 'template_selfregi', {
-    owner_name:    d.ownerName,
-    to_email:      email,
-    address:       d.jibun,
-    building:      d.dong,
-    unit:          d.ho,
-    trust_company: d.tName,
-  }).catch(err => console.warn('EmailJS 오류:', err));
-}
 </script>
 <!-- 셀프등기24 계측 레이어 v1 (벤더 독립) -->
 <script>
@@ -1688,7 +1658,7 @@ window.SR=window.SR||(function(){
     if(val){e.textContent=val;e.className='v';} else {e.textContent='아직 입력 전';e.className='v e';}
   }
   var REQ=['owner-name','owner-address','s-name','s-addr','jibun-address','dong','ho',
-           'total-land','unit-land','transfer-denom','transfer-num','user-email'];
+           'total-land','unit-land','transfer-denom','transfer-num'];
   var OPT=['owner-rrn','apt-name','floor','prop-struct','prop-area','prop-road-address',
            'property-uid','deal-price','land-category','land-area'];
   function frac(a,b){var x=v(a),y=v(b);return (x&&y)?(x+'분의 '+y):'';}
