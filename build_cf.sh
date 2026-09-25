@@ -8,7 +8,7 @@ set -euo pipefail
 mkdir -p dist
 find dist -mindepth 1 -delete
 git ls-files -z \
-  | grep -zvE '^(worker/|lib/|api/|fixtures/|docs/|design/|backup/)|(^|/)\.[^/]+$|\.md$|\.py$|^(test\.js|ppocr_test\.html|regparse-test\.html|vercel\.json|wrangler\.jsonc|build_cf\.sh|package(-lock)?\.json)$' \
+  | grep -zvE '^(worker/|lib/|api/|functions/|fixtures/|docs/|design/|backup/)|(^|/)\.[^/]+$|\.md$|\.py$|\.mjs$|^(test\.js|ppocr_test\.html|regparse-test\.html|vercel\.json|wrangler\.jsonc|firebase\.json|build_cf\.sh|package(-lock)?\.json)$' \
   | grep -zvE '^\.' \
   | tar --null -T - -cf - \
   | tar -xf - -C dist

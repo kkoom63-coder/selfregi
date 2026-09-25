@@ -1,0 +1,6 @@
+node_modules/
+shared/
+.secret.local
+.env.local
+*.log
+.env.selfregi24

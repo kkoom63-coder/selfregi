@@ -25,3 +25,7 @@ dist/
 .playwright-mcp/
 .dev.vars
 .wrangler/
+
+# Firebase 로컬 부산물
+*-debug.log
+.firebase/
