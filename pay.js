@@ -67,9 +67,14 @@
 
   /* ── 결제 시작 ── */
   var busy = false;
-  function start() {
+  /* 결제 직전 관문. 페이지가 setGuard 로 등록한다(결제 대상 제한·결제 전 점검).
+     guard 가 false 를 돌려주면 결제창을 열지 않는다. */
+  var guardFn = null;
+  function setGuard(fn) { guardFn = typeof fn === 'function' ? fn : null; }
+  function start(opts) {
     if (busy) return;
     if (has()) { fire(); return; }
+    if (guardFn && !(opts && opts.skipGuard)) { try { if (!guardFn()) return; } catch (e) {} }
     busy = true;
     track('begin_checkout', { value: 9900, currency: 'KRW' });
     // 팝업 차단을 피하려면 클릭 직후 동기적으로 창을 먼저 연다.
@@ -179,7 +184,7 @@
     if (e.origin === location.origin && e.data && e.data.type === 'srpay:paid') fire();
   });
 
-  window.SRPay = { has: has, pass: pass, start: start, requirePaid: requirePaid, reissueUrl: reissueUrl, PRICE_LABEL: PRICE_LABEL, PASS_KEY: PASS_KEY, PENDING_KEY: PENDING_KEY };
+  window.SRPay = { has: has, pass: pass, start: start, setGuard: setGuard, requirePaid: requirePaid, reissueUrl: reissueUrl, PRICE_LABEL: PRICE_LABEL, PASS_KEY: PASS_KEY, PENDING_KEY: PENDING_KEY };
 
   function init() { restore(); redeem(); fire(); }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();

@@ -758,6 +758,10 @@ font-size:12px;background:var(--bg);border:1px solid var(--border);border-radius
       <p>한 번 결제로 두 서류가 모두 포함됩니다.</p>
     </div>
 
+  <label id="kind-ack-box" style="display:flex;gap:10px;align-items:flex-start;padding:12px 14px;margin:0 0 12px;border:1px solid var(--border);border-radius:10px;background:#F8FAFC;font-size:13.5px;line-height:1.65;cursor:pointer;word-break:keep-all">
+    <input type="checkbox" id="kind-ack" style="width:20px;height:20px;margin-top:2px;flex-shrink:0">
+    <span>이 부동산은 <b>아파트·오피스텔 등 집합건물</b>입니다. 등기부 표제부에 「1동의 건물의 표시」와 「대지권의 표시」가 있습니다. <span style="color:var(--muted)">토지·단독주택은 서류 양식이 달라 현재 결제를 받지 않습니다.</span></span>
+  </label>
   <button id="btn-pay" class="pay-btn" onclick="SRPay.start()">
     <div style="text-align:left">
       <div class="dn" id="pay-dn">토스페이로 9,900원 결제하고 서류 받기</div>
@@ -1737,6 +1741,15 @@ window.SR=window.SR||(function(){
 <script src="regocr_pp.js"></script>
 <script src="regfields.js"></script>
 <script src="pay.js"></script>
+<script>
+/* 결제 대상 제한(2026-09-26): 집합건물 매매만. 부동산 종류가 토지면 막고, 그 밖에는 집합건물 확인 체크를 받는다. */
+if (window.SRPay && SRPay.setGuard) SRPay.setGuard(function () {
+  var k = document.getElementById('prop-kind'), ack = document.getElementById('kind-ack'), box = document.getElementById('kind-ack-box');
+  if (k && k.value === '토지') { showToast('⚠️ 토지는 서류 양식이 달라 현재 결제를 받지 않습니다. 아파트·오피스텔 등 집합건물만 가능합니다.', '#B91C1C'); k.scrollIntoView({ behavior: 'smooth', block: 'center' }); return false; }
+  if (ack && !ack.checked) { showToast('⚠️ 결제 전에 집합건물 확인 칸에 체크해 주세요.', '#B45309'); if (box) { box.style.borderColor = '#B45309'; box.scrollIntoView({ behavior: 'smooth', block: 'center' }); } return false; }
+  return true;
+});
+</script>
 <script>
 /* ── 자료에서 읽어오기 (2026.8.16) ─────────────────────────────────
    RegParse(텍스트 PDF) / RegOCR(이미지·사진)로 등기부를 읽고,

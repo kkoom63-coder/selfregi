@@ -514,5 +514,9 @@ function goRoadmap() {
 
 </script>
 <script src="pay.js"></script>
+<script>
+/* 대지지분 별도등기 서류는 검증 전이라 결제를 받지 않는다(2026-09-26). 검증을 마치면 이 블록을 지운다. */
+if (window.SRPay && SRPay.setGuard) SRPay.setGuard(function () { showToast('⚠️ 대지지분 별도등기 서류는 검증을 마치는 대로 제공합니다. 지금은 결제를 받지 않습니다.', '#B45309'); return false; });
+</script>
 </body>
 </html>
