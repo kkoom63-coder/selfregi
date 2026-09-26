@@ -1,0 +1,25 @@
+# main 에 push 되면 Firebase Hosting(www.selfregi24.com)에 배포한다 — push 가 최종 승인이다.
+# 결제 함수(functions/pay)는 여기서 배포하지 않는다. 테스트 키 검증 후 수동으로 `firebase deploy --only functions`.
+# 처음 파일은 `firebase init hosting:github` 가 생성했다(서비스 계정 키 = 저장소 비밀값 FIREBASE_SERVICE_ACCOUNT_SELFREGI24).
+
+name: Deploy to Firebase Hosting on merge
+on:
+  push:
+    branches:
+      - main
+permissions:
+  contents: read
+concurrency:
+  group: firebase-hosting-live
+  cancel-in-progress: false
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: node build_fb.mjs
+      - uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_SELFREGI24 }}
+          channelId: live
+          projectId: selfregi24
