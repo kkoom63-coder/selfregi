@@ -933,6 +933,7 @@ function render(){
   im.onerror=function(){wrap.innerHTML='<div class="gm-fallback"><b>이미지 준비 중입니다</b>('+s.img+')<br>아래 설명을 참고해 주세요.</div>';};
   im.addEventListener('click',function(){openZoom(s.img,(step+1)+'. '+s.t);});
   wrap.appendChild(im);
+  for(var k=1;k<=2;k++){var nx=cur.steps[step+k];if(nx){var pi=new Image();pi.src=nx.img;}} /* 다음 2장 미리 받기 — '다음'을 누를 때 대기 없앰 */
   var cap=parseCap(s.d);
   var tEl=document.getElementById('gmCapT');
   tEl.textContent=(step+1)+'. '+s.t;

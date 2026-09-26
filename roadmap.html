@@ -2472,6 +2472,7 @@ function renderGuidePage(){
   const cnt=document.getElementById('mfCount');
   if(cnt) cnt.textContent=`${_guidePage+1} / ${total}`;
   document.querySelectorAll('#mfDots .mf-dot').forEach((d,i)=>d.classList.toggle('active',i===_guidePage));
+  for(let k=1;k<=2;k++){const nx=_guideData[_guidePage+k];if(nx){const p=new Image();p.src=nx.img;}} // 다음 2장 미리 받기 — '다음'을 누를 때 대기 없앰
 
   document.getElementById('modalBody').scrollTop=0;
 }
