@@ -29,9 +29,8 @@
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
 {"@type":"Question","name":"셀프등기를 하면 어떤 비용이 줄어드나요?","acceptedAnswer":{"@type":"Answer","text":"줄어드는 것은 법무사 보수뿐입니다. 취득세·지방교육세·농어촌특별세, 국민주택채권, 인지세는 법무사에게 맡겨도 직접 신청해도 같은 금액을 냅니다. 등기신청수수료만 신청 방법에 따라 서면 18,000원, e-Form 15,000원, 전자신청 10,000원으로 다릅니다."}},
-{"@type":"Question","name":"매매가별 법무사 보수는 얼마인가요?","acceptedAnswer":{"@type":"Answer","text":"대한법무사협회 보수기준 별표(2026. 8. 20. 개정)의 기본보수 상한 기준으로 5억원 60만원, 9억원 88만원, 15억원 120만원입니다. 가산보수·교통비 등 실비·부가가치세는 별도이며 법무사마다 다릅니다."}},
-{"@type":"Question","name":"직접 신청하는 방법 중 가장 저렴한 것은 무엇인가요?","acceptedAnswer":{"@type":"Answer","text":"전자신청(수수료 10,000원)이 가장 저렴하지만, 신청하는 당사자 모두가 최초 1회 등기소에 출석해 사용자등록을 해야 하고 매도인의 전자서명도 필요합니다. 방문 제출 방식 중에서는 인터넷등기소 e-Form(수수료 15,000원)이 가장 적게 듭니다. 셀프등기24는 이용료 9,900원에 서면 수수료 18,000원이 듭니다."}},
-{"@type":"Question","name":"매도인이 등기필정보를 잃어버렸으면 셀프등기를 할 수 없나요?","acceptedAnswer":{"@type":"Answer","text":"할 수 있지만 절차가 늘어납니다. 매도인이 등기소에 직접 출석해 등기관의 확인을 받거나, 변호사·법무사의 확인서면 또는 공증을 받아야 합니다(부동산등기법 제51조). 최종 확인은 관할 등기소 안내를 따라 주세요."}}
+{"@type":"Question","name":"법무사 보수는 얼마인가요?","acceptedAnswer":{"@type":"Answer","text":"대한법무사협회 보수기준 별표(2026. 8. 20. 개정)의 기본보수 상한 기준으로 부동산 가액이 클수록 올라가며, 15억원 기준 약 120만원입니다. 가산보수·교통비 등 실비·부가가치세는 별도이며 법무사마다 다릅니다."}},
+{"@type":"Question","name":"직접 신청하는 방법 중 가장 저렴한 것은 무엇인가요?","acceptedAnswer":{"@type":"Answer","text":"전자신청(수수료 10,000원)이 가장 저렴하지만, 신청하는 당사자 모두가 최초 1회 등기소에 출석해 사용자등록을 해야 하고 매도인의 전자서명도 필요합니다. 방문 제출 방식 중에서는 인터넷등기소 e-Form(수수료 15,000원)이 가장 적게 듭니다. 셀프등기24는 이용료 9,900원에 서면 수수료 18,000원이 듭니다."}}
 ]}
 </script>
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
@@ -89,8 +88,6 @@ h2{font-size:22px;font-weight:800;color:var(--navy);line-height:1.4;word-break:k
 .box{border-radius:var(--radius);padding:16px 18px;margin-top:16px;font-size:14.5px;line-height:1.75;word-break:keep-all}
 .box b{color:var(--navy)}
 .box.info{background:var(--card);border:1px solid var(--border)}
-.box.warn{background:#FEF9EC;border:1px solid #F5E3B3;color:#644008}
-.box.warn b{color:#644008}
 .box.src{background:#F1F5F9;border:1px solid var(--border);font-size:13px;color:#334155}
 
 /* 표 */
@@ -114,11 +111,6 @@ tr.us td:first-child{font-weight:700;color:var(--navy)}
 .presets{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
 .presets button{min-height:36px;padding:8px 14px;border:1px solid var(--border);border-radius:999px;background:#fff;font-family:inherit;font-size:13px;font-weight:600;color:#334155;cursor:pointer}
 .presets button:hover,.presets button[aria-pressed="true"]{border-color:var(--blue);color:var(--blue);background:#F0F9FF}
-.result{margin-top:18px;padding-top:16px;border-top:1px solid var(--border)}
-.result-h{font-size:17px;font-weight:800;color:var(--navy);line-height:1.5;word-break:keep-all}
-.result-h em{font-style:normal;color:var(--blue)}
-.result .tbl-wrap{margin-top:12px}
-.result table{min-width:480px}
 
 /* 마무리 */
 .finish{background:var(--navy);border-radius:16px;padding:32px 24px;margin-top:8px;max-width:720px}
@@ -144,7 +136,7 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:48px;p
 
 /* 모바일: 표를 가로 스크롤 없이 화면 폭에 맞춘다 (위 min-width 규칙보다 뒤에 둔다) */
 @media(max-width:560px){
-  table,.result table{min-width:0;font-size:14px}
+  table{min-width:0;font-size:14px}
   th,td{padding:10px 10px}
   th,td.num{white-space:normal}
 }
@@ -166,54 +158,11 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:48px;p
 <header id="content">
   <div class="hero">
     <h1>셀프등기 비용 비교<br><em>달라지는 것은 법무사 보수뿐입니다</em></h1>
-    <p class="hero-sub">취득세·국민주택채권·인지세는 누가 신청해도 같습니다. 매매가를 넣으면 법무사 기본보수와 직접 신청할 때 드는 비용을 나란히 보여줍니다.</p>
+    <p class="hero-sub">취득세·국민주택채권·인지세는 누가 신청해도 같습니다. 법무사 보수와 신청 방법별 비용만 비교합니다.</p>
   </div>
 </header>
 
-<!-- ① 매매가로 비교 -->
-<section class="section" id="compare" aria-labelledby="compare-h">
-  <div class="art">
-    <div class="sec-label">매매가로 비교</div>
-    <h2 id="compare-h">내 매매가라면 얼마나 차이 나나요?</h2>
-    <p class="lead">세금과 채권을 뺀, <b>신청 방법에 따라 달라지는 돈</b>만 비교합니다.</p>
-
-    <div class="calc">
-      <label for="price">매매가</label>
-      <div class="calc-in">
-        <input id="price" type="text" inputmode="numeric" autocomplete="off" value="1,500,000,000" aria-describedby="price-hint">
-        <span>원</span>
-      </div>
-      <div class="presets" role="group" aria-label="자주 쓰는 매매가">
-        <button type="button" data-v="300000000">3억</button>
-        <button type="button" data-v="500000000">5억</button>
-        <button type="button" data-v="900000000">9억</button>
-        <button type="button" data-v="1500000000" aria-pressed="true">15억</button>
-        <button type="button" data-v="2000000000">20억</button>
-      </div>
-      <p id="price-hint" style="font-size:12.5px;color:var(--muted);margin-top:8px">숫자만 입력하면 됩니다.</p>
-
-      <div class="result" aria-live="polite">
-        <p class="result-h" id="r-head">법무사에게 맡기면 기본보수 약 <em id="r-fee">1,200,000원</em>이 듭니다.</p>
-        <div class="tbl-wrap">
-          <table>
-            <thead><tr><th>신청 방법</th><th class="num">보수·이용료</th><th class="num">등기신청<br>수수료</th></tr></thead>
-            <tbody>
-              <tr><td>법무사에게 맡김<small>가산보수·실비·부가세 별도</small></td><td class="num" id="r-fee2">1,200,000원</td><td class="num">신청 방법에 따름</td></tr>
-              <tr class="us"><td>셀프등기24로 작성 · 서면 제출</td><td class="num">9,900원</td><td class="num">18,000원</td></tr>
-              <tr><td>인터넷등기소 e-Form · 방문 제출</td><td class="num">없음</td><td class="num">15,000원</td></tr>
-              <tr><td>양식을 내려받아 직접 작성 · 서면 제출</td><td class="num">없음</td><td class="num">18,000원</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-    <div class="box src">
-      법무사 보수는 대한법무사협회 「법무사보수기준」 별표(2026. 8. 20. 개정)의 기본보수 상한을 만원 단위로 절사한 값입니다. 가산보수·교통비 등 실비·부가가치세는 포함하지 않아 실제 청구액은 이보다 클 수 있으며, 법무사마다 다릅니다.
-    </div>
-  </div>
-</section>
-
-<!-- ② 공과금 -->
+<!-- ① 공과금 -->
 <section class="section" id="taxes" aria-labelledby="taxes-h">
   <div class="art">
     <div class="sec-label">공과금</div>
@@ -226,42 +175,43 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:48px;p
           <tr><td>취득세 · 지방교육세 · 농어촌특별세</td><td colspan="2">같음 — 매매가·주택 수·면적으로 정해집니다</td></tr>
           <tr><td>국민주택채권</td><td colspan="2">같음 — 시가표준액으로 매입액이 정해집니다</td></tr>
           <tr><td>인지세(전자수입인지)</td><td colspan="2">같음 — 1억원 이하 없음, 10억원 이하 15만원, 10억원 초과 35만원</td></tr>
-          <tr><td>등기신청수수료</td><td colspan="2">신청 방법에 따라 다름 — 서면 18,000원 · e-Form 15,000원 · 전자신청 10,000원</td></tr>
+          <tr><td>등기신청수수료</td><td colspan="2">신청 방법에 따라 10,000~18,000원 — 아래 표 참고</td></tr>
           <tr><td>법무사 보수</td><td>있음</td><td>없음</td></tr>
         </tbody>
       </table>
     </div>
     <p class="body">내 취득세는 <a href="calculator.html">취득세 계산기</a>에서 확인할 수 있습니다. 취득세는 신청서에 납부확인서를 첨부하므로 등기를 접수하는 날까지 납부를 마쳐야 합니다.</p>
-    <div class="box src">등기신청수수료: 등기신청수수료 징수에 관한 예규(2025. 8. 1. 개정 반영) · 인지세: 인지세법 제3조 · 매수인이 2인 이상이고 매도인도 2인 이상이면 신청서가 2건이 되어 수수료도 2건입니다.</div>
+    <div class="box src">인지세: 인지세법 제3조 · 매도인과 매수인이 모두 2인 이상이면 신청서가 2건이 되어 등기신청수수료도 2건입니다.</div>
   </div>
 </section>
 
-<!-- ③ 매매가별 보수 -->
-<section class="section" id="fee-table" aria-labelledby="fee-h">
+<!-- ② 신청 방법별 비교 — 매매가 입력이 표의 법무사 행을 채운다 -->
+<section class="section" id="compare" aria-labelledby="compare-h">
   <div class="art">
-    <div class="sec-label">법무사 보수</div>
-    <h2 id="fee-h">매매가별 법무사 보수는 얼마인가요?</h2>
-    <p class="lead">기본보수 상한 기준으로 <b>5억원 60만원, 9억원 88만원, 15억원 120만원</b>입니다. 부동산 가액이 클수록 올라가지만, 구간마다 오르는 비율은 줄어듭니다.</p>
-    <div class="tbl-wrap">
-      <table>
-        <thead><tr><th>매매가</th><th class="num">법무사 기본보수 상한</th><th class="num">차이<small style="font-weight:500">보수 − 9,900원</small></th></tr></thead>
-        <tbody id="fee-rows"></tbody>
-      </table>
+    <div class="sec-label">신청 방법별 비교</div>
+    <h2 id="compare-h">내 매매가라면 신청 방법별로 얼마가 드나요?</h2>
+    <p class="lead">법무사 보수는 부동산 가액이 클수록 올라가며, <b>15억원 기준 약 120만원</b>입니다. 직접 신청하면 보수 대신 등기신청수수료와 도구 이용료만 듭니다. 비용만 보면 전자신청, 방문 제출 중에서는 e-Form이 가장 적게 듭니다.</p>
+
+    <div class="calc">
+      <label for="price">매매가</label>
+      <div class="calc-in">
+        <input id="price" type="text" inputmode="numeric" autocomplete="off" value="1,500,000,000">
+        <span>원</span>
+      </div>
+      <div class="presets" role="group" aria-label="자주 쓰는 매매가">
+        <button type="button" data-v="300000000">3억</button>
+        <button type="button" data-v="500000000">5억</button>
+        <button type="button" data-v="900000000">9억</button>
+        <button type="button" data-v="1500000000" aria-pressed="true">15억</button>
+        <button type="button" data-v="2000000000">20억</button>
+      </div>
     </div>
-    <div class="box src">대한법무사협회 「법무사보수기준」 제9조 기본보수표(별표 2026. 8. 20. 개정) 산정식으로 계산했습니다. 가산보수·실비·부가가치세 별도, 법무사마다 다릅니다.</div>
-  </div>
-</section>
 
-<!-- ④ 직접 신청하는 방법 -->
-<section class="section" id="methods" aria-labelledby="methods-h">
-  <div class="art">
-    <div class="sec-label">직접 신청하는 방법</div>
-    <h2 id="methods-h">직접 신청하는 방법 중 가장 저렴한 것은 무엇인가요?</h2>
-    <p class="lead"><b>비용만 보면 전자신청, 방문 제출 중에서는 인터넷등기소 e-Form이 가장 적게 듭니다.</b> 셀프등기24는 이용료 9,900원에 서면 수수료 18,000원으로, e-Form보다 12,900원 더 듭니다.</p>
-    <div class="tbl-wrap">
+    <div class="tbl-wrap" aria-live="polite">
       <table>
-        <thead><tr><th>방법</th><th class="num">드는 비용</th><th>작성 방식</th></tr></thead>
+        <thead><tr><th>방법</th><th class="num">드는 비용</th><th>방식</th></tr></thead>
         <tbody>
+          <tr><td>법무사에게 맡김</td><td class="num"><span id="r-fee">1,200,000원</span><small>기본보수 · 수수료·실비·부가세 별도</small></td><td>법무사가 서류 작성과 접수를 맡습니다.</td></tr>
           <tr><td>전자신청</td><td class="num">10,000원</td><td>인터넷등기소에서 신청까지 끝냅니다. 신청하는 당사자 모두 최초 1회 등기소에 출석해 사용자등록을 해야 하고, 매도인의 전자서명도 필요합니다.</td></tr>
           <tr><td>e-Form<small>전자표준양식</small></td><td class="num">15,000원</td><td>인터넷등기소에서 항목을 입력해 신청서를 출력하고, 날인해 등기소에 제출합니다.</td></tr>
           <tr class="us"><td>셀프등기24</td><td class="num">27,900원<small>이용료 9,900 + 수수료 18,000</small></td><td>등기부를 올려 위임장·신청서를 Word 파일로 자동완성하고, 출력해 등기소에 제출합니다.</td></tr>
@@ -269,7 +219,8 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:48px;p
         </tbody>
       </table>
     </div>
-    <p class="body">셀프등기24가 e-Form과 다른 점은 입력을 줄이고 빠뜨리기 쉬운 부분을 잡아 주는 데 있습니다.</p>
+
+    <p class="body">셀프등기24는 e-Form보다 12,900원 더 듭니다. 대신 입력을 줄이고 빠뜨리기 쉬운 부분을 잡아 줍니다.</p>
     <div class="box info">
       <b>등기부 판독</b> — 등기사항전부증명서를 올리면 부동산의 표시·전유면적·대지권 비율 등이 채워집니다.<br>
       <b>관할 등기소</b> — 부동산 주소로 관할 등기소를 찾아 신청서에 넣습니다.<br>
@@ -277,33 +228,10 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:48px;p
       <b>번호 연결</b> — 취득세액·채권발행번호·수수료 납부번호를 저장하면 신청서에 들어갑니다.<br>
       <b>가입 불필요</b> — 회원가입 없이 쓰고, 입력한 개인정보는 서버에 저장하지 않습니다.
     </div>
-    <div class="box src">전자신청 사용자등록: 부동산등기규칙 제68조 · 전자서명: 같은 규칙 제67조제4항 · 수수료: 등기신청수수료 징수에 관한 예규</div>
-  </div>
-</section>
-
-<!-- ⑤ 셀프등기가 맞지 않는 경우 -->
-<section class="section" id="not-fit" aria-labelledby="notfit-h">
-  <div class="art">
-    <div class="sec-label">확인할 점</div>
-    <h2 id="notfit-h">셀프등기가 맞지 않는 경우도 있나요?</h2>
-    <p class="lead">있습니다. 아래에 해당하면 <b>시작하기 전에 먼저 확인</b>하세요.</p>
-    <div class="box warn">
-      <b>잔금대출 은행이 승인하지 않는 경우</b><br>
-      잔금대출은 은행과 연계된 법무사가 근저당권설정등기를 맡는 것이 일반적이어서, 은행이 승인하지 않으면 소유권이전등기만 직접 하기 어렵습니다. 대출을 신청할 때 은행에 먼저 문의하세요.
+    <div class="box src">
+      법무사 보수: 대한법무사협회 「법무사보수기준」 제9조 기본보수표(별표 2026. 8. 20. 개정) 산정식의 상한을 만원 단위로 절사한 값입니다. 가산보수·교통비 등 실비·부가가치세는 포함하지 않아 실제 청구액은 이보다 클 수 있으며, 법무사마다 다릅니다.<br>
+      등기신청수수료: 등기신청수수료 징수에 관한 예규(2025. 8. 1. 개정 반영) · 전자신청 사용자등록: 부동산등기규칙 제68조 · 전자서명: 같은 규칙 제67조제4항
     </div>
-    <div class="box warn">
-      <b>매도인이 등기필정보를 잃어버린 경우</b><br>
-      셀프등기는 가능하지만 절차가 늘어납니다. 매도인이 등기소에 직접 출석해 등기관의 확인을 받거나, 변호사·법무사의 확인서면 또는 공증을 받아야 합니다(부동산등기법 제51조). 잔금일 전에 매도인에게 확인해 두세요.
-    </div>
-    <div class="box warn">
-      <b>평일에 등기소를 방문하기 어려운 경우</b><br>
-      세금·채권·수수료는 온라인으로 미리 낼 수 있지만, 서면·e-Form 신청은 등기소에 직접 제출해야 합니다.
-    </div>
-    <div class="box info">
-      <b>셀프등기24가 아직 지원하지 않는 경우</b><br>
-      토지·단독주택, 신탁 분양 아파트(신탁해지), 대지권 미등기, 상속·증여는 서류 자동완성을 제공하지 않습니다. 직접 신청 자체는 가능하므로 e-Form이나 인터넷등기소 서식을 이용하세요.
-    </div>
-    <p class="body" style="font-size:13.5px;color:var(--muted)">개별 사안의 최종 확인은 관할 등기소 안내를 따라 주세요.</p>
   </div>
 </section>
 
@@ -353,32 +281,15 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:48px;p
     if(base <=  20000000000) return  1450000 + (base -   2000000000) *  4/10000;
     return                          8650000 + (base -  20000000000) *  1/10000;
   }
-  var SERVICE = 9900;
   var fee = function(p){ return Math.floor(lawyerBaseFee(p) / 10000) * 10000; };
   var won = function(n){ return n.toLocaleString('ko-KR') + '원'; };
-  var eok = function(p){ return (p / 100000000).toLocaleString('ko-KR') + '억원'; };
 
-  // 매매가별 표
-  var rows = [300000000, 500000000, 700000000, 900000000, 1200000000, 1500000000, 2000000000];
-  document.getElementById('fee-rows').innerHTML = rows.map(function(p){
-    var f = fee(p);
-    return '<tr><td>' + eok(p) + '</td><td class="num">' + won(f) + '</td><td class="num">' + won(f - SERVICE) + '</td></tr>';
-  }).join('');
-
-  // 입력 비교
   var input = document.getElementById('price');
+  var out = document.getElementById('r-fee');
   var btns = document.querySelectorAll('.presets button');
   function render(){
     var p = parseInt(input.value.replace(/[^0-9]/g, ''), 10) || 0;
-    var head = document.getElementById('r-head');
-    if(p <= 0){
-      head.textContent = '매매가를 입력하면 법무사 기본보수가 표시됩니다.';
-      document.getElementById('r-fee2').textContent = '—';
-      return;
-    }
-    var f = fee(p);
-    head.innerHTML = '법무사에게 맡기면 기본보수 약 <em>' + won(f) + '</em>이 듭니다.';
-    document.getElementById('r-fee2').textContent = won(f);
+    out.textContent = p > 0 ? won(fee(p)) : '매매가 입력';
     btns.forEach(function(b){ b.setAttribute('aria-pressed', String(+b.dataset.v === p)); });
   }
   input.addEventListener('input', function(){
