@@ -174,6 +174,7 @@ header{background:var(--bg)}
    카피는 1줄이면 56자 이하, 2줄이면 112자 이하로 쓴다. 그 이상이면 문장을 줄인다.
    text-wrap:balance 가 두 줄의 길이를 맞춰 준다 — 끊기는 지점이 들쭉날쭉해 보이는 원인이었다. */
 .sec-sub{font-size:13.5px;color:var(--muted);line-height:1.75;margin-bottom:22px;max-width:640px;word-break:keep-all;text-wrap:balance}
+.sec-sub a{color:var(--blue);font-weight:700}
 
 /* ── 왜 셀프등기 (뉴스 + 차트) ── */
 .news-wrap{display:grid;grid-template-columns:1fr 1fr;gap:12px}
@@ -280,7 +281,7 @@ header{background:var(--bg)}
 .cmp-col.ok li{color:#E2E8F0}
 .cmp-col.ok li::before{background:#7DD3FC}
 .cmp-col li b{color:#fff;font-weight:700}
-.cmp-note{font-size:11.5px;color:#94A3B8;line-height:1.7;margin-top:16px;word-break:keep-all}
+.cmp-note{font-size:11.5px;color:#64748B;line-height:1.7;margin-top:16px;word-break:keep-all}
 @media(min-width:768px){.cmp-in{padding:72px 20px}.cmp-cols{grid-template-columns:1fr 1fr;gap:16px}.cmp-col{padding:24px 22px}}
 
 /* ── 하단 고정 CTA ──
@@ -792,7 +793,7 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:40px;p
 <div class="section" id="price">
   <div class="sec-label">요금 안내</div>
   <h2 class="sec-title">서류 자동완성은 부동산 1건에 9,900원입니다</h2>
-  <p class="sec-sub">가이드·체크리스트·로드맵·관할 등기소 안내는 무료입니다. 요금은 위임장·신청서 Word 파일을 내려받을 때 한 번만 결제합니다.</p>
+  <p class="sec-sub">가이드·체크리스트·로드맵·관할 등기소 안내는 무료입니다. 요금은 위임장·신청서 Word 파일을 내려받을 때 한 번만 결제합니다. 법무사 보수·e-Form과의 비용 차이는 <a href="cost.html">셀프등기 비용 비교</a>에서 볼 수 있습니다.</p>
   <div class="price-box">
     <div class="price-free">가이드 · 체크리스트 · 로드맵 · 관할등기소 안내 무료</div>
     <div class="price-row"><span class="price-amt">9,900<em>원</em></span><span class="price-per">/ 부동산 1건 · 부가세 포함</span></div>
