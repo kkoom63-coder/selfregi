@@ -108,11 +108,11 @@ tr.us td:first-child{font-weight:700;color:var(--navy)}
 .calc{margin-top:18px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 18px}
 .calc label{display:block;font-size:14px;font-weight:700;color:var(--navy);margin-bottom:8px}
 .calc-in{display:flex;align-items:center;gap:8px;max-width:360px}
-.calc-in input{flex:1;min-width:0;height:48px;padding:0 14px;border:1.5px solid var(--border);border-radius:10px;font-size:17px;font-weight:700;font-family:inherit;color:var(--navy);text-align:right}
+.calc-in input{flex:1;min-width:0;height:48px;padding:10px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:17px;font-weight:700;font-family:inherit;color:var(--navy);text-align:right}
 .calc-in input:focus{border-color:var(--blue);outline:none}
 .calc-in span{font-size:15px;font-weight:700;color:var(--navy)}
 .presets{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
-.presets button{min-height:36px;padding:0 12px;border:1px solid var(--border);border-radius:999px;background:#fff;font-family:inherit;font-size:13px;font-weight:600;color:#334155;cursor:pointer}
+.presets button{min-height:36px;padding:8px 14px;border:1px solid var(--border);border-radius:999px;background:#fff;font-family:inherit;font-size:13px;font-weight:600;color:#334155;cursor:pointer}
 .presets button:hover,.presets button[aria-pressed="true"]{border-color:var(--blue);color:var(--blue);background:#F0F9FF}
 .result{margin-top:18px;padding-top:16px;border-top:1px solid var(--border)}
 .result-h{font-size:17px;font-weight:800;color:var(--navy);line-height:1.5;word-break:keep-all}
@@ -145,7 +145,7 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:48px;p
 /* 모바일: 표를 가로 스크롤 없이 화면 폭에 맞춘다 (위 min-width 규칙보다 뒤에 둔다) */
 @media(max-width:560px){
   table,.result table{min-width:0;font-size:14px}
-  th,td{padding:10px 8px}
+  th,td{padding:10px 10px}
   th,td.num{white-space:normal}
 }
 </style>
@@ -196,7 +196,7 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:48px;p
         <p class="result-h" id="r-head">법무사에게 맡기면 기본보수 약 <em id="r-fee">1,200,000원</em>이 듭니다.</p>
         <div class="tbl-wrap">
           <table>
-            <thead><tr><th>신청 방법</th><th class="num">보수·이용료</th><th class="num">등기신청수수료</th></tr></thead>
+            <thead><tr><th>신청 방법</th><th class="num">보수·이용료</th><th class="num">등기신청<br>수수료</th></tr></thead>
             <tbody>
               <tr><td>법무사에게 맡김<small>가산보수·실비·부가세 별도</small></td><td class="num" id="r-fee2">1,200,000원</td><td class="num">신청 방법에 따름</td></tr>
               <tr class="us"><td>셀프등기24로 작성 · 서면 제출</td><td class="num">9,900원</td><td class="num">18,000원</td></tr>
