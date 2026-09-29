@@ -101,16 +101,13 @@ td.num,th.num{text-align:right;white-space:nowrap;font-variant-numeric:tabular-n
 td small,th small{display:block;font-size:12.5px;color:#475569;margin-top:2px}
 tr.us td{background:#F0F9FF}
 td .m{display:block;font-weight:700;color:var(--navy)}
+td .str{color:var(--navy);font-weight:700}
 td .same{font-weight:700;color:var(--navy)}
 /* 매매가를 바꾸면 법무사 금액만 강조 + 잠깐 배경 표시 */
 .fee-hl{font-size:16px;font-weight:800;color:var(--blue);border-radius:4px;padding:0 3px}
 .fee-hl.flash{animation:feeflash .9s ease-out}
 @keyframes feeflash{from{background:#BAE6FD}to{background:transparent}}
 @media(prefers-reduced-motion:reduce){.fee-hl.flash{animation:none}}
-/* 차별점: 굵은 제목 + 설명 두 줄 */
-.feats dl{display:grid;gap:12px}
-.feats dt{font-weight:800;color:var(--navy)}
-.feats dd{margin:2px 0 0}
 
 /* 비교 계산 */
 .calc{margin-top:18px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px 18px}
@@ -225,22 +222,12 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:48px;p
           <tr><td><span class="m">법무사에게 맡김</span><small>법무사가 서류 작성과 접수를 맡습니다.</small></td><td class="num"><span id="r-fee" class="fee-hl" aria-live="polite">1,200,000원</span><small>기본보수, 수수료·실비·부가세 별도</small></td></tr>
           <tr><td><span class="m">전자신청</span><small>인터넷등기소에서 신청까지 끝냅니다. 신청하는 당사자 모두 최초 1회 등기소에 출석해 사용자등록을 해야 하고, 매도인의 전자서명도 필요합니다.</small></td><td class="num">10,000원</td></tr>
           <tr><td><span class="m">e-Form(전자표준양식)</span><small>인터넷등기소에서 항목을 입력해 신청서를 출력하고, 날인해 등기소에 제출합니다.</small></td><td class="num">15,000원</td></tr>
-          <tr class="us"><td><span class="m">셀프등기24</span><small>등기부를 올려 위임장·신청서를 Word 파일로 자동완성하고, 출력해 등기소에 제출합니다.</small></td><td class="num">27,900원<small>이용료 9,900<br>+ 수수료 18,000</small></td></tr>
+          <tr class="us"><td><span class="m">셀프등기24</span><small><b class="str">등기부 사진·PDF를 올리면 글자를 읽어(OCR)</b> 부동산 표시·면적·대지권 비율 등을 위임장·신청서에 자동으로 채웁니다. 관할 등기소와 공동명의 부수까지 반영해 Word 파일로 받습니다.</small></td><td class="num">27,900원<small>이용료 9,900<br>+ 수수료 18,000</small></td></tr>
           <tr><td><span class="m">양식 직접 작성</span><small>인터넷등기소 서식을 내려받아 모든 칸을 직접 채웁니다.</small></td><td class="num">18,000원</td></tr>
         </tbody>
       </table>
     </div>
 
-    <p class="body">셀프등기24는 <span class="nw">e-Form</span>보다 12,900원 더 듭니다. 대신 입력을 줄이고 빠뜨리기 쉬운 부분을 잡아 줍니다.</p>
-    <div class="box info feats">
-      <dl>
-        <div><dt>등기부 판독</dt><dd>등기사항전부증명서를 올리면 부동산의 표시·전유면적·대지권 비율 등이 채워집니다.</dd></div>
-        <div><dt>관할 등기소</dt><dd>부동산 주소로 관할 등기소를 찾아 신청서에 넣습니다.</dd></div>
-        <div><dt>공동명의</dt><dd>매도인·매수인 인원에 따라 신청서·위임장 부수와 이전할 지분을 나눕니다.</dd></div>
-        <div><dt>번호 연결</dt><dd>취득세액·채권발행번호·수수료 납부번호를 저장하면 신청서에 들어갑니다.</dd></div>
-        <div><dt>가입 불필요</dt><dd>회원가입 없이 쓰고, 입력한 개인정보는 서버에 저장하지 않습니다.</dd></div>
-      </dl>
-    </div>
     <div class="box src">
       법무사 보수: 대한법무사협회 「법무사보수기준」 제9조 기본보수표(별표 2026. 8. 20. 개정) 산정식의 상한을 만원 단위로 절사한 값입니다. 가산보수·교통비 등 실비·부가가치세는 포함하지 않아 실제 청구액은 이보다 클 수 있으며, 법무사마다 다릅니다.<br>
       등기신청수수료: 등기신청수수료 징수에 관한 예규(2025. 8. 1. 개정 반영) · 전자신청 사용자등록: 부동산등기규칙 제68조 · 전자서명: 같은 규칙 제67조제4항
