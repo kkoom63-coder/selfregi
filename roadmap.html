@@ -9,7 +9,13 @@
   gtag('js', new Date());
 
   // 운영 도메인에서만 수집 (로컬 미리보기·Vercel 프리뷰 제외)
-  if (/(^|\.)selfregi24\.com$/.test(location.hostname)) gtag('config', 'G-DR3W5XWF50');
+  if (/(^|\.)selfregi24\.com$/.test(location.hostname)) /* 실제 주소(www)에서만 수집한다. 테스트·미리보기 주소는 제외.
+     ?notrack=1 로 한 번 열면 이 브라우저는 계속 제외된다(?notrack=0 으로 해제). */
+  (function(){var ID='G-DR3W5XWF50',off=location.hostname!=='www.selfregi24.com';
+    try{var q=new URLSearchParams(location.search).get('notrack');
+      if(q==='1')localStorage.setItem('sr_notrack','1');if(q==='0')localStorage.removeItem('sr_notrack');
+      if(localStorage.getItem('sr_notrack')==='1')off=true;}catch(e){}
+    if(off)window['ga-disable-'+ID]=true;gtag('config',ID);})();
 </script>
 <meta charset="UTF-8">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
@@ -324,6 +330,49 @@ main{max-width:var(--read);margin:0 auto;padding:24px 20px 40px;position:relativ
 .prep-legend{display:flex;flex-wrap:wrap;gap:10px;padding:8px 12px;background:#FFFFFF;font-size:11px;color:var(--muted);border-top:1px solid var(--border)}
 .prep-legend span{display:inline-flex;align-items:center;gap:3px}
 
+/* ── 위임장 파일로 이어서 하기 (rm_extras.js) ── */
+.rm-resume{margin-top:12px;border:1px dashed #94A3B8;border-radius:10px;padding:12px 14px;background:#fff}
+.rm-resume .rs-t{font-size:13px;font-weight:800;color:var(--navy);margin-bottom:3px}
+.rm-resume .rs-d{font-size:12px;color:#475569;line-height:1.6;margin:0 0 8px;word-break:keep-all}
+.rm-resume label.rs-b{display:inline-flex;align-items:center;min-height:38px;padding:0 14px;border-radius:9px;border:1px solid var(--blue);color:var(--blue);background:#fff;font-size:13px;font-weight:700;cursor:pointer}
+.rs-msg{margin-top:8px;font-size:12px;line-height:1.6;word-break:keep-all}
+.rs-msg.ok{color:#047857}.rs-msg.err{color:#B91C1C}
+.addr-missing .rm-resume{margin-top:10px;border-color:#B45309;background:transparent}
+/* ── 맞춤 편철표 ── */
+.bd-open{display:flex;align-items:center;justify-content:center;width:calc(100% - 24px);min-height:42px;margin:10px 12px 0;border-radius:10px;border:1px solid var(--blue);background:#F0F9FF;color:var(--blue);font-size:13px;font-weight:800;cursor:pointer;font-family:inherit}
+.bd-modal{position:fixed;inset:0;z-index:9990;display:none}
+.bd-modal.open{display:block}
+html.bd-lock{overflow:hidden}
+.bd-bg{position:absolute;inset:0;background:rgba(15,23,42,.5)}
+.bd-c{position:absolute;inset:12px;max-width:820px;margin:0 auto;background:#fff;border-radius:14px;display:flex;flex-direction:column;overflow:hidden}
+@media(max-width:600px){.bd-c{inset:0;border-radius:0}}
+.bd-bar{display:flex;gap:8px;justify-content:flex-end;padding:10px 14px;border-bottom:1px solid var(--border)}
+.bd-print{min-height:38px;padding:0 16px;border-radius:9px;border:0;background:var(--navy);color:#fff;font-weight:800;font-size:13.5px;cursor:pointer;font-family:inherit}
+.bd-x{min-height:38px;padding:0 14px;border-radius:9px;border:1px solid var(--border);background:#fff;color:var(--navy);font-size:13.5px;cursor:pointer;font-family:inherit}
+.bd-body{flex:1;overflow:auto;padding:16px}
+.bd-sheet{max-width:760px;margin:0 auto;color:#0F172A}
+.bd-t{font-size:19px;font-weight:900}
+.bd-m{font-size:12.5px;color:#334155;margin-top:4px;line-height:1.6}
+.bd-warn{font-size:12.5px;color:#92400E;background:#FFFBEB;border:1px solid #FDE68A;border-radius:8px;padding:8px 10px;margin:10px 0 0}
+.bd-f{margin-top:14px}
+.bd-fh{font-size:13.5px;font-weight:800;margin-bottom:6px;color:#0F172A}
+.bd-tb{width:100%;border-collapse:collapse;font-size:12.5px}
+.bd-tb th{background:#F1F5F9;text-align:left;padding:6px 8px;border:1px solid #CBD5E1;font-weight:700}
+.bd-tb td{padding:6px 8px;border:1px solid #CBD5E1;vertical-align:top;line-height:1.5}
+.bd-tb td.c,.bd-tb th:nth-child(1),.bd-tb th:nth-child(3),.bd-tb th:nth-child(4){text-align:center;white-space:nowrap}
+.bd-tb tr.cite td{color:#64748B}
+.bd-n{font-size:11.5px;color:#475569;margin-top:2px;word-break:keep-all}
+.bd-l{margin:0;padding-left:18px;font-size:12.5px;line-height:1.7}
+.bd-foot{font-size:11px;color:#64748B;margin-top:14px;line-height:1.6}
+@media print{
+  html.bd-lock body > *:not(#bd-modal){display:none!important}
+  html.bd-lock{overflow:visible}
+  .bd-modal{position:static}.bd-bg,.bd-bar{display:none!important}
+  .bd-c{position:static;inset:auto;max-width:none;border-radius:0;overflow:visible}
+  .bd-body{overflow:visible;padding:0}
+  .bd-tb tr{break-inside:avoid}
+}
+
 /* ── [묶음1] 서류 편철 순서 박스 (STEP3) ── */
 .fold-box{margin-top:6px;border:1px solid #d9e2ef;border-radius:10px;overflow:hidden;background:#fff}
 .fold-hd{background:var(--navy);color:#fff;padding:9px 12px;font-size:12.5px;font-weight:800;display:flex;align-items:center;gap:6px}
@@ -386,7 +435,7 @@ main{max-width:var(--read);margin:0 auto;padding:24px 20px 40px;position:relativ
   <div class="page-header-inner">
     <div class="page-eyebrow">결제 완료 • 서류 준비 완료</div>
     <h1>나만의 셀프등기 로드맵</h1>
-    <p>이 화면을 켜두고 순서대로 방문하세요.<br>각 단계를 완수하면 체크박스를 눌러주세요.</p>
+    <p>이 화면을 켜 두고 순서대로 진행하세요.<br>끝낸 항목은 체크박스를 눌러 표시합니다.</p>
 
     <!-- 트랙 선택 -->
     <div class="track-toggle">
@@ -426,9 +475,16 @@ main{max-width:var(--read);margin:0 auto;padding:24px 20px 40px;position:relativ
     </div>
 
     <div class="addr-missing" id="addr-missing" style="display:none">
-      <strong>부동산 주소가 전달되지 않았습니다.</strong> 관할 구청·등기소를 안내해 드리기 위해 취득할 부동산의 지번 주소를 입력해 주세요.<br>(도, 시, 군 포함하여 입력) 
+      <strong>부동산 주소가 전달되지 않았습니다.</strong> 관할 구청·등기소를 찾으려면 취득할 부동산의 지번 주소를 입력해 주세요.<br>(도, 시, 군 포함하여 입력) 
       <input type="text" id="manual-addr" placeholder="예: 경기도 성남시 분당구 …  또는  서울특별시 강남구 …">
       <button onclick="applyManualAddr()">적용</button>
+      <div class="rm-resume">
+        <div class="rs-t">다른 기기에서 서류를 작성하셨나요?</div>
+        <p class="rs-d">셀프등기24에서 받은 위임장 파일(.docx)을 올리면 주소와 당사자 정보를 한 번에 불러옵니다.</p>
+        <label class="rs-b" for="fi-resume-top">위임장 파일로 이어서 하기</label>
+        <input type="file" id="fi-resume-top" data-resume="lg-resume-top" accept=".docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document" style="display:none">
+        <div class="rs-msg" id="lg-resume-top" role="status" aria-live="polite"></div>
+      </div>
       <div style="margin-top:10px;padding-top:10px;border-top:1px dashed #B45309;font-size:11px">
         직접 확인하시려면 <a href="전국등기소정보.pdf" target="_blank" rel="noopener" download style="color:#92400e;font-weight:700;text-decoration:underline">전국 등기소 정보 PDF</a>를 참고하세요.
       </div>
@@ -452,13 +508,13 @@ main{max-width:var(--read);margin:0 auto;padding:24px 20px 40px;position:relativ
           <div class="sc-toggle">▼</div>
         </div>
         <div class="sc-body">
-          <div class="step-intro">아래 항목을 하나씩 확인하며, <b>준비가 끝난 항목은 체크박스를 눌러</b> 완료 표시(취소선)하세요. 빠진 서류가 있으면 등기소에서 되돌아와야 할 수 있어, 출발 전 점검이 가장 중요합니다.</div>
+          <div class="step-intro">아래 항목을 하나씩 확인하며, <b>준비가 끝난 항목은 체크박스를 눌러</b> 완료 표시(취소선)하세요. 빠진 서류가 있으면 등기소에서 되돌아와야 하므로 출발 전에 확인합니다.</div>
           <div class="action-list">
             <div class="action-item" id="item0_1">
               <input type="checkbox" id="chk0_1" onchange="updateProgress('item0_1')">
               <div class="action-text">
                 <label for="chk0_1">셀프등기 신청 전 필수 준비서류 확인하기</label>
-                <div class="action-desc">본격적인 절차를 시작하기 전에, 매수인(본인)이 직접 준비할 서류와 매도인에게 받아야 할 서류를 먼저 점검하세요. 다운로드한 신청서·위임장은 A4 단면으로 인쇄해 함께 준비합니다. 아래 목록을 펼쳐 하나씩 확인할 수 있습니다.</div>
+                <div class="action-desc">절차를 시작하기 전에, 매수인(본인)이 직접 준비할 서류와 매도인에게 받아야 할 서류를 먼저 점검하세요. 다운로드한 신청서·위임장은 A4 단면으로 인쇄해 함께 준비합니다. 아래 목록을 펼쳐 하나씩 확인할 수 있습니다.</div>
                 <div class="btn-row prep-toggle"><button class="btn-preview" onclick="togglePrepList(this)">매수인·매도인 준비서류 목록 펼치기</button></div>
 
                 <div class="prep-list" style="display:none">
@@ -491,7 +547,7 @@ main{max-width:var(--read);margin:0 auto;padding:24px 20px 40px;position:relativ
               <input type="checkbox" id="chk0_2" onchange="updateProgress('item0_2')">
               <div class="action-text">
                 <label for="chk0_2">공란에 정보 수기 작성 및 인감 날인</label>
-                <div class="action-desc">위임장에 매도인/매수인의 주민번호를 펜으로 적고, 지정된 위치에 본인 인감도장을 선명하게 찍으세요.</div>
+                <div class="action-desc">위임장의 빈 주민등록번호 칸을 펜으로 적고, 매도인 날인란에는 <b>매도인의 인감도장</b>(인감증명서와 같은 도장)을 선명하게 받으세요. 매수인 도장은 인감이 아니어도 됩니다.</div>
                 <div class="btn-row"><button class="btn-preview" onclick="openGuide('stamp')">위임장 날인 위치 가이드 보기</button></div>
               </div>
             </div>
@@ -507,15 +563,15 @@ main{max-width:var(--read);margin:0 auto;padding:24px 20px 40px;position:relativ
               <input type="checkbox" id="chk0_3" onchange="updateProgress('item0_3')">
               <div class="action-text">
                 <label for="chk0_3">매수자 사전입력확인서 등록(분양물건의 경우)</label>
-                <div class="action-desc">출발 전, <a href="https://www.iros.go.kr" target="_blank" rel="noopener" style="color:var(--blue);font-weight:700;text-decoration:underline">인터넷등기소</a>에서 매수자 사전입력확인서를 꼭 사전등록하세요. 등기소 현장에서 등록하면 대기·반려 시간이 늘어날 수 있습니다. 분양물건이 아닌 경우 이 절차는 생략하시기 바랍니다.</div>
+                <div class="action-desc">출발 전, <a href="https://www.iros.go.kr" target="_blank" rel="noopener" style="color:var(--blue);font-weight:700;text-decoration:underline">인터넷등기소</a>에서 매수자 사전입력확인서를 꼭 사전등록하세요. 등기소 현장에서 등록하면 대기·반려 시간이 늘어날 수 있습니다. 분양물건이 아니면 이 절차는 건너뛰세요.</div>
                 <div class="btn-row"><button class="btn-preview" onclick="openGuide('preinput')">사전입력 방법 가이드 보기</button></div>
               </div>
             </div>
             <div class="action-item" id="item0_4">
               <input type="checkbox" id="chk0_4" onchange="checkDeparture('item0_4')">
               <div class="action-text">
-                <label for="chk0_4">신분증, 인감도장, 원본 서류 지참</label>
-                <div class="action-desc">나가기 전 신분증, 인감도장, 매매(분양)계약서 원본, 주민등록초본, 인감증명서를 가방에 꼭 챙기세요.</div>
+                <label for="chk0_4">신분증, 도장, 원본 서류 지참</label>
+                <div class="action-desc">나가기 전 신분증, 도장(매수인은 인감이 아니어도 됩니다), 매매(분양)계약서 원본, 매도인에게 받은 인감증명서·주민등록초본·등기필정보를 가방에 꼭 챙기세요.</div>
               </div>
             </div>
           </div>
@@ -551,7 +607,7 @@ main{max-width:var(--read);margin:0 auto;padding:24px 20px 40px;position:relativ
                     <input type="number" class="relay-in" placeholder="숫자만 (예: 5400000)">
                     <button onclick="saveRelay(this)">저장</button>
                   </div>
-                  <div class="relay-desc">저장버튼을 눌러주세요, 3단계 매수인 신청서 집계에 자동 반영됩니다.</div>
+                  <div class="relay-desc">저장하면 3단계 신청서 집계에 자동으로 반영됩니다.</div>
                 </div>
                 <div class="relay-input" data-relay="edu" style="margin-top:8px">
                   <label>지방교육세 기록 (필수)</label>
@@ -573,7 +629,7 @@ main{max-width:var(--read);margin:0 auto;padding:24px 20px 40px;position:relativ
                   <label>② 시가표준액 기록 (필수)</label>
                   <div class="relay-rows" data-type="number" data-ph="숫자만 (예: 350000000)"></div>
                   <div class="relay-sum" hidden></div>
-                  <div class="relay-desc">저장버튼을 눌러주세요, 3단계 매수인 신청서 집계에 자동 반영됩니다.</div>
+                  <div class="relay-desc">저장하면 3단계 신청서 집계에 자동으로 반영됩니다.</div>
                 </div>
               </div>
             </div>
@@ -587,7 +643,7 @@ main{max-width:var(--read);margin:0 auto;padding:24px 20px 40px;position:relativ
                 <div class="btn-row" style="align-items:center">
                   <button class="btn-preview" onclick="openGuide('bond_online')">온라인 채권 매입 가이드</button>
                   <button class="btn-preview" id="btn-copy-siga-o" onclick="copyRelay('siga')">내 시가표준액 복사</button>
-                  <span class="tip-badge cash" style="margin-top:0">매입 후 즉시매도를 추천드립니다</span>
+                  <span class="tip-badge cash" style="margin-top:0">대부분 매입 후 즉시매도를 선택합니다</span>
                 </div>
                 <div class="relay-input" data-relay="bondamt" style="margin-top:10px">
                   <label>채권매입금액 기록 (필수)</label>
@@ -599,7 +655,7 @@ main{max-width:var(--read);margin:0 auto;padding:24px 20px 40px;position:relativ
                   <label>③ 채권발행번호 기록 (필수)</label>
                   <div class="relay-rows" data-type="text" data-ph="은행 영수증 화면의 채권발행번호"></div>
                   <div class="relay-sum" hidden></div>
-                  <div class="relay-desc">저장버튼을 눌러주세요, 3단계 매수인 신청서 집계에 자동 반영됩니다.</div>
+                  <div class="relay-desc">저장하면 3단계 신청서 집계에 자동으로 반영됩니다.</div>
                 </div>
               </div>
             </div>
@@ -639,7 +695,7 @@ main{max-width:var(--read);margin:0 auto;padding:24px 20px 40px;position:relativ
                   <label>④ 수수료 납부번호 기록 (필수)</label>
                   <div class="relay-rows" data-type="text" data-ph="납부 후 발급되는 납부번호"></div>
                   <div class="relay-sum" hidden></div>
-                  <div class="relay-desc">3단계 소유권이전 신청서 반영을 위해 기재하여 주시기 바랍니다.</div>
+                  <div class="relay-desc">저장하면 3단계 소유권이전등기 신청서에 반영됩니다.</div>
                 </div>
               </div>
             </div>
@@ -807,7 +863,7 @@ main{max-width:var(--read);margin:0 auto;padding:24px 20px 40px;position:relativ
           <!-- 서울·경기 외 지역 / 분할 관할 보조 안내 (경고를 먼저 보여줌) -->
           <div class="pdf-helper" id="pdf-helper" style="display:none;margin-top:0;margin-bottom:12px">
             <div class="pdf-helper-t">📄 이 지역은 PDF에서 직접 확인해 주세요</div>
-            <div class="pdf-helper-d">전국 17개 시·도의 관할 등기소를 자동으로 안내해 드리고 있습니다. 다만 주소 표기가 특이하거나 자동 인식에 실패한 경우, 아래 전국 등기소 정보(법원 제공, 2025.11 기준)에서 주소의 '관할구역' 항목을 직접 확인해 주세요.</div>
+            <div class="pdf-helper-d">관할 등기소는 주소로 자동 안내합니다. 주소 표기가 특이하거나 자동 인식에 실패한 경우, 아래 전국 등기소 정보(법원 제공, 2025.11 기준)에서 주소의 '관할구역' 항목을 직접 확인해 주세요.</div>
             <a class="pdf-helper-btn" href="전국등기소정보.pdf" target="_blank" rel="noopener" download>
               ⬇ 전국 등기소 정보 PDF 다운로드
             </a>
@@ -816,7 +872,7 @@ main{max-width:var(--read);margin:0 auto;padding:24px 20px 40px;position:relativ
           <!-- ★ 번호 릴레이 집계 + 신청서 미리보기 -->
           <div class="relay-hub">
             <div class="relay-hub-hd">신청서 옮겨적기 (자동 집계)</div>
-            <div class="relay-hub-sub">앞 단계에서 저장한 번호가 여기 모여 있습니다. 영수증을 뒤질 필요 없이, 신청서 칸에 아래 값을 그대로 옮겨 적으세요.</div>
+            <div class="relay-hub-sub">앞 단계에서 저장한 번호가 여기 모여 있습니다. 신청서 칸에 아래 값을 그대로 옮겨 적으세요.</div>
             <div class="relay-hub-list">
               <div class="relay-hub-item empty" id="hub-tax">
                 <div class="rh-n">1</div>
@@ -876,7 +932,7 @@ main{max-width:var(--read);margin:0 auto;padding:24px 20px 40px;position:relativ
                 <div class="fp-row"><div class="fp-label">관할등기소</div><div class="fp-val blank" id="fp-court">주소 확인 후 자동 표시</div></div>
                 <div class="fp-row"><div class="fp-label">등기의무자 / 권리자</div><div class="fp-val blank">현장에서 직접 기재</div></div>
               </div>
-              <div style="padding:0 14px 12px"><div class="fp-note">금색으로 채워진 칸은 저장한 값입니다. 나머지 인적사항은 신청서 양식에 직접 적으시면 됩니다. 칸 위치·명칭은 등기소 양식에 따라 다를 수 있어요.</div></div>
+              <div style="padding:0 14px 12px"><div class="fp-note">금색으로 채워진 칸은 저장한 값입니다. 나머지 인적사항은 신청서 양식에 직접 적으시면 됩니다. 칸 위치·명칭은 등기소 양식에 따라 다를 수 있습니다.</div></div>
             </div>
           </div>
 
@@ -891,7 +947,7 @@ main{max-width:var(--read);margin:0 auto;padding:24px 20px 40px;position:relativ
                   <label>④ 수수료 납부번호 기록 (필수)</label>
                   <div class="relay-rows" data-type="text" data-ph="영수증의 납부번호"></div>
                   <div class="relay-sum" hidden></div>
-                  <div class="relay-desc">3단계 소유권이전 신청서 반영을 위해 기재하여 주시기 바랍니다.</div>
+                  <div class="relay-desc">저장하면 3단계 소유권이전등기 신청서에 반영됩니다.</div>
                 </div>
               </div>
             </div>
@@ -899,10 +955,17 @@ main{max-width:var(--read);margin:0 auto;padding:24px 20px 40px;position:relativ
               <input type="checkbox" id="chk3_2" onchange="updateProgress('item3_2')">
               <div class="action-text">
                 <label for="chk3_2">소유권이전등기 신청서 작성</label>
-                <div class="action-desc">위에서 저장한 번호들을 반영한 신청서를 자동으로 만들어 드립니다. 부동산 표시·등기필정보 등 일부 칸은 공란으로 남아 있으니 등기소 방문 전 확인 후 직접 기재해 주세요.</div>
+                <div class="action-desc">위에서 저장한 번호로 신청서를 자동완성합니다. 부동산 표시·등기필정보 등 일부 칸은 공란으로 남아 있으니 등기소 방문 전 확인 후 직접 기재해 주세요.</div>
                 <div class="btn-row">
                   <button class="btn-preview" onclick="openGuide('app')">신청서 종합 작성 가이드</button>
                   <button class="btn-preview" onclick="downloadSinchungseo()" style="background:var(--navy);color:#fff;border-color:var(--navy)">📄 신청서 자동 다운로드</button>
+                </div>
+                <div class="rm-resume">
+                  <div class="rs-t">다른 기기에서 작성하셨나요?</div>
+                  <p class="rs-d">받아 둔 위임장 파일(.docx)을 올리면 신청서에 들어갈 당사자·부동산 정보를 불러옵니다. 주민등록번호는 파일에 담기지 않으므로 신청서에 직접 적어 주세요.</p>
+                  <label class="rs-b" for="fi-resume-sin">위임장 파일로 이어서 하기</label>
+                  <input type="file" id="fi-resume-sin" data-resume="lg-resume-sin" accept=".docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document" style="display:none">
+                  <div class="rs-msg" id="lg-resume-sin" role="status" aria-live="polite"></div>
                 </div>
                 <div id="mokrok-wrap" style="display:none;margin-top:12px">
                   <div class="ntc wrn" style="margin-top:0">
@@ -942,6 +1005,7 @@ main{max-width:var(--read);margin:0 auto;padding:24px 20px 40px;position:relativ
                     <li>매매계약서 <small>(전자수입인지 첨부)</small></li>
                     <li>등기필정보(구 등기필증·등기권리증) <small>(구 등기필증 소지 시 원본 제출)</small></li>
                   </ol>
+                  <button type="button" class="bd-open" onclick="SRBundle.open()">내 케이스 편철표 보기 · 인쇄 (통수·원용 포함)</button>
                   <div class="fold-foot">편철 순서는 등기소·담당자에 따라 다소 다를 수 있습니다. 접수 전 <b>관할 등기소 안내데스크</b>에서 최종 확인하시면 가장 정확합니다.</div>
                 </div>
               </div>
@@ -1086,7 +1150,7 @@ async function downloadSinchungseo(){
   } catch(e) { /* 파싱 실패 시 빈 값으로 진행 */ }
 
   if (!f.buyerName) {
-    showToast('⚠️ 먼저 신청서 작성 페이지(위임장 발급 화면)에서 정보를 입력하고 "로드맵으로" 버튼을 눌러주세요', '#0369A1');
+    showToast('이 기기에 당사자 정보가 없습니다. 서류 작성 화면에서 「신청서 작성 화면으로 이동」을 누르거나, 받아 둔 위임장 파일을 바로 아래 「위임장 파일로 이어서 하기」에 올려 주세요.');
     return;
   }
 
@@ -1368,7 +1432,7 @@ async function downloadMaemaeMokrok(){
   let f = {};
   try { f = JSON.parse(localStorage.getItem('selfregi_form_v1') || '{}') || {}; } catch(e) {}
   if (!f.buyerName) {
-    showToast('⚠️ 먼저 신청서 작성 페이지에서 정보를 입력하고 "로드맵으로" 버튼을 눌러주세요', '#0369A1');
+    showToast('이 기기에 당사자 정보가 없습니다. 서류 작성 화면을 거치거나, 받아 둔 위임장 파일을 「위임장 파일로 이어서 하기」에 올려 주세요.');
     return;
   }
   const sellersN = (f.sellerJoint && Array.isArray(f.sellers)) ? f.sellers.filter(s=>s&&s.name).length : 1;
@@ -2275,7 +2339,7 @@ function togglePrep(row){ row.classList.toggle('done'); }
 
 function showToast(msg){
   const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show');
-  clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove('show'),2600);
+  clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove('show'),Math.max(2600, String(msg).length*70)); // 긴 안내는 읽을 시간만큼 둔다
 }
 
 function copyText(text){
@@ -2588,6 +2652,8 @@ window.SR=window.SR||(function(){
 })();
 </script>
 <script>try{window.SR&&SR.track('roadmap_enter',{track:(new URLSearchParams(location.search)).get('track')||'online'});}catch(e){}</script>
+<script src="resume.js"></script>
 <script src="pay.js"></script>
+<script src="rm_extras.js"></script>
 </body>
 </html>

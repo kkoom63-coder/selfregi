@@ -9,7 +9,13 @@
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
   // 운영 도메인에서만 수집 (로컬 미리보기·Vercel 프리뷰 제외)
-  if (/(^|\.)selfregi24\.com$/.test(location.hostname)) gtag('config', 'G-DR3W5XWF50');
+  if (/(^|\.)selfregi24\.com$/.test(location.hostname)) /* 실제 주소(www)에서만 수집한다. 테스트·미리보기 주소는 제외.
+     ?notrack=1 로 한 번 열면 이 브라우저는 계속 제외된다(?notrack=0 으로 해제). */
+  (function(){var ID='G-DR3W5XWF50',off=location.hostname!=='www.selfregi24.com';
+    try{var q=new URLSearchParams(location.search).get('notrack');
+      if(q==='1')localStorage.setItem('sr_notrack','1');if(q==='0')localStorage.removeItem('sr_notrack');
+      if(localStorage.getItem('sr_notrack')==='1')off=true;}catch(e){}
+    if(off)window['ga-disable-'+ID]=true;gtag('config',ID);})();
 </script>
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -90,7 +96,7 @@ footer{border-top:1px solid var(--border);background:var(--card);margin-top:60px
 <div class="wrap" id="content">
   <div class="page-head">
     <h1>개인정보처리방침</h1>
-    <div class="rev">시행일 2026년 7월 23일 · 최종 개정 2026년 9월 26일<br><span style="color:var(--muted)">2026년 9월 26일 개정: 이메일 안내 발송 기능 종료에 따라 관련 내용을 삭제하고, 제5조에 수탁자 명칭과 개인정보 국외 이전 사항을 명시했습니다.<br>2026년 9월 24일 개정: 제5조 결제 처리 수탁자(주식회사 비바리퍼블리카, 토스페이)를 명시했습니다.<br>2026년 9월 8일 개정: 제4조에 브라우저 저장 정보의 자동 삭제 기간(번호 보관함 60일, 당사자 정보 30일)을 명시했습니다.</span></div>
+    <div class="rev">시행일 2026년 7월 23일 · 최종 개정 2026년 9월 26일<br><span style="color:var(--muted)">2026년 9월 26일 개정: 이메일 안내 발송 기능 종료에 따라 관련 내용을 삭제하고, 제5조에 수탁자 명칭과 개인정보 국외 이전 사항을 명시했습니다.<br>2026년 9월 25일 개정: 제2조에 위임장 파일의 이어서 하기 정보(주민등록번호·이메일 제외)를 명시했습니다.<br>2026년 9월 24일 개정: 제5조 결제 처리 수탁자(주식회사 비바리퍼블리카, 토스페이)를 명시했습니다.<br>2026년 9월 8일 개정: 제4조에 브라우저 저장 정보의 자동 삭제 기간(번호 보관함 60일, 당사자 정보 30일)을 명시했습니다.</span></div>
   </div>
 
   <div class="intro">
@@ -139,6 +145,7 @@ footer{border-top:1px solid var(--border);background:var(--card);margin-top:60px
     <div class="callout">
       문서(위임장·소유권이전등기신청서 등)의 생성은 이용자 기기 내에서 이루어지며, 완성된 문서 파일은 이용자 기기로 직접 다운로드됩니다.
     </div>
+    <p>다른 기기에서 이어서 작성할 수 있도록, 내려받은 <b>위임장 파일(.docx)의 문서 속성</b>에 입력하신 내용(부동산 표시·당사자 성명과 주소·계약 정보 등, <b>주민등록번호와 이메일은 제외</b>)이 함께 담깁니다. 이 정보는 이용자가 보관하는 파일 안에만 있고 회사 서버로 전송되지 않으며, 「위임장 파일로 이어서 하기」에 파일을 올릴 때 이용자 기기 안에서만 읽힙니다. 위임장 파일을 다른 사람에게 보내면 이 내용도 함께 전달되니 유의해 주십시오.</p>
   </article>
 
   <article id="p3">

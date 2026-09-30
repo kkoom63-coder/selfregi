@@ -9,7 +9,13 @@
   gtag('js', new Date());
 
   // 운영 도메인에서만 수집 (로컬 미리보기·Vercel 프리뷰 제외)
-  if (/(^|\.)selfregi24\.com$/.test(location.hostname)) gtag('config', 'G-DR3W5XWF50');
+  if (/(^|\.)selfregi24\.com$/.test(location.hostname)) /* 실제 주소(www)에서만 수집한다. 테스트·미리보기 주소는 제외.
+     ?notrack=1 로 한 번 열면 이 브라우저는 계속 제외된다(?notrack=0 으로 해제). */
+  (function(){var ID='G-DR3W5XWF50',off=location.hostname!=='www.selfregi24.com';
+    try{var q=new URLSearchParams(location.search).get('notrack');
+      if(q==='1')localStorage.setItem('sr_notrack','1');if(q==='0')localStorage.removeItem('sr_notrack');
+      if(localStorage.getItem('sr_notrack')==='1')off=true;}catch(e){}
+    if(off)window['ga-disable-'+ID]=true;gtag('config',ID);})();
 </script>
 <meta charset="UTF-8">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
@@ -190,6 +196,14 @@ select{cursor:pointer;appearance:auto}
 .pay-seq li b{color:#0F172A}
 .pay-seq p{margin:8px 0 0;font-size:12.5px;color:#475569}
 #pay-card .pay-seq{margin:0 0 14px}
+/* ── 위임장 파일로 이어서 하기 (resume.js) ── */
+.resume{margin-top:14px;border:1px dashed #94A3B8;border-radius:12px;padding:14px 16px;background:#fff;transition:border-color .2s,background .2s}
+.resume.over,.resume.hl{border-color:var(--blue);background:#F0F9FF}
+.resume .rs-t{font-size:14px;font-weight:800;color:var(--navy);margin-bottom:4px}
+.resume .rs-d{font-size:12.5px;color:#475569;line-height:1.65;margin:0 0 10px;word-break:keep-all}
+.resume .fb{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:0 16px;border-radius:10px;background:#fff;border:1px solid var(--blue);color:var(--blue);font-size:13.5px;font-weight:700;cursor:pointer}
+.rs-msg{margin-top:10px;font-size:12.5px;line-height:1.65;word-break:keep-all}
+.rs-msg.ok{color:#047857}.rs-msg.err{color:#B91C1C}
 .svc-terms{background:#fff;border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin:16px 0 0}
 .svc-terms-h{font-size:11px;font-weight:800;letter-spacing:.06em;color:var(--blue);margin-bottom:12px}
 .svc-terms-l{display:grid;gap:11px;margin:0}
@@ -315,8 +329,8 @@ font-size:12px;background:var(--bg);border:1px solid var(--border);border-radius
 <header>
   <div class="hi">
         <h1>셀프등기 서류 자동생성기</h1>
-    <p>소유권이전등기(일반매매) 서류를 직접 작성해 비용을 절약하세요</p>
-    <p style="font-size:11px;color:var(--muted);margin-top:6px;">본 서비스는 개인정보를 별도로 저장하고 있지 않으며, 개인정보를 기재하지 않아도 서류를 자동완성할 수 있습니다.</p>
+    <p>소유권이전등기(일반매매) 위임장·신청서를 자동완성합니다</p>
+    <p style="font-size:11px;color:var(--muted);margin-top:6px;">입력한 개인정보는 서버에 저장하지 않으며, 비워 두어도 서류가 만들어집니다.</p>
   </div>
   </header>
 
@@ -324,7 +338,7 @@ font-size:12px;background:var(--bg);border:1px solid var(--border);border-radius
 <main id="main">
 
 <div class="ntc inf" style="margin-bottom:14px">
-  <strong>안내:</strong> <span class="req">*</span> 표시 항목 외에는 필수 입력사항이 아닙니다. 다만 입력하지 않은 항목은 서류에 공란으로 출력되며, 이 경우 직접 수기로 작성하셔야 합니다.
+  <strong>안내:</strong> <span class="req">*</span> 표시 항목만 필수입니다. 비워 둔 항목은 서류에 공란으로 출력되므로, 출력 후 손으로 적어 주세요.
 </div>
 
 <!-- ⓪ 자료에서 읽어오기 (OCR) -->
@@ -356,6 +370,15 @@ font-size:12px;background:var(--bg);border:1px solid var(--border);border-radius
   <div class="nt" style="margin-top:12px">두 문서 모두 <b>저품질 복사본이나 팩스본은 인식이 어렵습니다.</b>
     휴대전화로 찍으실 때는 그림자가 지지 않게, 글자가 또렷하게 나오도록 찍어 주세요.
     올리신 파일은 <b>이 브라우저 안에서만</b> 열리며 서버로 전송·저장되지 않습니다.</div>
+
+  <!-- 위임장 파일로 이어서 하기 (resume.js · nf_resume.js) — 다른 기기에서 이어 할 때 -->
+  <div class="resume" id="resume-box">
+    <div class="rs-t">받아 둔 위임장 파일이 있으신가요?</div>
+    <p class="rs-d">셀프등기24에서 받은 위임장(.docx)을 올리면 입력했던 내용이 그대로 복원됩니다. 다른 기기에서 이어서 할 때 쓰세요. 주민등록번호는 파일에 담지 않으므로 필요하면 다시 입력해 주세요.</p>
+    <label class="fb" for="fi-resume">위임장 파일로 이어서 하기</label>
+    <input type="file" id="fi-resume" accept=".docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document" style="display:none">
+    <div class="plg rs-msg" id="lg-resume" role="status" aria-live="polite"></div>
+  </div>
 
   <div id="ocr-out" hidden>
     <div class="legend">
@@ -432,11 +455,11 @@ font-size:12px;background:var(--bg);border:1px solid var(--border);border-radius
     <div class="fg">
       <div class="f"><label>지목</label>
         <input type="text" id="land-category" placeholder="예: 대">
-        <span class="fn">등기부 표제부 「토지의 표시」의 <b>지목을 그대로</b>. (대 · 답 · 전 · 임야 · 잡종지 등)</span>
+        <span class="fn">등기부 표제부 「토지의 표시」의 <b>지목을 그대로</b> 적습니다. (대 · 답 · 전 · 임야 · 잡종지 등)</span>
       </div>
       <div class="f"><label>토지 면적 (㎡)</label>
         <input type="text" id="land-area" placeholder="예: 2301">
-        <span class="fn">같은 줄의 <b>면적을 그대로</b>. 신청서의 부동산 표시는 등기부 기재와 같아야 하므로 <b>쉼표 없이 숫자만</b> 적습니다.</span>
+        <span class="fn">같은 줄의 <b>면적을 그대로</b> 적습니다. 신청서의 부동산 표시는 등기부 기재와 같아야 하므로 <b>쉼표 없이 숫자만</b> 적습니다.</span>
       </div>
     </div>
   </div>
@@ -589,7 +612,7 @@ font-size:12px;background:var(--bg);border:1px solid var(--border);border-radius
         </div></div>
       </div>
 
-      <div class="jt-sum" id="seller-share-sum">지분을 입력하면 합계를 확인해 드립니다.</div>
+      <div class="jt-sum" id="seller-share-sum">지분을 입력하면 합계를 확인합니다.</div>
 
       <div class="ntc wrn">
         <strong>매도인이 2인이면 인감 날인도 2개입니다.</strong> 위임장의 등기의무자란에 매도인 각자가 인감도장을 날인해야 하며, 매도용 인감증명서도 각자 1통씩 필요합니다. 한 사람의 날인만으로는 보정 대상이 될 수 있습니다.
@@ -631,7 +654,7 @@ font-size:12px;background:var(--bg);border:1px solid var(--border);border-radius
     <label>주민등록번호</label>
     <input type="text" id="owner-rrn" placeholder="예: 900101-1234567" maxlength="14">
   </div></div>
-  <div class="ntc inf"><strong>주민번호를 비워둘 경우 신청서에 수기로 직접 기재하시기 바랍니다.</strong> 입력하셔도 이 브라우저 안에서만 쓰이고 서버로 전송되지 않습니다.</div>
+  <div class="ntc inf"><strong>주민등록번호를 비워 두면 출력 후 손으로 적어 주세요.</strong> 입력하셔도 이 브라우저 안에서만 쓰이고 서버로 전송되지 않습니다.</div>
 
   <!-- 공동명의 시에만 표시 -->
   <div class="jt-body" id="buyer-joint-body">
@@ -669,7 +692,7 @@ font-size:12px;background:var(--bg);border:1px solid var(--border);border-radius
       </div></div>
     </div>
 
-    <div class="jt-sum" id="buyer-share-sum">지분을 입력하면 합계를 확인해 드립니다.</div>
+    <div class="jt-sum" id="buyer-share-sum">지분을 입력하면 합계를 확인합니다.</div>
 
     <div class="fg s1" style="margin-top:12px"><div class="f">
       <label>위임장 대리인<span class="hint">(등기소에 접수하러 갈 사람)</span></label>
@@ -700,11 +723,11 @@ font-size:12px;background:var(--bg);border:1px solid var(--border);border-radius
     <div class="cs">등기부가 아니라 <b>매매계약서</b>를 보고 입력합니다</div>
   </div></div>
 <div class="fg s3">
-    <div class="f"><label>취득 연도</label><input type="number" id="year" placeholder="2025" min="2000" max="2100"></div>
+    <div class="f"><label>계약일 · 연도</label><input type="number" id="year" placeholder="2025" min="2000" max="2100"></div>
     <div class="f"><label>월</label><input type="number" id="month" placeholder="3" min="1" max="12"></div>
     <div class="f"><label>일</label><input type="number" id="day" placeholder="15" min="1" max="31"></div>
   </div>
-  <span class="fn" style="margin-top:2px;display:block">※ 부동산 매매계약 체결일을 기준으로 입력해 주세요.</span>
+  <span class="fn" style="margin-top:2px;display:block">※ 부동산 매매계약 체결일(계약서 작성일)을 입력해 주세요. 위임장·신청서의 「등기원인과 그 연월일」에 들어갑니다. 잔금일이 아닙니다.</span>
   <div class="divider"></div>
   <div class="fg">
     <div class="f"><label>잔금 (예정)일 · 연도</label><input type="number" id="settle-year" placeholder="2025" min="2000" max="2100"></div>
@@ -755,7 +778,7 @@ font-size:12px;background:var(--bg);border:1px solid var(--border);border-radius
         <li><b>위임장</b> — 결제 직후 바로 받습니다.</li>
         <li><b>소유권이전등기신청서</b>(해당 시 매매목록 포함) — 취득세·국민주택채권·등기신청수수료 등 제세공과금을 납부한 뒤, 납부하면서 받은 번호(취득세액·채권발행번호·수수료 납부번호 등)를 입력하면 완성됩니다.</li>
       </ol>
-      <p>한 번 결제로 두 서류가 모두 포함됩니다.</p>
+      <p>두 서류 모두 한 번 결제에 포함됩니다.</p>
     </div>
 
   <label id="kind-ack-box" style="display:flex;gap:10px;align-items:flex-start;padding:12px 14px;margin:0 0 12px;border:1px solid var(--border);border-radius:10px;background:#F8FAFC;font-size:13.5px;line-height:1.65;cursor:pointer;word-break:keep-all">
@@ -769,7 +792,7 @@ font-size:12px;background:var(--bg);border:1px solid var(--border);border-radius
     </div>
     <span class="pay-arrow" id="pay-arrow">→</span>
   </button>
-  <p class="pay-note" id="pay-note">결제는 새 창에서 진행되며, 입력하신 내용은 이 화면에 그대로 남습니다.</p>
+  <p class="pay-note" id="pay-note">결제는 새 창에서 진행되며, 입력하신 내용은 이 화면에 그대로 남습니다. 입력 내용은 이 기기에만 저장되니 서류를 인쇄할 기기에서 진행하시면 편합니다. 다른 기기에서는 받아 둔 위임장 파일로 이어서 할 수 있습니다.</p>
   <div class="svc-terms">
     <div class="svc-terms-h">서비스 제공 방식과 시점</div>
     <dl class="svc-terms-l">
@@ -796,7 +819,7 @@ font-size:12px;background:var(--bg);border:1px solid var(--border);border-radius
          line-height:1.6;color:#92400E">
     <input type="checkbox" id="ocr-confirm" style="margin-top:2px;flex:none;accent-color:#92400E">
     <span><b>가지고 계신 원본 서류와 위에 입력된 내용을 대조해, 다른 곳이 없음을 확인했습니다.</b><br>
-      입력된 주소 · 면적 · 성명 등을 보유하신 서류와 최종적으로 대조하여 주시기 바랍니다.</span>
+      주소·면적·성명 등 입력된 내용을 가지고 계신 서류와 한 번 더 대조해 주세요.</span>
   </label>
 
   <!-- 신탁해지: 위임장 + 해지증서 -->
@@ -818,7 +841,7 @@ font-size:12px;background:var(--bg);border:1px solid var(--border);border-radius
   </button>
 
   <div class="ntc inf" style="margin-top:12px">
-    <strong>유의사항</strong> · 본 서비스는 법률 자문을 제공하지 않습니다. 개인정보를 입력하지 않아 공란으로 발급된 부분은 직접 기재하시어 제출하시기 바랍니다.
+    <strong>유의사항</strong> · 본 서비스는 법률 자문을 제공하지 않습니다. 개인정보를 입력하지 않아 공란으로 생성된 부분은 직접 적어서 제출해 주세요.
   </div>
 </div>
 
@@ -872,7 +895,7 @@ font-size:12px;background:var(--bg);border:1px solid var(--border);border-radius
 </aside>
 </div>
 <footer>
-  셀프등기 서류 및 상세 절차 안내는 <a href="https://selfregi.tistory.com" target="_blank" rel="noopener" style="color:#64748B;text-decoration:underline">블로그</a>를 참고하시기 바랍니다.<br>
+  준비서류와 상세 절차는 <a href="guide.html" style="color:#64748B;text-decoration:underline">셀프등기 가이드</a>에서 확인하세요.<br>
   셀프등기24 · 대표 허민 · 사업자등록번호 164-20-02315 · 주소 서울특별시 중구 동호로 173 · 이메일 <a href="mailto:selfregi999@gmail.com" style="color:#0369A1;text-decoration:none">selfregi999@gmail.com</a><br>© 2026 셀프등기24 셀프등기 서류 자동생성기 · 본 서비스는 법률 자문을 제공하지 않습니다
 </footer>
 <div class="toast" id="toast"></div>
@@ -960,7 +983,7 @@ font-size:12px;background:var(--bg);border:1px solid var(--border);border-radius
         <div class="gm-litem"><div class="gm-lnum">4</div><div class="gm-ltxt"><b>대지권의 목적인 토지 · 면적</b> → <span class="gm-field">단지 전체 대지지분</span><br>대지권 비율의 <b>분모(전체 면적)</b>가 되는 숫자입니다.</div></div>
         <div class="gm-litem"><div class="gm-lnum">5</div><div class="gm-ltxt"><b>전유부분 건물번호(층·호)</b> → <span class="gm-field">동</span> · <span class="gm-field">호</span> · <span class="gm-field">층</span><br>예: 제12층 제1204호 → 층 12, 호 1204. 동은 '1동 건물 표시'의 동 번호입니다.</div></div>
         <div class="gm-litem"><div class="gm-lnum">6</div><div class="gm-ltxt"><b>전유부분 건물내역(면적)</b> → <span class="gm-field">전유면적</span><br>㎡ 단위의 전용면적입니다(공급·분양면적 아님).</div></div>
-        <div class="gm-litem"><div class="gm-lnum">7</div><div class="gm-ltxt"><b>대지권비율</b> → <span class="gm-field">동호수 대지지분</span><br>'○○분의 △△'에서 <b>분자(△△)</b>가 귀하의 대지지분입니다.</div></div>
+        <div class="gm-litem"><div class="gm-lnum">7</div><div class="gm-ltxt"><b>대지권비율</b> → <span class="gm-field">동호수 대지지분</span><br>'○○분의 △△'에서 <b>분자(△△)</b>가 내 대지지분입니다.</div></div>
       </div>
 
       <div class="ntc inf" style="margin-top:16px">
@@ -1121,7 +1144,8 @@ window.addEventListener('srpay:change', function(e){
 function showToast(msg, bg) {
   const t = document.getElementById('toast');
   t.textContent = msg; t.style.background = bg || '#047857';
-  t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 3000);
+  /* 긴 안내(재발급·이어서 하기)는 읽을 시간만큼 둔다. 연속 호출 시 앞 타이머가 새 알림을 지우지 않게 교체한다. */
+  t.classList.add('show'); clearTimeout(t._t); t._t = setTimeout(() => t.classList.remove('show'), Math.max(3000, String(msg).length * 70));
 }
 
 function blobDL(blob, name) {
@@ -1158,7 +1182,7 @@ function updateShareSum(who) {
   const d2 = +gv(p2 + '-share-denom'), n2 = +gv(p2 + '-share-num');
   el.className = 'jt-sum';
   if (!d1 || !n1 || !d2 || !n2) {
-    el.textContent = '지분을 입력하면 합계를 확인해 드립니다.';
+    el.textContent = '지분을 입력하면 합계를 확인합니다.';
     return;
   }
   // 분수 합을 정수 비교로 판정 (부동소수점 오차 회피)
@@ -1395,7 +1419,7 @@ const RUN_GAP = '(?:</w:t>(?:(?!<w:t)[\\s\\S])*?<w:t(?:\\s[^>]*)?>)?';
 const TOKEN_DEFRAG = new RegExp(
   '\\{' + RUN_GAP + '\\{([A-Z0-9_]{2,30})' + RUN_GAP + '\\}' + RUN_GAP + '\\}', 'g');
 
-async function fillTemplate(b64, replacements) {
+async function fillTemplate(b64, replacements, beforeSave) {
   const bytes = b64ToBytes(b64);
   const zip = await JSZip.loadAsync(bytes);
   let xml = await zip.file('word/document.xml').async('string');
@@ -1405,6 +1429,7 @@ async function fillTemplate(b64, replacements) {
     xml = xml.replace(re, xe(replacements[k]));
   }
   zip.file('word/document.xml', xml);
+  if (beforeSave) await beforeSave(zip);
   return await zip.generateAsync({
     type: 'blob',
     mimeType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
@@ -1488,33 +1513,23 @@ async function downloadAll() {
 // =============================================
 // 위임장 단독 다운로드 (일반매매)
 // =============================================
-async function downloadWimiOnly() {
-  if (!SRPay.requirePaid()) return;
-  if (!validate()) return;
-  try{window.SR&&SR.track('doc_download',{doc:'wimijang'});}catch(e){}
-  if (typeof JSZip === 'undefined') { showToast('❌ 라이브러리 로딩 중, 잠시 후 다시 시도해주세요', '#DC2626'); return; }
-  try {
-    const d = getData();
-    /* 신청서 건수 판정 — 매도인·매수인이 모두 2인일 때만 2건(등기예규 제1363호).
-       1:2 도 2:1 도 1건이다. 건수만큼 위임장을 만든다. */
-    const _sN = (d.sellers || []).filter(p => p && p.name).length;
-    const _bN = (d.buyers  || []).filter(p => p && p.name).length;
-    const jointBoth = (_sN > 1 && _bN > 1);
-    const filings = jointBoth ? _bN : 1;
+/* 위임장 파일을 만든다(저장하지 않음). 이어서 하기 데이터를 문서 속성에 심는다.
+   반환: { files:[{blob,name}], filings, jointBoth, overflow:[이름…] } */
+async function buildWimiFiles(d) {
+  /* 신청서 건수 판정 — 매도인·매수인이 모두 2인일 때만 2건(등기예규 제1363호).
+     1:2 도 2:1 도 1건이다. 건수만큼 위임장을 만든다. */
+  const _sN = (d.sellers || []).filter(p => p && p.name).length;
+  const _bN = (d.buyers  || []).filter(p => p && p.name).length;
+  const jointBoth = (_sN > 1 && _bN > 1);
+  const filings = jointBoth ? _bN : 1;
+  const resumePayload = buildResumePayload(d);
+  const files = [], overflow = [];
 
-    for (let k = 0; k < filings; k++) {
+  for (let k = 0; k < filings; k++) {
     const _wimi = wimiPlan(d, jointBoth ? k : undefined);
-    if (!_wimi.tpl || _wimi.tpl === 'PLACEHOLDER') {
-      showToast('위임장 템플릿이 아직 등록되지 않았습니다', '#0369A1');
-      return;
-    }
-    if (_wimi.overflow.length) {
-      /* 현재 템플릿은 위임인 3명까지. 넘치는 인원은 조용히 빠지면 안 된다. */
-      showToast('위임인이 ' + _wimi.count + '명입니다. 위임장에는 앞 3명(' +
-        _wimi.overflow.map(function(p){return p.name;}).join(', ') +
-        ' 제외)만 인쇄되니 나머지는 손으로 적어 주세요.', '#B45309');
-    }
-    const blob1 = await fillTemplate(_wimi.tpl, Object.assign({
+    if (!_wimi.tpl || _wimi.tpl === 'PLACEHOLDER') throw new Error('위임장 템플릿이 아직 등록되지 않았습니다');
+    _wimi.overflow.forEach(p => { if (overflow.indexOf(p.name) < 0) overflow.push(p.name); });
+    const reps = Object.assign({
       PROPERTY_UID: d.propertyUid,
       JIBUN_ADDR: d.jibun,
       APT_NAME: d.aptName,
@@ -1532,19 +1547,42 @@ async function downloadWimiOnly() {
       TRANSFER_SHARE: d.transferShare,
       SETTLE_YEAR: d.settleYear.trim() ? d.settleYear : '    ',
       SETTLE_MONTH: d.settleMonth.trim() ? d.settleMonth : '  ',
-    }, _wimi.tokens));
+    }, _wimi.tokens);
+    const blob = await fillTemplate(_wimi.tpl, reps,
+      window.SRResume ? (zip => SRResume.embed(zip, resumePayload)) : null);
+    let name;
     if (jointBoth) {
       const bn = (d.buyers[k] && d.buyers[k].name) || ('매수인' + (k + 1));
-      blobDL(blob1, `위임장_${k + 1}of${filings}_${bn}_${d.dong}동${d.ho}호.docx`);
+      name = `위임장_${k + 1}of${filings}_${bn}_${d.dong}동${d.ho}호.docx`;
     } else {
-      blobDL(blob1, `위임장_${d.ownerName}_${d.dong}동${d.ho}호.docx`);
+      name = `위임장_${d.ownerName}_${d.dong}동${d.ho}호.docx`;
     }
-    }
+    files.push({ blob, name });
+  }
+  return { files, filings, jointBoth, overflow };
+}
 
-    if (jointBoth) {
-      showToast('✅ 위임장 ' + filings + '장을 내려받았습니다. 매도인·매수인이 모두 2인이면 신청서가 매수인별로 갈리고(등기예규 제1363호) 위임장도 건별로 따로 냅니다. 2장 이상 인쇄되면 매도인 인감도장으로 간인하세요.', '#047857');
+async function downloadWimiOnly() {
+  if (!SRPay.requirePaid()) return;
+  if (!validate()) return;
+  try{window.SR&&SR.track('doc_download',{doc:'wimijang'});}catch(e){}
+  if (typeof JSZip === 'undefined') { showToast('❌ 라이브러리 로딩 중, 잠시 후 다시 시도해주세요', '#DC2626'); return; }
+  try {
+    const d = getData();
+    const out = await buildWimiFiles(d);
+    if (out.overflow.length) {
+      /* 현재 템플릿은 위임인 3명까지. 넘치는 인원은 조용히 빠지면 안 된다. */
+      showToast('위임인이 4명 이상입니다. 위임장에는 앞 3명만 인쇄되니 나머지(' +
+        out.overflow.join(', ') + ')는 손으로 적어 주세요.', '#B45309');
+    }
+    for (let k = 0; k < out.files.length; k++) {
+      if (k) await new Promise(r => setTimeout(r, 400)); // 브라우저 다운로드 충돌 방지
+      blobDL(out.files[k].blob, out.files[k].name);
+    }
+    if (out.jointBoth) {
+      showToast('✅ 위임장 ' + out.filings + '장을 내려받았습니다. 매도인·매수인이 모두 2인이면 신청서가 매수인별로 갈리고(등기예규 제1363호) 위임장도 건별로 따로 냅니다. 받은 파일은 보관해 두세요 — 다른 기기에서 이어서 할 때 씁니다.');
     } else {
-      showToast('✅ 위임장 다운로드 완료!');
+      showToast('✅ 위임장을 내려받았습니다. 받은 파일은 보관해 두세요 — 다른 기기에서 이어서 할 때 씁니다.');
     }
   } catch(e) { showToast('❌ ' + e.message, '#DC2626'); console.error(e); }
 }
@@ -1553,6 +1591,64 @@ async function downloadWimiOnly() {
 // 로드맵 네비게이션
 // 로드맵(절차 안내)은 무료 — 버튼은 항상 활성. 유료인 신청서 다운로드는 roadmap.html에서 SRPay로 잠근다.
 // =============================================
+/* roadmap 으로 넘기는 당사자·부동산 값(selfregi_form_v1 스키마 v3).
+   위임장 파일의 이어서 하기 데이터(r)에도 같은 객체를 담는다 — 주민번호는 SRResume.scrub 이 뺀다. */
+function relayForm(d) {
+  return {
+    v: 3, ts: Date.now(),
+    buyerName: d.ownerName, buyerAddr: d.ownerAddr, buyerRrn: d.ownerRrn,
+    sellerName: d.tName, sellerAddr: d.tAddr,
+    sellerCeo: d.tCEO, sellerCorpReg: d.tReg,
+    // ↓ v3 추가: 공동명의 배열. roadmap이 아직 v2 필드만 읽어도 정상 동작한다.
+    buyerJoint: d.buyerJoint, sellerJoint: d.sellerJoint,
+    buyers: d.buyers, sellers: d.sellers, agentIdx: d.agentIdx,
+    jibun: d.jibun, dong: d.dong, ho: d.ho,
+    causeYr: (d.yr || '').trim(), causeMo: (d.mo || '').trim(), causeDy: (d.dy || '').trim(),
+    total: d.total, unit: d.unit,
+    aptName: d.aptName, propKind: d.propKind, propStruct: d.propStruct,
+    propArea: d.propArea, floor: d.floor, propRoadAddr: d.propRoadAddr,
+    propertyUid: d.propertyUid, dealReportNo: d.dealReportNo, dealPrice: d.dealPrice
+  };
+}
+
+/* ── 이어서 하기 (resume.js) ──
+   폼의 입력칸 값을 그대로 담는다(f). 주민등록번호 칸(id에 rrn)·이메일·파일·대조 확인 체크는 뺀다.
+   대조 확인은 복원한 기기에서 다시 해야 하는 행위라 넘기지 않는다. */
+const RESUME_SKIP = /rrn|^user-email$|^fi-|^ocr-confirm$/i;
+function formSnapshot() {
+  const out = {};
+  document.querySelectorAll('#main input[id], #main select[id], #main textarea[id]').forEach(el => {
+    if (el.type === 'file' || el.type === 'password' || RESUME_SKIP.test(el.id)) return;
+    if (el.type === 'checkbox' || el.type === 'radio') { if (el.checked) out[el.id] = { c: true }; }
+    else if (String(el.value || '').trim()) out[el.id] = { v: el.value };
+  });
+  return out;
+}
+function buildResumePayload(d) {
+  return { f: formSnapshot(), t: transferMode, r: relayForm(d) };
+}
+function applyResume(p) {
+  const f = (p && p.f) || {};
+  const ids = Object.keys(f);
+  // 체크박스(공동명의)를 먼저 켜야 숨은 칸이 열린다.
+  ids.sort((a, b) => (('c' in f[b]) ? 1 : 0) - (('c' in f[a]) ? 1 : 0));
+  let n = 0;
+  ids.forEach(id => {
+    const el = document.getElementById(id); if (!el) return;
+    const x = f[id];
+    if ('c' in x) { if (!el.checked) { el.checked = true; el.dispatchEvent(new Event('change', { bubbles: true })); } }
+    else { el.value = x.v; el.dispatchEvent(new Event('input', { bubbles: true })); el.dispatchEvent(new Event('change', { bubbles: true })); n++; }
+  });
+  if (p && (p.t === 'part' || p.t === 'all')) setTransfer(p.t, document.getElementById(p.t === 'part' ? 'ts-btn-part' : 'ts-btn-all'));
+  ['buyer', 'seller'].forEach(w => { try { updateShareSum(w); } catch (e) {} });
+  try { window.SRSync && window.SRSync(); } catch (e) {}
+  return n;
+}
+/* 이 기기에 입력값이 있는가 — 재발급 링크 안내 문구를 가른다(pay.js). */
+function hasFormInput() {
+  return ['jibun-address', 'owner-name', 's-name'].some(id => gv(id));
+}
+
 function goRoadmap() {
   const jibun = gv('jibun-address');
   const dong = gv('dong');
@@ -1569,22 +1665,7 @@ function goRoadmap() {
   //     roadmap 3단계의 「입력 정보 지우기」(clearFormStore)로 즉시 삭제할 수 있다.
   //     그래서 아래 ts는 만료 판정의 기준값이다 — 스키마 변경 시 절대 빼지 말 것.
   try {
-    const d = getData();
-    localStorage.setItem('selfregi_form_v1', JSON.stringify({
-      v: 3, ts: Date.now(),
-      buyerName: d.ownerName, buyerAddr: d.ownerAddr, buyerRrn: d.ownerRrn,
-      sellerName: d.tName, sellerAddr: d.tAddr,
-      sellerCeo: d.tCEO, sellerCorpReg: d.tReg,
-      // ↓ v3 추가: 공동명의 배열. roadmap이 아직 v2 필드만 읽어도 정상 동작한다.
-      buyerJoint: d.buyerJoint, sellerJoint: d.sellerJoint,
-      buyers: d.buyers, sellers: d.sellers, agentIdx: d.agentIdx,
-      jibun: d.jibun, dong: d.dong, ho: d.ho,
-      causeYr: (d.yr || '').trim(), causeMo: (d.mo || '').trim(), causeDy: (d.dy || '').trim(),
-      total: d.total, unit: d.unit,
-      aptName: d.aptName, propKind: d.propKind, propStruct: d.propStruct,
-      propArea: d.propArea, floor: d.floor, propRoadAddr: d.propRoadAddr,
-      propertyUid: d.propertyUid, dealReportNo: d.dealReportNo, dealPrice: d.dealPrice
-    }));
+    localStorage.setItem('selfregi_form_v1', JSON.stringify(relayForm(getData())));
   } catch (e) { /* localStorage 불가 환경은 무시 (주소 파라미터만으로 진행) */ }
 
   const params = new URLSearchParams();
@@ -1740,6 +1821,7 @@ window.SR=window.SR||(function(){
 <script src="regocr.js"></script>
 <script src="regocr_pp.js"></script>
 <script src="regfields.js"></script>
+<script src="resume.js"></script>
 <script src="pay.js"></script>
 <script>
 /* 결제 대상 제한(2026-09-26): 집합건물 매매만. 부동산 종류가 토지면 막고, 그 밖에는 집합건물 확인 체크를 받는다. */
@@ -1750,6 +1832,7 @@ if (window.SRPay && SRPay.setGuard) SRPay.setGuard(function () {
   return true;
 });
 </script>
+<script src="nf_resume.js"></script>
 <script>
 /* ── 자료에서 읽어오기 (2026.8.16) ─────────────────────────────────
    RegParse(텍스트 PDF) / RegOCR(이미지·사진)로 등기부를 읽고,

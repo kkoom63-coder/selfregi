@@ -7,7 +7,13 @@
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-  if (/(^|\.)selfregi24\.com$/.test(location.hostname)) gtag('config', 'G-DR3W5XWF50');
+  if (/(^|\.)selfregi24\.com$/.test(location.hostname)) /* 실제 주소(www)에서만 수집한다. 테스트·미리보기 주소는 제외.
+     ?notrack=1 로 한 번 열면 이 브라우저는 계속 제외된다(?notrack=0 으로 해제). */
+  (function(){var ID='G-DR3W5XWF50',off=location.hostname!=='www.selfregi24.com';
+    try{var q=new URLSearchParams(location.search).get('notrack');
+      if(q==='1')localStorage.setItem('sr_notrack','1');if(q==='0')localStorage.removeItem('sr_notrack');
+      if(localStorage.getItem('sr_notrack')==='1')off=true;}catch(e){}
+    if(off)window['ga-disable-'+ID]=true;gtag('config',ID);})();
 </script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
@@ -83,7 +89,7 @@ p{font-size:14.5px;line-height:1.7;color:#334155;margin:0 0 12px}
         box.innerHTML='<h1>결제가 완료되었습니다</h1>'+
           '<p>'+(hasOpener?'원래 화면으로 돌아가 위임장부터 내려받으세요. 신청서는 제세공과금 납부 후 이어서 받습니다. 이 창은 닫으셔도 됩니다.':'아래 버튼으로 돌아가 위임장부터 내려받으세요. 신청서는 제세공과금 납부 후 이어서 받습니다.')+'</p>'+
           '<div class="re"><b>재발급 링크 ('+ud+'까지)</b><input readonly value="'+esc(link)+'" onclick="this.select()" aria-label="재발급 링크">'+
-          '<small>신청서까지 받으실 때까지 이 링크로 다시 결제하지 않고 이용하실 수 있습니다. 메모장이나 카카오톡 나에게 보내기로 보관해 두세요.</small>'+
+          '<small>신청서까지 받으실 때까지 이 링크로 다시 결제하지 않고 이용하실 수 있습니다. 메모장이나 카카오톡 나에게 보내기로 보관해 두세요. 입력 내용은 이 기기에만 저장되므로, 다른 기기에서는 이 링크를 연 뒤 받아 두신 <b>위임장 파일</b>을 「위임장 파일로 이어서 하기」에 올리면 이어서 진행됩니다.</small>'+
           '<button class="btn sub" id="cp" type="button">링크 복사</button></div>'+
           backBtn(hasOpener?'창 닫고 서류 받으러 가기':'서류 받으러 돌아가기')+
           '<p class="meta" style="margin-top:12px">주문번호 '+esc(d.orderNo)+' · '+Number(d.amount).toLocaleString('ko-KR')+'원</p>';

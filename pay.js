@@ -67,8 +67,10 @@
 
   /* ── 결제 시작 ── */
   var busy = false;
-  /* 결제 직전 관문. 페이지가 setGuard 로 등록한다(결제 대상 제한·결제 전 점검).
-     guard 가 false 를 돌려주면 결제창을 열지 않는다. */
+  /* 결제 직전 관문. 페이지가 setGuard 로 등록한다(normal_form 의 결제 전 점검).
+     guard 가 false 를 돌려주면 결제창을 열지 않는다 — guard 쪽 안내창이 { skipGuard:true } 로 다시 부른다.
+     클릭 제스처가 살아 있을 때 창을 열어야 팝업이 막히지 않으므로, 확인은 브라우저 confirm 이 아니라
+     페이지 안의 안내창 버튼(새 클릭)으로 받는다. */
   var guardFn = null;
   function setGuard(fn) { guardFn = typeof fn === 'function' ? fn : null; }
   function start(opts) {
@@ -115,7 +117,14 @@
     fetch('/api/pay/verify', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ token: tok }) })
       .then(function (r) { return r.json(); })
       .then(function (d) {
-        if (d && d.ok) { ls(PASS_KEY, { token: tok, orderNo: d.orderNo, exp: d.exp }); fire(); notify('재발급 링크가 확인되었습니다. 서류를 다시 내려받으실 수 있습니다.'); }
+        if (d && d.ok) {
+          ls(PASS_KEY, { token: tok, orderNo: d.orderNo, exp: d.exp }); fire();
+          /* 이 기기에 입력값이 없으면(다른 기기) 페이지가 「위임장 파일로 이어서 하기」를 안내한다. */
+          var m = '';
+          try { if (typeof window.SRRedeemMsg === 'function') m = window.SRRedeemMsg(); } catch (e) {}
+          notify(m || '재발급 링크가 확인되었습니다. 다시 결제하지 않고 서류를 받으실 수 있습니다.');
+          track('pass_redeem', { mode: /입력 내용이 없습니다/.test(m) ? 'empty' : 'filled' });
+        }
         else notify((d && d.msg) || '재발급 링크를 확인하지 못했습니다.', true);
       })
       .catch(function () { notify('재발급 링크를 확인하지 못했습니다.', true); });
@@ -146,7 +155,7 @@
         '<div class="srp-bg" data-close></div>' +
         '<div class="srp-card">' +
         '<div id="srpay-h" class="srp-h">서류 자동완성 · 부동산 1건 ' + PRICE_LABEL + '</div>' +
-        '<p class="srp-d">결제하시면 위임장·소유권이전등기신청서(Word 파일)를 바로 내려받으실 수 있습니다. 부가세 포함, 추가 요금은 없습니다.</p>' +
+        '<p class="srp-d">결제 후 서류는 두 번에 나눠 받습니다. <b>위임장</b>은 결제 직후 바로, <b>소유권이전등기신청서</b>는 취득세·국민주택채권·등기신청수수료 등 제세공과금을 납부한 뒤 납부하면서 받은 번호를 입력하면 완성됩니다. 한 번 결제로 두 서류가 모두 포함되며, 부가세 포함·추가 요금은 없습니다.</p>' +
         '<ul class="srp-l"><li>결제일부터 30일, 동일 부동산·동일 매수인은 횟수 제한 없이 재발급</li>' +
         '<li>등기소 보정 요구에 따른 재작성도 재발급으로 처리</li>' +
         '<li>문서 오류 등 회사 귀책은 전액 환불 (<a href="terms.html#a6" target="_blank" rel="noopener">이용약관 제6조</a>)</li></ul>' +
