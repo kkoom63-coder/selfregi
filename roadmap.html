@@ -435,6 +435,25 @@ html.bd-lock{overflow:hidden}
 .st4-v b{display:block;font-size:15px;color:var(--navy)}
 .st4-v span{font-size:13px;color:var(--muted)}
 .st4-map{font-size:13px;font-weight:700;color:var(--blue);background:#E0F2FE;border-radius:6px;padding:6px 10px;text-decoration:none}
+
+/* 신청서 반영 미리보기 — 서류 작성 화면(normal_form)의 「문서 반영 미리보기」와 같은 형식 */
+.rm-pv{background:#fff;border:1px solid var(--border);border-radius:var(--radius);margin-top:14px}
+.rm-pv-h{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:14px 18px;border-bottom:1px solid #F1F5F9}
+.rm-pv-h h2{font-size:16px;font-weight:800;color:var(--navy)}
+.rm-pv-edit{flex:none;font-size:13px;font-weight:700;color:var(--blue);background:#E0F2FE;border-radius:6px;padding:6px 10px;text-decoration:none}
+.rm-pv-b{padding:14px 18px 16px}
+.rm-pv .pv{background:#FCFCFB;border:1px solid var(--border);border-radius:9px;padding:12px 14px;font-size:14px;line-height:1.9;word-break:keep-all}
+.rm-pv .pv+.pv{margin-top:9px}
+.rm-pv .pv .cp{font-size:12.5px;font-weight:800;color:var(--muted);margin-bottom:4px}
+.rm-pv .pv .v{color:#075985;font-weight:700;word-break:break-all}
+.rm-pv .pv .v.e{color:var(--muted);font-weight:400;background:#F1F5F9;border-radius:4px;padding:0 6px;word-break:keep-all}
+.rm-pv .tally{display:grid;grid-template-columns:1fr auto;gap:7px 10px;font-size:14px;margin-top:14px;padding-top:12px;border-top:1px solid #F1F5F9}
+.rm-pv .tally .k{color:var(--muted)}
+.rm-pv .tally .n2{font-weight:800;text-align:right}
+.rm-pv .tally .n2.a{color:#B45309}.rm-pv .tally .n2.b{color:#047857}.rm-pv .tally .n2.c{color:var(--muted)}
+.rm-pv-note{font-size:12.5px;color:var(--muted);line-height:1.7;margin-top:12px;padding-top:12px;border-top:1px solid #F1F5F9;word-break:keep-all}
+.ap-link{font-size:14px;line-height:1.6;margin:0 0 12px;padding:10px 12px;background:#F8FAFC;border:1px solid var(--border);border-radius:8px}
+.ap-link a{color:var(--blue);font-weight:700}
 </style>
 </head>
 <body>
@@ -504,6 +523,20 @@ html.bd-lock{overflow:hidden}
       </div>
 
       <p class="geo-foot">자동 안내가 실제와 다르면 <a href="전국등기소정보.pdf" target="_blank" rel="noopener" download>전국 등기소 정보 PDF</a>나 <a href="https://www.iros.go.kr" target="_blank" rel="noopener">인터넷등기소</a>에서 확인해 주세요. 최종 관할은 관할 등기소 안내를 따릅니다.</p>
+    </section>
+
+    <section class="rm-pv" id="rm-pv" aria-labelledby="rm-pv-h">
+      <div class="rm-pv-h"><h2 id="rm-pv-h">신청서 반영 미리보기</h2><a class="rm-pv-edit" href="normal_form.html">입력 내용 고치기</a></div>
+      <div class="rm-pv-b">
+        <div id="ap-warn"></div>
+        <div id="ap-body"></div>
+        <div class="tally">
+          <span class="k">입력을 마친 항목</span><span class="n2 b" id="pvDone">0</span>
+          <span class="k">아직 비어 있는 항목</span><span class="n2 a" id="pvLeft">0</span>
+          <span class="k">비워두어도 되는 항목</span><span class="n2 c" id="pvOpt">0</span>
+        </div>
+        <p class="rm-pv-note">비어 있는 칸은 신청서에 공란으로 인쇄됩니다. 해당 단계에서 저장하거나 인쇄한 뒤 직접 적어 주세요.<br>주민등록번호는 화면에 표시하지 않습니다. 최종 확인은 관할 등기소 안내를 따라 주세요.</p>
+      </div>
     </section>
   </div>
 </div>
@@ -708,14 +741,7 @@ html.bd-lock{overflow:hidden}
           <div class="sc-meta"><span class="sc-count" data-count>0 / 0</span><span class="sc-toggle">펼치기</span></div>
         </div>
         <div class="sc-body" id="st-3-body">
-          <div class="ap" id="ap">
-            <div class="ap-hd">
-              <div><div class="ap-t">신청서 미리보기</div><div class="ap-s" id="ap-sum">신청서에 들어갈 값입니다.</div></div>
-              <a class="ap-edit" href="normal_form.html">입력 내용 고치기</a>
-            </div>
-            <div class="ap-body" id="ap-body"></div>
-            <p class="ap-note">비어 있는 칸은 신청서에 공란으로 인쇄됩니다. 해당 단계에서 값을 저장하거나 인쇄한 뒤 직접 적어 주세요. 주민등록번호는 화면에 표시하지 않습니다.</p>
-          </div>
+          <p class="ap-link" id="ap-link">신청서에 들어갈 값은 위 <a href="#rm-pv">신청서 반영 미리보기</a>에서 확인할 수 있습니다.</p>
           <div class="action-list">
             <div class="action-item" id="item3_2">
               <input type="checkbox" id="chk3_2" onchange="updateProgress('item3_2')">
@@ -1866,27 +1892,23 @@ function renderPreview(){
       ['관할 등기소', window.SELFREGI_COURT_NAME ? window.SELFREGI_COURT_NAME + ' 귀중' : '', CT],
     ]],
   ];
-  const HOW = {
-    form: '<a href="normal_form.html">서류 작성 화면에서 입력</a>',
-    st2:  '<button type="button" class="ap-go" onclick="openStep(\'st-2\',true)">2단계에서 저장</button>',
-    court:'<button type="button" class="ap-go" onclick="document.getElementById(\'geo\').scrollIntoView({behavior:\'smooth\'})">관할 정보에서 정하기</button>',
-  };
-  let total = 0, filled = 0, html = '';
+  const OPT = { '농어촌특별세':1, '매수인 주민등록번호':1 };
+  const HOW = { form:'서류 작성 화면', st2:'2단계에서 저장', court:'관할 정보에서 선택' };
+  let done = 0, left = 0, opt = 0, html = '';
   G.forEach(([gt, rows]) => {
-    html += `<div class="ap-g"><div class="ap-gt">${gt}</div>`;
-    rows.forEach(([k, v, src]) => {
-      total++; if(v) filled++;
-      html += `<div class="ap-r${v ? '' : ' empty'}"><div class="ap-k">${k}</div><div class="ap-v">${v ? esc(v) : '<span class="ap-blank">비어 있음</span> · ' + HOW[src]}</div></div>`;
-    });
+    html += `<div class="pv"><div class="cp">${gt}</div>`;
+    html += rows.map(([k, v, src]) => {
+      if(v){ done++; return `${k} <span class="v">${esc(v)}</span>`; }
+      if(OPT[k]){ opt++; return `${k} <span class="v e">비워도 됨</span>`; }
+      left++; return `${k} <span class="v e">아직 입력 전 · ${HOW[src]}</span>`;
+    }).join('<br>');
     html += '</div>';
   });
-  if(!hasForm){
-    html = '<div class="ap-warn"><b>이 기기에 서류 작성 화면의 입력값이 없습니다.</b> 당사자·부동산 정보가 비어 있는 상태로 신청서가 만들어집니다. ' +
-      '<a href="normal_form.html">서류 작성 화면</a>에서 입력하거나, 아래 「위임장 파일로 이어서 하기」로 불러오세요.</div>' + html;
-  }
   host.innerHTML = html;
-  const sum = document.getElementById('ap-sum');
-  if(sum) sum.textContent = `신청서에 들어갈 ${total}칸 중 ${filled}칸이 채워져 있습니다.`;
+  const w = document.getElementById('ap-warn');
+  if(w) w.innerHTML = hasForm ? '' : '<div class="ap-warn"><b>이 기기에 서류 작성 화면의 입력값이 없습니다.</b> <a href="normal_form.html">서류 작성 화면</a>에서 입력하거나, 3단계의 「위임장 파일로 이어서 하기」로 불러오세요.</div>';
+  const set = (id, n) => { const el = document.getElementById(id); if(el) el.textContent = n; };
+  set('pvDone', done); set('pvLeft', left); set('pvOpt', opt);
 }
 
 function calcStamp(){
