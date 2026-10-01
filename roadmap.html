@@ -959,6 +959,12 @@ html.bd-lock{overflow:hidden}
                   <button class="btn-preview" onclick="openGuide('app')">신청서 종합 작성 가이드</button>
                   <button class="btn-preview" onclick="downloadSinchungseo()" style="background:var(--navy);color:#fff;border-color:var(--navy)">📄 신청서 자동 다운로드</button>
                 </div>
+                <!-- 이용 설문(2026-10-02) — 신청서를 내려받은 뒤에만 보인다. 후기는 게시 동의 응답만 쓴다. -->
+                <div id="sv-box" hidden style="margin-top:12px;padding:14px 16px;border:1px solid #BAE6FD;border-radius:10px;background:#F0F9FF;font-size:14px;line-height:1.65;color:#0F172A">
+                  <b>이용해 보신 의견을 들려주세요</b><br>
+                  4문항, 1분 안팎입니다. 이름·연락처는 묻지 않습니다. 등기소 접수를 마친 뒤 결과까지 알려 주시면 서비스 개선에 가장 도움이 됩니다.
+                  <a href="https://docs.google.com/forms/d/e/1FAIpQLSeB1eNCUFrFbSnlUPdT0tZfUTFqWJo3R2_gHLuGO8fjvA5pdA/viewform" target="_blank" rel="noopener" onclick="try{window.SR&&SR.track('survey_open',{from:'roadmap'});}catch(e){}" style="display:inline-block;margin-top:8px;font-weight:700;color:#0369A1">설문 열기 (Google Forms) →</a>
+                </div>
                 <div class="rm-resume">
                   <div class="rs-t">다른 기기에서 작성하셨나요?</div>
                   <p class="rs-d">받아 둔 위임장 파일(.docx)을 올리면 신청서에 들어갈 당사자·부동산 정보를 불러옵니다. 주민등록번호는 파일에 담기지 않으므로 신청서에 직접 적어 주세요.</p>
@@ -1327,6 +1333,7 @@ async function downloadSinchungseo(){
     } else {
       showToast('✅ 신청서 다운로드 완료!');
     }
+    var sv = document.getElementById('sv-box'); if (sv) sv.hidden = false;
   } catch(e) { showToast('❌ ' + e.message, '#DC2626'); console.error(e); }
 }
 

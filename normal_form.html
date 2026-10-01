@@ -839,6 +839,12 @@ font-size:12px;background:var(--bg);border:1px solid var(--border);border-radius
     </div>
   </button>
 
+  <!-- 이용 설문(2026-10-02) — 위임장을 내려받은 뒤에만 보인다. 후기는 게시 동의 응답만 쓴다. -->
+  <div id="sv-box" hidden style="margin-top:12px;padding:14px 16px;border:1px solid #BAE6FD;border-radius:10px;background:#F0F9FF;font-size:14px;line-height:1.65;color:#0F172A">
+    <b>이용해 보신 의견을 들려주세요</b><br>
+    4문항, 1분 안팎입니다. 이름·연락처는 묻지 않습니다. 신청서까지 받고 등기소 접수를 마친 뒤 답하셔도 됩니다.
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLSeB1eNCUFrFbSnlUPdT0tZfUTFqWJo3R2_gHLuGO8fjvA5pdA/viewform" target="_blank" rel="noopener" onclick="try{window.SR&&SR.track('survey_open',{from:'form'});}catch(e){}" style="display:inline-block;margin-top:8px;font-weight:700;color:#0369A1">설문 열기 (Google Forms) →</a>
+  </div>
   <div class="ntc inf" style="margin-top:12px">
     <strong>유의사항</strong> · 본 서비스는 법률 자문을 제공하지 않습니다. 개인정보를 입력하지 않아 공란으로 생성된 부분은 직접 적어서 제출해 주세요.
   </div>
@@ -1583,6 +1589,7 @@ async function downloadWimiOnly() {
     } else {
       showToast('✅ 위임장을 내려받았습니다. 받은 파일은 보관해 두세요 — 다른 기기에서 이어서 할 때 씁니다.');
     }
+    var sv = document.getElementById('sv-box'); if (sv) sv.hidden = false;
   } catch(e) { showToast('❌ ' + e.message, '#DC2626'); console.error(e); }
 }
 
