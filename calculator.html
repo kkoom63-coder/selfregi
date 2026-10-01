@@ -804,6 +804,20 @@ window.SR=window.SR||(function(){
   function reset(){try{localStorage.removeItem(LK);}catch(e){}}
   return {track:track,report:report,exportCsv:exportCsv,reset:reset};
 })();
+/* 계산기 → 서류 작성 흐름 측정(2026-10-01). calc_run: 매매가를 넣어 결과가 나온 첫 순간(페이지당 1회),
+   calc_cta: 서류 작성으로 가는 버튼 클릭(from=nav 상단 메뉴 / result 결과 아래 버튼). */
+(function(){
+  var ran=false;
+  document.addEventListener('input',function(e){
+    if(ran||!e.isTrusted||!e.target||e.target.id!=='priceStr') return;
+    if(String(e.target.value).replace(/[^0-9]/g,'').length<7) return;
+    ran=true; SR.track('calc_run',{});
+  },true);
+  document.addEventListener('click',function(e){
+    var a=e.target&&e.target.closest&&e.target.closest('a[href^="normal_form.html"]');
+    if(a) SR.track('calc_cta',{from:a.classList.contains('cta-btn')?'result':'nav'});
+  },true);
+})();
 </script>
 </body>
 </html>

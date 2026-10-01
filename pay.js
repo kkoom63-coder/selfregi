@@ -96,6 +96,7 @@
       .catch(function (e) {
         busy = false;
         try { if (w && !w.closed) w.close(); } catch (x) {}
+        track('pay_error', { mode: 'create' });
         notify(e.message || '결제를 시작하지 못했습니다.', true);
       });
   }
@@ -183,6 +184,7 @@
       document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeSheet(); });
     }
     el.classList.add('open');
+    track('pay_sheet', { mode: 'download' }); // 결제 전 다운로드를 눌러 안내창이 뜬 경우
     var go = el.querySelector('.srp-go'); if (go) go.focus();
   }
   function closeSheet() { var el = document.getElementById('srpay-sheet'); if (el) el.classList.remove('open'); }
