@@ -265,7 +265,7 @@ footer{text-align:center;padding:18px;font-size:11px;color:#64748B;max-width:120
 @media(max-width:520px){.fg,.fg.s3,.dg{grid-template-columns:1fr}.gm-overlay{padding:0}.gm-box{border-radius:0;min-height:100vh}}
 
 /* ── 자료에서 읽어오기 (2026.8) ── */
-.slots{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.slots{display:grid;grid-template-columns:1fr;gap:14px}
 @media(max-width:760px){.slots{grid-template-columns:1fr}}
 .drop{border:1.5px dashed var(--blue);border-radius:10px;background:#F0F9FF;padding:20px;text-align:center;transition:background .15s}
 .drop.alt{border-color:#CBD5E1;background:var(--bg)}
@@ -357,16 +357,9 @@ font-size:12px;background:var(--bg);border:1px solid var(--border);border-radius
       <div class="pr" id="pr-reg"><i></i></div>
       <div class="plg" id="lg-reg"></div>
     </div>
-    <div class="drop alt" id="dz-deal">
-      <div class="slot-t">매매계약서</div>
-      <div class="sub"><br><br>준비 중입니다. 지금은 등기부만 읽습니다.</div>
-      <label class="fb" for="fi-deal">파일 선택</label>
-      <input type="file" id="fi-deal" accept="application/pdf,image/*" style="display:none">
-      <div class="pr" id="pr-deal"><i></i></div>
-    </div>
   </div>
 
-  <div class="nt" style="margin-top:12px">두 문서 모두 <b>저품질 복사본이나 팩스본은 인식이 어렵습니다.</b>
+  <div class="nt" style="margin-top:12px"><b>저품질 복사본이나 팩스본은 인식이 어렵습니다.</b>
     휴대전화로 찍으실 때는 그림자가 지지 않게, 글자가 또렷하게 나오도록 찍어 주세요.
     올리신 파일은 <b>이 브라우저 안에서만</b> 열리며 서버로 전송·저장되지 않습니다.</div>
 
@@ -397,13 +390,12 @@ font-size:12px;background:var(--bg);border:1px solid var(--border);border-radius
 
 <!-- 등기 유형 선택 (최상단) -->
 <div class="card">
-  <div class="ch"><div class="ci">1</div><div><div class="ct">등기 유형 선택</div><div class="cs">소유권이전등기의 원인을 선택하세요</div></div></div>
+  <div class="ch"><div class="ci">1</div><div><div class="ct">등기 유형</div><div class="cs">이 화면에서 작성하는 등기입니다</div></div></div>
   <div class="deal-tab">
-    <button class="deal-tab-btn active" onclick="switchDeal('sale', this)">일반매매</button>
-    <button class="deal-tab-btn" onclick="switchDeal('trust', this)" disabled title="준비 중입니다">신탁해지 (분양·신축) · 준비중</button>
+    <button class="deal-tab-btn active" onclick="switchDeal('sale', this)">일반매매 (아파트·오피스텔 등 집합건물)</button>
   </div>
   <div class="ntc inf2" id="deal-desc" style="margin-top:12px">
-    <strong>일반매매:</strong> 개인 간 매매로 소유권을 이전하는 경우입니다. 매도인은 개인(또는 법인)이며, 신탁일부해지증서는 필요하지 않습니다.
+    <strong>일반매매:</strong> 매매계약에 따라 소유권을 이전하는 경우입니다. 매도인은 개인(또는 법인)입니다. 분양·신축 아파트의 신탁해지, 토지·단독주택은 이 화면에서 작성하지 않습니다.
   </div>
 </div>
 
@@ -791,7 +783,7 @@ font-size:12px;background:var(--bg);border:1px solid var(--border);border-radius
     </div>
     <span class="pay-arrow" id="pay-arrow">→</span>
   </button>
-  <p class="pay-note" id="pay-note">결제는 새 창에서 진행되며, 입력하신 내용은 이 화면에 그대로 남습니다. 입력 내용은 이 기기에만 저장되니 서류를 인쇄할 기기에서 진행하시면 편합니다. 다른 기기에서는 받아 둔 위임장 파일로 이어서 할 수 있습니다.</p>
+  <p class="pay-note" id="pay-note">토스 앱으로 결제합니다. PC에서는 화면에 뜨는 QR 코드를 휴대폰 토스 앱으로 찍으면 됩니다. 결제는 새 창에서 진행되며, 입력하신 내용은 이 화면에 그대로 남습니다. 입력 내용은 이 기기에만 저장되니 서류를 인쇄할 기기에서 진행하시면 편합니다. 다른 기기에서는 받아 둔 위임장 파일로 이어서 할 수 있습니다.</p>
   <div class="svc-terms">
     <div class="svc-terms-h">서비스 제공 방식과 시점</div>
     <dl class="svc-terms-l">
@@ -1139,7 +1131,7 @@ function renderPayState(){
     var url=SRPay.reissueUrl();
     note.innerHTML='재발급 링크: <a href="'+url+'" style="word-break:break-all">'+url.replace(/^https?:\/\//,'').slice(0,48)+'…</a> — 다른 기기에서도 이 링크로 다시 받으실 수 있습니다.';
   } else {
-    note.textContent='결제는 새 창에서 진행되며, 입력하신 내용은 이 화면에 그대로 남습니다.';
+    note.textContent='토스 앱으로 결제합니다. PC에서는 화면에 뜨는 QR 코드를 휴대폰 토스 앱으로 찍으면 됩니다. 결제는 새 창에서 진행되며, 입력하신 내용은 이 화면에 그대로 남습니다.';
   }
 }
 window.addEventListener('srpay:change', function(e){

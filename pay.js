@@ -157,7 +157,8 @@
         '<div class="srp-card">' +
         '<div id="srpay-h" class="srp-h">서류 자동완성 · 부동산 1건 ' + PRICE_LABEL + '</div>' +
         '<p class="srp-d">결제 후 서류는 두 번에 나눠 받습니다. <b>위임장</b>은 결제 직후 바로, <b>소유권이전등기신청서</b>는 취득세·국민주택채권·등기신청수수료 등 제세공과금을 납부한 뒤 납부하면서 받은 번호를 입력하면 완성됩니다. 한 번 결제로 두 서류가 모두 포함되며, 부가세 포함·추가 요금은 없습니다.</p>' +
-        '<ul class="srp-l"><li>결제일부터 30일, 동일 부동산·동일 매수인은 횟수 제한 없이 재발급</li>' +
+        '<ul class="srp-l"><li>토스 앱으로 결제합니다. PC에서는 화면의 QR 코드를 휴대폰 토스 앱으로 찍습니다</li>' +
+        '<li>결제일부터 30일, 동일 부동산·동일 매수인은 횟수 제한 없이 재발급</li>' +
         '<li>등기소 보정 요구에 따른 재작성도 재발급으로 처리</li>' +
         '<li>문서 오류 등 회사 귀책은 전액 환불 (<a href="terms.html#a6" target="_blank" rel="noopener">이용약관 제6조</a>)</li></ul>' +
         '<button type="button" class="srp-go">토스페이로 ' + PRICE_LABEL + ' 결제</button>' +
