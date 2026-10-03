@@ -68,7 +68,7 @@
   <!-- 결과 행 -->
   <rect x="42" y="284" width="616" height="32" fill="#fff" stroke="#e2e5ec"/>
   <circle cx="70" cy="300" r="6" fill="#fff" stroke="#1d6fd0" stroke-width="1.5"/><circle cx="70" cy="300" r="3" fill="#1d6fd0"/>
-  <text x="130" y="304" text-anchor="middle" font-size="9" fill="#333">매매</text>
+  <text x="130" y="304" text-anchor="middle" font-size="9" fill="#333">매매(일반)</text>
   <text x="190" y="304" text-anchor="middle" font-size="9" fill="#333">건물</text>
   <text x="380" y="304" text-anchor="middle" font-size="9" fill="#888" letter-spacing="1">&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;</text>
   <text x="500" y="304" text-anchor="middle" font-size="8.5" fill="#888" letter-spacing="1">&#9679;&#9679;&#9679;&#9679;&#9679;</text>

@@ -14,34 +14,20 @@
 
   <!-- ===== 좌측 신고대상 스텝퍼 ===== -->
   <text x="22" y="56" font-size="12" font-weight="700" fill="#2c3550">신고대상</text>
-  <rect x="18" y="66" width="150" height="356" rx="3" fill="#ffffff" stroke="#dfe3ea"/>
-  <!-- 스텝 8개 -->
+  <rect x="18" y="66" width="150" height="370" rx="3" fill="#ffffff" stroke="#dfe3ea"/>
+<circle cx="40" cy="92" r="9" fill="#b9c0cc"/><path d="M36,92 l3,3 l5,-6" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><text x="56" y="95.5" font-size="9.5" fill="#9aa3b2">신고인</text>
+<circle cx="40" cy="126" r="9" fill="#b9c0cc"/><path d="M36,126 l3,3 l5,-6" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><text x="56" y="129.5" font-size="9.5" fill="#9aa3b2">신고유형</text>
+<circle cx="40" cy="160" r="9" fill="#1d6fd0"/><text x="40" y="163.5" text-anchor="middle" font-size="9" font-weight="700" fill="#fff">3</text><text x="56" y="163.5" font-size="9.5" font-weight="700" fill="#1d6fd0">신고내용</text><text x="156" y="164" font-size="11" fill="#1d6fd0">&#9654;</text>
+<circle cx="40" cy="194" r="9" fill="#2c3550"/><text x="40" y="197.5" text-anchor="middle" font-size="9" font-weight="700" fill="#fff">4</text><text x="56" y="197.5" font-size="9.5" fill="#555">주택명세서</text>
+<circle cx="40" cy="228" r="9" fill="#2c3550"/><text x="40" y="231.5" text-anchor="middle" font-size="9" font-weight="700" fill="#fff">5</text><text x="56" y="231.5" font-size="9.5" fill="#555">중과세확인</text>
+<circle cx="40" cy="262" r="9" fill="#2c3550"/><text x="40" y="265.5" text-anchor="middle" font-size="9" font-weight="700" fill="#fff">6</text><text x="56" y="265.5" font-size="9.5" fill="#555">감면신청</text>
+<circle cx="40" cy="296" r="9" fill="#2c3550"/><text x="40" y="299.5" text-anchor="middle" font-size="9" font-weight="700" fill="#fff">7</text><text x="56" y="299.5" font-size="9.5" fill="#555">산출세액확인</text>
+<circle cx="40" cy="330" r="9" fill="#2c3550"/><text x="40" y="333.5" text-anchor="middle" font-size="9" font-weight="700" fill="#fff">8</text><text x="56" y="333.5" font-size="9.5" fill="#555">구비서류등록</text>
+<circle cx="40" cy="364" r="9" fill="#2c3550"/><text x="40" y="367.5" text-anchor="middle" font-size="9" font-weight="700" fill="#fff">9</text><text x="56" y="367.5" font-size="9.5" fill="#555">신고서제출</text>
+<circle cx="40" cy="398" r="9" fill="#2c3550"/><text x="40" y="401.5" text-anchor="middle" font-size="9" font-weight="700" fill="#fff">10</text><text x="56" y="401.5" font-size="9.5" fill="#555">납부</text>
+  
   <g font-size="9.5" fill="#555">
-    <!-- 1 -->
-    <circle cx="40" cy="92" r="9" fill="#2c3550"/><text x="40" y="95.5" text-anchor="middle" font-size="9" font-weight="700" fill="#fff">1</text>
-    <text x="56" y="95.5">신고인</text>
-    <!-- 2 -->
-    <circle cx="40" cy="126" r="9" fill="#2c3550"/><text x="40" y="129.5" text-anchor="middle" font-size="9" font-weight="700" fill="#fff">2</text>
-    <text x="56" y="129.5">신고유형</text>
-    <!-- 3 active -->
-    <circle cx="40" cy="160" r="9" fill="#1d6fd0"/><text x="40" y="163.5" text-anchor="middle" font-size="9" font-weight="700" fill="#fff">3</text>
-    <text x="56" y="163.5" font-weight="700" fill="#1d6fd0">신고내용</text>
-    <text x="150" y="164" font-size="11" fill="#1d6fd0">&#9654;</text>
-    <!-- 4 -->
-    <circle cx="40" cy="194" r="9" fill="#2c3550"/><text x="40" y="197.5" text-anchor="middle" font-size="9" font-weight="700" fill="#fff">4</text>
-    <text x="56" y="197.5">감면신청</text>
-    <!-- 5 -->
-    <circle cx="40" cy="228" r="9" fill="#2c3550"/><text x="40" y="231.5" text-anchor="middle" font-size="9" font-weight="700" fill="#fff">5</text>
-    <text x="56" y="231.5">산출세액확인</text>
-    <!-- 6 -->
-    <circle cx="40" cy="262" r="9" fill="#2c3550"/><text x="40" y="265.5" text-anchor="middle" font-size="9" font-weight="700" fill="#fff">6</text>
-    <text x="56" y="265.5">구비서류등록</text>
-    <!-- 7 -->
-    <circle cx="40" cy="296" r="9" fill="#2c3550"/><text x="40" y="299.5" text-anchor="middle" font-size="9" font-weight="700" fill="#fff">7</text>
-    <text x="56" y="299.5">신고서제출</text>
-    <!-- 8 -->
-    <circle cx="40" cy="330" r="9" fill="#2c3550"/><text x="40" y="333.5" text-anchor="middle" font-size="9" font-weight="700" fill="#fff">8</text>
-    <text x="56" y="333.5">납부</text>
+
   </g>
 
   <!-- ===== 메인 영역 ===== -->
@@ -109,7 +95,7 @@
   <text x="196" y="390" font-size="10" font-weight="700" fill="#333">매수인</text>
   <rect x="196" y="396" width="566" height="18" fill="#f5f6f9" stroke="#e2e5ec"/>
   <g font-size="8.5" font-weight="700" fill="#555" text-anchor="middle">
-    <text x="222" y="408">순번</text><text x="280" y="408">성명</text><text x="370" y="408">주민등록번호</text><text x="500" y="408">주소</text><text x="640" y="408">매도자와의 관계</text><text x="725" y="408">지분</text>
+    <text x="222" y="408">대표여부</text><text x="280" y="408">성명</text><text x="370" y="408">주민등록번호</text><text x="500" y="408">주소</text><text x="640" y="408">매도자와의 관계</text><text x="725" y="408">지분</text>
   </g>
   <text x="681" y="406" font-size="7" fill="#e0392b">★</text>
   <rect x="196" y="414" width="566" height="40" fill="#fff" stroke="#e2e5ec"/>
@@ -120,9 +106,13 @@
   <line x1="582" y1="396" x2="582" y2="454" stroke="#e2e5ec"/>
   <line x1="700" y1="396" x2="700" y2="454" stroke="#e2e5ec"/>
   <g font-size="8.5" fill="#444" text-anchor="middle">
-    <text x="222" y="428">1</text><text x="376" y="429" font-size="10" letter-spacing="1">&#9679;&#9679;&#9679;&#9679;&#9679;</text>
-    <text x="222" y="448">2</text><text x="376" y="449" font-size="10" letter-spacing="1">&#9679;&#9679;&#9679;&#9679;&#9679;</text>
+    <text x="376" y="429" font-size="10" letter-spacing="1">&#9679;&#9679;&#9679;&#9679;&#9679;</text>
+    <text x="376" y="449" font-size="10" letter-spacing="1">&#9679;&#9679;&#9679;&#9679;&#9679;</text>
   </g>
+  <circle cx="222" cy="425" r="5" fill="#fff" stroke="#1d6fd0" stroke-width="1.4"/><circle cx="222" cy="425" r="2.5" fill="#1d6fd0"/>
+  <circle cx="222" cy="445" r="5" fill="#fff" stroke="#9aa3b4" stroke-width="1.4"/>
+  <rect x="200" y="416" width="44" height="36" rx="3" fill="none" stroke="#e0392b" stroke-width="2" stroke-dasharray="5 3"/><circle cx="200" cy="416" r="9" fill="#e0392b"/><text x="200" y="420" text-anchor="middle" font-size="10" font-weight="700" fill="#fff">2</text>
+  <text x="250" y="466" font-size="8.5" fill="#d9534f">공동명의는 대표 매수인 1명을 고릅니다(신고는 1건)</text>
   <!-- 관계 드롭다운 -->
   <rect x="592" y="420" width="98" height="14" rx="2" fill="#fff" stroke="#ccd2dc"/><text x="600" y="430" font-size="8" fill="#888">선택</text><text x="683" y="430" font-size="7" fill="#888">&#9660;</text>
   <rect x="592" y="440" width="98" height="14" rx="2" fill="#fff" stroke="#ccd2dc"/><text x="600" y="450" font-size="8" fill="#888">선택</text><text x="683" y="450" font-size="7" fill="#888">&#9660;</text>
