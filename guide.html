@@ -478,6 +478,132 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:40px;p
 .foot-links a:hover{color:var(--navy)}
 .foot-biz{font-size:11.5px;color:#334155;font-weight:500;margin-bottom:10px}.foot-biz a{color:var(--blue);text-decoration:underline}
 .foot-copy{font-size:11px;color:var(--muted);line-height:1.9;word-break:keep-all}
+
+/* 상단 메뉴 — index.html 수치로 통일 (2026-10-04) */
+.nav-inner{max-width:1200px;padding:0 20px;height:54px;gap:2px}
+.nav-logo{font-size:15px;letter-spacing:-.02em}
+.nav-a{font-size:14px;font-weight:600;padding:8px 12px;border-radius:7px;letter-spacing:-.16px}
+.nav-scroll{gap:2px}
+@media(max-width:768px){.nav-logo{margin-right:8px}}
+.nav-a.cta{padding:8px 14px;margin-left:4px;background:var(--blue);color:#fff;font-weight:700}
+.nav-a.cta:hover{background:#075985;color:#fff}
+
+/* 상단 메뉴 「부동산 계산기」 드롭다운 — 클릭으로 열고, 데스크톱은 마우스를 올려도 열림 */
+.nav-a.active{background:#E0F2FE;color:#075985;font-weight:600}
+.nav-dd-btn{display:inline-flex;align-items:center;gap:4px;border:0;background:transparent;font-family:inherit;line-height:inherit;cursor:pointer;letter-spacing:-.16px}
+.nav-dd-ic{width:12px;height:12px;transition:transform .15s}
+.nav-dd-btn[aria-expanded="true"]{background:#F1F5F9;color:var(--navy)}
+.nav-dd-btn.active[aria-expanded="true"]{background:#E0F2FE;color:#075985}
+.nav-dd-btn[aria-expanded="true"] .nav-dd-ic{transform:rotate(180deg)}
+.nav-dd-menu{position:fixed;z-index:1000;min-width:240px;background:#fff;border:1px solid var(--border);border-radius:12px;box-shadow:0 12px 32px rgba(15,23,42,.14);padding:6px}
+.nav-dd-menu[hidden]{display:none}
+.nav-dd-menu a{display:block;padding:10px 12px;border-radius:8px;color:var(--navy);font-size:14px;font-weight:700;text-decoration:none;line-height:1.4}
+.nav-dd-menu a span{display:block;font-size:12px;font-weight:500;color:#475569;margin-top:2px}
+.nav-dd-menu a:hover,.nav-dd-menu a:focus-visible{background:#F1F5F9}
+.nav-dd-menu a[aria-current="page"]{background:#E0F2FE;color:#075985}
+@media(prefers-reduced-motion:reduce){.nav-dd-ic{transition:none}}
+
+/* 상단 메뉴 반응형 보정 (2026-10-04): 좁은 화면에서 줄바꿈·겹침 방지 */
+.nav-dd{flex-shrink:0;display:inline-flex}
+.nav-dd-btn{white-space:nowrap}
+@media(max-width:768px){
+  .nav-scroll{overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 20px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 20px),transparent)}
+  .nav-scroll::-webkit-scrollbar{display:none}
+  .nav-logo{font-size:14px;margin-right:8px}.nav-mark{width:20px;height:20px}
+  .nav-a{font-size:13.5px;padding:8px 10px}
+  .nav-a.cta{padding:8px 12px;margin-left:6px}
+}
+@media(max-width:560px){.nav-a{font-size:13px;padding:7px 9px}.nav-a.cta{font-size:13px;padding:7px 11px}}
+
+/* 모바일 햄버거 메뉴 (768px 이하, 2026-10-04) — 상단 버튼은 숨기고 ≡ 메뉴 안으로 */
+.nav-burger{display:none}
+@media(max-width:768px){
+  .js-mnav .nav-scroll>.nav-a,.js-mnav .nav-scroll>.nav-dd,.js-mnav .nav-inner>.nav-a.cta{display:none}
+  .js-mnav .nav-scroll{overflow:visible;-webkit-mask-image:none;mask-image:none}
+  .js-mnav .nav-burger{display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;width:44px;height:44px;margin-left:auto;margin-right:-10px;border:0;background:transparent;border-radius:8px;color:var(--navy);cursor:pointer}
+}
+.nav-burger svg{width:24px;height:24px;stroke:currentColor;stroke-width:2;stroke-linecap:round;fill:none}
+.nav-burger path{transition:transform .2s,opacity .2s;transform-origin:12px 12px}
+.nav-burger[aria-expanded="true"] .b1{transform:translateY(5px) rotate(45deg)}
+.nav-burger[aria-expanded="true"] .b2{opacity:0}
+.nav-burger[aria-expanded="true"] .b3{transform:translateY(-5px) rotate(-45deg)}
+.mnav{position:fixed;left:0;right:0;bottom:0;z-index:999;background:#fff;display:flex;flex-direction:column;overflow-y:auto;overscroll-behavior:contain;border-top:1px solid var(--border)}
+.mnav[hidden]{display:none}
+.mnav-list{flex:1;padding:4px 20px 20px}
+.mnav-a{display:flex;align-items:center;justify-content:space-between;width:100%;min-height:56px;padding:0;border:0;border-bottom:1px solid var(--border);background:none;font-family:inherit;font-size:16px;font-weight:700;color:var(--navy);text-decoration:none;text-align:left;cursor:pointer;letter-spacing:-.02em}
+.mnav-a svg{width:14px;height:14px;transition:transform .2s;color:#475569}
+.mnav-acc[aria-expanded="true"]{border-bottom-color:transparent}
+.mnav-acc[aria-expanded="true"] svg{transform:rotate(180deg)}
+.mnav-sub{padding:2px 0 10px;border-bottom:1px solid var(--border)}
+.mnav-sub[hidden]{display:none}
+.mnav-sub a{display:block;padding:10px 12px;border-radius:8px;font-size:15px;font-weight:600;color:#334155;text-decoration:none}
+.mnav-sub a span{display:block;font-size:12.5px;font-weight:500;color:#475569;margin-top:2px}
+.mnav-sub a[aria-current="page"]{background:#E0F2FE;color:#075985}
+.mnav-cta{padding:14px 20px calc(14px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--border);background:#fff}
+.mnav-cta a{display:flex;align-items:center;justify-content:center;min-height:52px;border-radius:10px;background:var(--blue);color:#fff;font-size:16px;font-weight:700;text-decoration:none}
+html.mnav-open,html.mnav-open body{overflow:hidden}
+@media(prefers-reduced-motion:reduce){.nav-burger path,.mnav-a svg{transition:none}}
+
+/* 페이지 목차 「단계 바」 — 히어로를 지나면 상단 메뉴 아래에 붙어 따라옴 (2026-10-04) */
+.secbar{position:fixed;left:0;right:0;top:54px;z-index:99;background:rgba(255,255,255,.95);-webkit-backdrop-filter:saturate(140%) blur(8px);backdrop-filter:saturate(140%) blur(8px);border-bottom:1px solid var(--border);transform:translateY(-100%);opacity:0;visibility:hidden;transition:transform .2s,opacity .2s,visibility .2s}
+.secbar.on{transform:none;opacity:1;visibility:visible}
+.secbar-inner{max-width:1200px;margin:0 auto;padding:0 20px;height:48px;display:flex;align-items:center;gap:4px;overflow-x:auto;scrollbar-width:none}
+.secbar-inner::-webkit-scrollbar{display:none}
+.secbar-a{flex-shrink:0;display:inline-flex;align-items:center;gap:6px;padding:7px 12px;border-radius:999px;font-size:13.5px;font-weight:600;color:#334155;text-decoration:none;white-space:nowrap;letter-spacing:-.16px}
+.secbar-a:hover{background:#F1F5F9;color:var(--navy)}
+.secbar-a .n{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:#E2E8F0;color:var(--navy);font-size:11.5px;font-weight:800}
+.secbar-a.cur{background:var(--navy);color:#fff}
+.secbar-a.cur .n{background:#fff;color:var(--navy)}
+.secbar-gap{flex:1}
+[id]{scroll-margin-top:116px}
+@media(max-width:768px){.secbar-gap{display:none}.secbar-inner{padding:0 8px;height:46px;gap:2px}.secbar-a{font-size:12.5px;padding:6px 6px;gap:4px}.secbar-a .n{width:18px;height:18px;font-size:11px}.secbar-a.aux{display:none}}
+@media(prefers-reduced-motion:reduce){.secbar{transition:none}}
+
+/* 가이드 디자인 정리 (2026-10-04): 히어로 단계 카드 · 번호 배지 · 강조 위계 · 카드형 섹션 · 사이트 바로가기 */
+.hero .map-mini{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;max-width:880px;margin:8px auto 0}
+.hero .map-mini a{flex-direction:column;align-items:flex-start;gap:2px;min-height:0;padding:14px 16px;border:1px solid rgba(255,255,255,.16);border-radius:12px;background:rgba(255,255,255,.05);color:#fff;text-align:left;transition:background .15s,border-color .15s}
+.hero .map-mini a:hover{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.32)}
+.hero .map-mini .mm-n{width:auto;height:auto;border-radius:0;background:none;display:block;font-size:12px;font-weight:800;letter-spacing:.06em;color:#7DD3FC}
+.hero .map-mini .mm-t{font-size:15px;font-weight:700;color:#fff}
+.hero .map-mini .mm-c{font-size:12px;font-weight:500;color:rgba(255,255,255,.66)}
+@media(max-width:640px){.hero .map-mini{grid-template-columns:1fr 1fr;gap:8px}.hero .map-mini a{padding:12px 14px}.hero .map-mini .mm-t{font-size:14.5px}}
+.stp-n{width:32px;height:32px;border-radius:8px;font-size:14px;margin-top:3px}
+.stp.us .stp-n{background:var(--navy)}
+.sec-tag{display:inline-block;font-size:12px;font-weight:700;color:#075985;background:#E0F2FE;border-radius:999px;padding:4px 10px;margin-bottom:10px}
+#what{margin-top:40px;background:#fff;border:1px solid var(--border);border-radius:16px;padding:28px 32px;box-shadow:0 1px 2px rgba(15,23,42,.04)}
+#what .sec-title{margin-top:0}
+#what .basis{max-width:none;border-top:1px solid var(--border);padding-top:12px;margin-top:16px}
+@media(max-width:640px){#what{padding:22px 20px;margin-top:28px}}
+.h4-links{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px}
+.site-links{display:flex;flex-wrap:wrap;gap:6px}
+.site-links a,.gm-site{display:inline-flex;align-items:center;font-size:12.5px;font-weight:600;color:#075985;background:#F0F9FF;border:1px solid #BAE6FD;border-radius:999px;padding:4px 10px;text-decoration:none;white-space:nowrap}
+.site-links a:hover,.gm-site:hover{background:#E0F2FE}
+.gm-site{margin-top:10px;font-size:13px;padding:6px 12px}
+.gm-site[hidden]{display:none}
+
+/* 강조 위계: 문장 속 굵은 글씨는 한 단계 낮추고, 핵심 문장·주의 문구만 진하게 */
+:is(.section,.stp-b,.wrap,main) :is(p,li,small,td,dd) :is(b,strong){font-weight:600;color:inherit}
+:is(.stp-lead,.qlead) :is(b,strong){font-weight:700;color:var(--navy)}
+[class*="warn"] :is(b,strong),.ntc :is(b,strong){font-weight:700}
+
+/* 글자 규격 index 기준 통일 + 단계 머리 정리 (2026-10-04) */
+.sec-title{font-size:28px;font-weight:700;line-height:1.45}
+.qlead,.stp-lead{font-size:14.5px;line-height:1.75}
+.stp-t{font-weight:700;margin:0}
+.stp-box h4,.stp-b h4,#flow h3{font-weight:700}
+.stp-n{margin-top:0;align-self:center}
+.stp-head{align-self:center}
+.stp-where{grid-column:2;display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+@media(max-width:768px){.stp-where{grid-column:1 / -1}}
+.stp-where span{font-size:12.5px;font-weight:600;color:#334155;background:#F1F5F9;border:1px solid #E2E8F0;border-radius:6px;padding:3px 9px;line-height:1.5}
+@media(max-width:640px){.sec-title{font-size:20px}.qlead,.stp-lead{font-size:14px}.stp-where span{font-size:12px}}
+
+/* 품질 기준 보강 (2026-10-04): 키보드 포커스 · 대비 · 최소 글씨 12px */
+:is(a,button,input,select,textarea,summary,[tabindex]):focus-visible{outline:2px solid var(--blue,#0369A1);outline-offset:2px}
+.foot-biz,.foot-biz a,.foot-copy{font-size:12px}
+.hero :is(a,button):focus-visible{outline-color:#7DD3FC}
+.prep-note,.vprev-h{font-size:12px!important}
+.gm-side-h .k{letter-spacing:0;text-transform:none}
 </style>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-DR3W5XWF50"></script>
 <script>
@@ -492,48 +618,53 @@ gtag('js',new Date());gtag('config','G-DR3W5XWF50');
 <nav>
   <div class="nav-inner">
       <div class="nav-scroll">
-    <a href="index.html" class="nav-logo"><svg class="nav-mark" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><g fill="#0F172A"><rect x="9" y="41" width="14" height="14" rx="1.5"/><rect x="25" y="41" width="14" height="14" rx="1.5"/><rect x="25" y="25" width="14" height="14" rx="1.5"/><rect x="41" y="41" width="14" height="14" rx="1.5"/><rect x="41" y="25" width="14" height="14" rx="1.5"/></g><rect x="41" y="9" width="14" height="14" rx="1.5" fill="#0369A1"/></svg><strong class="nav-wm">셀프등기<b>24</b></strong><span>가이드</span></a>
-    <a href="index.html" class="nav-a">홈</a>
-    <a href="#what" class="nav-a">혼자 해도 되나요</a>
-    <a href="#step-1" class="nav-a">① 서류 준비</a>
-    <a href="#step-2" class="nav-a">② 세금·채권</a>
-    <a href="#step-3" class="nav-a">③ 서류 작성</a>
-    <a href="#step-4" class="nav-a">④ 등기소 접수</a>
-    <a href="#vault-sec" class="nav-a">번호 보관함</a>
-    <a href="cost.html" class="nav-a">등기비용 비교</a>
-    <a href="calculator.html" class="nav-a">취득세 계산기</a>
-      </div>
+    <a href="index.html" class="nav-logo"><svg class="nav-mark" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><g fill="#0F172A"><rect x="9" y="41" width="14" height="14" rx="1.5"/><rect x="25" y="41" width="14" height="14" rx="1.5"/><rect x="25" y="25" width="14" height="14" rx="1.5"/><rect x="41" y="41" width="14" height="14" rx="1.5"/><rect x="41" y="25" width="14" height="14" rx="1.5"/></g><rect x="41" y="9" width="14" height="14" rx="1.5" fill="#0369A1"/></svg><strong class="nav-wm">셀프등기<b>24</b></strong></a>
+      <a href="guide.html" class="nav-a active" aria-current="page">셀프등기 가이드</a>
+      <a href="cost.html" class="nav-a">등기비용 비교</a>
+      <span class="nav-dd"><button type="button" class="nav-a nav-dd-btn" aria-expanded="false" aria-controls="nav-dd-calc">부동산 계산기<svg class="nav-dd-ic" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M3 4.5 6 7.5 9 4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button><span class="nav-dd-menu" id="nav-dd-calc" hidden><a href="calculator.html">취득세 계산기<span>매매로 취득할 때</span></a><a href="gift_tax.html">증여 취득세 계산기<span>증여로 취득할 때</span></a></span></span>
+      <a href="https://selfregi.tistory.com" target="_blank" rel="noopener" class="nav-a">블로그</a>
+    </div>
     <a href="normal_form.html" class="nav-a cta">서류 작성하기</a>
   </div>
 </nav>
+<div class="secbar" id="secbar" role="navigation" aria-label="가이드 단계 바로가기" aria-hidden="true"><div class="secbar-inner">
+  <a href="#step-1" class="secbar-a"><span class="n">1</span>서류 준비</a>
+  <a href="#step-2" class="secbar-a"><span class="n">2</span>세금·채권</a>
+  <a href="#step-3" class="secbar-a"><span class="n">3</span>서류 작성</a>
+  <a href="#step-4" class="secbar-a"><span class="n">4</span>등기소 접수</a>
+  <span class="secbar-gap"></span>
+  <a href="#vault-sec" class="secbar-a aux">번호 보관함</a>
+</div></div>
 
 <main>
 <header id="content">
   <div class="hero">
     <h1>셀프등기는 <em>네 단계</em>,<br>등기소 방문은 한&nbsp;번입니다</h1>
-    <p class="hero-sub">①~③을 온라인으로 미리 끝내고, ④ 등기소에는 한 번만 갑니다. 단계마다 실제 화면과 재현 이미지로 안내합니다.</p>
+    <p class="hero-sub">01~03은 집에서 온라인으로 끝내고, 04만 등기소에 갑니다.</p>
     <ol class="map-mini" aria-label="셀프등기 네 단계">
-      <li><a href="#step-1"><span>1</span>서류 준비</a></li>
-      <li><a href="#step-2"><span>2</span>세금·채권 납부</a></li>
-      <li class="us"><a href="#step-3"><span>3</span>서류 작성</a></li>
-      <li><a href="#step-4"><span>4</span>등기소 접수</a></li>
+      <li><a href="#step-1"><span class="mm-n">01</span><b class="mm-t">서류 준비</b><small class="mm-c">정부24 · 인터넷등기소</small></a></li>
+      <li><a href="#step-2"><span class="mm-n">02</span><b class="mm-t">세금·채권 납부</b><small class="mm-c">위택스 · 은행</small></a></li>
+      <li><a href="#step-3"><span class="mm-n">03</span><b class="mm-t">서류 작성</b><small class="mm-c">셀프등기24 자동완성</small></a></li>
+      <li><a href="#step-4"><span class="mm-n">04</span><b class="mm-t">등기소 접수</b><small class="mm-c">관할 등기소 방문</small></a></li>
     </ol>
   </div>
 </header>
 
 <div class="section" id="what">
+  <span class="sec-tag">셀프등기 기본</span>
   <h2 class="sec-title">셀프등기, 혼자 해도 되나요?</h2>
   <p class="qlead">네. 부동산등기는 법무사 선임 의무가 없어 <b>매수인 본인이 직접 신청할 수 있습니다.</b> 잔금 후 소유권이전등기를 해야 법적으로 내 집이 되며, 정해진 순서를 따라가면 됩니다.</p>
   <p class="basis">부동산등기법상 등기는 당사자 신청이 원칙이고 대리인 위임은 선택입니다. 개별 사안의 최종 확인은 관할 등기소 안내를 따라 주세요.</p>
 </div>
 
 <div class="section" id="flow">
+  <span class="sec-tag">진행 순서</span>
   <h2 class="sec-title">무엇부터 하나요? 네 단계를 순서대로 하면 됩니다</h2>
   <p class="qlead">서류는 단계마다 필요한 것만 준비합니다. 매수인 서류는 1단계에서 발급받고, 매도인 서류는 3단계 잔금일에 받습니다.</p>
 
   <section class="stp" id="step-1" aria-labelledby="step-1-t">
     <div class="stp-n">1</div>
-    <div class="stp-head"><h3 class="stp-t" id="step-1-t">서류 준비하기</h3><div class="stp-where">정부24 · 인터넷등기소 · 계약 서류 · 무료</div></div>
+    <div class="stp-head"><h3 class="stp-t" id="step-1-t">서류 준비하기</h3></div><div class="stp-where"><span>정부24</span><span>인터넷등기소</span><span>계약 서류</span><span>무료</span></div>
     <div class="stp-b">
     <p class="stp-lead">계약 서류는 이미 갖고 계시고, 증명서는 온라인에서 무료로 받습니다. <b>등본은 주민등록번호 뒷자리를 포함해</b> 받으세요.</p>
     <div class="stp-box">
@@ -543,7 +674,7 @@ gtag('js',new Date());gtag('config','G-DR3W5XWF50');
       <div class="pitem"><div><b>등기사항전부증명서(등기부등본)</b><small>잔금일 기준 최신본 권장 — 중개사에게 받으면 편리</small></div></div>
     </div>
     <div class="stp-box">
-      <h4>온라인으로 받는 서류</h4>
+      <h4 class="h4-links"><span>온라인으로 받는 서류</span><span class="site-links"><a href="https://www.gov.kr" target="_blank" rel="noopener" aria-label="정부24 새 창으로 열기">정부24 ↗</a><a href="https://efamily.scourt.go.kr" target="_blank" rel="noopener" aria-label="대법원 전자가족관계등록시스템 새 창으로 열기">전자가족관계등록시스템 ↗</a></span></h4>
       <div class="pitem warn" id="r-mask"><div><b>주민등록등본</b> <span class="rj-badge">자주 반려되는 항목</span> <button type="button" class="rj-link" onclick="copyRejectLink('mask')" aria-label="주민등록등본 반려 항목 링크 복사">링크</button> <a class="pgo" href="#g=gov24" onclick="openShot('gov24');return false">화면 가이드</a><small>매수인 본인 · <b>주민번호 뒷자리 포함</b>으로 발급</small><small class="rj-why">발급 화면에서 주민등록번호를 &lsquo;전체 표시&rsquo;로 선택하세요. 뒷자리가 별표(******)로 가려진 서류는 본인 확인이 되지 않아 보정 요구를 받는 경우가 많습니다.</small></div></div>
       <div class="pitem"><div><b>토지대장 · 건축물대장(집합·전유부)</b> <a class="pgo" href="#g=gov24" onclick="openShot('gov24');return false">화면 가이드</a><small>정부24 무료 발급</small></div></div>
       <div class="pitem"><div><b>가족관계증명서</b> <a class="pgo" href="#g=gov24" onclick="openShot('gov24');return false">화면 가이드</a><small>취득세 신고용 — 등기 신청 때는 제출하지 않음</small></div></div>
@@ -568,7 +699,7 @@ gtag('js',new Date());gtag('config','G-DR3W5XWF50');
 
   <section class="stp" id="step-2" aria-labelledby="step-2-t">
     <div class="stp-n">2</div>
-    <div class="stp-head"><h3 class="stp-t" id="step-2-t">세금·채권 납부하기</h3><div class="stp-where">위택스 · 은행 · 전자수입인지 · 인터넷등기소</div></div>
+    <div class="stp-head"><h3 class="stp-t" id="step-2-t">세금·채권 납부하기</h3></div><div class="stp-where"><span>위택스</span><span>은행</span><span>전자수입인지</span><span>인터넷등기소</span></div>
     <div class="stp-b">
     <p class="stp-lead">취득세, 국민주택채권, 인지세, 등기신청수수료를 온라인으로 냅니다. 받은 번호는 아래 <a href="#vault-sec">번호 보관함</a>에 저장하면 신청서에 자동으로 채워집니다. 예상 취득세는 <a href="calculator.html">취득세 계산기</a>에서 확인하세요.</p>
     <div class="dl-note">
@@ -644,7 +775,7 @@ gtag('js',new Date());gtag('config','G-DR3W5XWF50');
 
   <section class="stp us" id="step-3" aria-labelledby="step-3-t">
     <div class="stp-n">3</div>
-    <div class="stp-head"><h3 class="stp-t" id="step-3-t">위임장·신청서 작성하기</h3><div class="stp-where">셀프등기24 · 잔금일 매도인 서류 확인</div></div>
+    <div class="stp-head"><h3 class="stp-t" id="step-3-t">위임장·신청서 작성하기</h3></div><div class="stp-where"><span>셀프등기24</span><span>잔금일 매도인 서류 확인</span></div>
     <div class="stp-b">
     <p class="stp-lead">등기부와 저장한 번호로 위임장·신청서를 자동완성합니다. 위임장은 잔금일 전에 출력해 두고, <b>잔금일에 매도인에게 받을 서류</b>를 그 자리에서 확인하세요.</p>
     <div class="stp-box">
@@ -674,7 +805,7 @@ gtag('js',new Date());gtag('config','G-DR3W5XWF50');
 
   <section class="stp" id="step-4" aria-labelledby="step-4-t">
     <div class="stp-n">4</div>
-    <div class="stp-head"><h3 class="stp-t" id="step-4-t">등기소에 한 번 접수하기</h3><div class="stp-where">관할 등기소 방문</div></div>
+    <div class="stp-head"><h3 class="stp-t" id="step-4-t">등기소에 한 번 접수하기</h3></div><div class="stp-where"><span>관할 등기소 방문</span></div>
     <div class="stp-b">
     <p class="stp-lead">준비한 서류를 관할 등기소에 한 번에 제출하면 마무리됩니다. 신분증과 도장을 챙기세요. 온라인이 익숙하지 않다면 구청·은행 방문으로도 ①~②를 마칠 수 있습니다.</p>
     </div>
@@ -771,13 +902,13 @@ gtag('js',new Date());gtag('config','G-DR3W5XWF50');
 <div class="gm-back" id="gmBack" role="dialog" aria-modal="true" aria-labelledby="gmSideT">
   <div class="gm">
     <aside class="gm-side">
-      <div class="gm-side-h"><span class="k">STEP GUIDE</span><div class="t" id="gmSideT"></div></div>
+      <div class="gm-side-h"><span class="k">화면 가이드</span><div class="t" id="gmSideT"></div></div>
       <div class="gm-steplist" id="gmSteplist"></div>
     </aside>
     <div class="gm-main">
       <div class="gm-top"><span class="gm-count" id="gmCount"></span><div class="gm-dots" id="gmDots" aria-label="단계 이동"></div><button class="gm-copy" id="gmCopy" aria-label="이 가이드 링크 복사" title="가이드 링크 복사">링크</button><button class="gm-x" id="gmX" aria-label="닫기">✕</button></div>
       <div class="gm-img" id="gmImg"></div>
-      <div class="gm-cap"><div class="gm-cap-t" id="gmCapT"></div><div class="gm-cap-d" id="gmCapD"></div></div>
+      <div class="gm-cap"><div class="gm-cap-t" id="gmCapT"></div><div class="gm-cap-d" id="gmCapD"></div><a class="gm-site" id="gmSite" target="_blank" rel="noopener" hidden></a></div>
       <div class="gm-relay" id="gmRelay" style="display:none"></div>
       <div class="gm-foot"><button class="gm-nav" id="gmPrev">← 이전</button><button class="gm-nav next" id="gmNext">다음 →</button></div>
     </div>
@@ -1208,6 +1339,112 @@ window.SR=window.SR||(function(){
   }
   function reset(){try{localStorage.removeItem(LK);}catch(e){}}
   return {track:track,report:report,exportCsv:exportCsv,reset:reset};
+})();
+</script>
+<script>
+/* 상단 메뉴 「부동산 계산기」 드롭다운: 클릭(모든 기기) + 마우스 올림(데스크톱) */
+(function(){
+  var b=document.querySelector('.nav-dd-btn'); if(!b) return;
+  var m=document.getElementById(b.getAttribute('aria-controls')); if(!m) return;
+  document.body.appendChild(m); /* 가로 스크롤 메뉴 안에서 잘리지 않게 body로 옮긴다 */
+  var hover=window.matchMedia('(hover:hover) and (pointer:fine)'), t=null, via='';
+  function place(){
+    var r=b.getBoundingClientRect(), nb=b.closest('nav').getBoundingClientRect();
+    m.style.top=Math.round(nb.bottom+6)+'px';
+    if(window.innerWidth<=640){ m.style.left='12px'; m.style.right='12px'; }
+    else { m.style.right='auto'; m.style.left=Math.round(Math.max(12,Math.min(r.left,window.innerWidth-m.offsetWidth-12)))+'px'; }
+  }
+  function open(src){ clearTimeout(t); via=src; if(!m.hidden) return; m.hidden=false; b.setAttribute('aria-expanded','true'); place(); }
+  function close(){ clearTimeout(t); if(m.hidden) return; m.hidden=true; b.setAttribute('aria-expanded','false'); via=''; }
+  b.addEventListener('click',function(e){
+    e.stopPropagation();
+    if(!m.hidden && via==='hover'){ via='click'; return; }
+    if(m.hidden){ open('click'); if(e.detail===0){ var a=m.querySelector('a'); if(a) a.focus(); } } else close();
+  });
+  document.addEventListener('click',function(e){ if(!m.hidden && !m.contains(e.target)) close(); });
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape' && !m.hidden){ close(); b.focus(); } });
+  m.addEventListener('focusout',function(e){ if(e.relatedTarget && !m.contains(e.relatedTarget) && e.relatedTarget!==b) close(); });
+  window.addEventListener('resize',function(){ if(!m.hidden) place(); });
+  window.addEventListener('scroll',close,{passive:true});
+  var sc=b.closest('.nav-scroll'); if(sc) sc.addEventListener('scroll',close,{passive:true});
+  if(hover.matches){
+    [b,m].forEach(function(el){
+      el.addEventListener('mouseenter',function(){ open(via||'hover'); });
+      el.addEventListener('mouseleave',function(){ t=setTimeout(close,200); });
+    });
+  }
+})();
+</script>
+<script>
+/* 모바일 햄버거 메뉴: 상단 메뉴 항목을 복제해 ≡ 패널로 보여준다 (768px 이하) */
+(function(){
+  var nav=document.querySelector('nav'),inner=nav&&nav.querySelector('.nav-inner'),sc=inner&&inner.querySelector('.nav-scroll'); if(!sc) return;
+  document.documentElement.classList.add('js-mnav');
+  var btn=document.createElement('button'); btn.type='button'; btn.className='nav-burger';
+  btn.setAttribute('aria-label','메뉴 열기'); btn.setAttribute('aria-expanded','false'); btn.setAttribute('aria-controls','mnav');
+  btn.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path class="b1" d="M4 7h16"/><path class="b2" d="M4 12h16"/><path class="b3" d="M4 17h16"/></svg>';
+  inner.appendChild(btn);
+  var p=document.createElement('div'); p.id='mnav'; p.className='mnav'; p.hidden=true; p.setAttribute('role','dialog'); p.setAttribute('aria-label','전체 메뉴');
+  var list=document.createElement('div'); list.className='mnav-list'; p.appendChild(list);
+  [].forEach.call(sc.children,function(el){
+    if(el.tagName==='A'&&el.classList.contains('nav-a')){ var a=el.cloneNode(true); a.removeAttribute('id'); a.className='mnav-a'; list.appendChild(a); }
+    else if(el.classList.contains('nav-dd')){
+      var ob=el.querySelector('.nav-dd-btn'),menu=ob&&document.getElementById(ob.getAttribute('aria-controls')); if(!menu) return;
+      var on=ob.classList.contains('active');
+      var ab=document.createElement('button'); ab.type='button'; ab.className='mnav-a mnav-acc';
+      ab.setAttribute('aria-expanded',on?'true':'false'); ab.setAttribute('aria-controls','mnav-sub');
+      ab.innerHTML=ob.childNodes[0].textContent+'<svg viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M3 4.5 6 7.5 9 4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+      var sub=document.createElement('div'); sub.id='mnav-sub'; sub.className='mnav-sub'; sub.hidden=!on;
+      [].forEach.call(menu.querySelectorAll('a'),function(x){ sub.appendChild(x.cloneNode(true)); });
+      ab.addEventListener('click',function(){ var o=ab.getAttribute('aria-expanded')==='true'; ab.setAttribute('aria-expanded',String(!o)); sub.hidden=o; });
+      list.appendChild(ab); list.appendChild(sub);
+    }
+  });
+  var cta=null; [].forEach.call(inner.children,function(el){ if(el.classList.contains('cta')) cta=el; });
+  if(cta){ var f=document.createElement('div'); f.className='mnav-cta'; var c=cta.cloneNode(true); c.removeAttribute('class'); c.removeAttribute('id'); f.appendChild(c); p.appendChild(f); }
+  document.body.appendChild(p);
+  /* 메뉴가 열린 동안 뒤 화면은 키보드·화면낭독기에서 제외 */
+  function lock(on){ [].forEach.call(document.body.children,function(el){ if(el===p||el.contains(nav)||el.tagName==='SCRIPT') return; el.inert=on; }); }
+  function open(){ p.style.top=Math.max(0,Math.round(nav.getBoundingClientRect().bottom))+'px'; p.hidden=false; btn.setAttribute('aria-expanded','true'); btn.setAttribute('aria-label','메뉴 닫기'); document.documentElement.classList.add('mnav-open'); lock(true); var f=p.querySelector('a,button'); if(f) f.focus(); }
+  function close(){ p.hidden=true; btn.setAttribute('aria-expanded','false'); btn.setAttribute('aria-label','메뉴 열기'); document.documentElement.classList.remove('mnav-open'); lock(false); }
+  btn.addEventListener('click',function(){ p.hidden?open():close(); });
+  p.addEventListener('click',function(e){ if(e.target.closest&&e.target.closest('a')) close(); });
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape'&&!p.hidden){ close(); btn.focus(); } });
+  window.addEventListener('resize',function(){ if(window.innerWidth>768&&!p.hidden) close(); });
+})();
+</script>
+<script>
+/* 단계 바: 히어로가 화면 위로 지나가면 나타나고, 지금 읽는 구간을 강조한다 */
+(function(){
+  var bar=document.getElementById('secbar'),hero=document.querySelector('.hero'); if(!bar||!hero) return;
+  var links=[].slice.call(bar.querySelectorAll('a[href^="#"]')),targets=links.map(function(a){return document.getElementById(a.getAttribute('href').slice(1));});
+  function show(on){ bar.classList.toggle('on',on); bar.setAttribute('aria-hidden',on?'false':'true'); links.forEach(function(a){ a.tabIndex=on?0:-1; }); }
+  if('IntersectionObserver' in window){ new IntersectionObserver(function(es){ show(!es[0].isIntersecting); },{rootMargin:'-54px 0px 0px 0px'}).observe(hero); } else show(true);
+  var tick=false;
+  function spy(){ tick=false; var cur=-1; targets.forEach(function(t,i){ if(t&&t.getBoundingClientRect().top<=140) cur=i; });
+    links.forEach(function(a,i){ var on=(i===cur); a.classList.toggle('cur',on); if(on) a.setAttribute('aria-current','location'); else a.removeAttribute('aria-current'); });
+    var c=links[cur]; if(c&&bar.classList.contains('on')){ var inn=bar.firstElementChild,r=c.getBoundingClientRect(),ir=inn.getBoundingClientRect(); if(r.left<ir.left||r.right>ir.right) inn.scrollLeft+=r.left-ir.left-24; }
+  }
+  window.addEventListener('scroll',function(){ if(!tick){ tick=true; requestAnimationFrame(spy); } },{passive:true}); spy();
+})();
+</script>
+<script>
+/* 화면 가이드 모달: 지금 보는 단계의 공식 사이트 바로가기 */
+(function(){
+  var el=document.getElementById('gmSite'),cap=document.getElementById('gmCapT'); if(!el||!cap) return;
+  var S={gov24:['정부24','https://www.gov.kr'],efamily:['전자가족관계등록시스템','https://efamily.scourt.go.kr'],wetax:['위택스','https://www.wetax.go.kr'],nhuf:['주택도시기금','https://nhuf.molit.go.kr'],stamp:['전자수입인지','https://www.e-revenuestamp.or.kr'],efee:['인터넷등기소','https://www.iros.go.kr']};
+  function pick(g,t){
+    if(g==='gov24') return /가족관계|대법원|이용약관 동의/.test(t)?S.efamily:S.gov24;
+    if(g==='bondonline') return /주택도시기금|매입대상금액|시가표준액|본인부담금 확인/.test(t)?S.nhuf:null;
+    return S[g]||null;
+  }
+  function upd(){
+    var m=/[#&]g=(\w+)/.exec(location.hash), g=m?m[1]:'', s=pick(g,cap.textContent||'');
+    if(!s){ el.hidden=true; return; }
+    el.hidden=false; el.href=s[1]; el.textContent=s[0]+' 열기 ↗'; el.setAttribute('aria-label',s[0]+' 새 창으로 열기');
+  }
+  new MutationObserver(upd).observe(cap,{childList:true,characterData:true,subtree:true});
+  window.addEventListener('hashchange',upd); upd();
 })();
 </script>
 </body>
