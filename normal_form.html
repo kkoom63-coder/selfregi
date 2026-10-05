@@ -519,6 +519,11 @@ input.ocr-warn{border-color:#DC2626!important;box-shadow:0 0 0 3px rgba(220,38,3
 }
 /* 짧은 숫자 칸(동·호, 층, 대지권 분모·분자, 계약일 연·월·일, 지분)은 모바일에서도 한 줄에 나란히 — 세로로 길게 늘어지지 않게 */
 @media(max-width:520px){.fg{grid-template-columns:1fr 1fr;gap:10px}.fg.s3{grid-template-columns:1fr 1fr 1fr}.fg.s1{grid-template-columns:1fr}}
+
+/* 판독 품질이 낮을 때 다시 올리기 안내 */
+.sum-low{margin-top:10px;padding:10px 12px;border:1px solid #FECACA;background:#FEF2F2;border-radius:8px;font-size:13px;line-height:1.65;color:#7F1D1D;word-break:keep-all}
+.sum-low b{color:#991B1B}
+.sum-low a{color:#991B1B;font-weight:700}
 </style>
 
 </head>
@@ -549,7 +554,7 @@ input.ocr-warn{border-color:#DC2626!important;box-shadow:0 0 0 3px rgba(220,38,3
 <main id="main">
 
 <div class="ntc inf" style="margin-bottom:14px">
-  <strong>등기부를 올리면 대부분 자동으로 채워집니다.</strong> 주민등록번호 같은 민감정보는 비워 두고 출력 후 적어도 됩니다.
+  <strong>등기부를 올리면 자동으로 채워집니다.</strong> 주민등록번호 같은 민감정보는 비워 두고 출력 후 적어도 됩니다.
 </div>
 
 <!-- ⓪ 자료에서 읽어오기 (OCR) -->
@@ -725,7 +730,7 @@ input.ocr-warn{border-color:#DC2626!important;box-shadow:0 0 0 3px rgba(220,38,3
 <div class="card">
   <div class="ch"><div class="ci">3</div><div><div class="ct">매도인 정보</div><div class="cs">매매계약서상 매도인 정보 · 일반매매의 매도인은 개인(자연인)입니다</div></div></div>
   <div class="ntc wrn" style="margin-top:0;margin-bottom:14px">
-    매도인 주소는 <b>매도인의 주민등록초본상 주소가 기준입니다.</b> 등기부상 주소와 상이할 경우 <b>변동 이력이 전부 나온 초본</b>을 매도인에게 받아 두세요.
+    <b>매도인 주소는 주민등록초본의 현재 주소를 아래에 입력해 주세요.</b> 등기부 주소와 다르면 주소 변동 이력이 모두 나온 초본을 매도인에게 받아 두세요.
   </div>
 
   <!-- 신탁해지 매도인 영역 -->
@@ -2340,12 +2345,18 @@ if (window.SRPay && SRPay.setGuard) SRPay.setGuard(function () {
       if(issues.some(function(x){ return x.r.label === lb; })) return;
       issues.push({i:-1, r:{label:lb, v:'', note:'글자가 흐릿해 확신하기 어렵습니다. 0과 O, 1과 l이 자주 바뀝니다.'}, lv:'oc'});
     });
+    var CORE = ['jibun-address','floor','ho','prop-area','total-land','unit-land','s-name','property-uid'];
+    var got = CORE.filter(function(id){ return rows.some(function(r){ return r.id===id && r.v; }); }).length;
+    var score = Math.max(0, Math.round(got/CORE.length*100) - 10*issues.filter(function(x){ return x.lv==='no' || x.lv==='oc'; }).length);
+    var low = score < 50;
     var lvl = res._ocr
       ? '<span class="sum-lv oc"><i class="dot d-oc"></i>정확도 보통</span>사진에서 읽은 값은 <b>주황색 칸</b>으로 표시했습니다. 등기부와 한 번 대조해 주세요.'
       : '<span class="sum-lv ok"><i class="dot d-ok"></i>정확도 높음</span>발급 원본에서 글자를 그대로 가져왔습니다.';
     sum.innerHTML = '<div class="ocr-sum"><div class="sum-h">등기부에서 <b>'+filled+'칸</b>을 채웠습니다'
-      + (issues.length ? ' · <em>확인할 항목 '+issues.length+'개</em>' : '') + '</div><div class="sum-d">'+lvl+'</div>'
+      + (issues.length ? ' · <em>확인할 항목 '+issues.length+'개</em>' : '') + '</div>'+(low ? '' : '<div class="sum-d">'+lvl+'</div>')
+      + (low ? '<div class="sum-low"><b>등기부를 제대로 읽지 못했습니다.</b> '+(res._ocr ? '사진은 그림자 없이 밝은 곳에서 글자가 또렷하게 다시 찍어 주세요. 가능하면 ' : '이 파일에서 찾지 못한 칸이 많습니다. ')+'<a href="https://www.iros.go.kr" target="_blank" rel="noopener">인터넷등기소</a>에서 등기사항전부증명서를 새로 발급받아 PDF로 올리면 정확하게 읽힙니다.</div>' : '')
       + '<button type="button" class="sum-pv" onclick="window.nfPv&&nfPv(true)">서류에 들어간 모습 미리보기</button></div>';
+    if(low) trk('ocr_low',{key:String(score), mode: res._ocr ? 'ocr' : 'text'});
     box.innerHTML = issues.map(function(x){
       var r = x.r, cls = x.lv === 'no' ? 'no' : 'oc';
       if(x.lv === 'addr'){ r = {id:r.id, label:r.label, v:r.v, note:r.note}; }
