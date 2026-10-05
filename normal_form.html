@@ -433,6 +433,40 @@ input.ocr-warn{border-color:#DC2626!important;box-shadow:0 0 0 3px rgba(220,38,3
 .blank-l .bd{flex-shrink:0;font-size:12px;font-weight:700;color:#475569;background:#fff;border:1px solid var(--border);border-radius:5px;padding:0 6px}
 .blank-l b{font-weight:700;color:var(--navy)}
 .blank-l small{flex-basis:100%;font-size:12.5px;color:#B45309}
+
+/* 0번 카드 — 미니 등기부 + 올리기 (2026-10-06) */
+.ocr-stage{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:14px;align-items:stretch;margin-bottom:12px}
+@media(max-width:760px){.ocr-stage{grid-template-columns:1fr}.regmini{order:2}.regmini:not(.read){display:none}}
+.toast:not(.show){visibility:hidden}
+.regmini{position:relative;overflow:hidden;background:#fff;border:1px solid #CBD5E1;border-radius:10px;padding:14px 16px 10px;box-shadow:0 1px 0 #E2E8F0,0 6px 18px -12px rgba(15,23,42,.25)}
+.rm-doc{font-size:13px;font-weight:800;color:var(--navy);letter-spacing:.02em;text-align:center;padding-bottom:8px;border-bottom:2px solid var(--navy)}
+.rm-doc small{font-size:12px;font-weight:600;color:#475569}
+.rm-sec{display:flex;align-items:baseline;gap:8px;font-size:12.5px;font-weight:800;color:var(--navy);margin:10px 0 2px;letter-spacing:.04em}
+.rm-sec small{font-size:12px;font-weight:500;color:#64748B;letter-spacing:0}
+.regmini dl{margin:0;border-top:1px solid #CBD5E1}
+.rm-r{display:grid;grid-template-columns:108px minmax(0,1fr);border-bottom:1px solid #E2E8F0;min-height:30px}
+.rm-r dt{font-size:12px;font-weight:600;color:#475569;background:#F8FAFC;padding:6px 8px;border-right:1px solid #E2E8F0}
+.rm-r dd{margin:0;display:flex;align-items:center;gap:7px;padding:5px 9px;min-width:0}
+.rm-r dd i{flex-shrink:0;width:7px;height:7px;border-radius:2px;background:#CBD5E1}
+.rm-r dd span{font-size:12.5px;font-weight:600;color:var(--navy);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rm-r dd span:empty{display:block;height:8px;width:62%;border-radius:4px;background:#EEF2F6}
+.rm-r[data-k="apt-name"] dd span:empty,.rm-r[data-k="prop-struct"] dd span:empty{width:44%}
+.rm-r[data-k="prop-area"] dd span:empty,.rm-r[data-k="ratio"] dd span:empty{width:30%}
+.rm-r.on dd i{background:#047857}
+.rm-r.on.warn dd i{background:#B45309}
+.rm-r.on dd span{animation:rmIn .35s ease-out both}
+@keyframes rmIn{from{opacity:0;transform:translateY(3px)}to{opacity:1;transform:none}}
+/* 읽는 동안 위에서 아래로 훑는 선 */
+.rm-scan{position:absolute;left:0;right:0;top:-30%;height:30%;pointer-events:none;opacity:0;background:linear-gradient(to bottom,rgba(3,105,161,0),rgba(3,105,161,.10) 80%,rgba(3,105,161,.55) 100%)}
+#ocr-card:has(.drop.busy) .rm-scan{opacity:1;animation:rmScan 1.6s linear infinite}
+@keyframes rmScan{from{top:-30%}to{top:100%}}
+@media(prefers-reduced-motion:reduce){.rm-scan{animation:none!important}.rm-r.on dd span{animation:none}}
+.ocr-stage .slots{display:flex;flex-direction:column;gap:10px}
+.ocr-stage .drop{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:22px 18px}
+.dz-ic{width:34px;height:40px;margin-bottom:10px}
+.ocr-stage .slot-t{font-size:16px;margin-bottom:6px}
+.ocr-stage .pr,.ocr-stage .plg{align-self:stretch}
+.ocr-self{margin:0;font-size:12.5px;color:#475569;text-align:center}
 </style>
 
 </head>
@@ -472,20 +506,37 @@ input.ocr-warn{border-color:#DC2626!important;box-shadow:0 0 0 3px rgba(220,38,3
     <div class="ct">등기부로 자동 채우기</div>
     <div class="cs">등기사항전부증명서 PDF나 사진을 올리면 아래 2·3번 칸 대부분이 채워집니다</div>
   </div></div>
-  <div class="ocr-what">
-    <div class="ow-row"><b>자동으로 채우는 칸</b><span>소재지번</span><span>아파트·건물명</span><span>동·층·호</span><span>구조</span><span>전유면적</span><span>도로명주소</span><span>부동산고유번호</span><span>대지권 비율</span><span>매도인 성명</span></div>
-    <div class="ow-row"><b>직접 입력하는 칸</b><span>매수인 정보</span><span>매매계약 정보</span><span>이전할 지분</span></div>
-  </div>
-
-  <div class="slots">
-    <div class="drop" id="dz-reg">
-      <div class="slot-t">등기사항전부증명서</div>
-      <div class="sub">부동산등기부등본 PDF 또는 사진을 업로드해주세요.<br>
-        <b>사진이 여러 장이면 한꺼번에 업로드</b></div>
-      <label class="fb" for="fi-reg">파일 선택</label>
-      <input type="file" id="fi-reg" accept="application/pdf,image/*" multiple style="display:none">
-      <div class="pr" id="pr-reg"><i></i></div>
-      <div class="plg" id="lg-reg"></div>
+  <div class="ocr-stage">
+    <!-- 미니 등기부: 실제 등기사항전부증명서의 표제부·갑구 모양. 판독이 끝나면 읽은 값이 칸에 채워진다(nfRegMini) -->
+    <div class="regmini" id="regmini" aria-label="등기부에서 자동으로 채우는 칸">
+      <div class="rm-doc">등기사항전부증명서 <small>(집합건물)</small></div>
+      <div class="rm-sec">【 표 제 부 】<small>건물·대지권의 표시</small></div>
+      <dl>
+        <div class="rm-r" data-k="jibun-address"><dt>소재지번</dt><dd><i></i><span></span></dd></div>
+        <div class="rm-r" data-k="apt-name"><dt>건물명</dt><dd><i></i><span></span></dd></div>
+        <div class="rm-r" data-k="dongho"><dt>동 · 층 · 호</dt><dd><i></i><span></span></dd></div>
+        <div class="rm-r" data-k="prop-struct"><dt>구조</dt><dd><i></i><span></span></dd></div>
+        <div class="rm-r" data-k="prop-area"><dt>전유면적</dt><dd><i></i><span></span></dd></div>
+        <div class="rm-r" data-k="ratio"><dt>대지권 비율</dt><dd><i></i><span></span></dd></div>
+        <div class="rm-r" data-k="property-uid"><dt>고유번호</dt><dd><i></i><span></span></dd></div>
+      </dl>
+      <div class="rm-sec">【 갑 구 】<small>소유권에 관한 사항</small></div>
+      <dl>
+        <div class="rm-r" data-k="s-name"><dt>소유자(매도인)</dt><dd><i></i><span></span></dd></div>
+      </dl>
+      <div class="rm-scan" aria-hidden="true"></div>
+    </div>
+    <div class="slots">
+      <div class="drop" id="dz-reg">
+        <svg class="dz-ic" viewBox="0 0 40 48" aria-hidden="true" focusable="false"><path d="M4 2h22l10 10v32a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z" fill="#fff" stroke="#0369A1" stroke-width="2"/><path d="M26 2v10h10" fill="none" stroke="#0369A1" stroke-width="2"/><path d="M9 22h20M9 28h20M9 34h13" stroke="#93C5FD" stroke-width="2.4" stroke-linecap="round"/></svg>
+        <div class="slot-t">등기사항전부증명서 올리기</div>
+        <div class="sub">인터넷등기소에서 받은 PDF는 글자를 그대로 가져옵니다.<br><b>사진이면 여러 장을 한꺼번에</b> 올려 주세요.</div>
+        <label class="fb" for="fi-reg">파일 선택</label>
+        <input type="file" id="fi-reg" accept="application/pdf,image/*" multiple style="display:none">
+        <div class="pr" id="pr-reg"><i></i></div>
+        <div class="plg" id="lg-reg"></div>
+      </div>
+      <p class="ocr-self">매수인 정보 · 매매계약 정보 · 이전할 지분은 직접 입력합니다</p>
     </div>
   </div>
 
@@ -2250,6 +2301,7 @@ if (window.SRPay && SRPay.setGuard) SRPay.setGuard(function () {
         + '<div class="iss-d">'+body+'</div>' + (btns ? '<div class="iss-a">'+btns+'</div>' : '') + '</div>';
     }).join('');
     trk('ocr_accept',{key:String(filled)});
+    try{ window.nfRegMini && window.nfRegMini(rows, res); }catch(_){}
   }
 
   function put(i){
@@ -2648,6 +2700,27 @@ if (window.SRPay && SRPay.setGuard) SRPay.setGuard(function () {
   window.addEventListener('srpay:change', gate);
   if(document.readyState !== 'loading') gate(); else document.addEventListener('DOMContentLoaded', gate);
 })();
+</script>
+<script>
+/* 미니 등기부 채우기 (2026-10-06): 판독한 값을 0번 카드의 표제부·갑구 칸에 보여준다.
+   확인이 필요한 값(confidence low)은 주황 점, 나머지는 초록 점. */
+window.nfRegMini = function(rows, res){
+  var box = document.getElementById('regmini'); if(!box) return;
+  function get(id){ for(var i=0;i<rows.length;i++) if(rows[i].id===id) return rows[i]; return null; }
+  function set(k, val, warn){
+    var r = box.querySelector('.rm-r[data-k="'+k+'"]'); if(!r) return;
+    var sp = r.querySelector('dd span');
+    if(val){ sp.textContent = val; r.classList.add('on'); r.classList.toggle('warn', !!warn); }
+  }
+  ['jibun-address','apt-name','prop-struct','property-uid','s-name'].forEach(function(id){ var x=get(id); if(x) set(id, x.show||x.v, x.cls==='warn'); });
+  var a=get('prop-area'); if(a) set('prop-area', a.v+'㎡', a.cls==='warn');
+  var d=get('dong'), f=get('floor'), h=get('ho');
+  var dh=[d&&('제'+d.v+'동'), f&&('제'+f.v+'층'), h&&('제'+h.v+'호')].filter(Boolean).join(' ');
+  if(dh) set('dongho', dh, (f&&f.cls==='warn')||(h&&h.cls==='warn'));
+  var tl=get('total-land'), ul=get('unit-land');
+  if(tl&&ul) set('ratio', tl.v+'분의 '+ul.v, tl.cls==='warn');
+  box.classList.add('read');
+};
 </script>
 </body>
 </html>
