@@ -19,15 +19,15 @@
 <meta charset="UTF-8">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>증여 취득세 계산기 | 시가인정액 기준·중과 판정 | 셀프등기24</title>
-<meta name="description" content="아파트 증여 취득세를 시가인정액 기준으로 계산합니다. 매매와 달리 공시가격이 아닌 시가인정액이 과세표준이며, 조정대상지역 3억원 이상 주택은 중과 대상이 될 수 있습니다. 지방교육세·농어촌특별세까지 지방세법 조문 근거와 함께 계산합니다.">
+<title>증여 취득세 계산기 | 예상 증여세까지 한 번에 | 셀프등기24</title>
+<meta name="description" content="아파트 증여 취득세를 시가인정액 기준으로 계산하고, 배우자·부모→자녀처럼 단순한 증여는 예상 증여세(혼인·출산 공제 포함)까지 함께 보여줍니다. 조정대상지역 중과 판정, 지방교육세·농어촌특별세를 법령 조문 근거와 함께 계산합니다.">
 <link rel="canonical" href="https://www.selfregi24.com/gift_tax.html">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="셀프등기24">
 <meta property="og:locale" content="ko_KR">
 <meta property="og:url" content="https://www.selfregi24.com/gift_tax.html">
-<meta property="og:title" content="증여 취득세 계산기 | 시가인정액 기준·중과 판정 | 셀프등기24">
-<meta property="og:description" content="아파트 증여 취득세를 시가인정액 기준으로 계산합니다. 매매와 달리 공시가격이 아닌 시가인정액이 과세표준입니다.">
+<meta property="og:title" content="증여 취득세 계산기 | 예상 증여세까지 한 번에 | 셀프등기24">
+<meta property="og:description" content="아파트 증여 취득세를 시가인정액 기준으로 계산하고, 단순한 증여는 예상 증여세까지 함께 보여줍니다.">
 <meta property="og:image" content="https://www.selfregi24.com/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
 <style>
@@ -235,6 +235,23 @@ html.mnav-open,html.mnav-open body{overflow:hidden}
 :is(a,button,input,select,textarea,summary,[tabindex]):focus-visible{outline:2px solid var(--blue,#0369A1);outline-offset:2px}
 .foot-biz,.foot-biz a,.foot-copy{font-size:12px}
 .page-eyebrow{font-size:12px}
+/* 푸터 — index.html 기준 */
+footer{background:var(--bg);border-top:1px solid var(--border);margin-top:40px;padding:32px 20px 28px;letter-spacing:-.01em}
+.foot-inner{max-width:1200px;margin:0 auto;text-align:left}
+.foot-brand{font-size:14px;font-weight:800;color:var(--navy);margin-bottom:8px;display:flex;align-items:center;gap:6px}.foot-mark{width:18px;height:18px;flex:none}.foot-brand b{color:#0369A1;font-weight:inherit}
+.foot-links{display:flex;gap:6px 14px;margin-bottom:12px;flex-wrap:wrap;justify-content:flex-start}
+.foot-links a{color:var(--muted);font-size:12px;text-decoration:none;padding:2px 0}
+.foot-links a:hover{color:var(--navy)}
+.foot-biz{font-size:12px;color:#334155;font-weight:500;margin-bottom:10px;line-height:1.7;word-break:keep-all}.foot-biz a{color:var(--blue);text-decoration:underline}
+.foot-copy{font-size:12px;color:var(--muted);line-height:1.9;word-break:keep-all}
+@media(max-width:560px){.foot-links a,footer a{display:inline-block;min-height:24px;line-height:24px}}
+/* 예상 증여세 (2026-10-05) */
+.sub-t{font-size:13px;font-weight:800;color:var(--navy);margin:18px 0 8px}
+.sub-t:first-child{margin-top:0}
+.sub-t small{font-weight:500;color:var(--muted);font-size:12px;margin-left:6px}
+.basis-t{font-size:13px;font-weight:800;color:var(--navy);margin:18px 0 4px}
+#out.result-area{background:none;border:0;border-radius:0;overflow:visible}
+.res-box{background:#f8fafc;border:1px solid var(--border);border-radius:10px;overflow:hidden}
 </style>
 </head>
 <body>
@@ -259,7 +276,8 @@ html.mnav-open,html.mnav-open body{overflow:hidden}
     <h1>증여 취득세 계산기</h1>
     <p>증여는 매매와 과세표준이 다릅니다. 매매는 실제 거래가액으로 계산하지만,
     <b>증여는 공시가격이 아니라 &lsquo;시가인정액&rsquo;</b>이 원칙입니다(지방세법 제10조의2제1항).
-    그래서 공시가격으로 계산하면 실제 세액보다 적게 나올 수 있습니다.</p>
+    그래서 공시가격으로 계산하면 실제 세액보다 적게 나올 수 있습니다.
+    배우자나 부모에게서 받는 단순한 증여라면 <b>예상 증여세</b>도 함께 확인하실 수 있습니다.</p>
   </div>
 </div>
 
@@ -363,11 +381,50 @@ html.mnav-open,html.mnav-open body{overflow:hidden}
     </div>
   </div>
 
+  <!-- ── 예상 증여세 (선택) ───────────────── -->
+  <div class="card">
+    <div class="ch">
+      <div class="step-num">03</div>
+      <div><div class="ct">예상 증여세 <em style="font-style:normal;font-weight:500;color:var(--muted);font-size:12px">선택</em></div>
+      <div class="cs">증여세(국세)는 받는 사람이 냅니다. 아래 단순한 경우만 추정하며, 그 밖의 경우는 세무사 확인을 안내합니다.</div></div>
+    </div>
+
+    <div class="field">
+      <span class="l">누구에게서 받나요</span>
+      <div class="seg" id="segRel">
+        <button type="button" class="seg-btn" data-v="spouse">배우자</button>
+        <button type="button" class="seg-btn" data-v="adult">부모 → 성인 자녀</button>
+        <button type="button" class="seg-btn" data-v="minor">부모 → 미성년 자녀</button>
+        <button type="button" class="seg-btn" data-v="other">그 밖의 관계</button>
+      </div>
+      <p class="hint">조부모 → 손자녀, 형제·친척 등은 할증이나 별도 공제가 있어 계산하지 않습니다.</p>
+    </div>
+
+    <div class="field" id="fPrior" style="display:none">
+      <span class="l" id="lPrior">최근 10년 이내에 같은 사람에게서 증여받은 적이 있나요</span>
+      <div class="seg" id="segPrior">
+        <button type="button" class="seg-btn on" data-v="no">없습니다 (이번이 처음)</button>
+        <button type="button" class="seg-btn" data-v="yes">있습니다</button>
+      </div>
+      <p class="hint">10년 이내 증여는 합산하여 과세되고 공제 한도도 함께 계산됩니다 (상속세 및 증여세법 제47조제2항, 제53조).</p>
+    </div>
+
+    <div class="field" id="fMarry" style="display:none">
+      <span class="l">혼인·출산 증여재산 공제</span>
+      <div class="seg" id="segMarry">
+        <button type="button" class="seg-btn on" data-v="no">해당 없음</button>
+        <button type="button" class="seg-btn" data-v="yes">해당 (처음 받는 공제)</button>
+      </div>
+      <p class="hint">혼인신고일 전후 2년 이내, 또는 자녀 출생일(입양신고일)부터 2년 이내에 직계존속에게서 받는 증여는
+        1억원을 추가로 공제합니다 (상속세 및 증여세법 제53조의2). 이 공제를 이전에 일부라도 받으셨다면 계산 범위를 벗어납니다.</p>
+    </div>
+  </div>
+
   <!-- ── 결과 ─────────────────────────────── -->
   <div class="card">
     <div class="ch">
       <div class="step-num grn">세</div>
-      <div><div class="ct">계산 결과</div><div class="cs">2026년 현행 지방세법 기준입니다. 최종 세액은 관할 지방자치단체의 고지에 따릅니다.</div></div>
+      <div><div class="ct">계산 결과</div><div class="cs">취득세는 2026년 현행 지방세법, 예상 증여세는 현행 상속세 및 증여세법 기준입니다. 최종 세액은 관할 지방자치단체의 고지와 세무서 신고 결과에 따릅니다.</div></div>
     </div>
     <div class="result-area" id="out"></div>
   </div>
@@ -396,9 +453,32 @@ html.mnav-open,html.mnav-open body{overflow:hidden}
             <td>지방세법 제10조의2제6항<br>시행령 제14조의4</td></tr>
       </table>
     </div>
+    <div class="basis-t">예상 증여세 (참고용)</div>
+    <div class="table-scroll">
+      <table class="basis">
+        <tr><th>항목</th><th>내용</th><th>근거</th></tr>
+        <tr><td>증여재산가액</td><td>입력한 시가인정액 × 증여 지분. 상속세 및 증여세법상 시가와 같다고 가정한 값이며, 실제 평가액은 다를 수 있습니다</td>
+            <td>계산상 가정</td></tr>
+        <tr><td>증여재산 공제</td><td>배우자 6억원, 직계존속 → 자녀 5천만원(미성년자 2천만원). 증여 전 10년 이내 공제받은 금액과 합산한 한도</td>
+            <td>상속세 및 증여세법 제53조제1호·제2호</td></tr>
+        <tr><td>혼인·출산 공제</td><td>혼인신고일 전후 2년 이내 또는 자녀 출생일(입양신고일)부터 2년 이내 직계존속 증여에 1억원 추가 공제 (혼인·출산 합산 1억원 한도)</td>
+            <td>제53조의2</td></tr>
+        <tr><td>과세최저한</td><td>과세표준 50만원 미만이면 부과하지 않음</td>
+            <td>제55조제2항</td></tr>
+        <tr><td>세율</td><td>1억원 이하 10% / 5억원 이하 1천만원 + 초과분 20% / 10억원 이하 9천만원 + 초과분 30% /
+            30억원 이하 2억4천만원 + 초과분 40% / 30억원 초과 10억4천만원 + 초과분 50%</td>
+            <td>제56조, 제26조</td></tr>
+        <tr><td>신고세액공제</td><td>기한 내 신고 시 산출세액의 3%</td>
+            <td>제69조제2항</td></tr>
+        <tr><td>신고기한</td><td>증여받은 날이 속하는 달의 말일부터 3개월 이내, 납세지 관할 세무서</td>
+            <td>제68조제1항</td></tr>
+        <tr><td>계산하지 않는 경우</td><td>10년 이내 합산 대상 증여가 있는 경우, 조부모 → 손자녀(할증과세), 그 밖의 친족, 부담부증여, 감정평가수수료 공제 등</td>
+            <td>제47조제2항, 제57조 등</td></tr>
+      </table>
+    </div>
     <div class="ntc info">
-      본 계산기는 취득세와 그 부가세목만 계산합니다. <b>증여세(국세)는 포함되어 있지 않습니다.</b>
-      증여세는 세무 영역이며, 본 서비스는 세무 자문을 제공하지 않습니다.
+      예상 증여세는 단순한 경우를 가정한 <b>참고용 추정치</b>이며 세무 자문이 아닙니다.
+      실제 증여세는 재산 평가, 과거 증여 이력, 공제 적용 여부에 따라 달라지므로 신고 전 세무사 또는 관할 세무서에서 확인하시기 바랍니다.
     </div>
   </div>
 
@@ -422,28 +502,37 @@ html.mnav-open,html.mnav-open body{overflow:hidden}
 
 <footer>
   <div class="foot-inner">
-    <div class="foot-brand">셀프등기24</div>
+    <div class="foot-brand"><svg class="foot-mark" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><g fill="#0F172A"><rect x="9" y="41" width="14" height="14" rx="1.5"/><rect x="25" y="41" width="14" height="14" rx="1.5"/><rect x="25" y="25" width="14" height="14" rx="1.5"/><rect x="41" y="41" width="14" height="14" rx="1.5"/><rect x="41" y="25" width="14" height="14" rx="1.5"/></g><rect x="41" y="9" width="14" height="14" rx="1.5" fill="#0369A1"/></svg><span>셀프등기<b>24</b></span></div>
     <div class="foot-links">
-      <a href="index.html">홈</a>
+      <a href="guide.html">셀프등기 가이드</a>
+      <a href="calculator.html">취득세 계산기</a>
       <a href="https://selfregi.tistory.com" target="_blank" rel="noopener">블로그</a>
+      <a href="terms.html">이용약관</a>
       <a href="privacy.html">개인정보처리방침</a>
-      <a href="terms.html">면책고지</a>
     </div>
-    <div class="foot-biz">셀프등기24 · 대표 허민 · 사업자등록번호 164-20-02315 · 주소 서울특별시 중구 동호로 173 · 이메일 <a href="mailto:selfregi999@gmail.com">selfregi999@gmail.com</a></div>
+    <div class="foot-biz">셀프등기24 · 대표 허민 · 사업자등록번호 164-20-02315 · 주소 서울특별시 중구 동호로 173 · 이메일 <a href="mailto:selfregi999@gmail.com">selfregi999@gmail.com</a> · 전화 070-8019-0609 (부재 시 이메일로 회신 · 문의는 이메일 우선)</div>
     <div class="foot-copy">
-      © 2026 셀프등기24 · 개인정보를 별도로 저장하지 않습니다 · 본 서비스는 법률/세무 자문을 제공하지 않습니다.
+      © 2026 셀프등기24 · 개인정보를 별도로 저장하지 않으며, 개인정보를 기재하지 않아도 서류 생성이 가능합니다.<br>
+      본 서비스는 법률 자문을 제공하지 않으며 등기 신청을 대행하지 않습니다. 최종 확인은 관할 등기소 안내를 따라 주세요.
     </div>
   </div>
 </footer>
 
 <script>
-/* 증여 취득세 계산 — 세율은 전부 법령 원문 확인값이다. 추정치를 넣지 않는다.
+/* 증여 취득세 계산 — 세율은 전부 법령 원문 확인값이다.
  *
  * 설계 원칙 하나: 중과(12%) 구간은 계산하지 않는다.
  *   이유 ① 조정대상지역 지정 현황은 시점에 따라 달라져 사이트가 단정할 수 없다.
  *        ② 중과 시 농어촌특별세 취급이 농어촌특별세법 제5조 문언(제6호 단일)과
  *           실무 안내표 사이에서 갈린다. 확정하지 못한 값을 숫자로 내보이지 않는다.
  *   대신 판정 결과와 근거 조문을 제시하고 관할 확인을 안내한다. (domain.md 「추측 금지」)
+ *
+ * 예상 증여세 (2026-10-05 추가)
+ *   세율·공제는 상속세 및 증여세법 원문 확인값(법제처, 2026-10-05 현행)이다.
+ *   다만 결과는 '예상'으로 표기한다. 단순한 경우만 계산하고, 나머지는 계산하지 않고 세무사 확인을 안내한다.
+ *   계산 범위: 배우자 / 부모→성인 자녀 / 부모→미성년 자녀, 최근 10년 이내 합산 대상 증여 없음,
+ *             부담부증여 아님, 시가인정액 입력됨.
+ *   반영하지 않음: 감정평가수수료 공제, 세대생략 할증(제57조), 10년 합산(제47조제2항), 기타 친족 공제.
  */
 (function () {
   'use strict';
@@ -460,7 +549,24 @@ html.mnav-open,html.mnav-open body{overflow:hidden}
     NATIONAL_AREA: 85           // 국민주택 규모 (전용 85㎡)
   };
 
-  var state = { kind: 'house', zone: 'no', exempt: 'no', debt: 'no' };
+  /* 상속세 및 증여세법 — 증여세 */
+  var GIFT = {
+    DED: { spouse: 600000000, adult: 50000000, minor: 20000000 },  // 제53조제1호·제2호
+    MARRY_DED: 100000000,       // 제53조의2
+    MIN_BASE: 500000,           // 제55조제2항 과세최저한
+    CREDIT: 0.03,               // 제69조제2항 신고세액공제
+    /* 제56조 → 제26조 세율: [구간 상한, 누적세액, 초과분 세율, 구간 하한] */
+    BRACKETS: [
+      [100000000,  0,          0.10, 0],
+      [500000000,  10000000,   0.20, 100000000],
+      [1000000000, 90000000,   0.30, 500000000],
+      [3000000000, 240000000,  0.40, 1000000000],
+      [Infinity,   1040000000, 0.50, 3000000000]
+    ]
+  };
+  var REL_LABEL = { spouse: '배우자', adult: '부모 → 성인 자녀', minor: '부모 → 미성년 자녀' };
+
+  var state = { kind: 'house', zone: 'no', exempt: 'no', debt: 'no', rel: '', prior: 'no', marry: 'no' };
 
   var $ = function (id) { return document.getElementById(id); };
   var out = $('out');
@@ -479,6 +585,15 @@ html.mnav-open,html.mnav-open body{overflow:hidden}
     el.value = raw ? parseInt(raw, 10).toLocaleString('ko-KR') : '';
   }
 
+  function updateGiftFields() {
+    var on = !!state.rel && state.rel !== 'other';
+    $('fPrior').style.display = on ? '' : 'none';
+    $('fMarry').style.display = (state.rel === 'adult') ? '' : 'none';
+    $('lPrior').textContent = (state.rel === 'spouse')
+      ? '최근 10년 이내에 배우자에게서 증여받은 적이 있나요'
+      : '최근 10년 이내에 부모·조부모 등 직계존속에게서 증여받은 적이 있나요';
+  }
+
   function seg(id, key) {
     var box = $(id);
     box.addEventListener('click', function (e) {
@@ -488,6 +603,7 @@ html.mnav-open,html.mnav-open body{overflow:hidden}
       b.classList.add('on');
       state[key] = b.dataset.v;
       if (key === 'kind') $('fArea').style.display = (state.kind === 'house') ? '' : 'none';
+      if (key === 'rel') updateGiftFields();
       calc();
     });
   }
@@ -496,6 +612,70 @@ html.mnav-open,html.mnav-open body{overflow:hidden}
     return '<div class="res-row' + (cls ? ' ' + cls : '') + '">' +
       '<div class="k"><b>' + k + '</b>' + (sub ? '<small>' + sub + '</small>' : '') + '</div>' +
       '<div class="v">' + v + '</div></div>';
+  }
+
+  /* 증여세 산출세액 — 제56조, 제26조 */
+  function giftRateTax(base) {
+    for (var i = 0; i < GIFT.BRACKETS.length; i++) {
+      var b = GIFT.BRACKETS[i];
+      if (base <= b[0]) return { tax: b[1] + (base - b[3]) * b[2], rate: b[2] };
+    }
+  }
+
+  /* 예상 증여세 — 계산 가능하면 {html, due}, 아니면 {html, due:null} */
+  function giftPart(market, share) {
+    var head = '<div class="sub-t">예상 증여세 <small>참고용 · 상속세 및 증여세법</small></div>';
+
+    if (!state.rel) {
+      return { html: head + '<div class="ntc info" style="margin-top:0">3번에서 증여하는 사람을 선택하시면 예상 증여세도 함께 보여드립니다.</div>', due: null };
+    }
+    if (state.rel === 'other') {
+      return { html: head + '<div class="ntc warn" style="margin-top:0"><b>이 관계는 예상 증여세를 계산하지 않습니다.</b><br>' +
+        '조부모가 손자녀에게 증여하면 산출세액에 30%(일정한 경우 40%)가 가산되고(상속세 및 증여세법 제57조), ' +
+        '형제·친척 등은 공제 기준이 다릅니다. 세무사 또는 관할 세무서에서 확인하시기 바랍니다.</div>', due: null };
+    }
+    if (state.prior === 'yes') {
+      return { html: head + '<div class="ntc warn" style="margin-top:0"><b>10년 이내 증여가 있어 예상 증여세를 계산하지 않습니다.</b><br>' +
+        '이전 증여재산가액이 이번 증여에 합산되고(제47조제2항) 공제 한도도 이미 쓴 금액만큼 줄어듭니다(제53조). ' +
+        '과거 신고 내역을 가지고 세무사 또는 관할 세무서에서 확인하시기 바랍니다.</div>', due: null };
+    }
+    if (!market) {
+      return { html: head + '<div class="ntc info" style="margin-top:0">예상 증여세는 <b>시가인정액</b>을 입력하시면 계산됩니다. ' +
+        '시가표준액(공시가격)만으로는 계산하지 않습니다.</div>', due: null };
+    }
+
+    var value = Math.floor(market * share);
+    var ded = Math.min(GIFT.DED[state.rel], value);
+    var marry = (state.rel === 'adult' && state.marry === 'yes') ? Math.min(GIFT.MARRY_DED, value - ded) : 0;
+    var base = value - ded - marry;
+
+    var html = head + '<div class="res-box">';
+    html += row('증여재산가액', '시가인정액 × 지분 ' + Math.round(share * 100) + '%', won(value));
+    html += row('증여재산 공제', REL_LABEL[state.rel] + ' · 제53조', '− ' + won(ded));
+    if (state.rel === 'adult' && state.marry === 'yes') {
+      html += row('혼인·출산 공제', '제53조의2', '− ' + won(marry));
+    }
+
+    if (base < GIFT.MIN_BASE) {
+      html += row('과세표준', base > 0 ? '50만원 미만 — 과세최저한 (제55조제2항)' : '공제 범위 이내', won(Math.max(base, 0)));
+      html += row('예상 증여세', '', '0원', 'total');
+      html += '</div>';
+      return { html: html, due: 0 };
+    }
+
+    var r = giftRateTax(base);
+    var tax = Math.floor(r.tax);
+    var credit = Math.floor(tax * GIFT.CREDIT);
+    var due = tax - credit;
+
+    html += row('과세표준', '', won(base));
+    html += row('산출세액', '구간 세율 ' + Math.round(r.rate * 100) + '% · 제56조, 제26조', won(tax));
+    html += row('신고세액공제', '기한 내 신고 시 3% · 제69조제2항', '− ' + won(credit));
+    html += row('예상 증여세', '받는 사람이 납부', won(due), 'total');
+    html += '</div>';
+    html += '<div class="ntc info">증여받은 날이 속하는 달의 말일부터 <b>3개월 이내</b>에 관할 세무서에 신고해야 신고세액공제가 적용됩니다(제68조제1항). ' +
+      '이 금액은 단순한 경우를 가정한 <b>참고용 추정치</b>이며 세무 자문이 아닙니다. 감정평가수수료 공제 등은 반영하지 않았으니, 신고 전 세무사 또는 관할 세무서에서 확인하시기 바랍니다.</div>';
+    return { html: html, due: due };
   }
 
   function calc() {
@@ -511,15 +691,14 @@ html.mnav-open,html.mnav-open body{overflow:hidden}
       return;
     }
 
-    var html = '';
-
-    /* 부담부증여 — 범위 밖임을 먼저 알린다 */
+    /* 부담부증여 — 범위 밖임을 먼저 알린다 (취득세·증여세 모두) */
     if (state.debt === 'yes') {
       out.innerHTML =
         '<div class="ntc stop"><b>부담부증여는 이 계산기의 범위를 벗어납니다.</b><br>' +
         '인수하는 채무액에 상당하는 부분은 유상승계취득으로 보아 별도의 과세표준과 세율이 적용되고' +
         '(지방세법 제10조의2제6항, 시행령 제14조의4), 증여자에게는 양도소득세가 발생할 수 있습니다. ' +
-        '양도소득세는 세무 영역이므로 세무 전문가나 관할 세무서에서 확인하시기 바랍니다.</div>';
+        '증여세도 채무 인수분을 따로 따져야 하므로 예상 증여세를 계산하지 않습니다. ' +
+        '세무 전문가나 관할 세무서에서 확인하시기 바랍니다.</div>';
       return;
     }
 
@@ -542,9 +721,12 @@ html.mnav-open,html.mnav-open body{overflow:hidden}
     var heavyTarget = (state.kind === 'house') && std >= RATE.HEAVY_STD_MIN;
     var heavyExempt = (state.exempt === 'yes');
 
+    var html = '<div class="sub-t">취득세 <small>지방세법</small></div>';
+    var acqTotal = null;
+    var tail = '';
+
     if (heavyTarget && state.zone === 'yes' && !heavyExempt) {
-      out.innerHTML =
-        row('과세표준', baseNote, won(taxBase)) +
+      html += '<div class="res-box">' + row('과세표준', baseNote, won(taxBase)) + '</div>' +
         '<div class="ntc stop" style="margin-top:12px">' +
         '<b>중과 대상에 해당할 수 있어 세액을 계산하지 않았습니다.</b><br>' +
         '조정대상지역에 있는 시가표준액 3억원 이상 주택을 무상취득하는 경우, ' +
@@ -555,57 +737,64 @@ html.mnav-open,html.mnav-open body{overflow:hidden}
         '중과가 적용될 때의 지방교육세·농어촌특별세 산출 방식은 사안에 따라 달라질 수 있어 ' +
         '본 계산기가 단정하지 않습니다. <b>관할 지방자치단체 세무과 또는 위택스에서 확인하시기 바랍니다.</b>' +
         '</div>';
-      return;
-    }
-
-    /* 표준세율 계산 */
-    var acq = taxBase * RATE.ACQ_GIFT;
-    var edu = taxBase * (RATE.ACQ_GIFT - RATE.SURTAX_BASE) * RATE.EDU_MULT;
-
-    var ruralExempt = (state.kind === 'house') && area > 0 && area <= RATE.NATIONAL_AREA;
-    var ruralUnknown = (state.kind === 'house') && area === 0;
-    var rural = ruralExempt ? 0 : taxBase * RATE.RURAL_RATE * RATE.RURAL_MULT;
-
-    html += row('과세표준', baseNote, won(taxBase));
-    html += row('취득세', '3.5% · 지방세법 제11조제1항제2호', won(acq));
-    html += row('지방교육세', '(3.5% − 2%) × 20% = 0.3% · 제151조제1항제1호', won(edu));
-
-    if (ruralExempt) {
-      html += row('농어촌특별세', '전용 ' + area + '㎡ — 국민주택 규모 이하로 비과세', '해당 없음', 'muted');
     } else {
-      html += row('농어촌특별세', '0.2% · 농특세법 제5조제1항제6호' +
-        (ruralUnknown ? ' (면적 미입력 — 과세 가정)' : ''), won(rural));
+      /* 표준세율 계산 */
+      var acq = taxBase * RATE.ACQ_GIFT;
+      var edu = taxBase * (RATE.ACQ_GIFT - RATE.SURTAX_BASE) * RATE.EDU_MULT;
+
+      var ruralExempt = (state.kind === 'house') && area > 0 && area <= RATE.NATIONAL_AREA;
+      var ruralUnknown = (state.kind === 'house') && area === 0;
+      var rural = ruralExempt ? 0 : taxBase * RATE.RURAL_RATE * RATE.RURAL_MULT;
+
+      html += '<div class="res-box">';
+      html += row('과세표준', baseNote, won(taxBase));
+      html += row('취득세', '3.5% · 지방세법 제11조제1항제2호', won(acq));
+      html += row('지방교육세', '(3.5% − 2%) × 20% = 0.3% · 제151조제1항제1호', won(edu));
+
+      if (ruralExempt) {
+        html += row('농어촌특별세', '전용 ' + area + '㎡ — 국민주택 규모 이하로 비과세', '해당 없음', 'muted');
+      } else {
+        html += row('농어촌특별세', '0.2% · 농특세법 제5조제1항제6호' +
+          (ruralUnknown ? ' (면적 미입력 — 과세 가정)' : ''), won(rural));
+      }
+      acqTotal = Math.floor(acq + edu + rural);
+      html += row('취득세 등 합계', '', won(acq + edu + rural), 'total');
+      html += '</div>';
+
+      if (ruralUnknown) {
+        tail += '<div class="ntc warn">전용면적을 입력하지 않아 농어촌특별세를 과세로 가정했습니다. ' +
+          '국민주택 규모(전용 85㎡) 이하이면 비과세입니다.</div>';
+      }
+      if (heavyTarget && state.zone === 'unknown' && !heavyExempt) {
+        tail += '<div class="ntc warn"><b>조정대상지역 여부를 확인해 보십시오.</b><br>' +
+          '시가표준액이 3억원 이상인 주택입니다. 해당 주택이 조정대상지역에 있다면 ' +
+          '취득세가 12%로 중과될 수 있습니다(지방세법 제13조의2제2항). ' +
+          '위 계산은 조정대상지역이 아닌 경우를 전제로 한 값입니다.</div>';
+      }
+      if (heavyTarget && state.zone === 'yes' && heavyExempt) {
+        tail += '<div class="ntc warn">1세대 1주택자의 주택을 배우자 또는 직계존비속이 무상취득하는 경우로 보아 ' +
+          '중과를 적용하지 않았습니다(지방세법 제13조의2제2항 단서). ' +
+          '1세대 1주택 해당 여부는 관할 지방자치단체에서 확인하시기 바랍니다.</div>';
+      }
+      if (!market && std) {
+        tail += '<div class="ntc warn">시가인정액이 입력되지 않았습니다. ' +
+          '증여의 과세표준은 시가표준액이 아니라 시가인정액이 원칙이므로(지방세법 제10조의2제1항), ' +
+          '실제 세액은 위 금액보다 커질 수 있습니다.</div>';
+      }
+      tail += '<div class="ntc info">취득세는 참고용이며 최종 세액은 관할 지방자치단체의 고지에 따릅니다. ' +
+        '취득세 신고·납부는 위택스 또는 관할 구청 세무과에서 하실 수 있습니다.</div>';
     }
-    html += row('합계', '', won(acq + edu + rural), 'total');
+
+    var g = giftPart(market, share);
+    html += tail + g.html;
+
+    if (acqTotal !== null && g.due !== null) {
+      html += '<div class="sub-t">합계</div><div class="res-box">' +
+        row('증여로 받을 때 세금 합계', '취득세 등 ' + won(acqTotal) + ' + 예상 증여세 ' + won(g.due), won(acqTotal + g.due), 'total') +
+        '</div>';
+    }
 
     out.innerHTML = html;
-
-    var tail = '';
-    if (ruralUnknown) {
-      tail += '<div class="ntc warn">전용면적을 입력하지 않아 농어촌특별세를 과세로 가정했습니다. ' +
-        '국민주택 규모(전용 85㎡) 이하이면 비과세입니다.</div>';
-    }
-    if (heavyTarget && state.zone === 'unknown' && !heavyExempt) {
-      tail += '<div class="ntc warn"><b>조정대상지역 여부를 확인해 보십시오.</b><br>' +
-        '시가표준액이 3억원 이상인 주택입니다. 해당 주택이 조정대상지역에 있다면 ' +
-        '취득세가 12%로 중과될 수 있습니다(지방세법 제13조의2제2항). ' +
-        '위 계산은 조정대상지역이 아닌 경우를 전제로 한 값입니다.</div>';
-    }
-    if (heavyTarget && state.zone === 'yes' && heavyExempt) {
-      tail += '<div class="ntc warn">1세대 1주택자의 주택을 배우자 또는 직계존비속이 무상취득하는 경우로 보아 ' +
-        '중과를 적용하지 않았습니다(지방세법 제13조의2제2항 단서). ' +
-        '1세대 1주택 해당 여부는 관할 지방자치단체에서 확인하시기 바랍니다.</div>';
-    }
-    if (!market && std) {
-      tail += '<div class="ntc warn">시가인정액이 입력되지 않았습니다. ' +
-        '증여의 과세표준은 시가표준액이 아니라 시가인정액이 원칙이므로(지방세법 제10조의2제1항), ' +
-        '실제 세액은 위 금액보다 커질 수 있습니다.</div>';
-    }
-    tail += '<div class="ntc info">본 계산은 참고용이며 최종 세액은 관할 지방자치단체의 고지에 따릅니다. ' +
-      '취득세 신고·납부는 위택스 또는 관할 구청 세무과에서 하실 수 있습니다. ' +
-      '증여세(국세)는 포함되어 있지 않습니다.</div>';
-
-    out.insertAdjacentHTML('beforeend', tail);
   }
 
   ['inMarket', 'inStd'].forEach(function (id) {
@@ -618,10 +807,14 @@ html.mnav-open,html.mnav-open body{overflow:hidden}
   seg('segZone', 'zone');
   seg('segExempt', 'exempt');
   seg('segDebt', 'debt');
+  seg('segRel', 'rel');
+  seg('segPrior', 'prior');
+  seg('segMarry', 'marry');
 
   calc();
 })();
 </script>
+
 <script>
 /* 상단 메뉴 「부동산 계산기」 드롭다운: 클릭(모든 기기) + 마우스 올림(데스크톱) */
 (function(){

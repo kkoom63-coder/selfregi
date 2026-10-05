@@ -158,23 +158,101 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:48px;p
   th,td{padding:10px 10px}
   th,td.num{white-space:normal}
 }
-.nav-logo{display:inline-flex;align-items:center;gap:7px}.nav-mark{width:22px;height:22px;flex:none}.nav-logo b{color:#0369A1;font-weight:inherit}.nav-wm{font-weight:inherit}</style>
+.nav-logo{display:inline-flex;align-items:center;gap:7px}.nav-mark{width:22px;height:22px;flex:none}.nav-logo b{color:#0369A1;font-weight:inherit}.nav-wm{font-weight:inherit}
+
+/* ===== index.html 기준 양식 통일 (2026-10-05) ===== */
+.nav-a{padding:8px 12px;letter-spacing:-.16px}
+/* 상단 메뉴 「부동산 계산기」 드롭다운 — 클릭으로 열고, 데스크톱은 마우스를 올려도 열림 */
+.nav-a.active{background:#E0F2FE;color:#075985;font-weight:600}
+.nav-dd-btn{display:inline-flex;align-items:center;gap:4px;border:0;background:transparent;font-family:inherit;line-height:inherit;cursor:pointer;letter-spacing:-.16px}
+.nav-dd-ic{width:12px;height:12px;transition:transform .15s}
+.nav-dd-btn[aria-expanded="true"]{background:#F1F5F9;color:var(--navy)}
+.nav-dd-btn.active[aria-expanded="true"]{background:#E0F2FE;color:#075985}
+.nav-dd-btn[aria-expanded="true"] .nav-dd-ic{transform:rotate(180deg)}
+.nav-dd-menu{position:fixed;z-index:1000;min-width:240px;background:#fff;border:1px solid var(--border);border-radius:12px;box-shadow:0 12px 32px rgba(15,23,42,.14);padding:6px}
+.nav-dd-menu[hidden]{display:none}
+.nav-dd-menu a{display:block;padding:10px 12px;border-radius:8px;color:var(--navy);font-size:14px;font-weight:700;text-decoration:none;line-height:1.4}
+.nav-dd-menu a span{display:block;font-size:12px;font-weight:500;color:#475569;margin-top:2px}
+.nav-dd-menu a:hover,.nav-dd-menu a:focus-visible{background:#F1F5F9}
+.nav-dd-menu a[aria-current="page"]{background:#E0F2FE;color:#075985}
+@media(prefers-reduced-motion:reduce){.nav-dd-ic{transition:none}}
+
+/* 상단 메뉴 반응형 보정 (2026-10-04): 좁은 화면에서 줄바꿈·겹침 방지 */
+.nav-dd{flex-shrink:0;display:inline-flex}
+.nav-dd-btn{white-space:nowrap}
+@media(max-width:768px){
+  .nav-scroll{overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 20px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 20px),transparent)}
+  .nav-scroll::-webkit-scrollbar{display:none}
+  .nav-logo{font-size:14px;margin-right:8px}.nav-mark{width:20px;height:20px}
+  .nav-a{font-size:13.5px;padding:8px 10px}
+  .nav-a.cta{padding:8px 12px;margin-left:6px}
+}
+@media(max-width:560px){.nav-a{font-size:13px;padding:7px 9px}.nav-a.cta{font-size:13px;padding:7px 11px}}
+
+/* 모바일 햄버거 메뉴 (768px 이하, 2026-10-04) — 상단 버튼은 숨기고 ≡ 메뉴 안으로 */
+.nav-burger{display:none}
+@media(max-width:768px){
+  .js-mnav .nav-scroll>.nav-a,.js-mnav .nav-scroll>.nav-dd,.js-mnav .nav-inner>.nav-a.cta{display:none}
+  .js-mnav .nav-scroll{overflow:visible;-webkit-mask-image:none;mask-image:none}
+  .js-mnav .nav-burger{display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;width:44px;height:44px;margin-left:auto;margin-right:-10px;border:0;background:transparent;border-radius:8px;color:var(--navy);cursor:pointer}
+}
+.nav-burger svg{width:24px;height:24px;stroke:currentColor;stroke-width:2;stroke-linecap:round;fill:none}
+.nav-burger path{transition:transform .2s,opacity .2s;transform-origin:12px 12px}
+.nav-burger[aria-expanded="true"] .b1{transform:translateY(5px) rotate(45deg)}
+.nav-burger[aria-expanded="true"] .b2{opacity:0}
+.nav-burger[aria-expanded="true"] .b3{transform:translateY(-5px) rotate(-45deg)}
+.mnav{position:fixed;left:0;right:0;bottom:0;z-index:999;background:#fff;display:flex;flex-direction:column;overflow-y:auto;overscroll-behavior:contain;border-top:1px solid var(--border)}
+.mnav[hidden]{display:none}
+.mnav-list{flex:1;padding:4px 20px 20px}
+.mnav-a{display:flex;align-items:center;justify-content:space-between;width:100%;min-height:56px;padding:0;border:0;border-bottom:1px solid var(--border);background:none;font-family:inherit;font-size:16px;font-weight:700;color:var(--navy);text-decoration:none;text-align:left;cursor:pointer;letter-spacing:-.02em}
+.mnav-a svg{width:14px;height:14px;transition:transform .2s;color:#475569}
+.mnav-acc[aria-expanded="true"]{border-bottom-color:transparent}
+.mnav-acc[aria-expanded="true"] svg{transform:rotate(180deg)}
+.mnav-sub{padding:2px 0 10px;border-bottom:1px solid var(--border)}
+.mnav-sub[hidden]{display:none}
+.mnav-sub a{display:block;padding:10px 12px;border-radius:8px;font-size:15px;font-weight:600;color:#334155;text-decoration:none}
+.mnav-sub a span{display:block;font-size:12.5px;font-weight:500;color:#475569;margin-top:2px}
+.mnav-sub a[aria-current="page"]{background:#E0F2FE;color:#075985}
+.mnav-cta{padding:14px 20px calc(14px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--border);background:#fff}
+.mnav-cta a{display:flex;align-items:center;justify-content:center;min-height:52px;border-radius:10px;background:var(--blue);color:#fff;font-size:16px;font-weight:700;text-decoration:none}
+html.mnav-open,html.mnav-open body{overflow:hidden}
+@media(prefers-reduced-motion:reduce){.nav-burger path,.mnav-a svg{transition:none}}
+
+/* 품질 기준 보강 (2026-10-04): 키보드 포커스 · 대비 · 최소 글씨 12px */
+:is(a,button,input,select,textarea,summary,[tabindex]):focus-visible{outline:2px solid var(--blue,#0369A1);outline-offset:2px}
+.foot-biz,.foot-biz a,.foot-copy{font-size:12px}
+/* 히어로 색상 — index.html과 같은 밝은 배경 */
+header{background:var(--bg)}
+.hero h1{color:var(--navy)}
+.hero h1 em{color:var(--blue)}
+.hero-sub{color:#334155}
+/* 푸터 — index.html 기준 */
+footer{background:var(--bg);border-top:1px solid var(--border);margin-top:40px;padding:32px 20px 28px}
+.foot-inner{max-width:1200px;margin:0 auto;text-align:left}
+.foot-brand{font-size:14px;font-weight:800;color:var(--navy);margin-bottom:8px;display:flex;align-items:center;gap:6px}.foot-mark{width:18px;height:18px;flex:none}.foot-brand b{color:#0369A1;font-weight:inherit}
+.foot-links{display:flex;gap:6px 14px;margin-bottom:12px;flex-wrap:wrap;justify-content:flex-start}
+.foot-links a{color:var(--muted);font-size:12px;text-decoration:none;padding:2px 0}
+.foot-links a:hover{color:var(--navy)}
+.foot-biz{font-size:12px;color:#334155;font-weight:500;margin-bottom:10px;line-height:1.7;word-break:keep-all}.foot-biz a{color:var(--blue);text-decoration:underline}
+.foot-copy{font-size:12px;color:var(--muted);line-height:1.9;word-break:keep-all}
+@media(max-width:560px){.foot-links a,footer a{display:inline-block;min-height:24px;line-height:24px}}
+</style>
 </head>
 <body>
-<a href="#content" class="skip-link">본문으로 건너뛰기</a>
+<a href="#main" class="skip-link">본문으로 건너뛰기</a>
 <nav><div class="nav-inner">
   <div class="nav-scroll">
     <a href="index.html" class="nav-logo"><svg class="nav-mark" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><g fill="#0F172A"><rect x="9" y="41" width="14" height="14" rx="1.5"/><rect x="25" y="41" width="14" height="14" rx="1.5"/><rect x="25" y="25" width="14" height="14" rx="1.5"/><rect x="41" y="41" width="14" height="14" rx="1.5"/><rect x="41" y="25" width="14" height="14" rx="1.5"/></g><rect x="41" y="9" width="14" height="14" rx="1.5" fill="#0369A1"/></svg><strong class="nav-wm">셀프등기<b>24</b></strong></a>
     <a href="guide.html" class="nav-a">셀프등기 가이드</a>
-    <a href="cost.html" class="nav-a" aria-current="page">등기비용 비교</a>
-    <a href="calculator.html" class="nav-a">취득세 계산기</a>
+    <a href="cost.html" class="nav-a active" aria-current="page">등기비용 비교</a>
+    <span class="nav-dd"><button type="button" class="nav-a nav-dd-btn" aria-expanded="false" aria-controls="nav-dd-calc">부동산 계산기<svg class="nav-dd-ic" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M3 4.5 6 7.5 9 4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button><span class="nav-dd-menu" id="nav-dd-calc" hidden><a href="calculator.html">취득세 계산기<span>매매로 취득할 때</span></a><a href="gift_tax.html">증여 취득세 계산기<span>증여로 취득할 때</span></a></span></span>
     <a href="https://selfregi.tistory.com" class="nav-a" target="_blank" rel="noopener">블로그</a>
   </div>
   <a href="normal_form.html" class="nav-a cta">서류 작성하기</a>
 </div></nav>
 
-<main>
-<header id="content">
+<main id="main">
+<header>
   <div class="hero">
     <h1>셀프등기 비용 비교<br><em>달라지는 것은 법무사 보수뿐입니다</em></h1>
     <p class="hero-sub">취득세·국민주택채권·인지세는 누가 신청해도 같습니다. 법무사 보수와 신청 방법별 비용만 비교합니다.</p>
@@ -260,19 +338,17 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:48px;p
 
 <footer>
   <div class="foot-inner">
-    <div class="foot-brand">셀프등기24</div>
+    <div class="foot-brand"><svg class="foot-mark" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><g fill="#0F172A"><rect x="9" y="41" width="14" height="14" rx="1.5"/><rect x="25" y="41" width="14" height="14" rx="1.5"/><rect x="25" y="25" width="14" height="14" rx="1.5"/><rect x="41" y="41" width="14" height="14" rx="1.5"/><rect x="41" y="25" width="14" height="14" rx="1.5"/></g><rect x="41" y="9" width="14" height="14" rx="1.5" fill="#0369A1"/></svg><span>셀프등기<b>24</b></span></div>
     <div class="foot-links">
-      <a href="index.html">홈</a>
-      <a href="normal_form.html">서류 작성하기</a>
       <a href="guide.html">셀프등기 가이드</a>
       <a href="calculator.html">취득세 계산기</a>
       <a href="https://selfregi.tistory.com" target="_blank" rel="noopener">블로그</a>
       <a href="terms.html">이용약관</a>
       <a href="privacy.html">개인정보처리방침</a>
     </div>
-    <div class="foot-biz">셀프등기24 · 대표 허민 · 사업자등록번호 164-20-02315 · 주소 서울특별시 중구 동호로 173 · 이메일 <a href="mailto:selfregi999@gmail.com">selfregi999@gmail.com</a></div>
+    <div class="foot-biz">셀프등기24 · 대표 허민 · 사업자등록번호 164-20-02315 · 주소 서울특별시 중구 동호로 173 · 이메일 <a href="mailto:selfregi999@gmail.com">selfregi999@gmail.com</a> · 전화 070-8019-0609 (부재 시 이메일로 회신 · 문의는 이메일 우선)</div>
     <div class="foot-copy">
-      © 2026 셀프등기24 · 개인정보를 별도로 저장하지 않으며, 개인정보를 기재하지 않아도 서류를 자동완성할 수 있습니다.<br>
+      © 2026 셀프등기24 · 개인정보를 별도로 저장하지 않으며, 개인정보를 기재하지 않아도 서류 생성이 가능합니다.<br>
       본 서비스는 법률 자문을 제공하지 않으며 등기 신청을 대행하지 않습니다. 최종 확인은 관할 등기소 안내를 따라 주세요.
     </div>
   </div>
@@ -320,6 +396,78 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:48px;p
     });
   });
   render();
+})();
+</script>
+<script>
+/* 상단 메뉴 「부동산 계산기」 드롭다운: 클릭(모든 기기) + 마우스 올림(데스크톱) */
+(function(){
+  var b=document.querySelector('.nav-dd-btn'); if(!b) return;
+  var m=document.getElementById(b.getAttribute('aria-controls')); if(!m) return;
+  document.body.appendChild(m); /* 가로 스크롤 메뉴 안에서 잘리지 않게 body로 옮긴다 */
+  var hover=window.matchMedia('(hover:hover) and (pointer:fine)'), t=null, via='';
+  function place(){
+    var r=b.getBoundingClientRect(), nb=b.closest('nav').getBoundingClientRect();
+    m.style.top=Math.round(nb.bottom+6)+'px';
+    if(window.innerWidth<=640){ m.style.left='12px'; m.style.right='12px'; }
+    else { m.style.right='auto'; m.style.left=Math.round(Math.max(12,Math.min(r.left,window.innerWidth-m.offsetWidth-12)))+'px'; }
+  }
+  function open(src){ clearTimeout(t); via=src; if(!m.hidden) return; m.hidden=false; b.setAttribute('aria-expanded','true'); place(); }
+  function close(){ clearTimeout(t); if(m.hidden) return; m.hidden=true; b.setAttribute('aria-expanded','false'); via=''; }
+  b.addEventListener('click',function(e){
+    e.stopPropagation();
+    if(!m.hidden && via==='hover'){ via='click'; return; }
+    if(m.hidden){ open('click'); if(e.detail===0){ var a=m.querySelector('a'); if(a) a.focus(); } } else close();
+  });
+  document.addEventListener('click',function(e){ if(!m.hidden && !m.contains(e.target)) close(); });
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape' && !m.hidden){ close(); b.focus(); } });
+  m.addEventListener('focusout',function(e){ if(e.relatedTarget && !m.contains(e.relatedTarget) && e.relatedTarget!==b) close(); });
+  window.addEventListener('resize',function(){ if(!m.hidden) place(); });
+  window.addEventListener('scroll',close,{passive:true});
+  var sc=b.closest('.nav-scroll'); if(sc) sc.addEventListener('scroll',close,{passive:true});
+  if(hover.matches){
+    [b,m].forEach(function(el){
+      el.addEventListener('mouseenter',function(){ open(via||'hover'); });
+      el.addEventListener('mouseleave',function(){ t=setTimeout(close,200); });
+    });
+  }
+})();
+</script>
+<script>
+/* 모바일 햄버거 메뉴: 상단 메뉴 항목을 복제해 ≡ 패널로 보여준다 (768px 이하) */
+(function(){
+  var nav=document.querySelector('nav'),inner=nav&&nav.querySelector('.nav-inner'),sc=inner&&inner.querySelector('.nav-scroll'); if(!sc) return;
+  document.documentElement.classList.add('js-mnav');
+  var btn=document.createElement('button'); btn.type='button'; btn.className='nav-burger';
+  btn.setAttribute('aria-label','메뉴 열기'); btn.setAttribute('aria-expanded','false'); btn.setAttribute('aria-controls','mnav');
+  btn.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path class="b1" d="M4 7h16"/><path class="b2" d="M4 12h16"/><path class="b3" d="M4 17h16"/></svg>';
+  inner.appendChild(btn);
+  var p=document.createElement('div'); p.id='mnav'; p.className='mnav'; p.hidden=true; p.setAttribute('role','dialog'); p.setAttribute('aria-label','전체 메뉴');
+  var list=document.createElement('div'); list.className='mnav-list'; p.appendChild(list);
+  [].forEach.call(sc.children,function(el){
+    if(el.tagName==='A'&&el.classList.contains('nav-a')){ var a=el.cloneNode(true); a.removeAttribute('id'); a.className='mnav-a'; list.appendChild(a); }
+    else if(el.classList.contains('nav-dd')){
+      var ob=el.querySelector('.nav-dd-btn'),menu=ob&&document.getElementById(ob.getAttribute('aria-controls')); if(!menu) return;
+      var on=ob.classList.contains('active');
+      var ab=document.createElement('button'); ab.type='button'; ab.className='mnav-a mnav-acc';
+      ab.setAttribute('aria-expanded',on?'true':'false'); ab.setAttribute('aria-controls','mnav-sub');
+      ab.innerHTML=ob.childNodes[0].textContent+'<svg viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M3 4.5 6 7.5 9 4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+      var sub=document.createElement('div'); sub.id='mnav-sub'; sub.className='mnav-sub'; sub.hidden=!on;
+      [].forEach.call(menu.querySelectorAll('a'),function(x){ sub.appendChild(x.cloneNode(true)); });
+      ab.addEventListener('click',function(){ var o=ab.getAttribute('aria-expanded')==='true'; ab.setAttribute('aria-expanded',String(!o)); sub.hidden=o; });
+      list.appendChild(ab); list.appendChild(sub);
+    }
+  });
+  var cta=null; [].forEach.call(inner.children,function(el){ if(el.classList.contains('cta')) cta=el; });
+  if(cta){ var f=document.createElement('div'); f.className='mnav-cta'; var c=cta.cloneNode(true); c.removeAttribute('class'); c.removeAttribute('id'); f.appendChild(c); p.appendChild(f); }
+  document.body.appendChild(p);
+  /* 메뉴가 열린 동안 뒤 화면은 키보드·화면낭독기에서 제외 */
+  function lock(on){ [].forEach.call(document.body.children,function(el){ if(el===p||el.contains(nav)||el.tagName==='SCRIPT') return; el.inert=on; }); }
+  function open(){ p.style.top=Math.max(0,Math.round(nav.getBoundingClientRect().bottom))+'px'; p.hidden=false; btn.setAttribute('aria-expanded','true'); btn.setAttribute('aria-label','메뉴 닫기'); document.documentElement.classList.add('mnav-open'); lock(true); var f=p.querySelector('a,button'); if(f) f.focus(); }
+  function close(){ p.hidden=true; btn.setAttribute('aria-expanded','false'); btn.setAttribute('aria-label','메뉴 열기'); document.documentElement.classList.remove('mnav-open'); lock(false); }
+  btn.addEventListener('click',function(){ p.hidden?open():close(); });
+  p.addEventListener('click',function(e){ if(e.target.closest&&e.target.closest('a')) close(); });
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape'&&!p.hidden){ close(); btn.focus(); } });
+  window.addEventListener('resize',function(){ if(window.innerWidth>768&&!p.hidden) close(); });
 })();
 </script>
 </body>
