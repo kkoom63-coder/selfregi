@@ -467,6 +467,58 @@ input.ocr-warn{border-color:#DC2626!important;box-shadow:0 0 0 3px rgba(220,38,3
 .ocr-stage .slot-t{font-size:16px;margin-bottom:6px}
 .ocr-stage .pr,.ocr-stage .plg{align-self:stretch}
 .ocr-self{margin:0;font-size:12.5px;color:#475569;text-align:center}
+
+/* ===== 모바일 정리 (2026-10-06) =====
+   바깥 14 + 카드 22 + 상자 20px 여백이 겹쳐 글 폭이 280px 안팎이었다 → 여백을 줄이고 글자 크기를 4단계로 묶는다. */
+.jt-toggle .jt-t,.jt-toggle .jt-s{display:block}
+.pv-x,.pv-bar,.sum-pv{display:none}
+@media(max-width:1080px){
+  /* 미리보기는 하단 시트로 */
+  .side{position:fixed!important;left:0;right:0;bottom:0;top:auto;z-index:1002;max-height:80vh;overflow-y:auto;overscroll-behavior:contain;transform:translateY(105%);transition:transform .28s cubic-bezier(.4,0,.2,1);visibility:hidden}
+  .side.open{transform:none;visibility:visible}
+  .side .card{margin:0;border-radius:16px 16px 0 0;border-bottom:0;box-shadow:0 -10px 30px rgba(15,23,42,.18)}
+  .side-h{display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:#fff;z-index:1}
+  .side-h::before{content:"";position:absolute;left:50%;top:6px;width:36px;height:4px;margin-left:-18px;border-radius:2px;background:#CBD5E1}
+  .pv-x{display:inline-flex;align-items:center;min-height:36px;padding:0 12px;border:1px solid var(--border);border-radius:8px;background:#fff;font-family:inherit;font-size:13px;font-weight:700;color:var(--navy);cursor:pointer}
+  .pv-dim{position:fixed;inset:0;background:rgba(15,23,42,.45);z-index:1001}
+  .pv-dim[hidden]{display:none}
+  html.pv-open,html.pv-open body{overflow:hidden}
+  .pv-bar{display:flex;align-items:center;gap:10px;position:fixed;left:10px;right:10px;bottom:calc(10px + env(safe-area-inset-bottom,0px));z-index:998;min-height:52px;padding:0 8px 0 16px;border:0;border-radius:12px;background:var(--navy);color:#fff;font-family:inherit;text-align:left;cursor:pointer;box-shadow:0 8px 24px -8px rgba(15,23,42,.5)}
+  .pvb-t{font-size:13.5px;font-weight:700}
+  .pvb-n{flex:1;font-size:12.5px;color:#CBD5E1;white-space:nowrap}
+  .pvb-n b{color:#fff;font-weight:800}
+  .pvb-go{flex-shrink:0;min-height:36px;display:inline-flex;align-items:center;padding:0 14px;border-radius:8px;background:#fff;color:var(--navy);font-size:13px;font-weight:800}
+  .pv-bar.pulse{animation:pvPulse .9s ease-out}
+  @keyframes pvPulse{0%{box-shadow:0 0 0 0 rgba(3,105,161,.7)}100%{box-shadow:0 0 0 14px rgba(3,105,161,0)}}
+  html.mnav-open .pv-bar{display:none}
+  body{padding-bottom:76px}
+  .sum-pv{display:inline-flex;align-items:center;min-height:40px;margin-top:10px;padding:0 14px;border:1px solid var(--blue);border-radius:8px;background:#fff;font-family:inherit;font-size:13px;font-weight:700;color:var(--blue);cursor:pointer}
+}
+@media(prefers-reduced-motion:reduce){.side,.pv-bar.pulse{transition:none;animation:none}}
+@media(max-width:640px){
+  .shell{padding:12px 10px 40px}
+  .hi{padding:18px 16px 12px}
+  header h1{font-size:21px}
+  .hi>p{font-size:13.5px!important;line-height:1.6}
+  .card{padding:16px 14px}
+  .ocr-stage .drop{padding:18px 14px}
+  /* 카드 머리: 번호+제목 한 줄, 부제는 카드 왼쪽 끝부터 */
+  .ch{display:grid;grid-template-columns:32px minmax(0,1fr);column-gap:10px;row-gap:2px}
+  .ch>div:not(.ci){display:contents}
+  .ch .ct{grid-column:2}
+  .ch .cs{grid-column:1 / -1}
+  .ch>.guide-link{grid-column:1 / -1;justify-self:start;margin-top:8px}
+  .ch>div[style]{display:contents!important}
+  .ch>div[style]>div:not(.ci){display:contents}
+  /* 글자 4단계: 본문 14 · 안내 13 · 보조 12.5 · 라벨 13.5 굵게 */
+  .ntc,.nt,.iss-d,.sum-d{font-size:13px!important;line-height:1.65}
+  .cs,.fn,.jt-s,.sub,.plg,.ocr-self{font-size:12.5px!important;line-height:1.6}
+  .f label{font-size:13.5px}
+  .jt-toggle .jt-t{font-size:13.5px}
+  .jt-toggle{padding:12px}
+}
+/* 짧은 숫자 칸(동·호, 층, 대지권 분모·분자, 계약일 연·월·일, 지분)은 모바일에서도 한 줄에 나란히 — 세로로 길게 늘어지지 않게 */
+@media(max-width:520px){.fg{grid-template-columns:1fr 1fr;gap:10px}.fg.s3{grid-template-columns:1fr 1fr 1fr}.fg.s1{grid-template-columns:1fr}}
 </style>
 
 </head>
@@ -1050,9 +1102,9 @@ input.ocr-warn{border-color:#DC2626!important;box-shadow:0 0 0 3px rgba(220,38,3
 
 </main>
 
-<aside class="side">
+<aside class="side" id="pv-sheet" aria-label="문서 반영 미리보기">
   <div class="card">
-    <div class="side-h"><div class="side-t">문서 반영 미리보기</div></div>
+    <div class="side-h"><div class="side-t">문서 반영 미리보기</div><button type="button" class="pv-x" id="pv-x" aria-label="미리보기 닫기">닫기</button></div>
     <div class="side-b">
       <div class="pv">
         <div class="cp">위임장에 들어갈 내용</div>
@@ -1084,6 +1136,12 @@ input.ocr-warn{border-color:#DC2626!important;box-shadow:0 0 0 3px rgba(220,38,3
   </div>
 </aside>
 </div>
+<div class="pv-dim" id="pv-dim" hidden></div>
+<button type="button" class="pv-bar" id="pv-bar" aria-controls="pv-sheet" aria-expanded="false">
+  <span class="pvb-t">문서 반영 미리보기</span>
+  <span class="pvb-n">채운 칸 <b id="pvbDone">0</b> · 남은 칸 <b id="pvbLeft">0</b></span>
+  <span class="pvb-go">보기</span>
+</button>
 <footer>
   <div class="foot-inner">
     <div class="foot-brand"><svg class="foot-mark" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><g fill="#0F172A"><rect x="9" y="41" width="14" height="14" rx="1.5"/><rect x="25" y="41" width="14" height="14" rx="1.5"/><rect x="25" y="25" width="14" height="14" rx="1.5"/><rect x="41" y="41" width="14" height="14" rx="1.5"/><rect x="41" y="25" width="14" height="14" rx="1.5"/></g><rect x="41" y="9" width="14" height="14" rx="1.5" fill="#0369A1"/></svg><span>셀프등기<b>24</b></span></div>
@@ -2286,7 +2344,8 @@ if (window.SRPay && SRPay.setGuard) SRPay.setGuard(function () {
       ? '<span class="sum-lv oc"><i class="dot d-oc"></i>정확도 보통</span>사진에서 읽은 값은 <b>주황색 칸</b>으로 표시했습니다. 등기부와 한 번 대조해 주세요.'
       : '<span class="sum-lv ok"><i class="dot d-ok"></i>정확도 높음</span>발급 원본에서 글자를 그대로 가져왔습니다.';
     sum.innerHTML = '<div class="ocr-sum"><div class="sum-h">등기부에서 <b>'+filled+'칸</b>을 채웠습니다'
-      + (issues.length ? ' · <em>확인할 항목 '+issues.length+'개</em>' : '') + '</div><div class="sum-d">'+lvl+'</div></div>';
+      + (issues.length ? ' · <em>확인할 항목 '+issues.length+'개</em>' : '') + '</div><div class="sum-d">'+lvl+'</div>'
+      + '<button type="button" class="sum-pv" onclick="window.nfPv&&nfPv(true)">서류에 들어간 모습 미리보기</button></div>';
     box.innerHTML = issues.map(function(x){
       var r = x.r, cls = x.lv === 'no' ? 'no' : 'oc';
       if(x.lv === 'addr'){ r = {id:r.id, label:r.label, v:r.v, note:r.note}; }
@@ -2721,6 +2780,35 @@ window.nfRegMini = function(rows, res){
   if(tl&&ul) set('ratio', tl.v+'분의 '+ul.v, tl.cls==='warn');
   box.classList.add('read');
 };
+</script>
+<script>
+/* 모바일 미리보기 시트 (2026-10-06): 1080px 이하에서는 미리보기가 페이지 맨 아래로 밀려
+   등기부를 올려도 결과를 볼 수 없었다. 하단 막대 → 시트로 언제든 연다. */
+(function(){
+  var sh=document.getElementById('pv-sheet'), bar=document.getElementById('pv-bar'), dim=document.getElementById('pv-dim'), x=document.getElementById('pv-x');
+  if(!sh||!bar) return;
+  var mq=window.matchMedia('(max-width:1080px)');
+  function set(on){
+    if(!mq.matches) on=false;
+    sh.classList.toggle('open',on); dim.hidden=!on; bar.setAttribute('aria-expanded',String(on));
+    document.documentElement.classList.toggle('pv-open',on);
+    if(on){ sh.setAttribute('role','dialog'); sh.setAttribute('aria-modal','true'); try{x.focus({preventScroll:true});}catch(e){} }
+    else { sh.removeAttribute('role'); sh.removeAttribute('aria-modal'); }
+  }
+  window.nfPv=function(on){ set(on===undefined?!sh.classList.contains('open'):on); if(on&&window.SR)try{SR.track('pv_sheet',{});}catch(e){} };
+  bar.addEventListener('click',function(){ window.nfPv(true); });
+  x.addEventListener('click',function(){ set(false); bar.focus(); });
+  dim.addEventListener('click',function(){ set(false); });
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape'&&sh.classList.contains('open')){ set(false); bar.focus(); } });
+  mq.addEventListener&&mq.addEventListener('change',function(){ if(!mq.matches) set(false); });
+  /* 막대의 숫자는 미리보기 집계(tlDone·tlLeft)를 그대로 옮긴다 */
+  var a=document.getElementById('tlDone'), b=document.getElementById('tlLeft'), A=document.getElementById('pvbDone'), B=document.getElementById('pvbLeft'), last='';
+  function sync(){ if(!a||!b) return; var k=a.textContent+'/'+b.textContent; if(k===last) return;
+    var grew = last && +a.textContent > +last.split('/')[0]; last=k; A.textContent=a.textContent; B.textContent=b.textContent;
+    if(grew){ bar.classList.remove('pulse'); void bar.offsetWidth; bar.classList.add('pulse'); } }
+  ['input','change','click'].forEach(function(t){ document.addEventListener(t,function(){ setTimeout(sync,30); },true); });
+  sync();
+})();
 </script>
 </body>
 </html>
