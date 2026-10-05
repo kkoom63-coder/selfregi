@@ -463,7 +463,7 @@ input.ocr-warn{border-color:#DC2626!important;box-shadow:0 0 0 3px rgba(220,38,3
 <main id="main">
 
 <div class="ntc inf" style="margin-bottom:14px">
-  <strong>등기부를 올리면 대부분의 칸이 자동으로 채워집니다.</strong> 주민등록번호 같은 민감한 정보는 입력하지 않아도 됩니다. 비워 둔 칸은 공란으로 출력되니, 출력 후 직접 적어 주세요. 입력한 내용은 서버에 저장하지 않습니다.
+  <strong>등기부를 올리면 대부분 자동으로 채워집니다.</strong> 주민등록번호 같은 민감정보는 비워 두고 출력 후 적어도 됩니다.
 </div>
 
 <!-- ⓪ 자료에서 읽어오기 (OCR) -->
@@ -895,12 +895,6 @@ input.ocr-warn{border-color:#DC2626!important;box-shadow:0 0 0 3px rgba(220,38,3
   </div>
 </div>
 
-<!-- 출력 후 직접 적을 칸 — 비워 둔 칸을 서류·칸 이름으로 모아 보여준다 (2026-10-06) -->
-<div class="card" id="blank-card">
-  <div class="ch"><div class="ci">✎</div><div><div class="ct">출력 후 직접 적을 칸 <span id="blank-n" class="blank-n"></span></div><div class="cs">비워 둔 칸은 서류에 공란으로 나옵니다. 출력한 뒤 아래 칸을 손으로 적어 주세요</div></div></div>
-  <ul class="blank-l" id="blank-l"></ul>
-</div>
-
 <!-- ⑥ 결제 — 토스페이 9,900원. pay.js가 결제·이용권을 처리하고, 결제 전 다운로드는 안내창으로 막는다. -->
 <div class="card" id="pay-card">
   <div class="pay-seq">
@@ -982,6 +976,13 @@ input.ocr-warn{border-color:#DC2626!important;box-shadow:0 0 0 3px rgba(220,38,3
     <strong>유의사항</strong> · 본 서비스는 법률 자문을 제공하지 않습니다. 개인정보를 입력하지 않아 공란으로 생성된 부분은 직접 적어서 제출해 주세요.
   </div>
 </div>
+
+<!-- 출력 후 직접 적을 칸 — 비워 둔 칸을 서류·칸 이름으로 모아 보여준다 (2026-10-06) · 결제 후에만 표시 — 결제 버튼과 멀어지지 않게 -->
+<div class="card" id="blank-card" hidden>
+  <div class="ch"><div class="ci">✎</div><div><div class="ct">출력 후 직접 적을 칸 <span id="blank-n" class="blank-n"></span></div><div class="cs">비워 둔 칸은 서류에 공란으로 나옵니다. 출력한 뒤 아래 칸을 손으로 적어 주세요</div></div></div>
+  <ul class="blank-l" id="blank-l"></ul>
+</div>
+
 
 <!-- ⑧ 로드맵 네비게이션 (다운로드 후 다음 단계) -->
 <div class="card">
@@ -2643,7 +2644,9 @@ if (window.SRPay && SRPay.setGuard) SRPay.setGuard(function () {
   document.addEventListener('input', render, true);
   document.addEventListener('change', render, true);
   document.addEventListener('click', function(){ setTimeout(render, 0); }, true);
-  if(document.readyState !== 'loading') render(); else document.addEventListener('DOMContentLoaded', render);
+  function gate(){ var c = el('blank-card'); if(c) c.hidden = !(window.SRPay && SRPay.has()); render(); }
+  window.addEventListener('srpay:change', gate);
+  if(document.readyState !== 'loading') gate(); else document.addEventListener('DOMContentLoaded', gate);
 })();
 </script>
 </body>
