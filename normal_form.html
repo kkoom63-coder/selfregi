@@ -399,6 +399,40 @@ html.mnav-open,html.mnav-open body{overflow:hidden}
 .ow-row b{font-size:12.5px;font-weight:700;color:var(--navy);margin-right:4px;min-width:96px}
 .ow-row span{font-size:12.5px;font-weight:600;color:#075985;background:#E0F2FE;border:1px solid #BAE6FD;border-radius:6px;padding:2px 8px}
 .ow-row+.ow-row span{color:#334155;background:#F1F5F9;border-color:var(--border)}
+
+/* 판독 결과 — 요약 · 확인 항목 · 전체 보기 (2026-10-06) */
+.ocr-sum{margin-top:16px;padding:14px 16px;border:1px solid var(--border);border-radius:10px;background:#fff}
+.sum-h{font-size:15px;font-weight:700;color:var(--navy)}
+.sum-h b{color:var(--blue)}
+.sum-h em{font-style:normal;color:#B45309}
+.sum-d{font-size:13px;color:#334155;margin-top:4px;line-height:1.65;word-break:keep-all}
+.sum-lv{display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:700;margin-right:8px}
+.sum-lv.ok{color:#047857}.sum-lv.oc{color:#B45309}
+.iss{margin-top:10px;padding:12px 14px;border-radius:10px;border:1px solid var(--ocr-bd);background:var(--ocr-bg)}
+.iss.no{border-color:#FECACA;background:#FEF2F2}
+.iss-t{display:flex;align-items:center;flex-wrap:wrap;gap:6px;font-size:14px;font-weight:700;color:var(--navy)}
+.iss-t small{font-size:12px;font-weight:700;color:#B45309}
+.iss.no .iss-t small{color:#B91C1C}
+.iss-d{font-size:13px;color:#334155;margin-top:4px;line-height:1.65;word-break:keep-all}
+.iss-d b{color:var(--navy)}
+.iss-d span{display:block;margin-top:2px}
+.iss-a{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.iss-b{min-height:36px;padding:0 12px;border:1px solid var(--border);border-radius:8px;background:#fff;font-family:inherit;font-size:12.5px;font-weight:700;color:var(--blue);cursor:pointer}
+.iss-b:disabled{color:var(--muted);cursor:default}
+.ocr-allv{margin-top:12px;border:1px solid var(--border);border-radius:10px;background:#fff}
+.ocr-allv>summary{cursor:pointer;padding:12px 14px;font-size:13.5px;font-weight:700;color:var(--navy)}
+.ocr-allv[open]>summary{border-bottom:1px solid var(--border)}
+.ocr-allv .legend{margin:12px 14px 0}
+.ocr-allv #ocr-rows{padding:0 14px 8px}
+.fr{grid-template-columns:112px minmax(0,1fr)}
+input.ocr-warn{border-color:#DC2626!important;box-shadow:0 0 0 3px rgba(220,38,38,.12)}
+/* 출력 후 직접 적을 칸 */
+.blank-n{display:inline-block;margin-left:6px;font-size:12.5px;font-weight:800;color:#B45309;background:var(--ocr-bg);border:1px solid var(--ocr-bd);border-radius:20px;padding:0 9px;line-height:22px;vertical-align:2px}
+.blank-l{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.blank-l li{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 8px;padding:9px 12px;border:1px solid var(--border);border-radius:8px;background:#F8FAFC;font-size:13.5px}
+.blank-l .bd{flex-shrink:0;font-size:12px;font-weight:700;color:#475569;background:#fff;border:1px solid var(--border);border-radius:5px;padding:0 6px}
+.blank-l b{font-weight:700;color:var(--navy)}
+.blank-l small{flex-basis:100%;font-size:12.5px;color:#B45309}
 </style>
 
 </head>
@@ -429,7 +463,7 @@ html.mnav-open,html.mnav-open body{overflow:hidden}
 <main id="main">
 
 <div class="ntc inf" style="margin-bottom:14px">
-  <strong><span class="req">*</span> 표시는 필수 항목입니다.</strong> 주민등록번호 같은 민감한 정보는 입력하지 않아도 됩니다. 비워 둔 칸은 서류에 공란으로 출력되니, 출력 후 직접 적어 채워 주세요. 입력한 내용은 서버에 저장하지 않습니다.
+  <strong>등기부를 올리면 대부분의 칸이 자동으로 채워집니다.</strong> 주민등록번호 같은 민감한 정보는 입력하지 않아도 됩니다. 비워 둔 칸은 공란으로 출력되니, 출력 후 직접 적어 주세요. 입력한 내용은 서버에 저장하지 않습니다.
 </div>
 
 <!-- ⓪ 자료에서 읽어오기 (OCR) -->
@@ -459,6 +493,24 @@ html.mnav-open,html.mnav-open body{overflow:hidden}
     휴대전화로 찍으실 때는 그림자가 지지 않게, 글자가 또렷하게 나오도록 찍어 주세요.
     올리신 파일은 <b>이 브라우저 안에서만</b> 열리며 서버로 전송·저장되지 않습니다.</div>
 
+  <div id="ocr-out" hidden>
+    <div id="ocr-sum"></div>
+    <div id="ocr-issues"></div>
+    <div id="ocr-flags"></div>
+    <details class="ocr-allv" id="ocr-allv" hidden><summary>채운 값 전체 보기</summary>
+      <div class="legend">
+        <b><i class="dot d-ok"></i>정확도 높음 · 발급 원본에서 그대로</b>
+        <b><i class="dot d-oc"></i>정확도 보통 · 등기부와 한 번 대조</b>
+        <b><i class="dot d-no"></i>정확도 낮음 · 등기부와 꼭 대조</b>
+      </div>
+      <div id="ocr-rows"></div>
+    </details>
+    <!-- 「추출한 원문 보기」는 개발·진단용입니다. 등기부 원문에는 매도인 실명과
+         주민등록번호 마스킹이 그대로 들어 있어 일반 화면에 띄울 이유가 없습니다.
+         ?pp=1 · ?pp=0 · ?raw=1 로 들어왔을 때만 나타납니다. -->
+    <details class="raw-d" id="ocr-raw-box" hidden><summary>추출한 원문 보기</summary><pre id="ocr-raw"></pre></details>
+  </div>
+
   <!-- 위임장 파일로 이어서 하기 (resume.js · nf_resume.js) — 다른 기기에서 이어 할 때 -->
   <div class="resume" id="resume-box">
     <div class="rs-t">받아 둔 위임장 파일이 있으신가요?</div>
@@ -468,20 +520,6 @@ html.mnav-open,html.mnav-open body{overflow:hidden}
     <div class="plg rs-msg" id="lg-resume" role="status" aria-live="polite"></div>
   </div>
 
-  <div id="ocr-out" hidden>
-    <div class="legend">
-      <b><i class="dot d-ok"></i>정확도 높음 · 발급 원본에서 그대로</b>
-      <b><i class="dot d-oc"></i>정확도 보통 · 등기부와 한 번 대조</b>
-      <b><i class="dot d-no"></i>정확도 낮음 · 등기부와 꼭 대조</b>
-    </div>
-    <div id="ocr-rows"></div>
-    <div id="ocr-flags"></div>
-    <button type="button" class="ocr-all" id="ocr-all">읽은 값 모두 넣기</button>
-    <!-- 「추출한 원문 보기」는 개발·진단용입니다. 등기부 원문에는 매도인 실명과
-         주민등록번호 마스킹이 그대로 들어 있어 일반 화면에 띄울 이유가 없습니다.
-         ?pp=1 · ?pp=0 · ?raw=1 로 들어왔을 때만 나타납니다. -->
-    <details class="raw-d" id="ocr-raw-box" hidden><summary>추출한 원문 보기</summary><pre id="ocr-raw"></pre></details>
-  </div>
 </div>
 
 <!-- 등기 유형 선택 (최상단) -->
@@ -855,6 +893,12 @@ html.mnav-open,html.mnav-open body{overflow:hidden}
       <strong>지분 일부만 이전하는 경우입니다.</strong> 공유자 중 한 사람의 지분만 매매하거나, 보유 지분 중 일부만 넘기는 경우가 여기에 해당합니다. 정확한 비율은 매매계약서와 등기부 갑구(소유자 지분)를 대조해 확인해 주세요. 위 '대지지분(대지권비율)'과는 <b>다른 값</b>입니다.
     </div>
   </div>
+</div>
+
+<!-- 출력 후 직접 적을 칸 — 비워 둔 칸을 서류·칸 이름으로 모아 보여준다 (2026-10-06) -->
+<div class="card" id="blank-card">
+  <div class="ch"><div class="ci">✎</div><div><div class="ct">출력 후 직접 적을 칸 <span id="blank-n" class="blank-n"></span></div><div class="cs">비워 둔 칸은 서류에 공란으로 나옵니다. 출력한 뒤 아래 칸을 손으로 적어 주세요</div></div></div>
+  <ul class="blank-l" id="blank-l"></ul>
 </div>
 
 <!-- ⑥ 결제 — 토스페이 9,900원. pay.js가 결제·이용권을 처리하고, 결제 전 다운로드는 안내창으로 막는다. -->
@@ -2114,7 +2158,6 @@ if (window.SRPay && SRPay.setGuard) SRPay.setGuard(function () {
            +  (r.cls==='warn'?'꼭 확인':src[1])+'</span>'
            +  (r.note?'<span class="sub2">'+r.note+'</span>':'')
            +  '</span>'
-           +  (r.id?'<button type="button" class="mini" data-i="'+idx+'">넣기</button>':'<span></span>')
            +  '</div>';
     });
     if(!rows.length) html = '<div class="nt" style="margin-top:14px">읽어낸 항목이 없습니다.'
@@ -2122,6 +2165,8 @@ if (window.SRPay && SRPay.setGuard) SRPay.setGuard(function () {
       + ' 아래 칸은 직접 입력하셔도 서류 발급에는 아무 지장이 없습니다.</div>';
     $('ocr-rows').innerHTML = rows.length ? '<div class="rows2">'+html+'</div>' : html;
     R._rows = rows;
+    $('ocr-allv').hidden = !rows.length;
+    autoFill(res, rows);
 
     var al = '';
     function note(kind, t){ al += '<div class="ntc '+kind+'" style="margin-top:12px">'+t+'</div>'; }
@@ -2161,10 +2206,49 @@ if (window.SRPay && SRPay.setGuard) SRPay.setGuard(function () {
     if(RAW_ON){ $('ocr-raw').textContent = res._raw || '(원문 없음)'; if(rawBox) rawBox.hidden = false; }
     else { $('ocr-raw').textContent = ''; if(rawBox) rawBox.hidden = true; }
     $('ocr-out').hidden = false;
-    var b = $('ocr-all');
-    b.textContent = fillable ? ('읽은 값 '+fillable+'개 모두 넣기') : '넣을 값이 없습니다';
-    b.disabled = !fillable; b.dataset.n = fillable;
-    trk('ocr_result',{mode: res._ocr ? 'ocr' : 'text'});
+    if(!res._partial) trk('ocr_result',{mode: res._ocr ? 'ocr' : 'text'});
+  }
+
+  function autoFill(res, rows){
+    var sum = $('ocr-sum'), box = $('ocr-issues');
+    if(res._partial){ sum.innerHTML = ''; box.innerHTML = ''; return; }
+    var filled = 0, issues = [];
+    rows.forEach(function(r, i){
+      var el = r.id ? $(r.id) : null;
+      if(r.cls === 'warn' && r.id !== 'unit-land'){
+        if(r.id === 'total-land') issues.push({i:i, r:{id:r.id, label:'대지권의 비율', v:r.v, show:(rows.filter(function(q){return q.id==='unit-land';})[0]?r.v+'분의 '+rows.filter(function(q){return q.id==='unit-land';})[0].v:r.v), note:r.note}, lv:'no'});
+        else if(!r.id) issues.push({i:i, r:{id:'s-addr', label:r.label, v:r.v, note:r.note}, lv:'addr'});
+        else issues.push({i:i, r:r, lv:'no'});
+      }
+      if(!el) return;
+      var cur = String(el.value || '').trim();
+      if(!cur){ if(put(i)){ filled++; if(r.cls === 'warn') el.classList.add('ocr-warn'); } }
+      else if(cur !== String(r.v)) issues.push({i:i, r:r, lv:'diff', cur:cur});
+    });
+    (res._confirm || []).forEach(function(f){
+      var lb = f.label || f.key || ''; if(!lb) return;
+      if(issues.some(function(x){ return x.r.label === lb; })) return;
+      issues.push({i:-1, r:{label:lb, v:'', note:'글자가 흐릿해 확신하기 어렵습니다. 0과 O, 1과 l이 자주 바뀝니다.'}, lv:'oc'});
+    });
+    var lvl = res._ocr
+      ? '<span class="sum-lv oc"><i class="dot d-oc"></i>정확도 보통</span>사진에서 읽은 값은 <b>주황색 칸</b>으로 표시했습니다. 등기부와 한 번 대조해 주세요.'
+      : '<span class="sum-lv ok"><i class="dot d-ok"></i>정확도 높음</span>발급 원본에서 글자를 그대로 가져왔습니다.';
+    sum.innerHTML = '<div class="ocr-sum"><div class="sum-h">등기부에서 <b>'+filled+'칸</b>을 채웠습니다'
+      + (issues.length ? ' · <em>확인할 항목 '+issues.length+'개</em>' : '') + '</div><div class="sum-d">'+lvl+'</div></div>';
+    box.innerHTML = issues.map(function(x){
+      var r = x.r, cls = x.lv === 'no' ? 'no' : 'oc';
+      if(x.lv === 'addr'){ r = {id:r.id, label:r.label, v:r.v, note:r.note}; }
+      var head = x.lv === 'diff' ? '이미 입력한 값과 다릅니다' : (x.lv === 'addr' ? '주민등록초본과 대조' : (x.lv === 'no' ? '정확도 낮음 · 등기부와 꼭 대조' : '정확도 보통 · 한 번 더 확인'));
+      var body = x.lv === 'diff'
+        ? '입력한 값 <b>'+esc(x.cur)+'</b> · 등기부 <b>'+esc(r.show || r.v)+'</b>'
+        : (r.v ? '<b>'+esc(r.show || r.v)+'</b>' : '') + (r.note ? '<span>'+r.note+'</span>' : '');
+      var btns = '';
+      if(r.id && x.lv === 'diff') btns += '<button type="button" class="iss-b" data-use="'+x.i+'">등기부 값으로 바꾸기</button>';
+      if(r.id) btns += '<button type="button" class="iss-b" data-go="'+esc(r.id)+'">칸으로 이동</button>';
+      return '<div class="iss '+cls+'"><div class="iss-t"><i class="dot d-'+cls+'"></i>'+esc(r.label)+'<small>'+head+'</small></div>'
+        + '<div class="iss-d">'+body+'</div>' + (btns ? '<div class="iss-a">'+btns+'</div>' : '') + '</div>';
+    }).join('');
+    trk('ocr_accept',{key:String(filled)});
   }
 
   function put(i){
@@ -2422,15 +2506,18 @@ if (window.SRPay && SRPay.setGuard) SRPay.setGuard(function () {
   }
 
   document.addEventListener('click', function(e){
-    var b = e.target.closest && e.target.closest('.mini[data-i]');
-    if(b){ if(put(+b.dataset.i)){ b.textContent='넣었습니다'; b.disabled=true; } return; }
-    if(e.target.id === 'ocr-all'){
-      var n=0; (R && R._rows || []).forEach(function(_,i){ if(put(i)) n++; });
-      e.target.textContent = n+'개를 넣었습니다'; e.target.disabled = true;
-      document.querySelectorAll('.mini[data-i]').forEach(function(x){ x.textContent='넣었습니다'; x.disabled=true; });
-      trk('ocr_accept',{key:String(n)});
-    }
+    var g = e.target.closest && e.target.closest('.iss-b[data-go]');
+    if(g){ var el = $(g.dataset.go); if(el){
+      el.scrollIntoView({block:'center', behavior:'smooth'}); el.classList.add('ocr-warn');
+      setTimeout(function(){ try{ el.focus({preventScroll:true}); }catch(_){ } }, 350); } return; }
+    var u = e.target.closest && e.target.closest('.iss-b[data-use]');
+    if(u){ var r = R && R._rows && R._rows[+u.dataset.use]; var el2 = r && $(r.id);
+      if(el2){ el2.value = ''; put(+u.dataset.use); u.textContent = '바꿨습니다'; u.disabled = true; } return; }
   });
+
+  document.addEventListener('input', function(e){
+    if(e.isTrusted && e.target.classList && e.target.classList.contains('ocr-warn')) e.target.classList.remove('ocr-warn');
+  }, true);
 
   var boot = [];
   if(!window.pdfjsLib) boot.push('PDF 판독 모듈');
@@ -2509,6 +2596,54 @@ if (window.SRPay && SRPay.setGuard) SRPay.setGuard(function () {
   p.addEventListener('click',function(e){ if(e.target.closest&&e.target.closest('a')) close(); });
   document.addEventListener('keydown',function(e){ if(e.key==='Escape'&&!p.hidden){ close(); btn.focus(); } });
   window.addEventListener('resize',function(){ if(window.innerWidth>768&&!p.hidden) close(); });
+})();
+</script>
+<script>
+/* 출력 후 직접 적을 칸 (2026-10-06)
+   보이는 입력칸 중 비어 있는 것을 「서류 — 칸 이름」으로 모은다. 매도인 주민등록번호와
+   위임장 작성일의 일(day)은 이 화면에서 받지 않으므로 항상 목록에 있다. */
+(function(){
+  var DOC_W = '위임장', DOC_B = '위임장·신청서', DOC_S = '신청서';
+  var MAP = [
+    [['jibun-address'], DOC_B, '부동산의 표시 — 소재지번'],
+    [['dong','ho'], DOC_B, '부동산의 표시 — 동·호'],
+    [['prop-area'], DOC_B, '부동산의 표시 — 전유면적'],
+    [['total-land','unit-land'], DOC_B, '대지권의 비율'],
+    [['s-name'], DOC_B, '등기의무자(매도인) 성명'],
+    [['s-addr'], DOC_B, '등기의무자(매도인) 주소 · 초본상 현재 주소'],
+    [['seller2-name','seller2-addr'], DOC_B, '매도인 2 성명·주소'],
+    [['owner-name'], DOC_B, '등기권리자(매수인) 성명'],
+    [['owner-address'], DOC_B, '등기권리자(매수인) 주소'],
+    [['owner-rrn'], DOC_B, '등기권리자(매수인) 주민등록번호'],
+    [['buyer2-name','buyer2-address'], DOC_B, '매수인 2 성명·주소'],
+    [['buyer2-rrn'], DOC_B, '매수인 2 주민등록번호'],
+    [['year','month','day'], DOC_B, '등기원인과 그 연월일(계약일)'],
+    [['settle-year','settle-month'], DOC_W, '작성일의 연·월(잔금일)'],
+    [['transfer-denom','transfer-num'], DOC_B, '이전할 지분'],
+    [['deal-price'], DOC_S, '거래가액']
+  ];
+  var ALWAYS = [
+    [DOC_B, '등기의무자(매도인) 주민등록번호', '잔금일에 매도인이 인감을 날인할 때 직접 적습니다'],
+    [DOC_W, '작성일의 일(day)', '잔금 당일 날짜를 적습니다']
+  ];
+  function el(id){ return document.getElementById(id); }
+  function esc(t){ return String(t).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+  function render(){
+    var ul = el('blank-l'); if(!ul) return;
+    var items = ALWAYS.slice();
+    MAP.forEach(function(m){
+      var vis = m[0].map(el).filter(function(x){ return x && x.offsetParent !== null; });
+      if(vis.length && vis.some(function(x){ return !String(x.value||'').trim(); })) items.push([m[1], m[2], '']);
+    });
+    ul.innerHTML = items.map(function(it){
+      return '<li><span class="bd">'+esc(it[0])+'</span><b>'+esc(it[1])+'</b>'+(it[2]?'<small>'+esc(it[2])+'</small>':'')+'</li>';
+    }).join('');
+    var n = el('blank-n'); if(n) n.textContent = items.length+'개';
+  }
+  document.addEventListener('input', render, true);
+  document.addEventListener('change', render, true);
+  document.addEventListener('click', function(){ setTimeout(render, 0); }, true);
+  if(document.readyState !== 'loading') render(); else document.addEventListener('DOMContentLoaded', render);
 })();
 </script>
 </body>
