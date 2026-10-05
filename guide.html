@@ -606,6 +606,16 @@ html.mnav-open,html.mnav-open body{overflow:hidden}
 .gm-side-h .k{letter-spacing:0;text-transform:none}
 /* 문장 글씨 12px 하한 (2026-10-05) */
 .finish-note{font-size:12px!important}
+/* 모바일 화면 가이드: 빨간 박스 주변을 확대해 보여준다 (2026-10-05) — 작은 지도·「전체 화면」으로 원본 */
+.gm-fv{position:relative;width:100%;overflow:hidden;background:#fff;border-radius:8px;box-shadow:0 8px 24px -12px rgba(23,27,33,.3);touch-action:pan-y}
+.gm-fv>img{position:absolute;left:0;top:0;max-width:none!important;max-height:none!important;border-radius:0!important;box-shadow:none!important;transform-origin:0 0;transition:transform .45s cubic-bezier(.4,0,.2,1),width .45s cubic-bezier(.4,0,.2,1)}
+.gm-fv-mini{position:absolute;left:8px;bottom:8px;width:68px;padding:0;border:2px solid #fff;border-radius:6px;background:#fff;box-shadow:0 2px 10px rgba(15,23,42,.35);overflow:hidden;cursor:pointer}
+.gm-fv-mini img{display:block;width:100%;height:auto;max-height:none!important;border-radius:0!important;box-shadow:none!important}
+.gm-fv-mini i{position:absolute;border:2px solid #e0392b;border-radius:2px}
+.gm-fv-btn{position:absolute;right:8px;bottom:8px;min-height:36px;padding:0 12px;border:0;border-radius:18px;background:rgba(15,23,42,.82);color:#fff;font:inherit;font-size:12.5px;font-weight:700;cursor:pointer}
+.gm-fv.full .gm-fv-mini{display:none}
+@media(max-width:760px){.gm-img.has-fv{padding:12px}}
+@media(prefers-reduced-motion:reduce){.gm-fv>img{transition:none}}
 </style>
 </head>
 <body>
@@ -1194,6 +1204,42 @@ function parseCap(d){
   if(st>-1){tip=body.slice(st+1).trim();body=body.slice(0,st);}
   return {body:body.trim(),tip:tip,src:src};
 }
+/* ===== 모바일 초점 확대 =====
+   빨간 박스 좌표(이미지 폭·높이 대비 0~1): [가로/세로 비율, x0, y0, x1, y1].
+   webp는 빨간 선 픽셀, svg는 점선 사각형 좌표에서 뽑았다. 이미지를 바꾸면 이 값도 다시 뽑아야 한다. */
+var FOCUS={"app_ex_1.svg":[1.6522,0.0737,0.2174,0.9263,0.6913],"app_ex_11.svg":[1.6522,0.1421,0.3652,0.7605,0.6043],"app_ex_6.svg":[1.6522,0.0737,0.2957,0.9263,0.4652],"bond_paper_1.svg":[1.3333,0.075,0.2133,0.925,0.4733],"bond_paper_2.svg":[2.3529,0.07,0.2706,0.49,0.5647],"estamp_2r.webp":[1.6647,0.1571,0.0618,0.3,0.5089],"estamp_3r.webp":[1.4344,0.6114,0.3217,0.6936,0.3617],"estamp_4r.webp":[1.436,0.2687,0.4378,0.8062,0.9926],"estamp_5r.webp":[1.3269,0.2424,0.6713,0.9447,0.9895],"estamp_6r.webp":[1.1331,0.043,0.2289,0.9628,0.9773],"estamp_7.svg":[1.2258,0.0368,0.3065,0.9632,0.7484],"estamp_7r.webp":[1.3707,0.2383,0.1503,0.6871,0.984],"estamp_8.webp":[1.3208,0.3914,0.8962,0.5014,0.9689],"estamp_9.svg":[1.1143,0.3949,0.5657,0.5795,0.9057],"gigum_1.webp":[1.3308,0.5264,0.3394,0.7336,0.3755],"gigum_10.svg":[1.6889,0.0711,0.5956,0.9289,0.7333],"gigum_2a.webp":[1.2578,0.0887,0.2413,0.6948,0.5676],"gigum_2b.webp":[1.3035,0.235,0.2942,0.9421,0.7374],"gigum_3.webp":[1.3133,0.0757,0.2955,0.7743,0.6238],"gigum_5.webp":[1.2567,0.84,0.0386,0.9371,0.2038],"gigum_6.webp":[1.209,0.2357,0.4715,0.4829,0.5078],"gigum_8.svg":[1.6889,0.0395,0.3733,0.5,0.7378],"gigum_9.svg":[1.6889,0.0395,0.2133,0.9605,0.6311],"gover24_1.webp":[1.4056,0.1021,0.2942,0.6129,0.4076],"gover24_2.webp":[1.1686,0.7457,0.5125,0.9264,0.576],"gover24_3a.webp":[1.3672,0.6829,0.6543,0.9036,0.7402],"gover24_4.webp":[1.322,0.6807,0.6733,0.9007,0.7526],"gover24_5a.webp":[1.4286,0.1607,0.0796,0.2829,0.1633],"gover24_5b.webp":[1.0558,0.27,0.448,0.91,0.7549],"gover24_6.svg":[0.9596,0.0395,0.1301,0.3645,0.9823],"iros_1.webp":[1.3861,0.7829,0.1099,0.8771,0.1624],"iros_2.webp":[3.1042,0.225,0.8891,0.3221,0.9446],"iros_3.webp":[2.4348,0.0657,0.847,0.7736,0.9565],"iros_4.webp":[1.7435,0.0486,0.2503,0.9593,0.8306],"irosfee_1.webp":[1.3258,0.7879,0.0511,0.8786,0.1089],"irosfee_2.webp":[1.3359,0.0143,0.0191,0.5264,0.1861],"irosfee_3.webp":[1.3295,0.8686,0.8281,0.9564,0.8879],"irosfee_4.webp":[1.3295,0.1864,0.4264,0.9543,0.8262],"irosfee_5.webp":[1.3121,0.0321,0.5398,0.9721,0.627],"irosfee_6.webp":[1.1811,0.1497,0.5648,0.9847,0.9983],"irosfee_7.webp":[1.1882,0.5104,0.2283,0.9914,0.994],"paper_1.webp":[0.7037,0.0558,0.0077,0.9612,0.2733],"paper_2.webp":[0.7037,0.068,0.2647,0.9381,0.3971],"paper_3.webp":[0.7037,0.0752,0.3894,0.9284,0.5525],"paper_4.webp":[0.7037,0.0655,0.55,0.943,0.8924],"tax_3.svg":[1.215,0.3282,0.3676,0.5333,0.3988],"tax_4.svg":[1.215,0.7333,0.2928,0.9667,0.3333],"tax_5.svg":[1.215,0.2564,0.19,0.9821,0.704],"tax_5a.svg":[1.25,0.1929,0.1429,0.8214,0.4286],"tax_5b1.svg":[1.6596,0.8641,0.2,0.9821,0.2681],"tax_5b2.svg":[1.6596,0.3372,0.1957,0.9705,0.5957],"tax_5c.svg":[1.6596,0.2372,0.2681,0.9705,0.8085],"tax_6.svg":[1.215,0.2385,0.5826,0.9821,0.6417],"tax_7.svg":[1.215,0.9077,0.947,0.9769,0.9875],"tax_8.svg":[1.215,0.1731,0.2492,0.9795,0.9875],"wetax_1.webp":[1.1513,0.6721,0.037,0.7293,0.0699],"wetax_2.webp":[1.1715,0.1029,0.1623,0.1943,0.1908]};
+var FV_MQ=window.matchMedia('(max-width:760px)');
+function fvCrop(f,cw,ch){
+  var ar=f[0],ih=1/ar,bx0=f[1],by0=f[2]*ih,bx1=f[3],by1=f[4]*ih;
+  var bw=bx1-bx0,bh=by1-by0,pad=Math.max(.09,Math.max(bw,bh)*.35);
+  var w=Math.max(bw+pad*2,(bh+pad*2)*cw/ch);
+  w=Math.min(1,Math.max(w,.42)); /* 원본 폭의 42%보다 더 들어가지 않는다 — 사이트 맥락이 보이게 */
+  var h=w*ch/cw; if(h>ih){h=ih;w=Math.min(1,h*cw/ch);}
+  return {x:Math.min(Math.max((bx0+bx1)/2-w/2,0),1-w),y:Math.min(Math.max((by0+by1)/2-h/2,0),Math.max(ih-h,0)),w:w,h:h};
+}
+function fvPlace(v,img,f,full){
+  var cw=v.clientWidth; if(!cw){if(v.isConnected)requestAnimationFrame(function(){fvPlace(v,img,f,v.classList.contains('full'));});return;}
+  if(full){v.style.height=Math.round(cw/f[0])+'px';img.style.width=cw+'px';img.style.transform='translate(0,0)';return;}
+  var ch=Math.round(Math.min(window.innerHeight*.48,cw*.82));v.style.height=ch+'px';
+  var c=fvCrop(f,cw,ch),px=cw/c.w;
+  img.style.width=px+'px';img.style.transform='translate('+(-c.x*px)+'px,'+(-c.y*px)+'px)';
+  var r=v.querySelector('.gm-fv-mini i');
+  r.style.left=c.x*100+'%';r.style.top=c.y*f[0]*100+'%';r.style.width=c.w*100+'%';r.style.height=c.h*f[0]*100+'%';
+}
+function buildFocus(wrap,im,src){
+  var f=FOCUS[src],full=false;
+  var v=document.createElement('div');v.className='gm-fv';
+  var mini=document.createElement('button');mini.type='button';mini.className='gm-fv-mini';mini.setAttribute('aria-label','전체 화면 보기');
+  var mi=new Image();mi.src=src;mi.alt='';mini.appendChild(mi);mini.appendChild(document.createElement('i'));
+  var btn=document.createElement('button');btn.type='button';btn.className='gm-fv-btn';btn.textContent='전체 화면 ⤢';
+  v.appendChild(im);v.appendChild(mini);v.appendChild(btn);
+  wrap.classList.add('has-fv');wrap.appendChild(v);
+  function toggle(){full=!full;v.classList.toggle('full',full);btn.textContent=full?'확대해서 보기':'전체 화면 ⤢';fvPlace(v,im,f,full);if(window.gtag)gtag('event','guide_fv',{mode:full?'full':'focus'});}
+  btn.addEventListener('click',toggle);mini.addEventListener('click',toggle);
+  im.style.transition='none';fvPlace(v,im,f,false);requestAnimationFrame(function(){im.style.transition='';});
+  v._fv=function(){fvPlace(v,im,f,full);};
+}
+window.addEventListener('resize',function(){var v=document.querySelector('#gmImg .gm-fv');if(v&&v._fv)v._fv();});
 function render(){
   var s=cur.steps[step];
   saveGpos(cur.key,step,cur.steps.length);
@@ -1203,7 +1249,8 @@ function render(){
   var im=new Image();im.src=s.img;im.alt=s.t+' — 누르면 크게 볼 수 있습니다';im.title='누르면 크게 보기';
   im.onerror=function(){wrap.innerHTML='<div class="gm-fallback"><b>이미지를 불러오지 못했습니다</b>('+s.img+')<br>아래 설명을 참고해 주세요.</div>';};
   im.addEventListener('click',function(){openZoom(s.img,(step+1)+'. '+s.t);});
-  wrap.appendChild(im);
+  wrap.classList.remove('has-fv');
+  if(FV_MQ.matches&&FOCUS[s.img])buildFocus(wrap,im,s.img);else wrap.appendChild(im);
   for(var k=1;k<=2;k++){var nx=cur.steps[step+k];if(nx){var pi=new Image();pi.src=nx.img;}} /* 다음 2장 미리 받기 — '다음'을 누를 때 대기 없앰 */
   var cap=parseCap(s.d);
   var tEl=document.getElementById('gmCapT');
