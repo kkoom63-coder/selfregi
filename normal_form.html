@@ -386,6 +386,19 @@ html.mnav-open,html.mnav-open body{overflow:hidden}
 .sub,.sub b,.plg,.jt-s{color:#475569!important}
 .v.e{color:#556378!important}
 .hi>p,.nt,.svc-terms-n{font-size:12px!important}
+
+/* 카드 머리 — 번호 배지와 제목을 한 줄 가운데 높이로(guide 기준, 2026-10-06) */
+.ch{align-items:flex-start}
+.ci{width:32px;height:32px;border-radius:8px;font-family:inherit;font-size:13px;font-weight:800;letter-spacing:-.3px}
+.ch .ct{line-height:32px}
+.ch .cs{margin-top:0}
+/* 0번 카드 강조 + 채워지는 칸 소개 */
+.card.ocr-hero{border:1.5px solid #7DD3FC;background:linear-gradient(#F0F9FF,#fff 140px)}
+.ocr-what{display:grid;gap:8px;margin:0 0 14px}
+.ow-row{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.ow-row b{font-size:12.5px;font-weight:700;color:var(--navy);margin-right:4px;min-width:96px}
+.ow-row span{font-size:12.5px;font-weight:600;color:#075985;background:#E0F2FE;border:1px solid #BAE6FD;border-radius:6px;padding:2px 8px}
+.ow-row+.ow-row span{color:#334155;background:#F1F5F9;border-color:var(--border)}
 </style>
 
 </head>
@@ -407,9 +420,8 @@ html.mnav-open,html.mnav-open body{overflow:hidden}
 
 <header>
   <div class="hi">
-        <h1>셀프등기 서류 자동생성기</h1>
-    <p>소유권이전등기(일반매매) 위임장·신청서를 자동완성합니다</p>
-    <p style="font-size:11px;color:var(--muted);margin-top:6px;">입력한 개인정보는 서버에 저장하지 않으며, 비워 두어도 서류가 만들어집니다.</p>
+    <h1>소유권이전등기 서류 자동완성</h1>
+    <p>등기사항전부증명서 한 장을 올리면 위임장·신청서에 들어갈 부동산 정보와 매도인 성명이 채워집니다.</p>
   </div>
   </header>
 
@@ -417,15 +429,19 @@ html.mnav-open,html.mnav-open body{overflow:hidden}
 <main id="main">
 
 <div class="ntc inf" style="margin-bottom:14px">
-  <strong>안내:</strong> <span class="req">*</span> 표시 항목만 필수입니다. 비워 둔 항목은 서류에 공란으로 출력되므로, 출력 후 손으로 적어 주세요.
+  <strong><span class="req">*</span> 표시는 필수 항목입니다.</strong> 주민등록번호 같은 민감한 정보는 입력하지 않아도 됩니다. 비워 둔 칸은 서류에 공란으로 출력되니, 출력 후 직접 적어 채워 주세요. 입력한 내용은 서버에 저장하지 않습니다.
 </div>
 
 <!-- ⓪ 자료에서 읽어오기 (OCR) -->
-<div class="card" id="ocr-card">
+<div class="card ocr-hero" id="ocr-card">
   <div class="ch"><div class="ci">0</div><div>
-    <div class="ct">자료에서 읽어오기</div>
-    <div class="cs">등기사항전부증명서를 올리면 아래 칸이 대부분 채워집니다</div>
+    <div class="ct">등기부로 자동 채우기</div>
+    <div class="cs">등기사항전부증명서 PDF나 사진을 올리면 아래 2·3번 칸 대부분이 채워집니다</div>
   </div></div>
+  <div class="ocr-what">
+    <div class="ow-row"><b>자동으로 채우는 칸</b><span>소재지번</span><span>아파트·건물명</span><span>동·층·호</span><span>구조</span><span>전유면적</span><span>도로명주소</span><span>부동산고유번호</span><span>대지권 비율</span><span>매도인 성명</span></div>
+    <div class="ow-row"><b>직접 입력하는 칸</b><span>매수인 정보</span><span>매매계약 정보</span><span>이전할 지분</span></div>
+  </div>
 
   <div class="slots">
     <div class="drop" id="dz-reg">
@@ -454,9 +470,9 @@ html.mnav-open,html.mnav-open body{overflow:hidden}
 
   <div id="ocr-out" hidden>
     <div class="legend">
-      <b><i class="dot d-ok"></i>원문에서 그대로</b>
-      <b><i class="dot d-oc"></i>사진에서 인식 · 대조 필요</b>
-      <b><i class="dot d-no"></i>못 읽음 · 직접 입력</b>
+      <b><i class="dot d-ok"></i>정확도 높음 · 발급 원본에서 그대로</b>
+      <b><i class="dot d-oc"></i>정확도 보통 · 등기부와 한 번 대조</b>
+      <b><i class="dot d-no"></i>정확도 낮음 · 등기부와 꼭 대조</b>
     </div>
     <div id="ocr-rows"></div>
     <div id="ocr-flags"></div>
@@ -482,7 +498,7 @@ html.mnav-open,html.mnav-open body{overflow:hidden}
 <!-- ③ 부동산 정보 -->
 <div class="card">
   <div class="ch" style="justify-content:space-between">
-    <div style="display:flex;align-items:center;gap:10px">
+    <div style="display:flex;align-items:flex-start;gap:10px">
       <div class="ci">2</div><div><div class="ct">부동산 정보</div><div class="cs">등기부등본(등기사항전부증명서) 표제부에서 확인</div></div>
     </div>
     <button type="button" class="guide-link" onclick="openRegGuide()" aria-haspopup="dialog">부동산 등기부 확인 방법</button>
@@ -567,7 +583,7 @@ html.mnav-open,html.mnav-open body{overflow:hidden}
 <!-- ② 매도인 정보 -->
 <div class="card">
   <div class="ch"><div class="ci">3</div><div><div class="ct">매도인 정보</div><div class="cs">매매계약서상 매도인 정보 · 일반매매의 매도인은 개인(자연인)입니다</div></div></div>
-  <div class="ntc inf" style="margin-top:0;margin-bottom:14px">
+  <div class="ntc wrn" style="margin-top:0;margin-bottom:14px">
     매도인 주소는 <b>매도인의 주민등록초본상 주소가 기준입니다.</b> 등기부상 주소와 상이할 경우 <b>변동 이력이 전부 나온 초본</b>을 매도인에게 받아 두세요.
   </div>
 
@@ -798,13 +814,13 @@ html.mnav-open,html.mnav-open body{overflow:hidden}
     <div class="f"><label>월</label><input type="number" id="month" placeholder="3" min="1" max="12"></div>
     <div class="f"><label>일</label><input type="number" id="day" placeholder="15" min="1" max="31"></div>
   </div>
-  <span class="fn" style="margin-top:2px;display:block">※ 부동산 매매계약 체결일(계약서 작성일)을 입력해 주세요. 위임장·신청서의 「등기원인과 그 연월일」에 들어갑니다. 잔금일이 아닙니다.</span>
+  <div class="ntc wrn"><strong>잔금일이 아니라 계약일입니다.</strong> 매매계약 체결일(계약서 작성일)을 입력해 주세요. 위임장·신청서의 「등기원인과 그 연월일」에 들어갑니다.</div>
   <div class="divider"></div>
   <div class="fg">
     <div class="f"><label>잔금 (예정)일 · 연도</label><input type="number" id="settle-year" placeholder="2025" min="2000" max="2100"></div>
     <div class="f"><label>잔금 (예정)일 · 월</label><input type="number" id="settle-month" placeholder="4" min="1" max="12"></div>
   </div>
-  <span class="fn" style="margin-top:2px;display:block">※ 위임장 하단 작성일에 쓰입니다. 일(day)은 공란으로 출력되며, 잔금 당일 직접 기재합니다.</span>
+  <div class="ntc wrn"><strong>일(day)은 공란으로 출력됩니다.</strong> 위임장 하단 작성일에 쓰이며, 날짜는 잔금 당일 직접 적습니다.</div>
   <div class="divider"></div>
   <div class="fg s1"><div class="f">
     <label>거래(매매)가액</label>
@@ -1851,7 +1867,7 @@ window.SR=window.SR||(function(){
     put('pvAgent',  v('owner-name'));
     put('pvArea',   v('prop-area')?v('prop-area')+'㎡':'');
     put('pvRatio',  frac('total-land','unit-land'));
-    put('pvShare',  frac('transfer-denom','transfer-num'));
+    put('pvShare',  (typeof transferShareText==='function') ? transferShareText() : frac('transfer-denom','transfer-num'));
     var pr=v('deal-price');
     put('pvPrice',  pr?(pr.replace(/[^0-9]/g,'').replace(/\B(?=(\d{3})+(?!\d))/g,',')+'원'):'');
     var done=0,left=0,opt=0,i;
@@ -1864,6 +1880,7 @@ window.SR=window.SR||(function(){
   }
   document.addEventListener('input',render,true);
   document.addEventListener('change',render,true);
+  document.addEventListener('click',function(e){ if(e.target.closest&&e.target.closest('.deal-tab-btn')) setTimeout(render,0); },true);
   if(document.readyState!=='loading')render();
   else document.addEventListener('DOMContentLoaded',render);
 })();
@@ -2086,7 +2103,7 @@ if (window.SRPay && SRPay.setGuard) SRPay.setGuard(function () {
   function render(res){
     R = res;
     var rows = buildRows(res), html = '', fillable = 0;
-    var src = res._ocr ? ['t-oc','사진에서 인식'] : ['t-ok','원문'];
+    var src = res._ocr ? ['t-oc','정확도 보통'] : ['t-ok','정확도 높음'];
     rows.forEach(function(r,idx){
       if(r.id) fillable++;
       var wide = /주소|성명|아파트|소재지번/.test(r.label) || String(r.v).length > 22;
@@ -2094,7 +2111,7 @@ if (window.SRPay && SRPay.setGuard) SRPay.setGuard(function () {
            +  (/주소|성명|구조|아파트|소재지번|지분/.test(r.label)?' txt':'')+'">'
            +  esc(r.show || r.v)
            +  '<span class="tag '+(r.cls==='warn'?'t-no':src[0])+'">'
-           +  (r.cls==='warn'?'확인 필요':src[1])+'</span>'
+           +  (r.cls==='warn'?'꼭 확인':src[1])+'</span>'
            +  (r.note?'<span class="sub2">'+r.note+'</span>':'')
            +  '</span>'
            +  (r.id?'<button type="button" class="mini" data-i="'+idx+'">넣기</button>':'<span></span>')
