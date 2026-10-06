@@ -5,6 +5,9 @@
 (function () {
   'use strict';
   var DONE_KEY = 'sr_review_done', SEEN_KEY = 'sr_review_seen';
+  /* 서버 준비(Firestore 생성 + 결제 함수 재배포) 전까지 꺼 둔다. 켜는 법: ON = true 로 바꿔 배포.
+     확인용 페이지는 window.SR_REVIEW_FORCE = true 로 미리 본다. */
+  var ON = false || window.SR_REVIEW_FORCE === true;
   var dlg = null, last = null;
   var LABELS = ['', '아쉬웠어요', '그저 그랬어요', '괜찮았어요', '좋았어요', '아주 좋았어요'];
   var STAR = '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2.8l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 16.8l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg>';
@@ -26,15 +29,15 @@
     dlg.innerHTML =
       '<form class="rv" role="dialog" aria-modal="true" aria-labelledby="rv-h" tabindex="-1" novalidate>'
       + '<button type="button" class="rv-x" aria-label="닫기">×</button>'
-      + '<div class="rv-h" id="rv-h">처음 문을 연 셀프등기24를<br>믿고 결제해 주셔서 감사합니다</div>'
+      + '<div class="rv-h" id="rv-h">셀프등기24를 선택해 주셔서 감사합니다</div>'
       + '<p class="rv-s">남겨 주신 한 줄이 다음 분들께 가장 큰 참고가 됩니다.</p>'
-      + '<div class="rv-q" id="rv-q1">써 보시니 어떠셨나요?</div>'
+      + '<div class="rv-q" id="rv-q1">서류 준비 과정은 어떠셨나요?</div>'
       + '<div class="rv-rate"><div class="rv-stars" role="radiogroup" aria-labelledby="rv-q1">'
       + [1, 2, 3, 4, 5].map(function (n) { return '<button type="button" class="rv-star" role="radio" aria-checked="false" aria-label="' + n + '점 ' + LABELS[n] + '" data-n="' + n + '">' + STAR + '</button>'; }).join('')
       + '</div><span class="rv-rl" aria-hidden="true"></span></div>'
       + '<label class="rv-q" for="rv-t">한 줄 후기</label>'
       + '<textarea id="rv-t" class="rv-t" maxlength="300" rows="2" placeholder="예: 칸이 거의 다 채워져서 편했습니다"></textarea>'
-      + '<label class="rv-pub"><input type="checkbox" class="rv-p" checked> <span>홈페이지에 공개해도 됩니다 <small>이름 없이 「이용자 · 작성 월」로 표시됩니다.</small></span></label>'
+      + '<label class="rv-pub"><input type="checkbox" class="rv-p"> <span>홈페이지에 공개해도 됩니다 <small>이름 없이 「이용자 · 작성 월」로 표시됩니다.</small></span></label>'
       + '<div class="rv-msg" role="status" aria-live="polite"></div>'
       + '<div class="rv-a"><button type="submit" class="rv-send">후기 보내기</button><button type="button" class="rv-later">나중에</button></div>'
       + '</form>';
@@ -90,6 +93,7 @@
   window.SRReview = {
     /* 신청서 다운로드 직후 호출. 같은 주문에서 이미 보여 줬으면 팝업 대신 버튼만 둔다. */
     afterDownload: function () {
+      if (!ON) return;
       var p = pass(); if (!p || done(p)) return;
       if (ls(SEEN_KEY) === p.token.slice(0, 24)) { laterButton(); return; }
       ls(SEEN_KEY, p.token.slice(0, 24));
