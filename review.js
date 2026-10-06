@@ -7,7 +7,7 @@
   var DONE_KEY = 'sr_review_done', SEEN_KEY = 'sr_review_seen';
   /* 서버 준비(Firestore 생성 + 결제 함수 재배포) 전까지 꺼 둔다. 켜는 법: ON = true 로 바꿔 배포.
      확인용 페이지는 window.SR_REVIEW_FORCE = true 로 미리 본다. */
-  var ON = false || window.SR_REVIEW_FORCE === true;
+  var ON = true; // 2026-10-07 서버(Firestore default·결제 함수) 가동
   var dlg = null, last = null;
   var LABELS = ['', '아쉬웠어요', '그저 그랬어요', '괜찮았어요', '좋았어요', '아주 좋았어요'];
   var STAR = '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2.8l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 16.8l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg>';
