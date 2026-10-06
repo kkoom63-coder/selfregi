@@ -900,8 +900,8 @@ body>footer{margin-bottom:96px}
                 </div>
               </div>
             </div>
-            <!-- 결제 확인 후기(2026-10-07, review.js) — 신청서를 내려받은 뒤에만 보인다(구글 폼 대체). 항목 안쪽은 좁아 바깥 전체 폭에 둔다 -->
-            <div id="sv-box" hidden><div class="rv-slot" data-from="roadmap" hidden></div></div>
+            <!-- 결제 확인 후기(2026-10-07, review.js) — 신청서를 내려받은 직후 팝업. 「나중에」면 여기 「후기 남기기」 버튼만 남는다 -->
+            <div class="rv-slot" hidden></div>
             <div class="action-item" id="item0_2">
               <input type="checkbox" id="chk0_2" onchange="updateProgress('item0_2')">
               <div class="action-text">
@@ -966,8 +966,6 @@ body>footer{margin-bottom:96px}
                 </div>
               </div>
             </div>
-            <!-- 접수를 마쳤다고 체크하면 후기 카드(review.js) -->
-            <div class="rv-visit" id="rv-visit" hidden><div class="rv-slot" data-from="visit" hidden></div></div>
           </div>
         </div>
       </div>
@@ -1287,7 +1285,7 @@ async function downloadSinchungseo(){
     } else {
       showToast('신청서 다운로드 완료!');
     }
-    var sv = document.getElementById('sv-box'); if (sv) sv.hidden = false;
+    if (window.SRReview) SRReview.afterDownload(); /* 신청서까지 받은 결제 고객에게만 후기 팝업 */
   } catch(e) { showToast(e.message, '#DC2626'); console.error(e); }
 }
 
@@ -2847,10 +2845,6 @@ window.SR=window.SR||(function(){
   document.addEventListener('keydown',function(e){ if(e.key==='Escape'&&!p.hidden){ close(); btn.focus(); } });
   window.addEventListener('resize',function(){ if(window.innerWidth>768&&!p.hidden) close(); });
 })();
-</script>
-<script>
-/* 4단계 「접수창구 제출」 체크 → 후기 카드 */
-(function(){var c=document.getElementById("chk3_3"),w=document.getElementById("rv-visit");if(!c||!w)return;function f(){w.hidden=!c.checked;}c.addEventListener("change",f);setTimeout(f,300);})();
 </script>
 </body>
 </html>

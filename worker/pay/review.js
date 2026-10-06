@@ -3,7 +3,7 @@
 // (Firebase: Firestore). 이름·연락처는 받지 않는다. 본문 속 전화번호·주민번호·이메일·동호수는 저장 전에 가린다.
 import { json, secret, verifyPass, readJson } from '../../lib/paycore.js';
 
-const RESULTS = ['done', 'fix', 'pending'];                 // 접수 완료 · 보정명령 받음 · 아직 접수 전
+const RESULTS = ['', 'done', 'fix', 'pending'];             // (선택) 접수 완료 · 보정명령 받음 · 아직 접수 전 — 현재 화면은 받지 않음
 const SLOWS = ['', 'docs', 'tax', 'bond', 'form', 'visit', 'none']; // 가장 오래 걸린 단계(선택)
 const FROMS = ['form', 'roadmap', 'visit', 'reissue'];
 
@@ -27,7 +27,7 @@ export async function onRequestPost({ request, env }) {
   const slow = String(b.slow || '');
   const text = maskText(b.text).slice(0, 300);
   if (!(rating >= 1 && rating <= 5)) return json(400, { ok: false, msg: '만족도를 골라 주세요.' });
-  if (!RESULTS.includes(result)) return json(400, { ok: false, msg: '등기 결과를 골라 주세요.' });
+  if (!RESULTS.includes(result)) return json(400, { ok: false, msg: '등기 결과 값이 올바르지 않습니다.' });
   if (!SLOWS.includes(slow)) return json(400, { ok: false, msg: '단계 값이 올바르지 않습니다.' });
   if (text.length < 5) return json(400, { ok: false, msg: '한 줄 후기를 5자 이상 적어 주세요.' });
 

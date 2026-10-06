@@ -1074,8 +1074,6 @@ input.ocr-warn{border-color:#DC2626!important;box-shadow:0 0 0 3px rgba(220,38,3
     </div>
   </button>
 
-  <!-- 결제 확인 후기(2026-10-07, review.js) — 내려받은 뒤에만 보인다. 구글 폼 대체 -->
-  <div id="sv-box" hidden><div class="rv-slot" data-from="form" hidden></div></div>
   <div class="ntc inf" style="margin-top:12px">
     <strong>유의사항</strong> · 본 서비스는 법률 자문을 제공하지 않습니다. 개인정보를 입력하지 않아 공란으로 생성된 부분은 직접 적어서 제출해 주세요.
   </div>
@@ -2088,7 +2086,6 @@ window.SR=window.SR||(function(){
 <script src="regfields.js"></script>
 <script src="resume.js"></script>
 <script src="pay.js"></script>
-<script src="review.js"></script>
 <script>
 /* 결제 대상 제한(2026-09-26): 집합건물 매매만. 부동산 종류가 토지면 막고, 그 밖에는 집합건물 확인 체크를 받는다. */
 if (window.SRPay && SRPay.setGuard) SRPay.setGuard(function () {
