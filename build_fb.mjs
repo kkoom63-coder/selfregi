@@ -23,7 +23,7 @@ for (const f of files) {
 console.log('dist: ' + files.length + ' files');
 
 // 결제 로직은 Cloudflare Worker(롤백용)와 한 벌만 유지한다. 상대 경로가 그대로 맞도록 같은 구조로 복사.
-const shared = ['lib/paycore.js', 'worker/pay/create.js', 'worker/pay/confirm.js', 'worker/pay/verify.js'];
+const shared = ['lib/paycore.js', 'worker/pay/create.js', 'worker/pay/confirm.js', 'worker/pay/verify.js', 'worker/pay/review.js'];
 rmSync('functions/shared', { recursive: true, force: true });
 for (const f of shared) {
   mkdirSync(dirname(join('functions/shared', f)), { recursive: true });

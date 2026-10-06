@@ -1074,12 +1074,8 @@ input.ocr-warn{border-color:#DC2626!important;box-shadow:0 0 0 3px rgba(220,38,3
     </div>
   </button>
 
-  <!-- 이용 설문(2026-10-02) — 위임장을 내려받은 뒤에만 보인다. 후기는 게시 동의 응답만 쓴다. -->
-  <div id="sv-box" hidden style="margin-top:12px;padding:14px 16px;border:1px solid #BAE6FD;border-radius:10px;background:#F0F9FF;font-size:14px;line-height:1.65;color:#0F172A">
-    <b>이용해 보신 의견을 들려주세요</b><br>
-    4문항, 1분 안팎입니다. 이름·연락처는 묻지 않습니다. 신청서까지 받고 등기소 접수를 마친 뒤 답하셔도 됩니다.
-    <a href="https://docs.google.com/forms/d/e/1FAIpQLSeB1eNCUFrFbSnlUPdT0tZfUTFqWJo3R2_gHLuGO8fjvA5pdA/viewform" target="_blank" rel="noopener" onclick="try{window.SR&&SR.track('survey_open',{from:'form'});}catch(e){}" style="display:inline-block;margin-top:8px;font-weight:700;color:#0369A1">설문 열기 (Google Forms) →</a>
-  </div>
+  <!-- 결제 확인 후기(2026-10-07, review.js) — 내려받은 뒤에만 보인다. 구글 폼 대체 -->
+  <div id="sv-box" hidden><div class="rv-slot" data-from="form" hidden></div></div>
   <div class="ntc inf" style="margin-top:12px">
     <strong>유의사항</strong> · 본 서비스는 법률 자문을 제공하지 않습니다. 개인정보를 입력하지 않아 공란으로 생성된 부분은 직접 적어서 제출해 주세요.
   </div>
@@ -2092,6 +2088,7 @@ window.SR=window.SR||(function(){
 <script src="regfields.js"></script>
 <script src="resume.js"></script>
 <script src="pay.js"></script>
+<script src="review.js"></script>
 <script>
 /* 결제 대상 제한(2026-09-26): 집합건물 매매만. 부동산 종류가 토지면 막고, 그 밖에는 집합건물 확인 체크를 받는다. */
 if (window.SRPay && SRPay.setGuard) SRPay.setGuard(function () {

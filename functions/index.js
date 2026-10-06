@@ -6,11 +6,26 @@ import { defineSecret } from 'firebase-functions/params';
 import * as create from './shared/worker/pay/create.js';
 import * as confirm from './shared/worker/pay/confirm.js';
 import * as verify from './shared/worker/pay/verify.js';
+import * as review from './shared/worker/pay/review.js';
 
 const TOSSPAY_API_KEY = defineSecret('TOSSPAY_API_KEY');
 const PAY_TOKEN_SECRET = defineSecret('PAY_TOKEN_SECRET');
 
-const ROUTES = { '/api/pay/create': create, '/api/pay/confirm': confirm, '/api/pay/verify': verify };
+const ROUTES = { '/api/pay/create': create, '/api/pay/confirm': confirm, '/api/pay/verify': verify, '/api/pay/review': review };
+
+// 결제 확인 후기 저장(Firestore reviews/{주문번호}). 주문당 1개 — 이미 있으면 'exists'.
+// firebase-admin 은 후기 요청 때만 불러온다(결제 경로에 영향 없게).
+let db = null;
+async function saveReview(orderNo, doc) {
+  if (!db) {
+    const { initializeApp, getApps } = await import('firebase-admin/app');
+    const { getFirestore } = await import('firebase-admin/firestore');
+    if (!getApps().length) initializeApp();
+    db = getFirestore();
+  }
+  try { await db.collection('reviews').doc(orderNo).create(doc); return 'ok'; }
+  catch (e) { if (e && (e.code === 6 || /ALREADY_EXISTS/.test(String(e.message)))) return 'exists'; throw e; }
+}
 
 // create 가 결제창 복귀 주소(retUrl)를 요청 도메인으로 만든다. 헤더는 위조될 수 있으므로 허용 목록만 쓴다.
 const HOSTS = /^(www\.selfregi24\.com|[a-z0-9-]+\.(web\.app|firebaseapp\.com)|(localhost|127\.0\.0\.1)(:\d+)?)$/;
@@ -35,6 +50,7 @@ export const pay = onRequest(
         TOSSPAY_API_KEY: TOSSPAY_API_KEY.value(),
         PAY_TOKEN_SECRET: PAY_TOKEN_SECRET.value(),
         PAY_ALLOW_TEST: process.env.PAY_ALLOW_TEST,
+        saveReview,
       };
       const request = new Request(originOf(req) + req.path, {
         method: 'POST',
