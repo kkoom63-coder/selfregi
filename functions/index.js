@@ -21,7 +21,7 @@ async function saveReview(orderNo, doc) {
     const { initializeApp, getApps } = await import('firebase-admin/app');
     const { getFirestore } = await import('firebase-admin/firestore');
     if (!getApps().length) initializeApp();
-    db = getFirestore();
+    db = getFirestore('default'); // 콘솔에서 만든 DB ID가 '(default)'가 아니라 'default'
   }
   try { await db.collection('reviews').doc(orderNo).create(doc); return 'ok'; }
   catch (e) { if (e && (e.code === 6 || /ALREADY_EXISTS/.test(String(e.message)))) return 'exists'; throw e; }
