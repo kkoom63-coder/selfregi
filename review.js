@@ -6,6 +6,8 @@
   'use strict';
   var DONE_KEY = 'sr_review_done', SEEN_KEY = 'sr_review_seen';
   var dlg = null, last = null;
+  var LABELS = ['', '아쉬웠어요', '그저 그랬어요', '괜찮았어요', '좋았어요', '아주 좋았어요'];
+  var STAR = '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2.8l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 16.8l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg>';
 
   function pass() { try { return window.SRPay && SRPay.pass(); } catch (e) { return null; } }
   function ls(k, v) { try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (e) { return null; } }
@@ -22,14 +24,14 @@
     dlg = document.createElement('div');
     dlg.className = 'rv-back'; dlg.hidden = true;
     dlg.innerHTML =
-      '<form class="rv" role="dialog" aria-modal="true" aria-labelledby="rv-h" novalidate>'
+      '<form class="rv" role="dialog" aria-modal="true" aria-labelledby="rv-h" tabindex="-1" novalidate>'
       + '<button type="button" class="rv-x" aria-label="닫기">×</button>'
-      + '<div class="rv-badge">신청서까지 받으셨습니다</div>'
-      + '<div class="rv-h" id="rv-h">셀프등기24, 써 보시니 어떠셨나요?</div>'
-      + '<p class="rv-s">다음에 셀프등기를 할 분들께 보여드립니다. 10초면 됩니다.</p>'
-      + '<div class="rv-stars" role="radiogroup" aria-label="만족도">'
-      + [1, 2, 3, 4, 5].map(function (n) { return '<button type="button" class="rv-star" role="radio" aria-checked="false" aria-label="' + n + '점" data-n="' + n + '">★</button>'; }).join('')
-      + '</div>'
+      + '<div class="rv-h" id="rv-h">처음 문을 연 셀프등기24를<br>믿고 결제해 주셔서 감사합니다</div>'
+      + '<p class="rv-s">남겨 주신 한 줄이 다음 분들께 가장 큰 참고가 됩니다.</p>'
+      + '<div class="rv-q" id="rv-q1">써 보시니 어떠셨나요?</div>'
+      + '<div class="rv-rate"><div class="rv-stars" role="radiogroup" aria-labelledby="rv-q1">'
+      + [1, 2, 3, 4, 5].map(function (n) { return '<button type="button" class="rv-star" role="radio" aria-checked="false" aria-label="' + n + '점 ' + LABELS[n] + '" data-n="' + n + '">' + STAR + '</button>'; }).join('')
+      + '</div><span class="rv-rl" aria-hidden="true"></span></div>'
       + '<label class="rv-q" for="rv-t">한 줄 후기</label>'
       + '<textarea id="rv-t" class="rv-t" maxlength="300" rows="2" placeholder="예: 칸이 거의 다 채워져서 편했습니다"></textarea>'
       + '<label class="rv-pub"><input type="checkbox" class="rv-p" checked> <span>홈페이지에 공개해도 됩니다 <small>이름 없이 「이용자 · 작성 월」로 표시됩니다.</small></span></label>'
@@ -38,7 +40,9 @@
       + '</form>';
     document.body.appendChild(dlg);
     var f = dlg.querySelector('form'), rating = 0;
-    function paint() { f.querySelectorAll('.rv-star').forEach(function (b) { b.classList.toggle('on', +b.dataset.n <= rating); b.setAttribute('aria-checked', String(+b.dataset.n === rating)); }); }
+    function paint(h) { var v = h || rating; f.querySelectorAll('.rv-star').forEach(function (b) { b.classList.toggle('on', +b.dataset.n <= v); b.setAttribute('aria-checked', String(+b.dataset.n === rating)); }); f.querySelector('.rv-rl').textContent = LABELS[v] || ''; }
+    f.querySelector('.rv-stars').addEventListener('mouseover', function (e) { var s = e.target.closest('.rv-star'); if (s) paint(+s.dataset.n); });
+    f.querySelector('.rv-stars').addEventListener('mouseleave', function () { paint(); });
     f.addEventListener('click', function (e) {
       var s = e.target.closest('.rv-star'); if (s) { rating = +s.dataset.n; paint(); return; }
       if (e.target.closest('.rv-later') || e.target.closest('.rv-x')) { trk('review_later', {}); close(); laterButton(); }
@@ -75,7 +79,7 @@
     if (!dlg) build();
     last = document.activeElement;
     dlg.hidden = false; document.documentElement.classList.add('rv-open');
-    setTimeout(function () { var s = dlg.querySelector('.rv-star'); if (s) try { s.focus({ preventScroll: true }); } catch (e) {} }, 50);
+    setTimeout(function () { try { dlg.querySelector('.rv').focus({ preventScroll: true }); } catch (e) {} }, 50); /* 첫 별에 포커스 테두리가 생기지 않게 팝업 자체에 */
     trk('review_view', { from: from || 'roadmap' });
   }
   function close() {
@@ -101,12 +105,16 @@
     + '.rv{position:relative;width:100%;max-width:400px;box-sizing:border-box;padding:22px 20px 18px;border-radius:16px;background:#fff;color:#0F172A;font-size:14px;line-height:1.6;text-align:left;box-shadow:0 20px 50px rgba(15,23,42,.3);font-family:inherit}'
     + '@media(max-width:560px){.rv-back{align-items:flex-end;padding:0}.rv{max-width:none;border-radius:16px 16px 0 0;padding-bottom:calc(18px + env(safe-area-inset-bottom,0px))}}'
     + '.rv-x{position:absolute;top:10px;right:10px;width:36px;height:36px;border:0;border-radius:8px;background:#F1F5F9;font-size:20px;line-height:1;color:#475569;cursor:pointer}'
-    + '.rv-badge{display:inline-block;font-size:12px;font-weight:700;color:#047857;background:#ECFDF5;border:1px solid #A7F3D0;border-radius:20px;padding:1px 10px}'
-    + '.rv-h{font-size:17px;font-weight:800;margin-top:8px;padding-right:30px}'
-    + '.rv-s{font-size:13px;color:#475569;margin:2px 0 12px}'
-    + '.rv-stars{display:flex;gap:6px}'
-    + '.rv-star{flex:1;max-width:52px;height:46px;border:1px solid #E2E8F0;border-radius:10px;background:#fff;font-size:24px;line-height:1;color:#CBD5E1;cursor:pointer}'
-    + '.rv-star.on{color:#F59E0B;border-color:#FCD34D;background:#FFFBEB}'
+    + '.rv-h{font-size:18px;font-weight:800;line-height:1.45;letter-spacing:-.02em;padding-right:34px}'
+    + '.rv-s{font-size:13.5px;color:#475569;line-height:1.6;margin:6px 0 4px}'
+    + '.rv-rate{display:flex;align-items:center;gap:12px}'
+    + '.rv-stars{display:flex;gap:2px;margin-left:-6px}'
+    + '.rv-star{width:40px;height:40px;padding:6px;border:0;border-radius:8px;background:none;cursor:pointer;line-height:0}'
+    + '.rv-star svg{width:28px;height:28px;fill:#fff;stroke:#64748B;stroke-width:1.4;stroke-linejoin:round;transition:fill .12s,stroke .12s,transform .12s}'
+    + '.rv-star:hover svg{transform:scale(1.08)}'
+    + '.rv-star.on svg{fill:#F59E0B;stroke:#D97706}'
+    + '.rv-rl{font-size:13px;font-weight:700;color:#B45309;min-width:6em}'
+    + '@media(prefers-reduced-motion:reduce){.rv-star svg{transition:none}.rv-star:hover svg{transform:none}}'
     + '.rv-q{display:block;font-size:13px;font-weight:700;margin:14px 0 6px}'
     + '.rv-t{display:block;width:100%;box-sizing:border-box;min-height:64px;padding:10px 12px;border:1px solid #E2E8F0;border-radius:10px;font-family:inherit;font-size:15px;line-height:1.55;resize:vertical;background:#fff}'
     + '.rv-pub{display:flex;gap:8px;align-items:flex-start;margin-top:10px;font-size:13px;font-weight:600;cursor:pointer}'
@@ -119,6 +127,6 @@
     + '.rv-later,.rv-reopen{min-height:48px;padding:0 16px;border:1px solid #E2E8F0;border-radius:10px;background:#fff;font-family:inherit;font-size:14px;font-weight:700;color:#475569;cursor:pointer}'
     + '.rv-reopen{min-height:40px;margin-top:10px;font-size:13px;color:#0369A1;border-color:#BAE6FD;background:#F0F9FF}'
     + '.rv-done b{display:block;font-size:17px;font-weight:800}.rv-done span{display:block;font-size:13.5px;color:#334155;margin:4px 0 14px}.rv-done .rv-ok{width:100%}'
-    + '.rv :focus-visible,.rv-reopen:focus-visible{outline:2px solid #0369A1;outline-offset:2px}';
+    + '.rv:focus{outline:none}.rv :focus-visible,.rv-reopen:focus-visible{outline:2px solid #0369A1;outline-offset:2px}';
   var st = document.createElement('style'); st.id = 'rv-css'; st.textContent = css; document.head.appendChild(st);
 })();
