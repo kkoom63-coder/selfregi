@@ -11,3 +11,4 @@ wrangler.jsonc
 lib/
 build_cf.sh
 _headers
+indexnow.mjs
