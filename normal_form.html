@@ -524,6 +524,13 @@ input.ocr-warn{border-color:#DC2626!important;box-shadow:0 0 0 3px rgba(220,38,3
 .sum-low{margin-top:10px;padding:10px 12px;border:1px solid #FECACA;background:#FEF2F2;border-radius:8px;font-size:13px;line-height:1.65;color:#7F1D1D;word-break:keep-all}
 .sum-low b{color:#991B1B}
 .sum-low a{color:#991B1B;font-weight:700}
+
+/* 위임장 견본 썸네일 (결제 카드) */
+.smp{display:flex;gap:14px;align-items:center;margin:0 0 12px;padding:10px;border:1px solid var(--border);border-radius:10px;background:#fff;text-decoration:none;color:var(--navy)}
+.smp:hover{border-color:var(--blue)}
+.smp img{flex-shrink:0;width:96px;height:124px;object-fit:cover;object-position:top;border:1px solid var(--border);border-radius:4px;background:#fff}
+.smp-c b{display:block;font-size:14px;font-weight:700}
+.smp-c span{display:block;font-size:12.5px;color:#475569;margin-top:2px}
 </style>
 
 </head>
@@ -1014,6 +1021,11 @@ input.ocr-warn{border-color:#DC2626!important;box-shadow:0 0 0 3px rgba(220,38,3
       </ol>
       <p>두 서류 모두 한 번 결제에 포함됩니다.</p>
     </div>
+  <!-- 받게 되는 위임장 견본(2026-10-07) — 가상 인물·주소, 「견본」 표시. 신청서는 결제 후라 보여주지 않는다 -->
+  <a class="smp" href="sample_wimi.png" target="_blank" rel="noopener" onclick="try{window.SR&&SR.track('sample_open',{})}catch(e){}">
+    <img src="sample_wimi.png" alt="셀프등기24가 자동완성한 위임장 견본(가상 인물)" loading="lazy" width="720" height="928">
+    <span class="smp-c"><b>받게 되는 위임장 견본</b><span>가상 인물로 채운 견본입니다 · 눌러서 크게 보기</span></span>
+  </a>
 
   <label id="kind-ack-box" style="display:flex;gap:10px;align-items:flex-start;padding:12px 14px;margin:0 0 12px;border:1px solid var(--border);border-radius:10px;background:#F8FAFC;font-size:13.5px;line-height:1.65;cursor:pointer;word-break:keep-all">
     <input type="checkbox" id="kind-ack" style="width:20px;height:20px;margin-top:2px;flex-shrink:0">
