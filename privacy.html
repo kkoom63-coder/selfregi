@@ -210,7 +210,7 @@ html.mnav-open,html.mnav-open body{overflow:hidden}
   <div class="nav-inner">
     <div class="nav-scroll">
       <a href="index.html" class="nav-logo"><svg class="nav-mark" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><g fill="#0F172A"><rect x="9" y="41" width="14" height="14" rx="1.5"/><rect x="25" y="41" width="14" height="14" rx="1.5"/><rect x="25" y="25" width="14" height="14" rx="1.5"/><rect x="41" y="41" width="14" height="14" rx="1.5"/><rect x="41" y="25" width="14" height="14" rx="1.5"/></g><rect x="41" y="9" width="14" height="14" rx="1.5" fill="#0369A1"/></svg><strong class="nav-wm">셀프등기<b>24</b></strong></a>
-      <a href="guide.html" class="nav-a">셀프등기 가이드</a>
+      <span class="nav-dd"><button type="button" class="nav-a nav-dd-btn" aria-expanded="false" aria-controls="nav-dd-guide">셀프등기 가이드<svg class="nav-dd-ic" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M3 4.5 6 7.5 9 4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button><span class="nav-dd-menu" id="nav-dd-guide" hidden><a href="guide.html">소유권이전등기 가이드<span>매매 절차·준비서류 전체</span></a><a href="joint.html">공동명의 셀프등기<span>단독명의와 달라지는 점</span></a><a href="reject.html">반려·각하 점검<span>접수 전에 확인할 항목</span></a><a href="cancel_guide.html">근저당권 말소 가이드<span>대출을 다 갚았을 때</span></a></span></span>
       <a href="cost.html" class="nav-a">등기비용 비교</a>
       <span class="nav-dd"><button type="button" class="nav-a nav-dd-btn" aria-expanded="false" aria-controls="nav-dd-calc">부동산 계산기<svg class="nav-dd-ic" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M3 4.5 6 7.5 9 4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button><span class="nav-dd-menu" id="nav-dd-calc" hidden><a href="calculator.html">취득세 계산기<span>매매로 취득할 때</span></a><a href="gift_tax.html">증여 취득세 계산기<span>증여로 취득할 때</span></a></span></span>
       <a href="https://selfregi.tistory.com" target="_blank" rel="noopener" class="nav-a">블로그</a>
@@ -368,9 +368,9 @@ html.mnav-open,html.mnav-open body{overflow:hidden}
   </div>
 </footer>
 <script>
-/* 상단 메뉴 「부동산 계산기」 드롭다운: 클릭(모든 기기) + 마우스 올림(데스크톱) */
-(function(){
-  var b=document.querySelector('.nav-dd-btn'); if(!b) return;
+/* 상단 메뉴 드롭다운(「셀프등기 가이드」·「부동산 계산기」): 클릭(모든 기기) + 마우스 올림(데스크톱).
+   2026-10-09 드롭다운이 둘이 되어 버튼마다 따로 묶는다. 하나를 열면 나머지는 닫힌다(navdd 이벤트). */
+[].forEach.call(document.querySelectorAll('.nav-dd-btn'),function(b){
   var m=document.getElementById(b.getAttribute('aria-controls')); if(!m) return;
   document.body.appendChild(m); /* 가로 스크롤 메뉴 안에서 잘리지 않게 body로 옮긴다 */
   var hover=window.matchMedia('(hover:hover) and (pointer:fine)'), t=null, via='';
@@ -380,7 +380,7 @@ html.mnav-open,html.mnav-open body{overflow:hidden}
     if(window.innerWidth<=640){ m.style.left='12px'; m.style.right='12px'; }
     else { m.style.right='auto'; m.style.left=Math.round(Math.max(12,Math.min(r.left,window.innerWidth-m.offsetWidth-12)))+'px'; }
   }
-  function open(src){ clearTimeout(t); via=src; if(!m.hidden) return; m.hidden=false; b.setAttribute('aria-expanded','true'); place(); }
+  function open(src){ clearTimeout(t); via=src; if(!m.hidden) return; document.dispatchEvent(new CustomEvent('navdd',{detail:m})); m.hidden=false; b.setAttribute('aria-expanded','true'); place(); }
   function close(){ clearTimeout(t); if(m.hidden) return; m.hidden=true; b.setAttribute('aria-expanded','false'); via=''; }
   b.addEventListener('click',function(e){
     e.stopPropagation();
@@ -388,6 +388,7 @@ html.mnav-open,html.mnav-open body{overflow:hidden}
     if(m.hidden){ open('click'); if(e.detail===0){ var a=m.querySelector('a'); if(a) a.focus(); } } else close();
   });
   document.addEventListener('click',function(e){ if(!m.hidden && !m.contains(e.target)) close(); });
+  document.addEventListener('navdd',function(e){ if(e.detail!==m) close(); });
   document.addEventListener('keydown',function(e){ if(e.key==='Escape' && !m.hidden){ close(); b.focus(); } });
   m.addEventListener('focusout',function(e){ if(e.relatedTarget && !m.contains(e.relatedTarget) && e.relatedTarget!==b) close(); });
   window.addEventListener('resize',function(){ if(!m.hidden) place(); });
@@ -399,7 +400,7 @@ html.mnav-open,html.mnav-open body{overflow:hidden}
       el.addEventListener('mouseleave',function(){ t=setTimeout(close,200); });
     });
   }
-})();
+});
 </script>
 <script>
 /* 모바일 햄버거 메뉴: 상단 메뉴 항목을 복제해 ≡ 패널로 보여준다 (768px 이하) */
@@ -418,9 +419,9 @@ html.mnav-open,html.mnav-open body{overflow:hidden}
       var ob=el.querySelector('.nav-dd-btn'),menu=ob&&document.getElementById(ob.getAttribute('aria-controls')); if(!menu) return;
       var on=ob.classList.contains('active');
       var ab=document.createElement('button'); ab.type='button'; ab.className='mnav-a mnav-acc';
-      ab.setAttribute('aria-expanded',on?'true':'false'); ab.setAttribute('aria-controls','mnav-sub');
+      ab.setAttribute('aria-expanded',on?'true':'false'); ab.setAttribute('aria-controls','mnav-sub-'+menu.id);
       ab.innerHTML=ob.childNodes[0].textContent+'<svg viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M3 4.5 6 7.5 9 4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-      var sub=document.createElement('div'); sub.id='mnav-sub'; sub.className='mnav-sub'; sub.hidden=!on;
+      var sub=document.createElement('div'); sub.id='mnav-sub-'+menu.id; sub.className='mnav-sub'; sub.hidden=!on;
       [].forEach.call(menu.querySelectorAll('a'),function(x){ sub.appendChild(x.cloneNode(true)); });
       ab.addEventListener('click',function(){ var o=ab.getAttribute('aria-expanded')==='true'; ab.setAttribute('aria-expanded',String(!o)); sub.hidden=o; });
       list.appendChild(ab); list.appendChild(sub);
