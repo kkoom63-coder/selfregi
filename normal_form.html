@@ -407,7 +407,8 @@ html.mnav-open,html.mnav-open body{overflow:hidden}
 .sum-h em{font-style:normal;color:#B45309}
 .sum-d{font-size:13px;color:#334155;margin-top:4px;line-height:1.65;word-break:keep-all}
 .sum-lv{display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:700;margin-right:8px}
-.sum-lv.ok{color:#047857}.sum-lv.oc{color:#B45309}
+.sum-lv.ok{color:#047857}.sum-lv.oc{color:#B45309}.sum-lv.no{color:#B91C1C}
+.sum-h em.sum-miss{color:#B91C1C}
 .iss{margin-top:10px;padding:12px 14px;border-radius:10px;border:1px solid var(--ocr-bd);background:var(--ocr-bg)}
 .iss.no{border-color:#FECACA;background:#FEF2F2}
 .iss-t{display:flex;align-items:center;flex-wrap:wrap;gap:6px;font-size:14px;font-weight:700;color:var(--navy)}
@@ -454,6 +455,9 @@ input.ocr-warn{border-color:#DC2626!important;box-shadow:0 0 0 3px rgba(220,38,3
 .rm-r[data-k="prop-area"] dd span:empty,.rm-r[data-k="ratio"] dd span:empty{width:30%}
 .rm-r.on dd i{background:#047857}
 .rm-r.on.warn dd i{background:#B45309}
+/* 읽지 못한 칸: 회색 자리 막대 대신 빨간 「읽지 못함」 — 아직 읽는 중으로 보이지 않게(10/10) */
+.rm-r.miss dd i{background:#DC2626}
+.rm-r.miss dd span{color:#B91C1C;font-weight:700}
 .rm-r.on dd span{animation:rmIn .35s ease-out both}
 @keyframes rmIn{from{opacity:0;transform:translateY(3px)}to{opacity:1;transform:none}}
 /* 읽는 동안 위에서 아래로 훑는 선 */
@@ -2364,22 +2368,37 @@ if (window.SRPay && SRPay.setGuard) SRPay.setGuard(function () {
       if(issues.some(function(x){ return x.r.label === lb; })) return;
       issues.push({i:-1, r:{label:lb, v:'', note:'글자가 흐릿해 확신하기 어렵습니다. 0과 O, 1과 l이 자주 바뀝니다.'}, lv:'oc'});
     });
-    var CORE = ['jibun-address','floor','ho','prop-area','total-land','unit-land','s-name','property-uid'];
+    var CORE = ['jibun-address','floor','ho','prop-struct','prop-area','total-land','unit-land','s-name','property-uid'];
     var got = CORE.filter(function(id){ return rows.some(function(r){ return r.id===id && r.v; }); }).length;
+    /* 읽지 못한 필수 칸(2026-10-10): 종전에는 읽은 값만 정확도를 매겨, 일반 사진에서 구조·전유면적·매도인을
+       통째로 놓쳐도 「정확도 보통」에 확인 항목 0개로 끝났다. 빈 칸도 확인 항목으로 올리고 정확도를 낮춘다.
+       이용자가 이미 직접 입력한 칸은 제외한다. 동·건물명은 없는 건물이 있어 필수로 보지 않는다. */
+    var MISS = [['jibun-address','소재지번'],['floor','층'],['ho','호'],['prop-struct','구조'],['prop-area','전유면적'],
+                ['total-land','대지권 비율'],['property-uid','부동산 고유번호'],['s-name','매도인 성명']];
+    var miss = MISS.filter(function(m){
+      var ids = m[0]==='total-land' ? ['total-land','unit-land'] : [m[0]];
+      var read = ids.every(function(id){ return rows.some(function(r){ return r.id===id && r.v; }); });
+      var el = $(m[0]); return !read && !(el && String(el.value||'').trim());
+    });
+    issues = miss.map(function(m){ return {i:-1, r:{id:m[0], label:m[1], v:'', note:'등기부에서 찾지 못했습니다. 등기부를 보고 직접 입력해 주세요.'}, lv:'miss'}; }).concat(issues);
     var score = Math.max(0, Math.round(got/CORE.length*100) - 10*issues.filter(function(x){ return x.lv==='no' || x.lv==='oc'; }).length);
     var low = score < 50;
-    var lvl = res._ocr
+    var lvl = miss.length
+      ? '<span class="sum-lv no"><i class="dot d-no"></i>정확도 낮음</span><b>'+miss.length+'칸</b>을 읽지 못했습니다. 아래 빨간 항목을 등기부를 보고 직접 입력해 주세요.'
+      : res._ocr
       ? '<span class="sum-lv oc"><i class="dot d-oc"></i>정확도 보통</span>사진에서 읽은 값은 <b>주황색 칸</b>으로 표시했습니다. 등기부와 한 번 대조해 주세요.'
       : '<span class="sum-lv ok"><i class="dot d-ok"></i>정확도 높음</span>발급 원본에서 글자를 그대로 가져왔습니다.';
     sum.innerHTML = '<div class="ocr-sum"><div class="sum-h">등기부에서 <b>'+filled+'칸</b>을 채웠습니다'
-      + (issues.length ? ' · <em>확인할 항목 '+issues.length+'개</em>' : '') + '</div>'+(low ? '' : '<div class="sum-d">'+lvl+'</div>')
+      + (miss.length ? ' · <em class="sum-miss">읽지 못한 칸 '+miss.length+'개</em>' : '')
+      + (issues.length > miss.length ? ' · <em>확인할 항목 '+(issues.length-miss.length)+'개</em>' : '') + '</div>'+(low ? '' : '<div class="sum-d">'+lvl+'</div>')
       + (low ? '<div class="sum-low"><b>등기부를 제대로 읽지 못했습니다.</b> '+(res._ocr ? '사진은 그림자 없이 밝은 곳에서 글자가 또렷하게 다시 찍어 주세요. 가능하면 ' : '이 파일에서 찾지 못한 칸이 많습니다. ')+'<a href="https://www.iros.go.kr" target="_blank" rel="noopener">인터넷등기소</a>에서 등기사항전부증명서를 새로 발급받아 PDF로 올리면 정확하게 읽힙니다.</div>' : '')
       + '<button type="button" class="sum-pv" onclick="window.nfPv&&nfPv(true)">서류에 들어간 모습 미리보기</button></div>';
     if(low) trk('ocr_low',{key:String(score), mode: res._ocr ? 'ocr' : 'text'});
+    if(miss.length) trk('ocr_miss',{key:String(miss.length), mode: res._ocr ? 'ocr' : 'text'});
     box.innerHTML = issues.map(function(x){
-      var r = x.r, cls = x.lv === 'no' ? 'no' : 'oc';
+      var r = x.r, cls = (x.lv === 'no' || x.lv === 'miss') ? 'no' : 'oc';
       if(x.lv === 'addr'){ r = {id:r.id, label:r.label, v:r.v, note:r.note}; }
-      var head = x.lv === 'diff' ? '이미 입력한 값과 다릅니다' : (x.lv === 'addr' ? '주민등록초본과 대조' : (x.lv === 'no' ? '정확도 낮음 · 등기부와 꼭 대조' : '정확도 보통 · 한 번 더 확인'));
+      var head = x.lv === 'miss' ? '읽지 못함 · 직접 입력' : x.lv === 'diff' ? '이미 입력한 값과 다릅니다' : (x.lv === 'addr' ? '주민등록초본과 대조' : (x.lv === 'no' ? '정확도 낮음 · 등기부와 꼭 대조' : '정확도 보통 · 한 번 더 확인'));
       var body = x.lv === 'diff'
         ? '입력한 값 <b>'+esc(x.cur)+'</b> · 등기부 <b>'+esc(r.show || r.v)+'</b>'
         : (r.v ? '<b>'+esc(r.show || r.v)+'</b>' : '') + (r.note ? '<span>'+r.note+'</span>' : '');
@@ -2797,6 +2816,8 @@ if (window.SRPay && SRPay.setGuard) SRPay.setGuard(function () {
 window.nfRegMini = function(rows, res){
   var box = document.getElementById('regmini'); if(!box) return;
   function get(id){ for(var i=0;i<rows.length;i++) if(rows[i].id===id) return rows[i]; return null; }
+  /* 다시 올릴 때 이전 판독 결과가 남지 않게 먼저 비운다 */
+  [].forEach.call(box.querySelectorAll('.rm-r'), function(r){ r.classList.remove('on','warn','miss'); r.querySelector('dd span').textContent=''; });
   function set(k, val, warn){
     var r = box.querySelector('.rm-r[data-k="'+k+'"]'); if(!r) return;
     var sp = r.querySelector('dd span');
@@ -2809,6 +2830,11 @@ window.nfRegMini = function(rows, res){
   if(dh) set('dongho', dh, (f&&f.cls==='warn')||(h&&h.cls==='warn'));
   var tl=get('total-land'), ul=get('unit-land');
   if(tl&&ul) set('ratio', tl.v+'분의 '+ul.v, tl.cls==='warn');
+  /* 판독이 끝났는데 비어 있는 칸은 「읽지 못함」으로 표시한다(부분 결과일 때는 아직 읽는 중이라 제외) */
+  if(!(res && res._partial)) [].forEach.call(box.querySelectorAll('.rm-r:not(.on)'), function(r){
+    if(r.dataset.k==='apt-name') return;  // 건물명은 없는 건물이 있다
+    r.classList.add('miss'); r.querySelector('dd span').textContent='읽지 못함';
+  });
   box.classList.add('read');
 };
 </script>
