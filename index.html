@@ -157,7 +157,7 @@ header{background:var(--bg)}
 .hd-r{position:absolute;left:13.7%;width:17.8%;height:3.6%;display:flex;align-items:center;padding-left:.7cqw;background:#fff;color:#0F172A;font-size:1cqw;font-weight:600;white-space:nowrap;opacity:0;transition:opacity .25s}
 .hd-r.in{opacity:1}
 .hd-n{position:absolute;right:2.6%;width:3.6%;height:3.2%;display:flex;align-items:center;justify-content:flex-end;background:#fff;font-family:'SFMono-Regular',Consolas,monospace;font-size:1.05cqw;font-weight:700;opacity:0}
-.hd-n.b{color:#047857}.hd-n.a{color:#B45309}
+.hd-n.b{color:#047857}.hd-n.a{color:#B45309}.hd-n.c{color:#64748B}
 .hd-tag{position:absolute;right:1.2%;top:1.2%;font-size:.9cqw;font-weight:700;color:#475569;background:rgba(241,245,249,.92);border:1px solid #CBD5E1;border-radius:1cqw;padding:.25cqw .8cqw;opacity:0;transition:opacity .3s}
 .hd.on .hd-tag,.hd.on .hd-n{opacity:1}
 .hd.over .hd-dz{opacity:1}
@@ -777,9 +777,9 @@ html.mnav-open,html.mnav-open body{overflow:hidden}
         <div class="ha-panel" role="tabpanel" id="hapanel-transfer" aria-labelledby="hatab-transfer">
           <!-- 700px 아래에서는 세로 화면으로 바꾼다 — 가로 캡처를 335px 로 줄이면 글자가 읽히지 않는다(R2-A04와 같은 결함). -->
           <picture>
-            <source media="(max-width:700px)" srcset="hero_app_transfer_m@1x.webp 370w, hero_app_transfer_m.webp 740w" sizes="calc(100vw - 40px)">
-            <source srcset="hero_app_transfer@1x.webp 900w, hero_app_transfer.webp 1800w" sizes="(max-width:1240px) calc(100vw - 40px), 1160px">
-            <img src="hero_app_transfer@1x.webp" width="900" height="520" alt="셀프등기24 서류 작성 화면. 왼쪽에 등기사항전부증명서를 올리는 칸이 있고, 오른쪽 문서 반영 미리보기 패널에 위임장·신청서에 들어갈 항목과 아직 비어 있는 항목 수가 표시된다." decoding="async">
+            <source media="(max-width:700px)" srcset="hero_app_transfer_m@1x.webp?v=1010 370w, hero_app_transfer_m.webp?v=1010 740w" sizes="calc(100vw - 40px)">
+            <source srcset="hero_app_transfer@1x.webp?v=1010 900w, hero_app_transfer.webp?v=1010 1800w" sizes="(max-width:1240px) calc(100vw - 40px), 1160px">
+            <img src="hero_app_transfer@1x.webp?v=1010" width="900" height="520" alt="셀프등기24 서류 작성 화면. 왼쪽에 등기사항전부증명서를 올리는 칸이 있고, 오른쪽 문서 반영 미리보기 패널에 위임장·신청서에 들어갈 항목과 아직 비어 있는 항목 수가 표시된다." decoding="async">
           </picture>
           <!-- 시연 레이어(데스크톱 전용): 등기부 PDF를 끌어다 놓으면 오른쪽 미리보기가 채워지는 모습.
                좌표는 hero_app_transfer 캡처(1800×1040) 기준 %. 캡처를 바꾸면 좌표도 다시 잰다.
@@ -801,19 +801,20 @@ html.mnav-open,html.mnav-open body{overflow:hidden}
             <span class="hd-v" style="left:74.1%;top:41.4%">84.97㎡</span>
             <span class="hd-v" style="left:75.5%;top:45%">43,210분의 52.8</span>
             <span class="hd-n b" style="top:61.7%">0</span>
-            <span class="hd-n a" style="top:65.7%">14</span>
+            <span class="hd-n a" style="top:65.7%">9</span>
+            <span class="hd-n c" style="top:69.7%">8</span>
             <span class="hd-tag">시연 · 견본 값</span>
           </div>
           <!-- 모바일 시연 레이어: PDF가 올라감 → 판독 → 하단 「문서 반영 미리보기」 막대 → 시트. 값은 견본이다. -->
           <div class="hdm" aria-hidden="true">
-            <img class="hdm-b" src="hero_app_transfer_m2@1x.webp" srcset="hero_app_transfer_m2@1x.webp 370w, hero_app_transfer_m2.webp 740w" sizes="calc(100vw - 40px)" width="370" height="520" alt="" loading="lazy" decoding="async">
+            <img class="hdm-b" src="hero_app_transfer_m2@1x.webp?v=1010" srcset="hero_app_transfer_m2@1x.webp?v=1010 370w, hero_app_transfer_m2.webp?v=1010 740w" sizes="calc(100vw - 40px)" width="370" height="520" alt="" loading="lazy" decoding="async">
             <div class="hdm-dz"></div>
             <div class="hdm-file"><span class="hdm-doc"><i>PDF</i>등기사항전부증명서.pdf</span></div>
             <div class="hdm-st">등기부를 읽는 중…</div>
             <div class="hdm-pr"><i></i></div>
             <span class="hdm-tap"></span>
             <div class="hdm-dim"></div>
-            <img class="hdm-sh" src="hero_app_transfer_m3@1x.webp" srcset="hero_app_transfer_m3@1x.webp 370w, hero_app_transfer_m3.webp 740w" sizes="calc(100vw - 40px)" width="370" height="416" alt="" loading="lazy" decoding="async">
+            <img class="hdm-sh" src="hero_app_transfer_m3@1x.webp?v=1010" srcset="hero_app_transfer_m3@1x.webp?v=1010 370w, hero_app_transfer_m3.webp?v=1010 740w" sizes="calc(100vw - 40px)" width="370" height="416" alt="" loading="lazy" decoding="async">
           </div>
           <button type="button" class="hdm-hit hdm-see" aria-label="문서 반영 미리보기 열기(견본)"></button>
           <button type="button" class="hdm-hit hdm-x" aria-label="미리보기 닫기" hidden></button>
@@ -1466,8 +1467,9 @@ function demoLoop(el, run, finish){
 (function(){
   var hd=document.querySelector('.hd'); if(!hd||!window.matchMedia) return;
   var rs=[].slice.call(hd.querySelectorAll('.hd-r')), vs=[].slice.call(hd.querySelectorAll('.hd-v')),
-      nb=hd.querySelector('.hd-n.b'), na=hd.querySelector('.hd-n.a'), st=hd.querySelector('.hd-st'), DONE=11, LEFT=14;
-  function count(k){ var d=Math.round(DONE*k/vs.length); nb.textContent=d; na.textContent=LEFT-d; }
+      nb=hd.querySelector('.hd-n.b'), na=hd.querySelector('.hd-n.a'), nc=hd.querySelector('.hd-n.c'), st=hd.querySelector('.hd-st');
+  /* 집계는 실제 서류 작성 화면의 판독 전후 값(입력 0→11 · 빈칸 9→3 · 비워도 됨 8→3, 10/10 실측) */
+  function count(k){ var f=k/vs.length; nb.textContent=Math.round(11*f); na.textContent=9-Math.round(6*f); nc.textContent=8-Math.round(5*f); }
   function reset(){ hd.className='hd'; rs.concat(vs).forEach(function(v){ v.classList.remove('in'); }); count(0); st.textContent=''; }
   function finish(){ hd.className='hd on read'; rs.concat(vs).forEach(function(v){ v.classList.add('in'); }); count(vs.length); st.textContent='등기부에서 칸을 채웠습니다'; }
   demoLoop(hd, function(at){
