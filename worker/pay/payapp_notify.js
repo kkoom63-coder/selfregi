@@ -17,8 +17,13 @@ export async function onRequestPost({ request, env }) {
   try { f = new URLSearchParams(await request.text()); } catch (e) { return text(400, 'BAD_BODY'); }
   const g = (k) => String(f.get(k) || '').trim();
 
-  if (g('userid') !== PAYAPP_USERID || !sameStr(g('linkkey'), keys.linkkey) || !sameStr(g('linkval'), keys.linkval)) {
-    console.error('payapp notify auth fail', g('userid'), g('var1'));
+  // form 해석에서 '+'가 공백으로 바뀌는 경우(인코딩하지 않고 보낸 값)도 같은 값으로 본다.
+  const same = (got, want) => sameStr(got, want) || sameStr(got.replace(/ /g, '+'), want);
+  const uidOk = g('userid') === PAYAPP_USERID, keyOk = same(g('linkkey'), keys.linkkey), valOk = same(g('linkval'), keys.linkval);
+  if (!uidOk || !keyOk || !valOk) {
+    // 값은 남기지 않는다 — 어느 항목이 틀렸는지와 길이만 기록한다.
+    console.error('payapp notify auth fail', JSON.stringify({ order: g('var1'), uidOk, keyOk, valOk,
+      keyLen: g('linkkey').length, keyWant: keys.linkkey.length, valLen: g('linkval').length, valWant: keys.linkval.length }));
     return text(403, 'AUTH_FAIL');
   }
   const orderNo = g('var1'), state = g('pay_state');
