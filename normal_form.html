@@ -2374,13 +2374,14 @@ if (window.SRPay && SRPay.setGuard) SRPay.setGuard(function () {
        통째로 놓쳐도 「정확도 보통」에 확인 항목 0개로 끝났다. 빈 칸도 확인 항목으로 올리고 정확도를 낮춘다.
        이용자가 이미 직접 입력한 칸은 제외한다. 동·건물명은 없는 건물이 있어 필수로 보지 않는다. */
     var MISS = [['jibun-address','소재지번'],['floor','층'],['ho','호'],['prop-struct','구조'],['prop-area','전유면적'],
-                ['total-land','대지권 비율'],['property-uid','부동산 고유번호'],['s-name','매도인 성명']];
+                ['total-land','대지권 비율'],['property-uid','부동산 고유번호'],
+                ['s-name','매도인 성명','등기부 갑구의 현재 소유자 이름을 보고 입력해 주세요. 매도인의 <b>주민등록초본·인감증명서 이름과 같은지</b> 꼭 확인해 주세요.']];
     var miss = MISS.filter(function(m){
       var ids = m[0]==='total-land' ? ['total-land','unit-land'] : [m[0]];
       var read = ids.every(function(id){ return rows.some(function(r){ return r.id===id && r.v; }); });
       var el = $(m[0]); return !read && !(el && String(el.value||'').trim());
     });
-    issues = miss.map(function(m){ return {i:-1, r:{id:m[0], label:m[1], v:'', note:'등기부에서 찾지 못했습니다. 등기부를 보고 직접 입력해 주세요.'}, lv:'miss'}; }).concat(issues);
+    issues = miss.map(function(m){ return {i:-1, r:{id:m[0], label:m[1], v:'', note: m[2] || '등기부에서 찾지 못했습니다. 등기부를 보고 직접 입력해 주세요.'}, lv:'miss'}; }).concat(issues);
     var score = Math.max(0, Math.round(got/CORE.length*100) - 10*issues.filter(function(x){ return x.lv==='no' || x.lv==='oc'; }).length);
     var low = score < 50;
     var lvl = miss.length
