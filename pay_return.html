@@ -74,10 +74,17 @@ p{font-size:14.5px;line-height:1.7;color:#334155;margin:0 0 12px}
   var orderNo=q.get('orderNo')||pending.orderNo;
   if(!orderNo){ fail('주문 정보를 찾지 못했습니다.'); return; }
 
+  /* 페이앱(?pa=1): 결제 완료는 페이앱 서버의 결제통보로 확인한다. 통보가 화면 복귀보다 늦을 수 있어
+     「확인 중」(202)이면 2초 간격으로 다시 묻는다(최대 약 30초). */
+  var PA = q.get('pa')==='1' || pending.m==='payapp', waits=0;
   function confirm(tries){
-    fetch('/api/pay/confirm',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({orderNo:orderNo})})
+    fetch(PA?'/api/pay/payapp-confirm':'/api/pay/confirm',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({orderNo:orderNo})})
       .then(function(r){return r.json();})
       .then(function(d){
+        if(PA && d && d.pending){
+          if(waits++<15){ box.className='card'; box.innerHTML='<h1>결제를 확인하고 있습니다</h1><p>네이버페이·카카오페이 결제 결과를 받는 중입니다. 잠시만 기다려 주세요.</p>'; setTimeout(function(){confirm(tries);},2000); return; }
+          fail('결제 확인이 늦어지고 있습니다. 1~2분 뒤 이 화면을 새로고침해 주세요.'); return;
+        }
         if(!d||!d.ok){ fail((d&&d.msg)||'결제 승인에 실패했습니다.'); return; }
         set(PASS_KEY,{token:d.token,orderNo:d.orderNo,exp:d.exp});
         try{localStorage.removeItem(PENDING_KEY);}catch(e){}

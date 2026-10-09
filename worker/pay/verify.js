@@ -16,6 +16,11 @@ export async function onRequestPost({ request, env }) {
       return json(410, { ok: false, msg: '환불된 결제의 재발급 링크입니다.' });
     }
   } catch (e) { /* 상태 조회 실패 시 서명만으로 통과 — 재발급을 막지 않는다 */ }
+  // 페이앱 주문(토스 조회에 없음): 결제통보로 취소가 기록됐으면 거절한다.
+  try {
+    const doc = env.paStore ? await env.paStore.get(p.o) : null;
+    if (doc && doc.st === 'cancel') return json(410, { ok: false, msg: '환불된 결제의 재발급 링크입니다.' });
+  } catch (e) { /* 저장소 조회 실패 시 서명만으로 통과 */ }
 
   return json(200, { ok: true, orderNo: p.o, exp: p.exp });
 }

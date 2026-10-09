@@ -1050,12 +1050,12 @@ input.ocr-warn{border-color:#DC2626!important;box-shadow:0 0 0 3px rgba(220,38,3
   </label>
   <button id="btn-pay" class="pay-btn" onclick="SRPay.start()">
     <div style="text-align:left">
-      <div class="dn" id="pay-dn">토스페이로 9,900원 결제하고 서류 받기</div>
+      <div class="dn" id="pay-dn">9,900원 결제하고 서류 받기</div>
       <div class="ds" id="pay-ds">부동산 1건 · 부가세 포함 · 추가 요금 없음</div>
     </div>
     <span class="pay-arrow" id="pay-arrow">→</span>
   </button>
-  <p class="pay-note" id="pay-note">토스 앱으로 결제합니다(PC는 화면의 QR을 휴대폰으로 찍기). 결제는 새 창에서 진행되며, 입력하신 내용은 이 화면에 그대로 남습니다. 입력 내용은 이 기기에만 저장되니 서류를 인쇄할 기기에서 진행하시면 편합니다. 다른 기기에서는 받아 둔 위임장 파일로 이어서 할 수 있습니다.</p>
+  <p class="pay-note" id="pay-note">토스페이·네이버페이·카카오페이로 결제합니다(토스페이는 PC에서 QR). 결제는 새 창에서 진행되며, 입력하신 내용은 이 화면에 그대로 남습니다. 입력 내용은 이 기기에만 저장되니 서류를 인쇄할 기기에서 진행하시면 편합니다. 다른 기기에서는 받아 둔 위임장 파일로 이어서 할 수 있습니다.</p>
   <div class="svc-terms">
     <div class="svc-terms-h">서비스 제공 방식과 시점</div>
     <dl class="svc-terms-l">
@@ -1415,7 +1415,7 @@ function renderPayState(){
   var paid=window.SRPay&&SRPay.has();
   var card=document.getElementById('pay-card'); if(!card) return;
   var btn=document.getElementById('btn-pay');
-  document.getElementById('pay-dn').textContent=paid?'결제 완료 — 아래에서 위임장부터 내려받으세요':'토스페이로 9,900원 결제하고 서류 받기';
+  document.getElementById('pay-dn').textContent=paid?'결제 완료 — 아래에서 위임장부터 내려받으세요':'9,900원 결제하고 서류 받기';
   document.getElementById('pay-ds').textContent=paid?'결제일부터 30일, 동일 부동산·동일 매수인 재발급 무상':'부동산 1건 · 부가세 포함 · 추가 요금 없음';
   document.getElementById('pay-arrow').textContent=paid?'↓':'→';
   btn.onclick=paid?function(){var sec=document.getElementById('dl-section');if(sec)sec.scrollIntoView({behavior:'smooth',block:'start'});}:function(){SRPay.start();};
@@ -1424,7 +1424,7 @@ function renderPayState(){
     var url=SRPay.reissueUrl();
     note.innerHTML='재발급 링크: <a href="'+url+'" style="word-break:break-all">'+url.replace(/^https?:\/\//,'').slice(0,48)+'…</a> — 다른 기기에서도 이 링크로 다시 받으실 수 있습니다.';
   } else {
-    note.textContent='토스 앱으로 결제합니다(PC는 화면의 QR을 휴대폰으로 찍기). 결제는 새 창에서 진행되며, 입력하신 내용은 이 화면에 그대로 남습니다.';
+    note.textContent='토스페이·네이버페이·카카오페이로 결제합니다(토스페이는 PC에서 QR). 결제는 새 창에서 진행되며, 입력하신 내용은 이 화면에 그대로 남습니다.';
   }
 }
 window.addEventListener('srpay:change', function(e){
