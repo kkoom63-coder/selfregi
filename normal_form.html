@@ -2496,9 +2496,12 @@ if (window.SRPay && SRPay.setGuard) SRPay.setGuard(function () {
        ?pp=1  모바일에서도 강제로 PP-OCR 을 쓴다 (모바일 실측용) */
     var isMobile = /Android|iPhone|iPad|iPod|IEMobile|Opera Mini/i.test(navigator.userAgent)
       || (window.matchMedia && window.matchMedia('(pointer:coarse)').matches && screen.width < 900);
+    /* 2026-10-10: 갤럭시 S26 실측(사진 3장 약 20초, PC와 같은 판독 결과)으로 모바일도 PP-OCR 기본.
+       메모리 4GB 미만으로 알려진 기기만 tesseract 를 유지하고, PP-OCR 준비가 실패하면 tesseract 로 넘어간다. */
+    var lowMem = isMobile && navigator.deviceMemory && navigator.deviceMemory < 4;
     var usePP = !!window.RegOCRPP
       && !/[?&]pp=0/.test(location.search)
-      && (/[?&]pp=1/.test(location.search) || !isMobile);
+      && (/[?&]pp=1/.test(location.search) || !lowMem);
     var ENG = usePP ? window.RegOCRPP : window.RegOCR;
     var ppOpt = {};
     if(usePP){
@@ -2511,10 +2514,18 @@ if (window.SRPay && SRPay.setGuard) SRPay.setGuard(function () {
     }
     if(!usePP) await loadTess();
     say('한국어 판독기를 준비하는 중입니다…');
-    var worker = await ENG.makeWorker(window.Tesseract, {
+    var wOpt = {
       logger:function(m){ if(m&&m.status&&typeof m.progress==='number'){
         say('판독기 준비: '+m.status); bar(0.1+0.15*m.progress); } }
-    });
+    };
+    var worker;
+    try{ worker = await ENG.makeWorker(window.Tesseract, wOpt); }
+    catch(e){
+      if(!usePP) throw e;
+      /* 모델 내려받기·메모리 실패 → 기존 엔진으로 다시 시도 */
+      usePP = false; ENG = window.RegOCR; trk('ocr_fallback',{mode: isMobile ? 'mobile' : 'desktop'});
+      await loadTess(); worker = await ENG.makeWorker(window.Tesseract, wOpt);
+    }
     var tokAll = [], txtAll = [], confirm = [];
     /* 사진 경로는 라벨 앵커(regfields)로 뽑는다.
        좌표 기반 표 판정은 OCR 이 한 페이지를 여러 벌로 묶어 내놓을 때 값이 반복된다.
