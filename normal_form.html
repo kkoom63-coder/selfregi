@@ -107,6 +107,19 @@ grid-template-columns:minmax(0,1fr) 384px;gap:24px;align-items:start}
 .pv .cp{font-size:11px;font-weight:800;letter-spacing:.05em;color:var(--muted);margin-bottom:6px}
 .pv .v{color:#075985;font-weight:700}
 .pv .v.e{color:var(--muted);font-weight:400;background:#F1F5F9;border-radius:4px;padding:0 5px}
+/* 판독 상태(2026-10-10, 미니 등기부를 합침): 사진에서 읽은 값은 주황, 읽지 못한 필수 칸은 빨강 */
+.pv .v.oc{color:#B45309}
+.pv .v.miss{color:#B91C1C;font-weight:700;background:#FEF2F2;border-radius:4px;padding:0 5px}
+.pv .v small.pv-ms{font-size:12px;font-weight:700;color:#B91C1C;margin-left:4px}
+.pv-leg{display:flex;flex-wrap:wrap;align-items:center;gap:4px 10px;font-size:12px;color:#475569;margin:10px 0 0}
+.pv-leg[hidden]{display:none}
+.pv-leg i{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:-6px}
+.pv-leg .lg-oc{background:#B45309}.pv-leg .lg-no{background:#DC2626}
+.pv-smp{display:flex;align-items:center;gap:12px;margin-top:14px;padding:12px 14px;min-height:44px;border:1px solid var(--border);border-radius:10px;background:#fff;text-decoration:none;color:var(--navy)}
+.pv-smp:hover{border-color:var(--blue);background:#F8FAFC}
+.pv-smp svg{width:26px;height:31px;flex-shrink:0}
+.pv-smp b{display:block;font-size:13.5px;font-weight:700}
+.pv-smp small{display:block;font-size:12px;color:#475569;margin-top:2px}
 .tally{display:grid;grid-template-columns:1fr auto;gap:7px 10px;font-size:13px;
 padding:14px 0;border-top:1px solid #F1F5F9;border-bottom:1px solid #F1F5F9;margin:14px 0}
 .tally .k{color:var(--muted)}
@@ -436,7 +449,7 @@ input.ocr-warn{border-color:#DC2626!important;box-shadow:0 0 0 3px rgba(220,38,3
 .blank-l small{flex-basis:100%;font-size:12.5px;color:#B45309}
 
 /* 0번 카드 — 미니 등기부 + 올리기 (2026-10-06) */
-.ocr-stage{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:14px;align-items:stretch;margin-bottom:12px}
+.ocr-stage{display:grid;grid-template-columns:1fr;gap:14px;align-items:stretch;margin-bottom:12px}
 @media(max-width:760px){.ocr-stage{grid-template-columns:1fr}.regmini{order:2}.regmini:not(.read){display:none}}
 .toast:not(.show){visibility:hidden}
 .regmini{position:relative;overflow:hidden;background:#fff;border:1px solid #CBD5E1;border-radius:10px;padding:14px 16px 10px;box-shadow:0 1px 0 #E2E8F0,0 6px 18px -12px rgba(15,23,42,.25)}
@@ -466,7 +479,7 @@ input.ocr-warn{border-color:#DC2626!important;box-shadow:0 0 0 3px rgba(220,38,3
 @keyframes rmScan{from{top:-30%}to{top:100%}}
 @media(prefers-reduced-motion:reduce){.rm-scan{animation:none!important}.rm-r.on dd span{animation:none}}
 .ocr-stage .slots{display:flex;flex-direction:column;gap:10px}
-.ocr-stage .drop{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:22px 18px}
+.ocr-stage .drop{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px 18px}
 .dz-ic{width:34px;height:40px;margin-bottom:10px}
 .ocr-stage .slot-t{font-size:16px;margin-bottom:6px}
 .ocr-stage .pr,.ocr-stage .plg{align-self:stretch}
@@ -581,25 +594,7 @@ input.ocr-warn{border-color:#DC2626!important;box-shadow:0 0 0 3px rgba(220,38,3
     <div class="cs">등기사항전부증명서 PDF나 사진을 올리면 아래 2·3번 칸 대부분이 채워집니다</div>
   </div></div>
   <div class="ocr-stage">
-    <!-- 미니 등기부: 실제 등기사항전부증명서의 표제부·갑구 모양. 판독이 끝나면 읽은 값이 칸에 채워진다(nfRegMini) -->
-    <div class="regmini" id="regmini" aria-label="등기부에서 자동으로 채우는 칸">
-      <div class="rm-doc">등기사항전부증명서 <small>(집합건물)</small></div>
-      <div class="rm-sec">【 표 제 부 】<small>건물·대지권의 표시</small></div>
-      <dl>
-        <div class="rm-r" data-k="jibun-address"><dt>소재지번</dt><dd><i></i><span></span></dd></div>
-        <div class="rm-r" data-k="apt-name"><dt>건물명</dt><dd><i></i><span></span></dd></div>
-        <div class="rm-r" data-k="dongho"><dt>동 · 층 · 호</dt><dd><i></i><span></span></dd></div>
-        <div class="rm-r" data-k="prop-struct"><dt>구조</dt><dd><i></i><span></span></dd></div>
-        <div class="rm-r" data-k="prop-area"><dt>전유면적</dt><dd><i></i><span></span></dd></div>
-        <div class="rm-r" data-k="ratio"><dt>대지권 비율</dt><dd><i></i><span></span></dd></div>
-        <div class="rm-r" data-k="property-uid"><dt>고유번호</dt><dd><i></i><span></span></dd></div>
-      </dl>
-      <div class="rm-sec">【 갑 구 】<small>소유권에 관한 사항</small></div>
-      <dl>
-        <div class="rm-r" data-k="s-name"><dt>소유자(매도인)</dt><dd><i></i><span></span></dd></div>
-      </dl>
-      <div class="rm-scan" aria-hidden="true"></div>
-    </div>
+    <!-- 미니 등기부는 2026-10-10 오른쪽 「문서 반영 미리보기」로 합쳤다(같은 값을 두 곳에 보여주던 중복). 판독 상태(사진·읽지 못함)는 미리보기에 표시한다. -->
     <div class="slots">
       <div class="drop" id="dz-reg">
         <svg class="dz-ic" viewBox="0 0 40 48" aria-hidden="true" focusable="false"><path d="M4 2h22l10 10v32a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z" fill="#fff" stroke="#0369A1" stroke-width="2"/><path d="M26 2v10h10" fill="none" stroke="#0369A1" stroke-width="2"/><path d="M9 22h20M9 28h20M9 34h13" stroke="#93C5FD" stroke-width="2.4" stroke-linecap="round"/></svg>
@@ -1038,12 +1033,6 @@ input.ocr-warn{border-color:#DC2626!important;box-shadow:0 0 0 3px rgba(220,38,3
       </ol>
       <p>두 서류 모두 한 번 결제에 포함됩니다.</p>
     </div>
-  <!-- 받게 되는 위임장 견본(2026-10-07) — 가상 인물·주소, 「견본」 표시. 신청서는 결제 후라 보여주지 않는다 -->
-  <a class="smp" href="sample_wimi.png" target="_blank" rel="noopener" onclick="try{window.SR&&SR.track('sample_open',{})}catch(e){}">
-    <img src="sample_wimi.png" alt="셀프등기24가 자동완성한 위임장 견본(가상 인물)" loading="lazy" width="720" height="928">
-    <span class="smp-c"><b>받게 되는 위임장 견본</b><span>가상 인물로 채운 견본입니다 · 눌러서 크게 보기</span></span>
-  </a>
-
   <label id="kind-ack-box" style="display:flex;gap:10px;align-items:flex-start;padding:12px 14px;margin:0 0 12px;border:1px solid var(--border);border-radius:10px;background:#F8FAFC;font-size:13.5px;line-height:1.65;cursor:pointer;word-break:keep-all">
     <input type="checkbox" id="kind-ack" style="width:20px;height:20px;margin-top:2px;flex-shrink:0">
     <span>이 부동산은 <b>아파트·오피스텔 등 집합건물</b>입니다. 등기부 표제부에 「1동의 건물의 표시」와 「대지권의 표시」가 있습니다. <span style="color:var(--muted)">토지·단독주택은 서류 양식이 달라 현재 결제를 받지 않습니다.</span></span>
@@ -1143,10 +1132,12 @@ input.ocr-warn{border-color:#DC2626!important;box-shadow:0 0 0 3px rgba(220,38,3
       </div>
       <div class="pv">
         <div class="cp">신청서에 들어갈 내용</div>
+        구조 <span class="v e" id="pvStruct">아직 입력 전</span><br>
         전유면적 <span class="v e" id="pvArea">아직 입력 전</span><br>
         대지권 비율 <span class="v e" id="pvRatio">아직 입력 전</span><br>
         이전할 지분 <span class="v e" id="pvShare">아직 입력 전</span><br>
-        거래가액 <span class="v e" id="pvPrice">아직 입력 전</span>
+        거래가액 <span class="v e" id="pvPrice">아직 입력 전</span><br>
+        부동산 고유번호 <span class="v e" id="pvUid">아직 입력 전</span>
       </div>
 
       <div class="tally">
@@ -1154,6 +1145,14 @@ input.ocr-warn{border-color:#DC2626!important;box-shadow:0 0 0 3px rgba(220,38,3
         <span class="k">아직 비어 있는 항목</span><span class="n2 a" id="tlLeft">0</span>
         <span class="k">비워두어도 되는 항목</span><span class="n2 c" id="tlOpt">0</span>
       </div>
+
+      <p class="pv-leg" id="pv-leg" hidden><i class="lg-oc"></i>사진에서 읽은 값 · 등기부와 대조 <i class="lg-no"></i>읽지 못한 칸 · 직접 입력</p>
+
+      <!-- 받게 되는 위임장 견본(2026-10-07 결제 카드 → 10-10 미리보기 아래로). 가상 인물·주소, 「견본」 표시 -->
+      <a class="pv-smp" href="sample_wimi.png" target="_blank" rel="noopener" onclick="try{window.SR&&SR.track('sample_open',{from:'side'})}catch(e){}">
+        <svg viewBox="0 0 40 48" aria-hidden="true" focusable="false"><path d="M4 2h22l10 10v32a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z" fill="#fff" stroke="#0369A1" stroke-width="2.4"/><path d="M26 2v10h10" fill="none" stroke="#0369A1" stroke-width="2.4"/><path d="M9 22h20M9 28h20M9 34h13" stroke="#93C5FD" stroke-width="2.6" stroke-linecap="round"/></svg>
+        <span><b>결제 후 받는 위임장 견본</b><small>가상 인물로 채운 견본 · 눌러서 크게 보기</small></span>
+      </a>
 
       <div class="side-note">
         입력하신 내용은 <b>이 브라우저 안에서만</b> 처리됩니다. 서버로 전송·저장되지 않습니다.<br>
@@ -2029,9 +2028,23 @@ window.SR=window.SR||(function(){
 /* 우측 미리보기 패널 — 기존 입력값을 읽어 표시만 한다(부작용 없음) */
 (function(){
   function v(id){var e=document.getElementById(id);return e?String(e.value||'').trim():'';}
-  function put(id,val){
+  /* keys = 이 줄의 값이 나오는 입력칸. 판독 상태(window.nfOcr)에 따라
+     사진에서 읽은 값은 주황(.oc), 읽지 못해 아직 비어 있는 필수 칸은 빨간 「읽지 못함」(.miss). */
+  var LB={'jibun-address':'소재지번','floor':'층','ho':'호'};
+  function empty(k){ return k==='total-land' ? !(v('total-land')&&v('unit-land')) : !v(k); }
+  function missOf(keys){ var M=window.nfOcr; if(!M||!keys) return [];
+    return keys.filter(function(k){ return M.miss.indexOf(k)>=0 && empty(k); }); }
+  function fromOcr(keys){ var M=window.nfOcr; if(!M||!M.ocr||!keys) return false;
+    return keys.some(function(k){ var e=document.getElementById(k); return e && e.classList.contains('ocr') && v(k); }); }
+  function esc(t){ return String(t).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+  function put(id,val,keys){
     var e=document.getElementById(id); if(!e) return;
-    if(val){e.textContent=val;e.className='v';} else {e.textContent='아직 입력 전';e.className='v e';}
+    var ms=missOf(keys);
+    if(val){
+      e.innerHTML=esc(val)+(ms.length?'<small class="pv-ms">'+ms.map(function(k){return LB[k]||'';}).join('·')+' 읽지 못함</small>':'');
+      e.className='v'+(fromOcr(keys)?' oc':'');
+    } else if(ms.length){ e.textContent='읽지 못함'; e.className='v miss'; }
+    else {e.textContent='아직 입력 전';e.className='v e';}
   }
   var REQ=['owner-name','owner-address','s-name','s-addr','jibun-address','dong','ho',
            'total-land','unit-land','transfer-denom','transfer-num'];
@@ -2042,13 +2055,17 @@ window.SR=window.SR||(function(){
     var addr=v('jibun-address'), apt=v('apt-name'), dong=v('dong'), ho=v('ho');
     var prop='';
     if(addr){prop=addr+(apt?' '+apt:'')+(dong?' 제'+dong+'동':'')+(ho?' 제'+ho+'호':'');}
-    put('pvProp',prop);
+    put('pvProp',prop,['jibun-address','floor','ho']);
     var y=v('year'),m=v('month'),d=v('day');
     put('pvCause',(y&&m&&d)?(y+'년 '+m+'월 '+d+'일 매매'):'');
-    put('pvSeller', v('s-name') || v('c-name'));
+    put('pvSeller', v('s-name') || v('c-name'), ['s-name']);
     put('pvAgent',  v('owner-name'));
-    put('pvArea',   v('prop-area')?v('prop-area')+'㎡':'');
-    put('pvRatio',  frac('total-land','unit-land'));
+    put('pvStruct', v('prop-struct'), ['prop-struct']);
+    put('pvArea',   v('prop-area')?v('prop-area')+'㎡':'', ['prop-area']);
+    put('pvRatio',  frac('total-land','unit-land'), ['total-land']);
+    put('pvUid',    v('property-uid'), ['property-uid']);
+    var M=window.nfOcr, lg=document.getElementById('pv-leg');
+    if(lg) lg.hidden=!(M && (M.ocr || M.miss.length));
     put('pvShare',  (typeof transferShareText==='function') ? transferShareText() : frac('transfer-denom','transfer-num'));
     var pr=v('deal-price');
     put('pvPrice',  pr?(pr.replace(/[^0-9]/g,'').replace(/\B(?=(\d{3})+(?!\d))/g,',')+'원'):'');
@@ -2060,6 +2077,7 @@ window.SR=window.SR||(function(){
     var a=document.getElementById('tlDone'),b=document.getElementById('tlLeft'),c=document.getElementById('tlOpt');
     if(a)a.textContent=done; if(b)b.textContent=left; if(c)c.textContent=opt;
   }
+  window.nfPvRender=render;
   document.addEventListener('input',render,true);
   document.addEventListener('change',render,true);
   document.addEventListener('click',function(e){ if(e.target.closest&&e.target.closest('.deal-tab-btn')) setTimeout(render,0); },true);
@@ -2396,6 +2414,9 @@ if (window.SRPay && SRPay.setGuard) SRPay.setGuard(function () {
       + '<button type="button" class="sum-pv" onclick="window.nfPv&&nfPv(true)">서류에 들어간 모습 미리보기</button></div>';
     if(low) trk('ocr_low',{key:String(score), mode: res._ocr ? 'ocr' : 'text'});
     if(miss.length) trk('ocr_miss',{key:String(miss.length), mode: res._ocr ? 'ocr' : 'text'});
+    /* 오른쪽 미리보기에 판독 상태를 넘긴다(미니 등기부를 합친 2026-10-10부터 상태 표시는 미리보기 한 곳) */
+    window.nfOcr = { ocr: !!res._ocr, miss: miss.map(function(m){ return m[0]; }) };
+    try{ window.nfPvRender && window.nfPvRender(); }catch(_){}
     box.innerHTML = issues.map(function(x){
       var r = x.r, cls = (x.lv === 'no' || x.lv === 'miss') ? 'no' : 'oc';
       if(x.lv === 'addr'){ r = {id:r.id, label:r.label, v:r.v, note:r.note}; }
