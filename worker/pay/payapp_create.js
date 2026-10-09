@@ -28,6 +28,8 @@ export async function onRequestPost({ request, env }) {
       feedbackurl: origin + '/api/pay/payapp-notify',
       returnurl: origin + '/pay_return.html?pa=1&orderNo=' + orderNo,
       checkretry: 'y',
+      // 문자로 결제 링크를 보내지 않고 휴대폰 번호 입력 뒤 바로 결제창으로(2026-10-10 실결제 테스트: smsuse 'n'만 두면 결제가 멈춤)
+      redirectpay: '1',
       smsuse: 'n',
       skip_cstpage: 'y',
     },
