@@ -441,12 +441,6 @@ html.mnav-open,html.mnav-open body{overflow:hidden}
 .fr{grid-template-columns:112px minmax(0,1fr)}
 input.ocr-warn{border-color:#DC2626!important;box-shadow:0 0 0 3px rgba(220,38,38,.12)}
 /* 출력 후 직접 적을 칸 */
-.blank-n{display:inline-block;margin-left:6px;font-size:12.5px;font-weight:800;color:#B45309;background:var(--ocr-bg);border:1px solid var(--ocr-bd);border-radius:20px;padding:0 9px;line-height:22px;vertical-align:2px}
-.blank-l{list-style:none;margin:0;padding:0;display:grid;gap:6px}
-.blank-l li{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 8px;padding:9px 12px;border:1px solid var(--border);border-radius:8px;background:#F8FAFC;font-size:13.5px}
-.blank-l .bd{flex-shrink:0;font-size:12px;font-weight:700;color:#475569;background:#fff;border:1px solid var(--border);border-radius:5px;padding:0 6px}
-.blank-l b{font-weight:700;color:var(--navy)}
-.blank-l small{flex-basis:100%;font-size:12.5px;color:#B45309}
 
 /* 0번 카드 — 미니 등기부 + 올리기 (2026-10-06) */
 .ocr-stage{display:grid;grid-template-columns:1fr;gap:14px;align-items:stretch;margin-bottom:12px}
@@ -1097,11 +1091,7 @@ input.ocr-warn{border-color:#DC2626!important;box-shadow:0 0 0 3px rgba(220,38,3
   </div>
 </div>
 
-<!-- 출력 후 직접 적을 칸 — 비워 둔 칸을 서류·칸 이름으로 모아 보여준다 (2026-10-06) · 결제 후에만 표시 — 결제 버튼과 멀어지지 않게 -->
-<div class="card" id="blank-card" hidden>
-  <div class="ch"><div class="ci">✎</div><div><div class="ct">출력 후 직접 적을 칸 <span id="blank-n" class="blank-n"></span></div><div class="cs">비워 둔 칸은 서류에 공란으로 나옵니다. 출력한 뒤 아래 칸을 손으로 적어 주세요</div></div></div>
-  <ul class="blank-l" id="blank-l"></ul>
-</div>
+<!-- 출력 후 직접 적을 칸: 2026-10-10 페이지 카드 → 다운로드 직전 경고 팝업(blankgate.js)으로 옮김 -->
 
 
 <!-- ⑧ 로드맵 네비게이션 (다운로드 후 다음 단계) -->
@@ -1180,7 +1170,7 @@ input.ocr-warn{border-color:#DC2626!important;box-shadow:0 0 0 3px rgba(220,38,3
       <a href="terms.html">이용약관</a>
       <a href="privacy.html">개인정보처리방침</a>
     </div>
-    <div class="foot-biz">셀프등기24 · 대표 허민 · 사업자등록번호 164-20-02315 · 주소 서울특별시 중구 동호로 173 · 이메일 <a href="mailto:selfregi999@gmail.com">selfregi999@gmail.com</a> · 전화 070-8019-0609 (부재 시 이메일로 회신 · 문의는 이메일 우선)</div>
+    <div class="foot-biz">셀프등기24 · 대표 허민 · 사업자등록번호 164-20-02315 · 주소 서울특별시 중구 동호로 173 · 문의 <a href="mailto:selfregi999@gmail.com">selfregi999@gmail.com</a> · 전화 070-8019-0609</div>
     <div class="foot-copy">
       © 2026 셀프등기24 · 개인정보를 별도로 저장하지 않으며, 개인정보를 기재하지 않아도 서류 생성이 가능합니다.<br>
       본 서비스는 법률 자문을 제공하지 않으며 등기 신청을 대행하지 않습니다. 최종 확인은 관할 등기소 안내를 따라 주세요.
@@ -1732,6 +1722,7 @@ async function fillTemplate(b64, replacements, beforeSave) {
 async function downloadAll() {
   if (!SRPay.requirePaid()) return;
   if (!validate()) return;
+  if (window.SRBlank && window.nfBlankItems && !(await SRBlank.confirm({ doc: '위임장', items: nfBlankItems() }))) return;
   try{window.SR&&SR.track('doc_download',{doc:'all'});}catch(e){}
   if (typeof JSZip === 'undefined') { showToast('❌ 라이브러리 로딩 중, 잠시 후 다시 시도해주세요', '#DC2626'); return; }
   try {
@@ -1854,6 +1845,7 @@ async function buildWimiFiles(d) {
 async function downloadWimiOnly() {
   if (!SRPay.requirePaid()) return;
   if (!validate()) return;
+  if (window.SRBlank && window.nfBlankItems && !(await SRBlank.confirm({ doc: '위임장', items: nfBlankItems() }))) return;
   try{window.SR&&SR.track('doc_download',{doc:'wimijang'});}catch(e){}
   if (typeof JSZip === 'undefined') { showToast('❌ 라이브러리 로딩 중, 잠시 후 다시 시도해주세요', '#DC2626'); return; }
   try {
@@ -2133,6 +2125,7 @@ window.SR=window.SR||(function(){
 <script src="regfields.js"></script>
 <script src="resume.js"></script>
 <script src="pay.js"></script>
+<script src="blankgate.js"></script>
 <script>
 /* 결제 대상 제한(2026-09-26): 집합건물 매매만. 부동산 종류가 토지면 막고, 그 밖에는 집합건물 확인 체크를 받는다. */
 if (window.SRPay && SRPay.setGuard) SRPay.setGuard(function () {
@@ -2794,7 +2787,7 @@ if (window.SRPay && SRPay.setGuard) SRPay.setGuard(function () {
 })();
 </script>
 <script>
-/* 출력 후 직접 적을 칸 (2026-10-06)
+/* 출력 후 직접 적을 칸 (2026-10-06 · 10-10 팝업으로)
    보이는 입력칸 중 비어 있는 것을 「서류 — 칸 이름」으로 모은다. 매도인 주민등록번호와
    위임장 작성일의 일(day)은 이 화면에서 받지 않으므로 항상 목록에 있다. */
 (function(){
@@ -2823,24 +2816,15 @@ if (window.SRPay && SRPay.setGuard) SRPay.setGuard(function () {
   ];
   function el(id){ return document.getElementById(id); }
   function esc(t){ return String(t).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
-  function render(){
-    var ul = el('blank-l'); if(!ul) return;
+  /* 보이는 입력칸 중 비어 있는 것 + 항상 손으로 적는 칸 → 다운로드 직전 경고 팝업(SRBlank)에 넘긴다 */
+  window.nfBlankItems = function(){
     var items = ALWAYS.slice();
     MAP.forEach(function(m){
       var vis = m[0].map(el).filter(function(x){ return x && x.offsetParent !== null; });
       if(vis.length && vis.some(function(x){ return !String(x.value||'').trim(); })) items.push([m[1], m[2], '']);
     });
-    ul.innerHTML = items.map(function(it){
-      return '<li><span class="bd">'+esc(it[0])+'</span><b>'+esc(it[1])+'</b>'+(it[2]?'<small>'+esc(it[2])+'</small>':'')+'</li>';
-    }).join('');
-    var n = el('blank-n'); if(n) n.textContent = items.length+'개';
-  }
-  document.addEventListener('input', render, true);
-  document.addEventListener('change', render, true);
-  document.addEventListener('click', function(){ setTimeout(render, 0); }, true);
-  function gate(){ var c = el('blank-card'); if(c) c.hidden = !(window.SRPay && SRPay.has()); render(); }
-  window.addEventListener('srpay:change', gate);
-  if(document.readyState !== 'loading') gate(); else document.addEventListener('DOMContentLoaded', gate);
+    return items;
+  };
 })();
 </script>
 <script>

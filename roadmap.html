@@ -165,7 +165,7 @@ main{max-width:var(--read);margin:0 auto;padding:24px 20px 40px;position:relativ
 /* 신청서 미리보기 */
 
 /* ── 푸터 (사업자정보) ── */
-.rm-foot{background:var(--bg);border-top:1px solid var(--border);padding:28px 20px 24px;margin-bottom:96px}
+.rm-foot{background:var(--bg);border-top:1px solid var(--border);padding:28px 20px 24px;margin-bottom:110px}
 .rm-foot-inner{max-width:var(--frame);margin:0 auto}
 .rm-foot-brand{font-size:14px;font-weight:800;color:var(--navy);margin-bottom:8px}
 .rm-foot-links{display:flex;gap:6px 14px;margin-bottom:12px;flex-wrap:wrap}
@@ -174,7 +174,14 @@ main{max-width:var(--read);margin:0 auto;padding:24px 20px 40px;position:relativ
 .rm-foot-biz a{color:#334155}
 .rm-foot-copy{font-size:11px;color:var(--muted);line-height:1.9}
 .floating-bottom{position:fixed;bottom:0;left:0;right:0;padding:16px 20px 20px;background:rgba(255,255,255,.95);backdrop-filter:blur(8px);border-top:1px solid var(--border);box-shadow:0 -4px 16px rgba(0,0,0,.05);z-index:var(--z-bar);text-align:center}
-.fb-inner{max-width:var(--frame);margin:0 auto}
+.fb-inner{max-width:var(--read);margin:0 auto;display:flex;align-items:center;gap:14px}
+.fb-prog{flex:1;min-width:0;text-align:left}
+.fb-pv{flex:none;display:inline-flex;align-items:center;gap:8px;min-height:46px;padding:0 7px 0 14px;border:0;border-radius:10px;background:var(--navy);color:#fff;font-family:inherit;font-size:13.5px;font-weight:700;cursor:pointer;box-shadow:0 6px 18px -8px rgba(15,23,42,.5)}
+.fb-pv b{font-weight:800}.fb-pv .fb-n{font-size:12.5px;color:#CBD5E1;font-weight:500}.fb-pv .fb-n b{color:#FDE68A}
+.fb-pv .fb-go{display:inline-flex;align-items:center;min-height:32px;padding:0 12px;border-radius:7px;background:#fff;color:var(--navy);font-size:13px;font-weight:800}
+.fb-pv.pulse{animation:fbPulse .9s ease-out}@keyframes fbPulse{0%{box-shadow:0 0 0 0 rgba(3,105,161,.7)}100%{box-shadow:0 0 0 14px rgba(3,105,161,0)}}
+html.mnav-open .floating-bottom{display:none}
+@media(max-width:420px){.fb-pv .fb-n{display:none}}
 .progress-text{font-size:13px;font-weight:700;color:var(--navy);margin-bottom:8px;display:flex;justify-content:space-between;align-items:center}
 .progress-text span{font-size:11px;font-weight:600;color:var(--blue);background:#E0F2FE;padding:2px 8px;border-radius:10px}
 .progress-bg{background:var(--border);height:8px;border-radius:4px;overflow:hidden}
@@ -235,7 +242,7 @@ main{max-width:var(--read);margin:0 auto;padding:24px 20px 40px;position:relativ
 .mf-dot.active{background:var(--blue);width:20px;border-radius:4px}
 .mf-count{font-size:12px;color:var(--muted);font-weight:600;min-width:38px;text-align:center}
 
-.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(20px);background:rgba(26,30,46,.9);color:#fff;padding:10px 20px;border-radius:8px;font-size:13px;font-weight:500;transition:all .3s;z-index:var(--z-toast);white-space:nowrap;opacity:0;visibility:hidden;box-shadow:0 4px 12px rgba(0,0,0,.15);max-width:90%;text-align:center}
+.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(20px);background:rgba(26,30,46,.9);color:#fff;padding:10px 20px;border-radius:8px;font-size:13px;font-weight:500;transition:all .3s;z-index:var(--z-toast);white-space:normal;word-break:keep-all;width:max-content;opacity:0;visibility:hidden;box-shadow:0 4px 12px rgba(0,0,0,.15);max-width:90%;text-align:center}
 .toast.show{transform:translateX(-50%) translateY(0);opacity:1;visibility:visible}
 /* ── 트랙 토글 ── */
 
@@ -437,11 +444,19 @@ html.bd-lock{overflow:hidden}
 .st4-map{font-size:13px;font-weight:700;color:var(--blue);background:#E0F2FE;border-radius:6px;padding:6px 10px;text-decoration:none}
 
 /* 신청서 반영 미리보기 — 서류 작성 화면(normal_form)의 「문서 반영 미리보기」와 같은 형식 */
-.rm-pv{background:#fff;border:1px solid var(--border);border-radius:var(--radius);margin-top:14px}
-.rm-pv-h{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:14px 18px;border-bottom:1px solid #F1F5F9}
+/* 2026-10-10: 본문에서 빼서 하단 시트로(서류 작성 화면과 같은 방식). 하단 막대의 「미리보기」로 연다 */
+.rm-pv{position:fixed;left:0;right:0;bottom:0;margin:0 auto;max-width:640px;max-height:82vh;overflow-y:auto;overscroll-behavior:contain;z-index:1002;background:#fff;border:1px solid var(--border);border-bottom:0;border-radius:16px 16px 0 0;box-shadow:0 -10px 30px rgba(15,23,42,.18);transform:translateY(105%);visibility:hidden;transition:transform .28s cubic-bezier(.4,0,.2,1),visibility .28s}
+.rm-pv.open{transform:none;visibility:visible}
+.rm-pv-dim{position:fixed;inset:0;background:rgba(15,23,42,.45);z-index:1001}.rm-pv-dim[hidden]{display:none}
+html.pv-open,html.pv-open body{overflow:hidden}
+.rm-pv-x{flex:none;min-height:36px;padding:0 12px;border:1px solid var(--border);border-radius:8px;background:#fff;font-family:inherit;font-size:13px;font-weight:700;color:var(--navy);cursor:pointer}
+@media(prefers-reduced-motion:reduce){.rm-pv{transition:none}}
+.rm-pv-h{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:18px 18px 14px;border-bottom:1px solid #F1F5F9;position:sticky;top:0;background:#fff;z-index:1}
+.rm-pv-h::before{content:"";position:absolute;left:50%;top:6px;width:36px;height:4px;margin-left:-18px;border-radius:2px;background:#CBD5E1}
+.rm-pv-h h2{margin-right:auto}
 .rm-pv-h h2{font-size:16px;font-weight:800;color:var(--navy)}
 .rm-pv-edit{flex:none;font-size:13px;font-weight:700;color:var(--blue);background:#E0F2FE;border-radius:6px;padding:6px 10px;text-decoration:none}
-.rm-pv-b{padding:14px 18px 16px}
+.rm-pv-b{padding:14px 18px calc(16px + env(safe-area-inset-bottom,0px))}
 .rm-pv .pv{background:#FCFCFB;border:1px solid var(--border);border-radius:9px;padding:12px 14px;font-size:14px;line-height:1.9;word-break:keep-all}
 .rm-pv .pv+.pv{margin-top:9px}
 .rm-pv .pv .cp{font-size:12.5px;font-weight:800;color:var(--muted);margin-bottom:4px}
@@ -453,7 +468,17 @@ html.bd-lock{overflow:hidden}
 .rm-pv .tally .n2.a{color:#B45309}.rm-pv .tally .n2.b{color:#047857}.rm-pv .tally .n2.c{color:var(--muted)}
 .rm-pv-note{font-size:12.5px;color:var(--muted);line-height:1.7;margin-top:12px;padding-top:12px;border-top:1px solid #F1F5F9;word-break:keep-all}
 .ap-link{font-size:14px;line-height:1.6;margin:0 0 12px;padding:10px 12px;background:#F8FAFC;border:1px solid var(--border);border-radius:8px}
-.ap-link a{color:var(--blue);font-weight:700}
+.ap-link a,.ap-link button{color:var(--blue);font-weight:700}
+.ap-link button{background:none;border:0;padding:0;font:inherit;text-decoration:underline;cursor:pointer}
+/* 신청서 다운로드(2026-10-10): 서류 작성 화면의 위임장 다운로드와 같은 크기 · 대조 확인 체크 전까지 잠금 */
+.dl-gate{display:flex;align-items:flex-start;gap:10px;background:#FFFBEB;border:1px solid #FDE68A;border-radius:12px;padding:14px 16px;margin:14px 0 12px;cursor:pointer;font-size:14px;line-height:1.6;color:#92400E;word-break:keep-all}
+.action-item .dl-gate input[type=checkbox]{flex:none;width:20px;height:20px;margin-top:2px;accent-color:#92400E}
+@media(max-width:560px){.action-item .dl-gate input[type=checkbox]{width:24px;height:24px}.dl-wrap{margin-left:-34px}}
+.dl-big{width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-height:64px;padding:16px 20px;border:0;border-radius:10px;background:var(--navy);color:#fff;font-family:inherit;cursor:pointer;transition:transform .15s,box-shadow .15s}
+.dl-big:not(:disabled):hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,.12)}
+.dl-big:disabled{opacity:.45;cursor:not-allowed}
+.dl-big .dn{font-size:15px;font-weight:800}.dl-big .ds{font-size:12.5px;opacity:.85}
+.dl-sub{margin-top:10px}
 .nav-logo{display:inline-flex;align-items:center;gap:7px}.nav-mark{width:22px;height:22px;flex:none}.nav-logo b{color:#0369A1;font-weight:inherit}.nav-wm{font-weight:inherit}
 /* 상단 메뉴 — index.html 규칙 복사 (2026-10-04) */
 nav{background:rgba(248,250,252,.86);backdrop-filter:saturate(140%) blur(8px);-webkit-backdrop-filter:saturate(140%) blur(8px);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:var(--z-nav)}
@@ -649,19 +674,6 @@ body>footer{margin-bottom:96px}
       <p class="geo-foot">자동 안내가 실제와 다르면 <a href="전국등기소정보.pdf" target="_blank" rel="noopener" download>전국 등기소 정보 PDF</a>나 <a href="https://www.iros.go.kr" target="_blank" rel="noopener">인터넷등기소</a>에서 확인해 주세요. 최종 관할은 관할 등기소 안내를 따릅니다.</p>
     </section>
 
-    <section class="rm-pv" id="rm-pv" aria-labelledby="rm-pv-h">
-      <div class="rm-pv-h"><h2 id="rm-pv-h">신청서 반영 미리보기</h2><a class="rm-pv-edit" href="normal_form.html">입력 내용 고치기</a></div>
-      <div class="rm-pv-b">
-        <div id="ap-warn"></div>
-        <div id="ap-body"></div>
-        <div class="tally">
-          <span class="k">입력을 마친 항목</span><span class="n2 b" id="pvDone">0</span>
-          <span class="k">아직 비어 있는 항목</span><span class="n2 a" id="pvLeft">0</span>
-          <span class="k">비워두어도 되는 항목</span><span class="n2 c" id="pvOpt">0</span>
-        </div>
-        <p class="rm-pv-note">비어 있는 칸은 신청서에 공란으로 인쇄됩니다. 해당 단계에서 저장하거나 인쇄한 뒤 직접 적어 주세요.<br>주민등록번호는 화면에 표시하지 않습니다. 최종 확인은 관할 등기소 안내를 따라 주세요.</p>
-      </div>
-    </section>
   </div>
 </div>
 
@@ -865,16 +877,27 @@ body>footer{margin-bottom:96px}
           <div class="sc-meta"><span class="sc-count" data-count>0 / 0</span><span class="sc-toggle">펼치기</span></div>
         </div>
         <div class="sc-body" id="st-3-body">
-          <p class="ap-link" id="ap-link">신청서에 들어갈 값은 위 <a href="#rm-pv">신청서 반영 미리보기</a>에서 확인할 수 있습니다.</p>
+          <p class="ap-link" id="ap-link">신청서에 들어갈 값은 <button type="button" onclick="rmPv(true)">신청서 반영 미리보기</button>에서 확인할 수 있습니다.</p>
           <div class="action-list">
             <div class="action-item" id="item3_2">
               <input type="checkbox" id="chk3_2" onchange="updateProgress('item3_2')">
               <div class="action-text">
                 <label for="chk3_2">소유권이전등기신청서 내려받기</label>
-                <div class="action-desc">위에서 저장한 번호로 신청서를 자동완성합니다. 부동산 표시·등기필정보 등 일부 칸은 공란으로 남아 있으니 등기소 방문 전 확인 후 직접 기재해 주세요.</div>
-                <div class="btn-row">
+                <div class="action-desc">2단계에서 저장한 번호로 신청서를 자동완성합니다. 비어 있는 칸은 내려받을 때 목록으로 알려 드리니, 출력한 뒤 손으로 적어 주세요.</div>
+                <div class="dl-wrap">
+                <label class="dl-gate" for="sin-confirm">
+                  <input type="checkbox" id="sin-confirm">
+                  <span><b>가지고 계신 원본 서류와 신청서 반영 미리보기의 내용을 대조해, 다른 곳이 없음을 확인했습니다.</b><br>
+                    부동산 표시·성명·주소는 등기부·초본과, 세액·채권·납부번호는 납부 영수증과 한 번 더 대조해 주세요.</span>
+                </label>
+                <button type="button" class="dl-big" id="dl-sin" onclick="downloadSinchungseo()" disabled title="위 확인란에 체크하시면 내려받을 수 있습니다.">
+                  <span class="dn">신청서 Word 파일 다운로드</span>
+                  <span class="ds">소유권이전등기신청서.docx</span>
+                </button>
+                <div class="btn-row dl-sub">
+                  <button class="btn-preview" onclick="rmPv(true)">신청서 반영 미리보기</button>
                   <button class="btn-preview" onclick="openGuide('app')">신청서 종합 작성 가이드</button>
-                  <button class="btn-preview" onclick="downloadSinchungseo()" style="background:var(--navy);color:#fff;border-color:var(--navy)">신청서 Word 파일 다운로드</button>
+                </div>
                 </div>
                 <div class="rm-resume">
                   <div class="rs-t">다른 기기에서 작성하셨나요?</div>
@@ -985,7 +1008,7 @@ body>footer{margin-bottom:96px}
       <a href="terms.html">이용약관</a>
       <a href="privacy.html">개인정보처리방침</a>
     </div>
-    <div class="foot-biz">셀프등기24 · 대표 허민 · 사업자등록번호 164-20-02315 · 주소 서울특별시 중구 동호로 173 · 이메일 <a href="mailto:selfregi999@gmail.com">selfregi999@gmail.com</a> · 전화 070-8019-0609 (부재 시 이메일로 회신 · 문의는 이메일 우선)</div>
+    <div class="foot-biz">셀프등기24 · 대표 허민 · 사업자등록번호 164-20-02315 · 주소 서울특별시 중구 동호로 173 · 문의 <a href="mailto:selfregi999@gmail.com">selfregi999@gmail.com</a> · 전화 070-8019-0609</div>
     <div class="foot-copy">
       © 2026 셀프등기24 · 개인정보를 별도로 저장하지 않으며, 개인정보를 기재하지 않아도 서류 생성이 가능합니다.<br>
       본 서비스는 법률 자문을 제공하지 않으며 등기 신청을 대행하지 않습니다. 최종 확인은 관할 등기소 안내를 따라 주세요.
@@ -995,8 +1018,11 @@ body>footer{margin-bottom:96px}
 
 <div class="floating-bottom">
   <div class="fb-inner">
-    <div class="progress-text">진행률 <span id="progressText">0 / 11 완료</span></div>
-    <div class="progress-bg"><div id="progressBar" class="progress-bar"></div></div>
+    <div class="fb-prog">
+      <div class="progress-text">진행률 <span id="progressText">0 / 11 완료</span></div>
+      <div class="progress-bg"><div id="progressBar" class="progress-bar"></div></div>
+    </div>
+    <button type="button" class="fb-pv" id="fb-pv" aria-controls="rm-pv" aria-expanded="false" onclick="rmPv(true)"><b>신청서 미리보기</b><span class="fb-n">남은 칸 <b id="fbLeft">0</b></span><span class="fb-go">보기</span></button>
   </div>
 </div>
 
@@ -1028,6 +1054,20 @@ body>footer{margin-bottom:96px}
   <div class="zoom-stage" id="zoomStage"><img id="zoomImg" src="" alt="가이드 확대 이미지"></div>
 </div>
 
+<div class="rm-pv-dim" id="rm-pv-dim" hidden></div>
+<aside class="rm-pv" id="rm-pv" aria-labelledby="rm-pv-h">
+  <div class="rm-pv-h"><h2 id="rm-pv-h">신청서 반영 미리보기</h2><a class="rm-pv-edit" href="normal_form.html">입력 내용 고치기</a><button type="button" class="rm-pv-x" id="rm-pv-x" aria-label="미리보기 닫기">닫기</button></div>
+  <div class="rm-pv-b">
+    <div id="ap-warn"></div>
+    <div id="ap-body"></div>
+    <div class="tally">
+      <span class="k">입력을 마친 항목</span><span class="n2 b" id="pvDone">0</span>
+      <span class="k">아직 비어 있는 항목</span><span class="n2 a" id="pvLeft">0</span>
+      <span class="k">비워두어도 되는 항목</span><span class="n2 c" id="pvOpt">0</span>
+    </div>
+    <p class="rm-pv-note">비어 있는 칸은 신청서에 공란으로 인쇄됩니다. 해당 단계에서 저장하거나 인쇄한 뒤 직접 적어 주세요.<br>주민등록번호는 화면에 표시하지 않습니다. 최종 확인은 관할 등기소 안내를 따라 주세요.</p>
+  </div>
+</aside>
 <div class="toast" id="toast"></div>
 
 <script>
@@ -1093,11 +1133,17 @@ function fmtWon(v){
   return n ? n.toLocaleString('ko-KR') : '';
 }
 
+/* 이 기기에 서류 작성 화면의 값이 하나라도 있는가. 매수인 이름만 비운 경우(실명을 넣기 싫은 이용자)는 막지 않는다 — 빈칸은 경고 팝업으로 알린다 */
+function rmHasForm(f){
+  const named = a => Array.isArray(a) && a.some(p => p && String(p.name || '').trim());
+  return !!(f && (f.buyerName || f.sellerName || f.jibun || f.aptName || named(f.buyers) || named(f.sellers)));
+}
+const RM_NOFORM = '이 기기에 작성한 내용이 없습니다. 서류 작성 화면에서 이어서 오거나, 받아 둔 위임장 파일을 「위임장 파일로 이어서 하기」에 올려 주세요.';
+
 async function downloadSinchungseo(){
   if (window.SRPay && !SRPay.requirePaid()) return;
   if (typeof JSZip === 'undefined') { showToast('라이브러리 로딩 중, 잠시 후 다시 시도해주세요', '#DC2626'); return; }
   if (SINCHUNGSEO_B64 === 'PLACEHOLDER') { showToast('신청서 템플릿이 아직 등록되지 않았습니다', '#0369A1'); return; }
-  try{window.SR&&SR.track('doc_download',{doc:'sinchungseo'});}catch(e){}
     syncClearFormBtn();
 
   let f = {};
@@ -1106,10 +1152,11 @@ async function downloadSinchungseo(){
     if (raw) f = JSON.parse(raw);
   } catch(e) { /* 파싱 실패 시 빈 값으로 진행 */ }
 
-  if (!f.buyerName) {
-    showToast('이 기기에 당사자 정보가 없습니다. 서류 작성 화면에서 「신청서 작성 화면으로 이동」을 누르거나, 받아 둔 위임장 파일을 바로 아래 「위임장 파일로 이어서 하기」에 올려 주세요.');
-    return;
-  }
+  if (!rmHasForm(f)) { showToast(RM_NOFORM); return; }
+  const cb = document.getElementById('sin-confirm');
+  if (cb && !cb.checked) { showToast('원본 서류와 대조했는지 확인란에 먼저 체크해 주세요.'); cb.focus(); return; }
+  if (window.SRBlank && !(await SRBlank.confirm({ doc: '신청서', items: rmBlankItems() }))) return;
+  try{window.SR&&SR.track('doc_download',{doc:'sinchungseo'});}catch(e){}
 
   try {
     // 공동명의: 시가표준액·채권은 인원별 값이므로 1행/2행으로 나눠 채우고, 총액은 합계로 넣는다.
@@ -1389,10 +1436,7 @@ async function downloadMaemaeMokrok(){
   if (typeof JSZip === 'undefined') { showToast('라이브러리 로딩 중, 잠시 후 다시 시도해주세요', '#DC2626'); return; }
   let f = {};
   try { f = JSON.parse(localStorage.getItem('selfregi_form_v1') || '{}') || {}; } catch(e) {}
-  if (!f.buyerName) {
-    showToast('이 기기에 당사자 정보가 없습니다. 서류 작성 화면을 거치거나, 받아 둔 위임장 파일을 「위임장 파일로 이어서 하기」에 올려 주세요.');
-    return;
-  }
+  if (!rmHasForm(f)) { showToast(RM_NOFORM); return; }
   const sellersN = (f.sellerJoint && Array.isArray(f.sellers)) ? f.sellers.filter(s=>s&&s.name).length : 1;
   const buyersN  = (f.buyerJoint  && Array.isArray(f.buyers))  ? f.buyers.filter(b=>b&&b.name).length  : 1;
   if (!(sellersN > 1 && buyersN > 1)) {
@@ -1970,12 +2014,12 @@ function renderPreview(){
   const host = document.getElementById('ap-body'); if(!host) return;
   let f = {};
   try{ f = JSON.parse(localStorage.getItem('selfregi_form_v1') || '{}') || {}; }catch(e){}
-  const hasForm = !!f.buyerName || (Array.isArray(f.buyers) && f.buyers.some(b => b && b.name));
+  const hasForm = rmHasForm(f);
   const arr = k => Array.isArray(RELAY[k]) ? RELAY[k] : [RELAY[k] || ''];
   const joinv = a => a.filter(v => String(v || '').trim()).join(' / ');
   const won = v => { const n = relayNum(v); return n ? n.toLocaleString('ko-KR') + '원' : ''; };
-  const buyers = (f.buyerJoint && Array.isArray(f.buyers) && f.buyers.length > 1) ? f.buyers.slice(0, 2) : [{ name: f.buyerName, rrn: f.buyerRrn, shareDenom: '', shareNum: '' }];
-  const sellers = (f.sellerJoint && Array.isArray(f.sellers) && f.sellers.length > 1) ? f.sellers.slice(0, 2) : [{ name: f.sellerName }];
+  const buyers = (f.buyerJoint && Array.isArray(f.buyers) && f.buyers.length > 1) ? f.buyers.slice(0, 2) : [{ name: f.buyerName, addr: f.buyerAddr, rrn: f.buyerRrn, shareDenom: '', shareNum: '' }];
+  const sellers = (f.sellerJoint && Array.isArray(f.sellers) && f.sellers.length > 1) ? f.sellers.slice(0, 2) : [{ name: f.sellerName, addr: f.sellerAddr }];
   const share = p => (p && p.shareDenom && p.shareNum) ? ` (${p.shareDenom}분의 ${p.shareNum})` : '';
   let bldg = f.jibun || ''; if(bldg && f.aptName) bldg += ' ' + f.aptName; if(bldg && f.dong) bldg += ' 제' + f.dong + '동';
   let excl = ''; if(f.floor) excl += '제' + f.floor + '층 '; if(f.ho) excl += '제' + f.ho + '호';
@@ -1992,7 +2036,9 @@ function renderPreview(){
     ]],
     ['당사자', [
       ['등기의무자(매도인)', joinv(sellers.map(p => (p && p.name || '') + (p && p.name ? share(p) : ''))), FORM],
+      ['등기의무자(매도인) 주소', joinv(sellers.map(p => p && p.addr)), FORM],
       ['등기권리자(매수인)', joinv(buyers.map(p => (p && p.name || '') + (p && p.name ? share(p) : ''))), FORM],
+      ['등기권리자(매수인) 주소', joinv(buyers.map(p => p && p.addr)), FORM],
       ['매수인 주민등록번호', hasForm ? (rrnOk ? '입력됨 (화면에는 표시하지 않음)' : '') : '', FORM],
     ]],
     ['등기원인', [
@@ -2016,21 +2062,56 @@ function renderPreview(){
   const OPT = { '농어촌특별세':1, '매수인 주민등록번호':1 };
   const HOW = { form:'서류 작성 화면', st2:'2단계에서 저장', court:'관할 정보에서 선택' };
   let done = 0, left = 0, opt = 0, html = '';
+  const blanks = RM_ALWAYS_BLANK.slice();
   G.forEach(([gt, rows]) => {
     html += `<div class="pv"><div class="cp">${gt}</div>`;
     html += rows.map(([k, v, src]) => {
       if(v){ done++; return `${k} <span class="v">${esc(v)}</span>`; }
-      if(OPT[k]){ opt++; return `${k} <span class="v e">비워도 됨</span>`; }
-      left++; return `${k} <span class="v e">아직 입력 전 · ${HOW[src]}</span>`;
+      if(OPT[k]){ opt++; if(k === '매수인 주민등록번호') blanks.push(['신청서', '등기권리자(매수인) 주민등록번호', '출력한 뒤 직접 적습니다']); return `${k} <span class="v e">비워도 됨</span>`; }
+      left++; blanks.push(['신청서', /\)$/.test(k) ? k + ' 성명' : k, src === FORM ? '' : '「' + HOW[src] + '」하면 자동으로 들어갑니다']); return `${k} <span class="v e">아직 입력 전 · ${HOW[src]}</span>`;
     }).join('<br>');
     html += '</div>';
   });
   host.innerHTML = html;
   const w = document.getElementById('ap-warn');
-  if(w) w.innerHTML = hasForm ? '' : '<div class="ap-warn"><b>이 기기에 서류 작성 화면의 입력값이 없습니다.</b> <a href="normal_form.html">서류 작성 화면</a>에서 입력하거나, 3단계의 「위임장 파일로 이어서 하기」로 불러오세요.</div>';
+  if(w) w.innerHTML = hasForm ? '' : '<div class="ap-warn"><b>이 기기에 작성한 내용이 없습니다.</b> <a href="normal_form.html">서류 작성 화면</a>에서 이어서 오거나, 3단계의 「위임장 파일로 이어서 하기」로 불러오세요.</div>';
   const set = (id, n) => { const el = document.getElementById(id); if(el) el.textContent = n; };
   set('pvDone', done); set('pvLeft', left); set('pvOpt', opt);
+  _rmBlanks = blanks;
+  const fb = document.getElementById('fb-pv'), fl = document.getElementById('fbLeft'), prev = fl ? +fl.textContent : 0;
+  set('fbLeft', left);
+  if(fb && left < prev){ fb.classList.remove('pulse'); void fb.offsetWidth; fb.classList.add('pulse'); }
 }
+/* 신청서에 항상 손으로 적는 칸 — 템플릿에 자리가 없거나(매도인 주민등록번호) 잔금일에야 받는 값(등기필정보) */
+const RM_ALWAYS_BLANK = [
+  ['신청서', '등기의무자(매도인) 주민등록번호', '잔금일에 매도인 서류를 보고 직접 적습니다'],
+  ['신청서', '등기의무자의 등기필정보 — 일련번호·비밀번호', '잔금일에 받은 등기필정보를 보고 적습니다. 예전 등기필증이면 비우고 원본을 제출합니다']
+];
+let _rmBlanks = null;
+function rmBlankItems(){ renderPreview(); return _rmBlanks || RM_ALWAYS_BLANK.slice(); }
+
+/* 신청서 미리보기 시트 열고 닫기 */
+function rmPv(on){
+  const sh = document.getElementById('rm-pv'), dim = document.getElementById('rm-pv-dim'), bar = document.getElementById('fb-pv');
+  if(!sh) return;
+  if(on === undefined) on = !sh.classList.contains('open');
+  if(on) renderPreview();
+  sh.classList.toggle('open', on); dim.hidden = !on; if(bar) bar.setAttribute('aria-expanded', String(on));
+  document.documentElement.classList.toggle('pv-open', on);
+  if(on){
+    sh.setAttribute('role', 'dialog'); sh.setAttribute('aria-modal', 'true');
+    try{ document.getElementById('rm-pv-x').focus({ preventScroll: true }); }catch(e){}
+    try{ window.SR && SR.track('pv_sheet', { from: 'roadmap' }); }catch(e){}
+  } else { sh.removeAttribute('role'); sh.removeAttribute('aria-modal'); }
+}
+(function(){
+  const x = document.getElementById('rm-pv-x'), dim = document.getElementById('rm-pv-dim'), bar = document.getElementById('fb-pv');
+  if(x) x.addEventListener('click', () => { rmPv(false); if(bar) bar.focus(); });
+  if(dim) dim.addEventListener('click', () => rmPv(false));
+  document.addEventListener('keydown', e => { const sh = document.getElementById('rm-pv'); if(e.key === 'Escape' && sh && sh.classList.contains('open')){ rmPv(false); if(bar) bar.focus(); } });
+  const cb = document.getElementById('sin-confirm'), btn = document.getElementById('dl-sin');
+  if(cb && btn) cb.addEventListener('change', () => { btn.disabled = !cb.checked; btn.title = cb.checked ? '' : '위 확인란에 체크하시면 내려받을 수 있습니다.'; });
+})();
 
 function calcStamp(){
   const price = parseFloat(document.getElementById('in-price').value);
@@ -2463,7 +2544,7 @@ function checkDeparture(itemId){
 const CHECK_KEY = 'selfregi_rm_checks_v1', CHECK_TTL = 60*24*3600*1000;
 function saveChecks(){
   try{
-    const ids = [...document.querySelectorAll('.action-item input[type=checkbox]:checked')].map(el => el.id);
+    const ids = [...document.querySelectorAll('.action-item > input[type=checkbox]:checked')].map(el => el.id);
     localStorage.setItem(CHECK_KEY, JSON.stringify({ ids: ids, ts: Date.now() }));
   }catch(e){}
 }
@@ -2479,7 +2560,7 @@ function restoreChecks(){
 }
 function updateProgress(itemId){
   const item=document.getElementById(itemId);
-  const chk=item.querySelector('input[type=checkbox]');
+  const chk=item.querySelector(':scope > input[type=checkbox]');
   item.classList.toggle('checked', chk.checked);
   saveChecks();
   recountProgress();
@@ -2492,7 +2573,7 @@ function updateProgress(itemId){
 }
 
 function visibleCheckboxes(){
-  return [...document.querySelectorAll('.action-item input[type=checkbox]')]
+  return [...document.querySelectorAll('.action-item > input[type=checkbox]')] /* 진행 체크만 — 다운로드 대조 확인(#sin-confirm)은 제외 */
     .filter(el=>el.closest('[data-track]') ? el.closest('[data-track]').style.display!=='none' : true);
 }
 function recountProgress(){
@@ -2503,8 +2584,8 @@ function recountProgress(){
   document.getElementById('progressBar').style.width=`${total?(checked/total)*100:0}%`;
   document.querySelectorAll('.step').forEach(step=>{
     if(step.style.display==='none') return;
-    const boxes=step.querySelectorAll('input[type=checkbox]');
-    const cb=step.querySelectorAll('input[type=checkbox]:checked');
+    const boxes=step.querySelectorAll('.action-item > input[type=checkbox]');
+    const cb=step.querySelectorAll('.action-item > input[type=checkbox]:checked');
     step.classList.toggle('done', boxes.length>0 && boxes.length===cb.length);
     const cnt=step.querySelector('[data-count]');
     if(cnt) cnt.textContent=`${cb.length} / ${boxes.length}`;
@@ -2773,6 +2854,7 @@ window.SR=window.SR||(function(){
 <script src="resume.js"></script>
 <script src="pay.js"></script>
 <script src="review.js"></script>
+<script src="blankgate.js"></script>
 <script src="rm_extras.js"></script>
 <script>
 /* 상단 메뉴 드롭다운(「셀프등기 가이드」·「부동산 계산기」): 클릭(모든 기기) + 마우스 올림(데스크톱).
