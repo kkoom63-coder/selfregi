@@ -166,6 +166,47 @@ header{background:var(--bg)}
 .hd-re[hidden]{display:none}
 .hd-re:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
 @media(max-width:700px){.hd,.hd-re{display:none!important}}
+/* 모바일 시연(≤700px, 10/9): 서류 작성 화면 세로 캡처 3장 — 대기(m)·판독 완료(m2)·미리보기 시트(m3, 화면 상단 20%부터).
+   좌표는 캡처 370×520 기준 %(Playwright로 실측). 캡처를 바꾸면 좌표도 다시 잰다. 값은 견본이다. */
+.hdm,.hdm-hit,.hdm-ctl{display:none}
+@media(max-width:700px){
+  .hdm{display:block;position:absolute;inset:0;pointer-events:none;overflow:hidden}
+  .ha-frame .hdm img{position:absolute;left:0;width:100%;aspect-ratio:auto}
+  .hdm-b{top:0;height:100%;opacity:0;transition:opacity .35s}
+  .hdm-dz{position:absolute;left:6.8%;top:23.2%;width:86.5%;height:50.8%;border:2px solid #0369A1;border-radius:10px;background:rgba(3,105,161,.08);opacity:0;transition:opacity .25s}
+  .hdm-file{position:absolute;left:50%;top:106%;transform:translate(-50%,-50%);transition:top 1s cubic-bezier(.4,0,.2,1),opacity .3s,transform .3s}
+  .hdm-doc{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #CBD5E1;border-radius:8px;padding:7px 10px;font-size:12px;font-weight:700;color:#0F172A;white-space:nowrap;box-shadow:0 6px 16px rgba(15,23,42,.18)}
+  .hdm-doc i{font-style:normal;font-size:11px;font-weight:800;color:#fff;background:#DC2626;border-radius:4px;padding:1px 5px}
+  .hdm-st{position:absolute;left:50%;top:45%;transform:translate(-50%,-50%);background:#0F172A;color:#fff;font-size:12.5px;font-weight:700;padding:6px 14px;border-radius:16px;white-space:nowrap;opacity:0;transition:opacity .25s}
+  .hdm-pr{position:absolute;left:10.8%;top:68.1%;width:78.4%;height:5px;background:#E2E8F0;border-radius:3px;overflow:hidden;opacity:0}
+  .hdm-pr i{display:block;height:100%;width:0;background:#0369A1;transition:width 1.3s linear}
+  .hdm-tap{position:absolute;left:88.1%;top:93%;width:44px;height:44px;margin:-22px 0 0 -22px;border-radius:50%;background:rgba(255,255,255,.6);opacity:0}
+  .hdm-dim{position:absolute;inset:0;background:rgba(15,23,42,.45);opacity:0;transition:opacity .3s}
+  .hdm-sh{top:20%;height:80%;transform:translateY(100%);transition:transform .45s cubic-bezier(.2,.8,.2,1)}
+  .hdm.go .hdm-file{top:48%}
+  .hdm.over .hdm-dz{opacity:1}
+  .hdm.drop .hdm-file{opacity:0;transform:translate(-50%,-50%) scale(.6)}
+  .hdm.read .hdm-st,.hdm.read .hdm-pr{opacity:1}
+  .hdm.read .hdm-pr i{width:100%}
+  .hdm.done .hdm-b{opacity:1}
+  .hdm.done .hdm-st{opacity:0}
+  .hdm.tap .hdm-tap{animation:hdmTap .6s ease-out}
+  @keyframes hdmTap{0%{opacity:.9;transform:scale(.3)}100%{opacity:0;transform:scale(1.6)}}
+  .hdm.sheet .hdm-dim{opacity:1}
+  .hdm.sheet .hdm-sh{transform:none}
+  /* 캡처 속 「보기」 막대·「닫기」 자리에 실제 버튼을 겹친다 — 눌러서 시트를 직접 열고 닫는다 */
+  .hdm-hit{display:block;position:absolute;z-index:2;background:transparent;border:0;padding:0;cursor:pointer;-webkit-tap-highlight-color:transparent;border-radius:12px}
+  .hdm-hit[hidden]{display:none}
+  .hdm-hit:focus-visible{outline:2px solid #7DD3FC;outline-offset:-2px}
+  .hdm-see{left:2.7%;top:88.1%;width:94.6%;height:10%}
+  .hdm-x{left:81.4%;top:23.1%;width:13.5%;height:6.9%}
+  .hdm-ctl{display:flex;gap:6px;position:absolute;right:8px;top:6px;z-index:3;align-items:center}
+  .hdm-tag{font-size:11px;font-weight:700;color:#475569;background:rgba(241,245,249,.94);border:1px solid #CBD5E1;border-radius:10px;padding:2px 8px}
+  .hdm-re{font-family:inherit;font-size:12px;font-weight:700;color:#0F172A;background:#fff;border:1px solid #CBD5E1;border-radius:14px;padding:0 12px;min-height:28px;cursor:pointer;box-shadow:0 2px 6px rgba(15,23,42,.12)}
+  .hdm-re[hidden]{display:none}
+  .hdm-re:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+}
+@media(prefers-reduced-motion:reduce){.hdm *{transition:none!important;animation:none!important}}
 
 
 /* ── 신뢰 지표 배너 ── */
@@ -724,7 +765,7 @@ html.mnav-open,html.mnav-open body{overflow:hidden}
     </div>
     <!-- 실제 작성 화면 — 10/9 히어로에서 이 자리로 옮겼다(설명 없이 뜬금없이 보인다는 사용자 피드백).
          비교 칼럼의 「셀프등기24로 작성할 때」를 실제 화면으로 이어서 보여준다. -->
-    <div class="ha-head"><div class="ha-label">실제 작성 화면</div><p class="ha-lead">등기부 PDF를 올리면 오른쪽 미리보기에 읽은 값이 채워집니다.</p></div>
+    <div class="ha-head"><div class="ha-label">실제 작성 화면</div><p class="ha-lead">등기부 PDF를 올리면 미리보기에 읽은 값이 채워집니다.</p></div>
     <div class="hero-app">
       <div class="ha-tabs" role="tablist" aria-label="등기 종류">
         <button type="button" class="ha-tab" role="tab" id="hatab-transfer" aria-selected="true" aria-controls="hapanel-transfer">소유권이전등기</button>
@@ -755,6 +796,20 @@ html.mnav-open,html.mnav-open body{overflow:hidden}
             <span class="hd-tag">시연 · 견본 값</span>
           </div>
           <button type="button" class="hd-re" hidden>다시 보기</button>
+          <!-- 모바일 시연 레이어: PDF가 올라감 → 판독 → 하단 「문서 반영 미리보기」 막대 → 시트. 값은 견본이다. -->
+          <div class="hdm" aria-hidden="true">
+            <img class="hdm-b" src="hero_app_transfer_m2@1x.webp" srcset="hero_app_transfer_m2@1x.webp 370w, hero_app_transfer_m2.webp 740w" sizes="calc(100vw - 40px)" width="370" height="520" alt="" loading="lazy" decoding="async">
+            <div class="hdm-dz"></div>
+            <div class="hdm-file"><span class="hdm-doc"><i>PDF</i>등기사항전부증명서.pdf</span></div>
+            <div class="hdm-st">등기부를 읽는 중…</div>
+            <div class="hdm-pr"><i></i></div>
+            <span class="hdm-tap"></span>
+            <div class="hdm-dim"></div>
+            <img class="hdm-sh" src="hero_app_transfer_m3@1x.webp" srcset="hero_app_transfer_m3@1x.webp 370w, hero_app_transfer_m3.webp 740w" sizes="calc(100vw - 40px)" width="370" height="416" alt="" loading="lazy" decoding="async">
+          </div>
+          <button type="button" class="hdm-hit hdm-see" aria-label="문서 반영 미리보기 열기(견본)"></button>
+          <button type="button" class="hdm-hit hdm-x" aria-label="미리보기 닫기" hidden></button>
+          <div class="hdm-ctl"><span class="hdm-tag">시연 · 견본 값</span><button type="button" class="hdm-re" hidden>다시 보기</button></div>
         </div>
         <div class="ha-panel" role="tabpanel" id="hapanel-cancel" aria-labelledby="hatab-cancel" hidden>
           <!-- 700px 아래에서는 세로 화면으로 바꾼다 — 가로 캡처를 335px 로 줄이면 글자가 읽히지 않는다(R2-A04와 같은 결함). -->
@@ -1422,6 +1477,38 @@ function trackProof(){ try{ window.SR&&SR.track('guide_open',{from:'proof'}); }c
     es.forEach(function(e){ if(e.isIntersecting&&!played){ played=true; play(); io.disconnect(); } });
   },{threshold:.55});
   io.observe(hd);
+})();
+/* ===== 모바일 시연 (10/9) — 700px 이하에서만 =====
+   올리기 → 판독 → 「보기」 누름 → 미리보기 시트. 끝나면 이용자가 막대·「닫기」를 직접 눌러 열고 닫는다. */
+(function(){
+  var m=document.querySelector('.hdm'), see=document.querySelector('.hdm-see'), x=document.querySelector('.hdm-x'), re=document.querySelector('.hdm-re');
+  if(!m||!see||!x||!re||!window.matchMedia) return;
+  var mq=matchMedia('(max-width:700px)'), reduce=matchMedia('(prefers-reduced-motion: reduce)').matches, timers=[], played=false;
+  function at(ms,fn){ timers.push(setTimeout(fn,ms)); }
+  function sheet(on){ m.classList.toggle('sheet',on); see.hidden=on; x.hidden=!on; }
+  function done(){ timers.forEach(clearTimeout); timers=[]; m.className='hdm done'; sheet(false); re.hidden=false; }
+  function play(){
+    timers.forEach(clearTimeout); timers=[]; m.className='hdm'; sheet(false); re.hidden=true;
+    if(reduce){ done(); return; }
+    at(200,function(){ m.classList.add('go'); });
+    at(1150,function(){ m.classList.add('over'); });
+    at(1450,function(){ m.classList.remove('over'); m.classList.add('drop','read'); });
+    at(3000,function(){ m.classList.add('done'); });
+    at(3900,function(){ m.classList.add('tap'); });
+    at(4200,function(){ sheet(true); re.hidden=false; });
+  }
+  function trk(n,p){ try{ window.SR&&SR.track(n,p||{}); }catch(e){} }
+  see.addEventListener('click',function(){ if(!m.classList.contains('done')) done(); sheet(true); trk('demo_sheet'); });
+  x.addEventListener('click',function(){ sheet(false); see.focus(); });
+  re.addEventListener('click',function(){ play(); trk('demo_replay',{mode:'m'}); });
+  var tab=document.getElementById('hatab-transfer');
+  if(tab) tab.addEventListener('click',function(){ if(played&&mq.matches) play(); });
+  if(!mq.matches) return;
+  if(!('IntersectionObserver' in window)){ done(); played=true; return; }
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(e){ if(e.isIntersecting&&!played){ played=true; play(); io.disconnect(); } });
+  },{threshold:.55});
+  io.observe(m);
 })();
 </script>
 <script>
