@@ -65,7 +65,7 @@
     var prop = [f.jibun, f.aptName, f.dong ? '제' + f.dong + '동' : '', f.ho ? '제' + f.ho + '호' : ''].filter(Boolean).join(' ');
     var court = ($('ui-deunggi') && $('ui-deunggi').textContent.trim()) || '';
     if (/관할 등기소|미확인/.test(court)) court = '';
-    return { f: f, buyers: buyers.slice(0, bN), sellers: sellers.slice(0, sN), bN: bN, sN: sN, filings: filings, prop: prop, court: court, has: !!f.buyerName };
+    return { f: f, buyers: buyers.slice(0, bN), sellers: sellers.slice(0, sN), bN: bN, sN: sN, filings: filings, prop: prop, court: court, has: !!(f.buyerName || f.sellerName || f.jibun) }; /* 매수인 이름을 비운 이용자도 내 케이스로 */
   }
 
   /* 한 건의 신청서에 묶을 서류. 순서 = 신청서 양식 「첨부서면」 기재 순서(신청서를 맨 위에).

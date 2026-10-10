@@ -114,8 +114,10 @@ main{max-width:var(--read);margin:0 auto;padding:24px 20px 40px;position:relativ
 .action-item{display:flex;align-items:flex-start;gap:10px;padding:12px;background:#fff;border:1px solid var(--border);border-radius:10px;transition:border-color .2s}
 .action-item:hover{border-color:#BAE6FD}
 .action-item input[type=checkbox]{margin-top:2px;width:18px;height:18px;accent-color:var(--blue);flex-shrink:0;cursor:pointer}
-.action-item.checked{background:#f8fafc;border-color:var(--border);opacity:.8}
-.action-item.checked label{text-decoration:line-through;color:var(--muted)}
+.action-item.checked{background:#f8fafc;border-color:var(--border)}
+/* 체크하면 항목 제목만 취소선 — 안의 확인 상자·「위임장 파일로 이어서 하기」·버튼은 그대로 둔다(2026-10-10) */
+.action-item.checked > .action-text > label:first-child{text-decoration:line-through;color:var(--muted)}
+.action-item.checked > .action-text > .action-desc{color:var(--muted)}
 .action-text{flex:1;min-width:0}
 .action-text label{font-size:13px;font-weight:600;color:var(--text);display:block;cursor:pointer;word-break:keep-all;line-height:1.4}
 .action-desc{font-size:11px;color:var(--muted);margin-top:6px;line-height:1.6;word-break:keep-all}
@@ -495,14 +497,18 @@ html.pv-open,html.pv-open body{overflow:hidden}
 .rm-pv-note{font-size:12.5px;color:var(--muted);line-height:1.7;margin-top:12px;padding-top:12px;border-top:1px solid #F1F5F9;word-break:keep-all}
 .ap-link{font-size:14px;line-height:1.6;margin:0 0 12px;padding:10px 12px;background:#F8FAFC;border:1px solid var(--border);border-radius:8px}
 .ap-link a,.ap-link button{color:var(--blue);font-weight:700}
+.fc-end{margin-top:14px}
+.btn-row .bd-open{margin:10px 0 0;width:100%;min-height:46px;font-size:14px}
+.action-text > .fold-foot{padding:8px 0 0;border-top:0;background:none}
 .ap-link button{background:none;border:0;padding:0;font:inherit;text-decoration:underline;cursor:pointer}
 /* 신청서 다운로드(2026-10-10): 서류 작성 화면의 위임장 다운로드와 같은 크기 · 대조 확인 체크 전까지 잠금 */
 .dl-gate{display:flex;align-items:flex-start;gap:10px;background:#FFFBEB;border:1px solid #FDE68A;border-radius:12px;padding:14px 16px;margin:14px 0 12px;cursor:pointer;font-size:14px;line-height:1.6;color:#92400E;word-break:keep-all}
 .action-item .dl-gate input[type=checkbox]{flex:none;width:20px;height:20px;margin-top:2px;accent-color:#92400E}
 @media(max-width:560px){.action-item .dl-gate input[type=checkbox]{width:24px;height:24px}.dl-wrap{margin-left:-34px}}
 .dl-big{width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-height:64px;padding:16px 20px;border:0;border-radius:10px;background:var(--navy);color:#fff;font-family:inherit;cursor:pointer;transition:transform .15s,box-shadow .15s}
-.dl-big:not(:disabled):hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,.12)}
-.dl-big:disabled{opacity:.45;cursor:not-allowed}
+.dl-big:not(.is-off):hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,.12)}
+.dl-big.is-off{background:#94A3B8;cursor:not-allowed}
+.dl-big.is-off:hover{transform:none;box-shadow:none}
 .dl-big .dn{font-size:15px;font-weight:800}.dl-big .ds{font-size:12.5px;opacity:.85}
 .dl-sub{margin-top:10px}
 .nav-logo{display:inline-flex;align-items:center;gap:7px}.nav-mark{width:22px;height:22px;flex:none}.nav-logo b{color:#0369A1;font-weight:inherit}.nav-wm{font-weight:inherit}
@@ -918,7 +924,7 @@ body>footer{margin-bottom:96px}
                   <span><b>가지고 계신 원본 서류와 신청서 반영 미리보기의 내용을 대조해, 다른 곳이 없음을 확인했습니다.</b><br>
                     부동산 표시·성명·주소는 등기부·초본과, 세액·채권·납부번호는 납부 영수증과 한 번 더 대조해 주세요.</span>
                 </label>
-                <button type="button" class="dl-big" id="dl-sin" onclick="downloadSinchungseo()" disabled title="위 확인란에 체크하시면 내려받을 수 있습니다.">
+                <button type="button" class="dl-big is-off" id="dl-sin" onclick="downloadSinchungseo()" aria-disabled="true">
                   <span class="dn">신청서 Word 파일 다운로드</span>
                   <span class="ds">소유권이전등기신청서.docx</span>
                 </button>
@@ -944,10 +950,6 @@ body>footer{margin-bottom:96px}
                   <div class="btn-row" style="margin-top:8px">
                     <button class="btn-preview" onclick="downloadMaemaeMokrok()">매매목록 Word 파일 다운로드</button>
                   </div>
-                </div>
-                <div class="form-clear" id="form-clear-wrap" style="display:none">
-                  <p>신청서 작성 화면에서 넘어온 성명·주소·주민등록번호가 이 기기에만 저장되어 있습니다. 마지막 저장으로부터 30일이 지나면 자동으로 사라지고, 서류를 받으셨다면 지금 지우셔도 됩니다.</p>
-                  <button type="button" id="btn-clear-form" onclick="clearFormStore()">입력 정보 지우기</button>
                 </div>
               </div>
             </div>
@@ -995,28 +997,15 @@ body>footer{margin-bottom:96px}
               <input type="checkbox" id="chk3_3" onchange="updateProgress('item3_3')">
               <div class="action-text">
                 <label for="chk3_3">서류 편철 후 접수창구 제출</label>
-                <div class="action-desc">아래 순서로 서류를 위에서부터 겹쳐(편철) 접수창구에 제출하면 끝납니다.</div>
-                <div class="fold-box">
-                  <div class="fold-hd">서류 편철 순서</div>
-                  <ol class="fold-list">
-                    <li>소유권이전등기신청서</li>
-                    <li>취득세(등록면허세) 영수필확인서</li>
-                    <li>등기신청수수료 영수필확인서</li>
-                    <li>매매목록 <small>(부동산이 2개 이상이거나, 부동산이 1개라도 <b>매도인과 매수인이 모두 2인 이상</b>인 경우. 한쪽만 2인이면 제출하지 않습니다 · 등기예규 제1804호)</small></li>
-                    <li>위임장</li>
-                    <li>자격자대리인 자필서명정보 <small>(법무사 등 대리 신청 시에만 · 셀프등기는 해당 없음)</small></li>
-                    <li>매도용 인감증명서 <small>(매도인 각 1통 · <b>매수인이 공동명의면 2명 전원</b>의 성명·주민번호·주소가 정확히 적혀 있어야 합니다. 신청서의 등기권리자와 한 글자라도 다르면 각하 사유입니다)</small></li>
-                    <li>주민등록표초본(등본) <small>(매도인·매수인 각 · 주소 변동 시 전주소 이력 포함)</small></li>
-                    <li>토지·집합건축물대장등본</li>
-                    <li>부동산거래계약신고필증</li>
-                    <li>매매계약서 <small>(전자수입인지 첨부)</small></li>
-                    <li>등기필정보(구 등기필증·등기권리증) <small>(구 등기필증 소지 시 원본 제출)</small></li>
-                  </ol>
-                  <button type="button" class="bd-open" onclick="SRBundle.open()">내 케이스 편철표 보기 · 인쇄 (통수·원용 포함)</button>
-                  <div class="fold-foot">편철 순서는 등기소·담당자에 따라 다소 다를 수 있습니다. 접수 전 <b>관할 등기소 안내데스크</b>에서 최종 확인하시면 가장 정확합니다.</div>
-                </div>
+                <div class="action-desc">서류를 위에서부터 겹치는 순서(편철)와 서류별 통수를 내 케이스에 맞춰 보여 드립니다. 인쇄해서 서류와 함께 가져가시면 창구에서 그대로 확인할 수 있습니다.</div>
+                <div class="btn-row"><button type="button" class="bd-open" onclick="SRBundle.open()">내 케이스 편철표 보기 · 인쇄</button></div>
+                <div class="fold-foot">편철 순서는 등기소·담당자에 따라 다소 다를 수 있습니다. 접수 전 <b>관할 등기소 안내데스크</b>에서 최종 확인하시면 가장 정확합니다.</div>
               </div>
             </div>
+          </div>
+          <div class="form-clear fc-end" id="form-clear-wrap" style="display:none">
+              <p><b>등기소 접수까지 마치셨나요?</b> 접수증을 받고 보정 요구에 대비한 확인까지 끝났다면, 이 기기에 남은 성명·주소·주민등록번호를 지워 주세요. 지우지 않아도 마지막 저장으로부터 30일이 지나면 자동으로 지워집니다. 지운 뒤 신청서를 다시 받으려면 받아 둔 위임장 파일로 불러올 수 있습니다.</p>
+              <button type="button" id="btn-clear-form" onclick="clearFormStore()">입력 정보 지우기</button>
           </div>
         </div>
       </div>
@@ -1184,7 +1173,7 @@ async function downloadSinchungseo(){
 
   if (!rmHasForm(f)) { showToast(RM_NOFORM); return; }
   const cb = document.getElementById('sin-confirm');
-  if (cb && !cb.checked) { showToast('원본 서류와 대조했는지 확인란에 먼저 체크해 주세요.'); cb.focus(); return; }
+  if (cb && !cb.checked) { showToast('원본 서류와 대조했는지 위 확인란에 먼저 체크해 주세요.'); cb.focus(); cb.closest('.dl-gate') && cb.closest('.dl-gate').scrollIntoView({ block: 'center', behavior: 'smooth' }); return; }
   if (window.SRBlank && !(await SRBlank.confirm({ doc: '신청서', items: rmBlankItems() }))) return;
   if (window.SRPay && SRPay.bind && !(await SRPay.bind({ uid: f.propertyUid, addr: f.jibun }))) return; // 동일 부동산 확인
   try{window.SR&&SR.track('doc_download',{doc:'sinchungseo'});}catch(e){}
@@ -2147,7 +2136,7 @@ function rmPv(on){
   if(dim) dim.addEventListener('click', () => rmPv(false));
   document.addEventListener('keydown', e => { const sh = document.getElementById('rm-pv'); if(e.key === 'Escape' && sh && sh.classList.contains('open')){ rmPv(false); if(bar) bar.focus(); } });
   const cb = document.getElementById('sin-confirm'), btn = document.getElementById('dl-sin');
-  if(cb && btn) cb.addEventListener('change', () => { btn.disabled = !cb.checked; btn.title = cb.checked ? '' : '위 확인란에 체크하시면 내려받을 수 있습니다.'; });
+  if(cb && btn){ const sync = () => { const off = !cb.checked; btn.classList.toggle('is-off', off); btn.setAttribute('aria-disabled', String(off)); }; cb.addEventListener('change', sync); sync(); }
 })();
 
 function calcStamp(){
