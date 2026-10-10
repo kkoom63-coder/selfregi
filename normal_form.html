@@ -235,6 +235,16 @@ select{cursor:pointer;appearance:auto}
 .nb-t{font-size:14px;font-weight:800;color:var(--navy);line-height:1.4}
 .nb-s{font-size:12.5px;color:var(--muted);line-height:1.5;margin-top:2px;word-break:keep-all}
 .nb-ar{font-size:17px;font-weight:700;color:var(--navy);flex-shrink:0}
+/* 위임장 다운로드 바로 아래 「다음 단계」(2026-10-10): 결제 후에만 보인다. 다운로드(남색)와 구분되게 파랑 */
+.next-box{margin-top:14px;padding:14px;border:1px solid #BAE6FD;background:#F0F9FF;border-radius:12px}
+.next-box[hidden]{display:none}
+.nx-k{font-size:12.5px;font-weight:800;color:#075985;margin:0 0 8px 2px}
+.navbtn.go{background:var(--blue);border-color:var(--blue)}
+.navbtn.go:hover{background:#075985}
+.navbtn.go .nb-t,.navbtn.go .nb-ar{color:#fff}.navbtn.go .nb-s{color:#E0F2FE}
+.next-box.pulse{animation:nxPulse 1s ease-out}
+@keyframes nxPulse{0%{box-shadow:0 0 0 0 rgba(3,105,161,.6)}100%{box-shadow:0 0 0 14px rgba(3,105,161,0)}}
+@media(prefers-reduced-motion:reduce){.next-box.pulse{animation:none}}
 
 .dbtn{display:flex;flex-direction:column;align-items:center;gap:5px;padding:16px 10px;border-radius:10px;border:none;cursor:pointer;font-family:inherit;transition:transform .15s,box-shadow .15s}
 .dbtn:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,.12)}
@@ -1086,6 +1096,17 @@ input.ocr-warn{border-color:#DC2626!important;box-shadow:0 0 0 3px rgba(220,38,3
     </div>
   </button>
 
+  <div class="next-box" id="next-box" hidden>
+    <div class="nx-k">위임장을 받으셨다면 다음 단계</div>
+    <button type="button" class="navbtn go" onclick="goRoadmap('next')">
+      <div class="nb-tx">
+        <div class="nb-t">세금 납부하고 신청서 받기</div>
+        <div class="nb-s">로드맵에서 취득세·국민주택채권·등기신청수수료를 낸 뒤 영수증 번호만 넣으면 소유권이전등기신청서가 완성됩니다</div>
+      </div>
+      <div class="nb-ar" aria-hidden="true">→</div>
+    </button>
+  </div>
+
   <div class="ntc inf" style="margin-top:12px">
     <strong>유의사항</strong> · 본 서비스는 법률 자문을 제공하지 않습니다. 개인정보를 입력하지 않아 공란으로 생성된 부분은 직접 적어서 제출해 주세요.
   </div>
@@ -1097,11 +1118,11 @@ input.ocr-warn{border-color:#DC2626!important;box-shadow:0 0 0 3px rgba(220,38,3
 <!-- ⑧ 로드맵 네비게이션 (다운로드 후 다음 단계) -->
 <div class="card">
   <div class="nav-eyebrow">다음 단계</div>
-  <button id="btn-roadmap" class="navbtn" onclick="goRoadmap()">
+  <button id="btn-roadmap" class="navbtn" onclick="goRoadmap('bottom')">
     
     <div class="nb-tx">
-      <div class="nb-t">나만의 셀프등기 로드맵으로 이동</div>
-      <div class="nb-s">제세공과금 납부 번호를 입력하면 소유권이전등기신청서를 받습니다 · 관할 구청·등기소 안내</div>
+      <div class="nb-t">세금 납부하고 신청서 받기 (셀프등기 로드맵)</div>
+      <div class="nb-s">취득세·채권·수수료 납부 순서와 관할 구청·등기소 안내 · 납부 번호를 넣으면 소유권이전등기신청서가 완성됩니다</div>
     </div>
     <div class="nb-ar" aria-hidden="true">→</div>
   </button>
@@ -1863,9 +1884,10 @@ async function downloadWimiOnly() {
     if (out.jointBoth) {
       showToast('✅ 위임장 ' + out.filings + '장을 내려받았습니다. 매도인·매수인이 모두 2인이면 신청서가 매수인별로 갈리고(등기예규 제1363호) 위임장도 건별로 따로 냅니다. 받은 파일은 보관해 두세요 — 다른 기기에서 이어서 할 때 씁니다.');
     } else {
-      showToast('✅ 위임장을 내려받았습니다. 받은 파일은 보관해 두세요 — 다른 기기에서 이어서 할 때 씁니다.');
+      showToast('✅ 위임장을 내려받았습니다. 다음은 바로 아래 「세금 납부하고 신청서 받기」입니다. 받은 파일은 보관해 두세요.');
     }
     var sv = document.getElementById('sv-box'); if (sv) sv.hidden = false;
+    nxShow(true);
   } catch(e) { showToast('❌ ' + e.message, '#DC2626'); console.error(e); }
 }
 
@@ -1926,12 +1948,22 @@ function applyResume(p) {
   try { window.SRSync && window.SRSync(); } catch (e) {}
   return n;
 }
+/* 위임장 아래 「다음 단계」: 결제한 이용자에게만 보이고, 위임장을 받은 직후에는 깜빡여 눈에 띄게 한다 */
+function nxShow(flash) {
+  const box = document.getElementById('next-box'); if (!box) return;
+  box.hidden = !(window.SRPay && SRPay.has());
+  if (flash && !box.hidden) { box.classList.remove('pulse'); void box.offsetWidth; box.classList.add('pulse'); }
+}
+window.addEventListener('srpay:change', () => nxShow(false));
+if (document.readyState !== 'loading') setTimeout(() => nxShow(false), 0); else document.addEventListener('DOMContentLoaded', () => nxShow(false));
+
 /* 이 기기에 입력값이 있는가 — 재발급 링크 안내 문구를 가른다(pay.js). */
 function hasFormInput() {
   return ['jibun-address', 'owner-name', 's-name'].some(id => gv(id));
 }
 
-function goRoadmap() {
+function goRoadmap(from) {
+  try{window.SR&&SR.track('roadmap_go',{from:from||'other'});}catch(e){}
   const jibun = gv('jibun-address');
   const dong = gv('dong');
   const ho = gv('ho');
