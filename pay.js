@@ -2,7 +2,7 @@
  *
  * 흐름: 결제 버튼 → /api/pay/create → 토스페이 결제창(새 창) → pay_return.html
  *       → /api/pay/confirm(서버가 상태·금액 확인 후 승인) → 이용권을 localStorage에 저장
- * 이용권 1건 = 부동산 1건의 서류 전체(위임장·신청서·매매목록). 결제일부터 30일.
+ * 이용권 1건 = 부동산 1건의 서류 전체(위임장·신청서·매매목록 / 증여는 증여계약서 포함). 결제일부터 30일. 상품(매매·증여)마다 따로 보관.
  * 새 창을 쓰는 이유: 입력 중인 서류 폼을 그대로 두기 위해서다(토스 문서도 iframe 대신 새 창 권장).
  * 새 창이 막히면 같은 창으로 이동하고, 입력값은 이 기기의 sessionStorage에 잠시(1시간 이내) 보관했다가 복원한다.
  * 주민등록번호 칸(id에 rrn)은 보관하지 않는다.
@@ -17,7 +17,16 @@
   var PASS_KEY = 'selfregi_pass_v1';
   var PENDING_KEY = 'selfregi_pay_pending';
   var SNAP_KEY = 'selfregi_form_snapshot';
-  var PRICE_LABEL = '9,900원';
+  /* 상품(2026-10-11 증여 추가). 이용권은 상품마다 따로 보관한다 — 매매 이용권으로 증여 서류가 열리지 않는다.
+     페이지가 setProduct('gift')로 지금 작성 중인 상품을 알려 준다(기본 매매). */
+  var PRODUCTS = {
+    sale: { key: 'selfregi_pass_v1', price: 9900, label: '9,900원', name: '서류 자동완성' },
+    gift: { key: 'selfregi_pass_gift_v1', price: 14900, label: '14,900원', name: '증여 서류 자동완성' }
+  };
+  var cur = 'sale';
+  function prodOf(v) { return v === 'gift' ? 'gift' : 'sale'; }
+  function P() { return PRODUCTS[cur]; }
+  var PRICE_LABEL = PRODUCTS.sale.label;
 
   function ls(k, v) {
     try {
@@ -27,15 +36,18 @@
   }
   function track(n, d) { try { window.SR && SR.track(n, d || {}); } catch (e) {} }
 
-  function pass() {
-    var p = ls(PASS_KEY);
+  function pass(prod) {
+    var p = ls(PRODUCTS[prod ? prodOf(prod) : cur].key);
     return p && p.token && p.exp > Date.now() ? p : null;
   }
-  function has() { return !!pass(); }
+  function has(prod) { return !!pass(prod); }
+  function setProduct(v) { var n = prodOf(v); if (n === cur) return; cur = n; fire(); }
+  function product() { return cur; }
+  function savePass(prod, d) { ls(PRODUCTS[prodOf(prod)].key, { token: d.token, orderNo: d.orderNo, exp: d.exp }); }
 
   function reissueUrl(p) {
     p = p || pass();
-    return p ? location.origin + '/normal_form.html?pass=' + encodeURIComponent(p.token) : '';
+    return p ? location.origin + '/normal_form.html?pass=' + encodeURIComponent(p.token) + (cur === 'gift' ? '&type=gift' : '') : '';
   }
 
   function fire() {
@@ -89,18 +101,18 @@
     if (!m) { openSheet('choose'); return; }   // 결제수단 선택(새 클릭에서 창을 열어야 팝업이 막히지 않는다)
     if (m === 'payapp') { startPayapp(); return; }
     busy = true;
-    track('begin_checkout', { value: 9900, currency: 'KRW' });
+    track('begin_checkout', { value: P().price, currency: 'KRW', product: cur });
     // 팝업 차단을 피하려면 클릭 직후 동기적으로 창을 먼저 연다.
     var w = null;
     try { w = window.open('', 'srpay', 'width=480,height=780'); } catch (e) { w = null; }
     if (w) { try { w.document.title = '토스페이 결제'; w.document.body.innerHTML = '<p style="font:15px sans-serif;padding:24px;color:#334155">토스페이 결제창을 여는 중입니다…</p>'; } catch (e) {} }
 
-    fetch('/api/pay/create', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{}' })
+    fetch('/api/pay/create', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ product: cur }) })
       .then(asJson)
       .then(function (d) {
         busy = false;
         if (!d || !d.ok) throw new Error((d && d.msg) || '결제를 시작하지 못했습니다.');
-        ls(PENDING_KEY, { orderNo: d.orderNo, from: location.pathname, at: Date.now() });
+        ls(PENDING_KEY, { orderNo: d.orderNo, product: cur, from: location.pathname, at: Date.now() });
         if (w && !w.closed) { w.location.href = d.checkoutPage; watchPopup(w); }
         else { snapshot(); location.href = d.checkoutPage; }
       })
@@ -129,18 +141,18 @@
   }
   function startPayapp() {
     busy = true;
-    track('begin_checkout', { value: 9900, currency: 'KRW', payment_type: 'payapp' });
+    track('begin_checkout', { value: P().price, currency: 'KRW', payment_type: 'payapp', product: cur });
     var w = null;
     try { w = window.open('', 'PayAppWindow', 'width=480,height=780'); } catch (e) { w = null; }
     if (w) { try { w.document.title = '네이버페이·카카오페이 결제'; w.document.body.innerHTML = '<p style="font:15px sans-serif;padding:24px;color:#334155">결제창을 여는 중입니다…</p>'; } catch (e) {} }
     Promise.all([
-      fetch('/api/pay/payapp-create', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{}' }).then(asJson),
+      fetch('/api/pay/payapp-create', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ product: cur }) }).then(asJson),
       loadPa(),
     ]).then(function (res) {
       var d = res[0];
       busy = false;
       if (!d || !d.ok || !d.param) throw new Error((d && d.msg) || '결제를 시작하지 못했습니다.');
-      ls(PENDING_KEY, { orderNo: d.orderNo, m: 'payapp', from: location.pathname, at: Date.now() });
+      ls(PENDING_KEY, { orderNo: d.orderNo, m: 'payapp', product: cur, from: location.pathname, at: Date.now() });
       var P = window.PayApp;
       P.setDefault({ userid: d.param.userid, shopname: d.param.shopname });
       if (w && !w.closed) { P.setTarget('PayAppWindow'); P.setParam(d.param); P.call(); watchPopup(w); }
@@ -198,7 +210,7 @@
     return fetch('/api/pay/verify', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ token: tok }) })
       .then(function (r) { return r.json(); })
       .then(function (d) {
-        if (d && d.ok) { ls(PASS_KEY, { token: tok, orderNo: d.orderNo, exp: d.exp }); fire(); track('pass_redeem', { mode: 'docx' }); return true; }
+        if (d && d.ok) { savePass(d.product, { token: tok, orderNo: d.orderNo, exp: d.exp }); fire(); track('pass_redeem', { mode: 'docx', product: prodOf(d.product) }); return true; }
         return false;
       })
       .catch(function () { return false; });
@@ -215,7 +227,9 @@
       .then(function (r) { return r.json(); })
       .then(function (d) {
         if (d && d.ok) {
-          ls(PASS_KEY, { token: tok, orderNo: d.orderNo, exp: d.exp }); fire();
+          savePass(d.product, { token: tok, orderNo: d.orderNo, exp: d.exp });
+          if (window.SRSetDeal && prodOf(d.product) !== cur) { try { window.SRSetDeal(prodOf(d.product)); } catch (e) {} }
+          fire();
           /* 이 기기에 입력값이 없으면(다른 기기) 페이지가 「위임장 파일로 이어서 하기」를 안내한다. */
           var m = '';
           try { if (typeof window.SRRedeemMsg === 'function') m = window.SRRedeemMsg(); } catch (e) {}
@@ -251,10 +265,10 @@
       el.innerHTML =
         '<div class="srp-bg" data-close></div>' +
         '<div class="srp-card">' +
-        '<div id="srpay-h" class="srp-h">서류 자동완성 · 부동산 1건 ' + PRICE_LABEL + '</div>' +
-        '<p class="srp-d">결제 후 서류는 두 번에 나눠 받습니다. <b>위임장</b>은 결제 직후 바로, <b>소유권이전등기신청서</b>는 취득세·국민주택채권·등기신청수수료 등 제세공과금을 납부한 뒤 납부하면서 받은 번호를 입력하면 완성됩니다. 한 번 결제로 두 서류가 모두 포함되며, 부가세 포함·추가 요금은 없습니다.</p>' +
+        '<div id="srpay-h" class="srp-h"></div>' +
+        '<p class="srp-d" id="srpay-d"></p>' +
         '<ul class="srp-l">' +
-        '<li>결제일부터 30일, 동일 부동산·동일 매수인은 횟수 제한 없이 재발급</li>' +
+        '<li id="srpay-r"></li>' +
         '<li>등기소 보정 요구에 따른 재작성도 재발급으로 처리</li>' +
         '<li>문서 오류 등 회사 귀책은 전액 환불 (<a href="terms.html#a6" target="_blank" rel="noopener">이용약관 제6조</a>)</li></ul>' +
         '<div class="srp-k">결제 수단을 고르세요</div>' +
@@ -286,6 +300,12 @@
       });
       document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeSheet(); });
     }
+    var gift = cur === 'gift';
+    el.querySelector('#srpay-h').textContent = P().name + ' · 부동산 1건 ' + P().label;
+    el.querySelector('#srpay-d').innerHTML = gift
+      ? '결제 후 서류는 두 번에 나눠 받습니다. <b>증여계약서·위임장</b>은 결제 직후 바로, <b>소유권이전등기신청서(증여)</b>는 구청 검인과 취득세 등 제세공과금을 납부한 뒤 번호를 입력하면 완성됩니다. 한 번 결제로 세 서류가 모두 포함되며, 부가세 포함·추가 요금은 없습니다.'
+      : '결제 후 서류는 두 번에 나눠 받습니다. <b>위임장</b>은 결제 직후 바로, <b>소유권이전등기신청서</b>는 취득세·국민주택채권·등기신청수수료 등 제세공과금을 납부한 뒤 납부하면서 받은 번호를 입력하면 완성됩니다. 한 번 결제로 두 서류가 모두 포함되며, 부가세 포함·추가 요금은 없습니다.';
+    el.querySelector('#srpay-r').textContent = '결제일부터 30일, 동일 부동산·동일 ' + (gift ? '수증인' : '매수인') + '은 횟수 제한 없이 재발급';
     el.classList.add('open');
     track('pay_sheet', { mode: from === 'choose' ? 'choose' : 'download' }); // choose = 결제 버튼, download = 결제 전 다운로드
     var go = el.querySelector('.srp-go'); if (go) go.focus();
@@ -293,12 +313,13 @@
   function closeSheet() { var el = document.getElementById('srpay-sheet'); if (el) el.classList.remove('open'); }
 
   /* ── 다른 창(결제 완료 창)에서 이용권이 저장되면 이 창도 즉시 반영 ── */
-  window.addEventListener('storage', function (e) { if (e.key === PASS_KEY) fire(); });
+  window.addEventListener('storage', function (e) { if (e.key === PRODUCTS.sale.key || e.key === PRODUCTS.gift.key) fire(); });
   window.addEventListener('message', function (e) {
     if (e.origin === location.origin && e.data && e.data.type === 'srpay:paid') fire();
   });
 
-  window.SRPay = { has: has, pass: pass, start: start, setGuard: setGuard, requirePaid: requirePaid, reissueUrl: reissueUrl, bind: bind, redeemToken: redeemToken, PRICE_LABEL: PRICE_LABEL, PASS_KEY: PASS_KEY, PENDING_KEY: PENDING_KEY };
+  window.SRPay = { has: has, pass: pass, start: start, setGuard: setGuard, requirePaid: requirePaid, reissueUrl: reissueUrl, bind: bind, redeemToken: redeemToken,
+    setProduct: setProduct, product: product, PRODUCTS: PRODUCTS, PRICE_LABEL: PRICE_LABEL, PASS_KEY: PASS_KEY, PENDING_KEY: PENDING_KEY };
 
   function init() { restore(); redeem(); fire(); }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();

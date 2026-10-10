@@ -157,11 +157,12 @@ p{font-size:14.5px;line-height:1.7;color:#334155;margin:0 0 12px}
           fail('결제 확인이 늦어지고 있습니다. 1~2분 뒤 이 화면을 새로고침해 주세요.'); return;
         }
         if(!d||!d.ok){ fail((d&&d.msg)||'결제 승인에 실패했습니다.'); return; }
-        set(PASS_KEY,{token:d.token,orderNo:d.orderNo,exp:d.exp});
+        var GIFT=d.product==='gift';
+        set(GIFT?'selfregi_pass_gift_v1':PASS_KEY,{token:d.token,orderNo:d.orderNo,exp:d.exp}); /* 상품별 이용권(pay.js PRODUCTS와 같은 키) */
         try{localStorage.removeItem(PENDING_KEY);}catch(e){}
-        try{ if(typeof gtag==='function') gtag('event','purchase',{transaction_id:d.orderNo,value:d.amount,currency:'KRW',items:[{item_name:'서류 자동완성',price:d.amount,quantity:1}]}); }catch(e){}
+        try{ if(typeof gtag==='function') gtag('event','purchase',{transaction_id:d.orderNo,value:d.amount,currency:'KRW',items:[{item_name:GIFT?'증여 서류 자동완성':'서류 자동완성',price:d.amount,quantity:1}]}); }catch(e){}
         try{ if(hasOpener) window.opener.postMessage({type:'srpay:paid'},location.origin); }catch(e){}
-        var link=location.origin+'/normal_form.html?pass='+encodeURIComponent(d.token);
+        var link=location.origin+'/normal_form.html?pass='+encodeURIComponent(d.token)+(GIFT?'&type=gift':'');
         var until=new Date(d.exp); var ud=until.getFullYear()+'. '+(until.getMonth()+1)+'. '+until.getDate()+'.';
         box.className='card st-ok';
         box.innerHTML='<h1>결제가 완료되었습니다</h1>'+

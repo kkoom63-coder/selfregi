@@ -1,6 +1,6 @@
 // POST /api/pay/verify { token } — 재발급 링크(?pass=)로 들어온 이용권을 확인한다.
 // 서명·만료를 본 뒤, 환불된 주문이면 거절한다.
-import { json, apiKey, secret, tossPost, verifyPass, readJson } from '../../lib/paycore.js';
+import { productKey, json, apiKey, secret, tossPost, verifyPass, readJson } from '../../lib/paycore.js';
 
 export async function onRequestPost({ request, env }) {
   const key = apiKey(env);
@@ -22,7 +22,7 @@ export async function onRequestPost({ request, env }) {
     if (doc && doc.st === 'cancel') return json(410, { ok: false, msg: '환불된 결제의 재발급 링크입니다.' });
   } catch (e) { /* 저장소 조회 실패 시 서명만으로 통과 */ }
 
-  return json(200, { ok: true, orderNo: p.o, exp: p.exp });
+  return json(200, { ok: true, orderNo: p.o, exp: p.exp, product: productKey(p.p) });
 }
 
 export function onRequest() {

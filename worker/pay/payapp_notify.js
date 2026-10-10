@@ -3,7 +3,7 @@
 // JS 결제창은 pay_state=1(요청) 통보에도 SUCCESS 를 받아야 결제가 진행된다.
 // 검증: 판매자 아이디 · 연동KEY · 연동VALUE · 금액 · 우리가 만든 주문번호(var1). 하나라도 틀리면 기록하지 않는다.
 // 같은 통보가 여러 번 와도 결과가 같다(이미 결제완료면 그대로 둔다).
-import { PRICE, ORDER_RE, PAYAPP_USERID, PA_PAID, PA_CANCEL, payappKeys, sameStr } from '../../lib/paycore.js';
+import { PRODUCTS, productKey, ORDER_RE, PAYAPP_USERID, PA_PAID, PA_CANCEL, payappKeys, sameStr } from '../../lib/paycore.js';
 
 function text(status, body) {
   return new Response(body, { status, headers: { 'Content-Type': 'text/plain; charset=utf-8', 'Cache-Control': 'no-store' } });
@@ -28,14 +28,15 @@ export async function onRequestPost({ request, env }) {
   }
   const orderNo = g('var1'), state = g('pay_state');
   if (!ORDER_RE.test(orderNo)) return text(400, 'BAD_ORDER');
-  if (Number(g('price')) !== PRICE) {
-    console.error('payapp notify price mismatch', orderNo, g('price'));
-    return text(409, 'BAD_PRICE');
-  }
-
   try {
     const doc = await env.paStore.get(orderNo);
     if (!doc) { console.error('payapp notify unknown order', orderNo); return text(404, 'NO_ORDER'); }
+    // 금액은 주문을 만들 때 서버가 정한 상품 금액과 같아야 한다(옛 주문은 price 기록 → 없으면 매매).
+    const want = Number(doc.price) || PRODUCTS[productKey(doc.product)].price;
+    if (Number(g('price')) !== want) {
+      console.error('payapp notify price mismatch', orderNo, g('price'));
+      return text(409, 'BAD_PRICE');
+    }
     const base = { mul_no: g('mul_no'), pay_type: g('pay_type'), pay_state: state, at: Date.now() };
     if (state === PA_PAID) {
       if (doc.st !== 'paid') await env.paStore.update(orderNo, { ...base, st: 'paid', paidAt: Date.now(), pay_date: g('pay_date') });
