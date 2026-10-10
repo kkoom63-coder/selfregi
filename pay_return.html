@@ -38,6 +38,12 @@ p{font-size:14.5px;line-height:1.7;color:#334155;margin:0 0 12px}
 .re input{width:100%;font-size:12.5px;padding:10px;border:1px solid #BAE6FD;border-radius:8px;background:#fff;color:#0F172A}
 .re small{display:block;font-size:12px;color:#475569;margin-top:6px;line-height:1.6}
 .meta{font-size:12.5px;color:var(--muted)}
+/* 이용권 보관(2026-10-10): 나에게 보내기 · 이용권 카드 이미지 */
+.keep{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.keep .btn{margin:0;min-height:46px;font-size:14px}
+.keep .btn.out{background:#fff;color:#075985;border:1px solid #7DD3FC}
+.kept{font-size:12.5px;color:var(--ok);margin-top:8px;line-height:1.6}
+.kept[hidden]{display:none}
 </style>
 </head>
 <body>
@@ -48,6 +54,7 @@ p{font-size:14.5px;line-height:1.7;color:#334155;margin:0 0 12px}
     <p>잠시만 기다려 주세요. 이 창을 닫지 마세요.</p>
   </div>
 </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
 <script>
 (function(){
   var PASS_KEY='selfregi_pass_v1', PENDING_KEY='selfregi_pay_pending';
@@ -77,6 +84,70 @@ p{font-size:14.5px;line-height:1.7;color:#334155;margin:0 0 12px}
   /* 페이앱(?pa=1): 결제 완료는 페이앱 서버의 결제통보로 확인한다. 통보가 화면 복귀보다 늦을 수 있어
      「확인 중」(202)이면 2초 간격으로 다시 묻는다(최대 약 30초). */
   var PA = q.get('pa')==='1' || pending.m==='payapp', waits=0;
+
+  /* ── 이용권 보관(2026-10-10) ──
+     ① 나에게 보내기: 휴대폰 공유창(카톡 나와의 채팅·문자·메일). 공유창이 없는 PC는 링크 복사.
+     ② 이용권 카드: 주문번호·기한·링크·QR을 담은 이미지. 결제 직후 주문당 한 번 자동 저장, 버튼으로 다시 저장.
+     카드는 이 브라우저에서 그려 바로 내려받는다(서버 전송 없음). */
+  function trk(n,d){ try{ if(typeof gtag==='function') gtag('event',n,d||{}); }catch(e){} }
+  function copy(link, btn){
+    (navigator.clipboard?navigator.clipboard.writeText(link):Promise.reject())
+      .then(function(){ btn.textContent='복사했습니다'; }, function(){ btn.textContent='위 칸을 길게 눌러 복사해 주세요'; });
+  }
+  function wrapText(ctx, text, max){
+    var out=[], line='';
+    for(var i=0;i<text.length;i++){ var t=line+text[i]; if(ctx.measureText(t).width>max && line){ out.push(line); line=text[i]; } else line=t; }
+    if(line) out.push(line); return out;
+  }
+  function drawCard(link, orderNo, ud){
+    var W=900, H=1240, c=document.createElement('canvas'); c.width=W; c.height=H;
+    var x=c.getContext('2d'), F="'Noto Sans KR', sans-serif";
+    x.fillStyle='#fff'; x.fillRect(0,0,W,H);
+    x.fillStyle='#0F172A'; x.fillRect(0,0,W,150);
+    x.fillStyle='#fff'; x.font='800 44px '+F; x.fillText('셀프등기24 서류 이용권',56,95);
+    x.fillStyle='#0F172A'; x.font='700 30px '+F; x.fillText('주문번호  '+orderNo,56,220);
+    x.fillStyle='#047857'; x.fillText('사용 기한  '+ud+'까지',56,268);
+    if(typeof qrcode==='function'){
+      var qr=qrcode(0,'M'); qr.addData(link); qr.make();
+      var n=qr.getModuleCount(), size=440, cell=Math.floor(size/n), off=(W-cell*n)/2, top=310;
+      x.fillStyle='#0F172A';
+      for(var r=0;r<n;r++) for(var k=0;k<n;k++) if(qr.isDark(r,k)) x.fillRect(off+k*cell, top+r*cell, cell, cell);
+    }
+    x.fillStyle='#334155'; x.font='500 22px ui-monospace, Consolas, monospace';
+    var y=800; wrapText(x, link, W-112).forEach(function(l){ x.fillText(l,56,y); y+=32; });
+    x.font='700 27px '+F; x.fillStyle='#0F172A'; y+=24;
+    ['이 링크(또는 QR)를 열면 다시 결제하지 않고 서류를 받습니다.'].forEach(function(t){ wrapText(x,t,W-112).forEach(function(l){ x.fillText(l,56,y); y+=40; }); });
+    x.font='500 25px '+F; x.fillStyle='#475569';
+    ['휴대폰으로 결제했다면 받은 위임장 파일을 PC의 「위임장 파일로 이어서 하기」에 올려도 결제와 입력 내용이 이어집니다.','이 이미지는 본인만 보관하세요. 링크를 가진 사람은 이 결제로 서류를 받을 수 있습니다.']
+      .forEach(function(t){ y+=8; wrapText(x,t,W-112).forEach(function(l){ x.fillText(l,56,y); y+=36; }); });
+    return c;
+  }
+  function saveCard(link, orderNo, ud, mode){
+    var go=function(){
+      var c=drawCard(link, orderNo, ud);
+      c.toBlob(function(b){
+        if(!b) return;
+        var a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download='셀프등기24_이용권_'+orderNo+'.png';
+        document.body.appendChild(a); a.click(); setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); }, 1500);
+        var k=document.getElementById('kept'); if(k){ k.hidden=false; k.textContent='이용권 카드 이미지를 저장했습니다(사진 또는 다운로드 폴더). 링크를 잃어버려도 이 이미지로 다시 들어올 수 있습니다.'; }
+        trk('pass_card',{mode:mode});
+      },'image/png');
+    };
+    (document.fonts&&document.fonts.ready?document.fonts.ready:Promise.resolve()).then(go, go);
+  }
+  function keepPass(link, orderNo, ud){
+    var sh=document.getElementById('sh'), cd=document.getElementById('cd');
+    if(sh) sh.onclick=function(){
+      if(navigator.share){
+        navigator.share({ title:'셀프등기24 서류 이용권', text:'다시 결제하지 않고 서류를 받는 링크입니다('+ud+'까지). 본인만 보관하세요.', url:link })
+          .then(function(){ trk('pass_share',{mode:'share'}); }, function(){});
+      } else { copy(link, sh); trk('pass_share',{mode:'copy'}); }
+    };
+    if(cd) cd.onclick=function(){ saveCard(link, orderNo, ud, 'button'); };
+    var flag='sr_card_'+orderNo, done=false;
+    try{ done=localStorage.getItem(flag)==='1'; }catch(e){}
+    if(!done){ try{ localStorage.setItem(flag,'1'); }catch(e){} setTimeout(function(){ saveCard(link, orderNo, ud, 'auto'); }, 600); }
+  }
   function confirm(tries){
     fetch(PA?'/api/pay/payapp-confirm':'/api/pay/confirm',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({orderNo:orderNo})})
       .then(function(r){return r.json();})
@@ -97,11 +168,11 @@ p{font-size:14.5px;line-height:1.7;color:#334155;margin:0 0 12px}
           '<p>'+(hasOpener?'원래 화면으로 돌아가 위임장부터 내려받으세요. 신청서는 제세공과금 납부 후 이어서 받습니다. 이 창은 닫으셔도 됩니다.':'아래 버튼으로 돌아가 위임장부터 내려받으세요. 신청서는 제세공과금 납부 후 이어서 받습니다.')+'</p>'+
           '<div class="re"><b>재발급 링크 ('+ud+'까지)</b><input readonly value="'+esc(link)+'" onclick="this.select()" aria-label="재발급 링크">'+
           '<small>신청서까지 받으실 때까지 이 링크로 다시 결제하지 않고 이용하실 수 있습니다. 카카오톡 「나에게 보내기」 등으로 보관해 두세요.<br><b>휴대폰으로 결제하고 PC에서 인쇄하려면</b> 위임장을 내려받은 뒤 그 파일을 PC로 옮겨, PC의 서류 작성 화면에서 「위임장 파일로 이어서 하기」에 올리세요. 결제와 입력 내용이 함께 이어집니다.</small>'+
-          '<button class="btn sub" id="cp" type="button">링크 복사</button></div>'+
+          '<div class="keep"><button class="btn" id="sh" type="button">'+(navigator.share?'나에게 보내기':'링크 복사')+'</button><button class="btn out" id="cd" type="button">이용권 카드 저장</button></div>'+
+          '<p class="kept" id="kept" hidden></p></div>'+
           backBtn(hasOpener?'창 닫고 서류 받으러 가기':'서류 받으러 돌아가기')+
           '<p class="meta" style="margin-top:12px">주문번호 '+esc(d.orderNo)+' · '+Number(d.amount).toLocaleString('ko-KR')+'원</p>';
-        var cp=document.getElementById('cp');
-        if(cp) cp.onclick=function(){ (navigator.clipboard?navigator.clipboard.writeText(link):Promise.reject()).then(function(){cp.textContent='복사했습니다';},function(){cp.textContent='위 칸을 길게 눌러 복사해 주세요';}); };
+        keepPass(link, d.orderNo, ud);
       })
       .catch(function(){
         if(tries<2) setTimeout(function(){confirm(tries+1);},1500);
