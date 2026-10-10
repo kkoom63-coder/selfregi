@@ -19,10 +19,14 @@
     var got = await SRResume.read(file);
     if (typeof got === 'string') { say(esc(SRResume.MSG[got] || '파일을 읽지 못했습니다.'), 'err'); trk('resume_docx', { mode: got.toLowerCase() }); return; }
     var n = applyResume(got.d);
+    var paid = '';
+    if (got.k && window.SRPay && SRPay.redeemToken && !SRPay.has()) {
+      paid = (await SRPay.redeemToken(got.k)) ? ' <b>결제도 확인되어 바로 내려받을 수 있습니다.</b>' : ' 이 파일의 결제는 기한(30일)이 지났거나 취소되어 이어받지 못했습니다.';
+    }
     var when = got.ts ? new Date(got.ts) : null;
     var ds = when ? (when.getFullYear() + '. ' + (when.getMonth() + 1) + '. ' + when.getDate() + '.') : '';
     say('<b>입력 내용 ' + n + '칸을 복원했습니다</b>' + (ds ? ' (' + ds + ' 생성한 위임장)' : '') +
-      '. 주민등록번호는 파일에 담기지 않으므로 필요하면 다시 입력해 주세요. 내려받기 전 원본 서류와 대조하는 확인은 이 기기에서 다시 해 주셔야 합니다.', 'ok');
+      '.' + paid + ' 주민등록번호는 파일에 담기지 않으므로 필요하면 다시 입력해 주세요. 내려받기 전 원본 서류와 대조하는 확인은 이 기기에서 다시 해 주셔야 합니다.', 'ok');
     trk('resume_docx', { mode: 'ok' });
   }
   function bindResume() {

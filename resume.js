@@ -9,6 +9,8 @@
  *     - 이 영역은 Word 로 열어 저장해도 유지된다(본문을 고쳐도 사라지지 않는다).
  *     - 값 하나는 240자 이하로 자른다. Word 가 긴 속성값을 255자에서 자르기 때문이다.
  *     - 주민등록번호·이메일은 담지 않는다. 파일이 메신저·메일로 오가기 때문이다.
+ *     - 결제 이용권(k)도 함께 담는다(2026-10-10). 다른 기기에서 이 파일만 올리면 결제까지 이어진다.
+ *       이용권은 서버가 서명·만료·취소·부동산(bind)을 확인하므로 파일만으로 다른 집 서류를 계속 받을 수는 없다.
  *
  * 쓰는 곳: normal_form(위임장 생성·복원), roadmap(신청서 화면 복원).
  * 의존: JSZip(전역).
@@ -57,8 +59,10 @@
   }
 
   /* zip(JSZip 인스턴스)에 입력값을 심는다. payload 는 { f: 폼값, r: 신청서 릴레이값 } */
-  async function embed(zip, payload) {
-    var json = JSON.stringify({ v: VERSION, ts: Date.now(), d: scrub(payload) });
+  async function embed(zip, payload, passToken) {
+    var o = { v: VERSION, ts: Date.now(), d: scrub(payload) };
+    if (passToken && /^[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+$/.test(passToken)) o.k = passToken;
+    var json = JSON.stringify(o);
     var b64 = b64encode(json), parts = [];
     for (var i = 0; i < b64.length; i += CHUNK) parts.push(b64.slice(i, i + CHUNK));
 
@@ -103,7 +107,7 @@
     try {
       var o = JSON.parse(b64decode(b64));
       if (!o || !o.d) return 'BROKEN';
-      return { d: o.d, ts: o.ts || 0, v: o.v || 0 };
+      return { d: o.d, ts: o.ts || 0, v: o.v || 0, k: typeof o.k === 'string' ? o.k : '' };
     } catch (e) { return 'BROKEN'; }
   }
 

@@ -160,6 +160,50 @@
     }, 800);
   }
 
+  /* ── 부동산 확인(2026-10-10) ──
+     서류를 내려받기 전에 고유번호·소재지번을 서버에 확인한다. 원문은 보내지 않는다 —
+     표기를 정리한 뒤 SHA-256 한 값만 보내고, 서버는 비밀키로 한 번 더 변환해 저장한다(worker/pay/bind.js).
+     동·호, 매수인 이름은 확인하지 않는다. 네트워크 오류면 막지 않는다(결제한 이용자 우선). */
+  function normUid(v) { var d = String(v || '').replace(/\D/g, ''); return d.length >= 10 ? d : ''; }
+  function normAddr(v) {
+    return String(v || '').replace(/특별자치시|특별자치도|특별시|광역시/g, '').replace(/[\s,.\-·()（）]|제(?=\d)/g, '');
+  }
+  async function sha(v) {
+    if (!v || !(window.crypto && crypto.subtle)) return '';
+    var b = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(v));
+    return Array.from(new Uint8Array(b), function (x) { return x.toString(16).padStart(2, '0'); }).join('');
+  }
+  async function bind(vals) {
+    var p = pass(); if (!p) return true;
+    var u = '', a = '';
+    try { u = await sha(normUid(vals && vals.uid)); a = await sha(normAddr(vals && vals.addr)); } catch (e) {}
+    if (!u && !a) return true;
+    try {
+      var r = await fetch('/api/pay/bind', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ token: p.token, u: u, a: a }) });
+      if (r.status === 403) {
+        var d = await r.json().catch(function () { return {}; });
+        notify(d.msg || '이 결제는 처음 서류를 받은 부동산용입니다.', true);
+        track('bind_block', {});
+        return false;
+      }
+      var j = await r.json().catch(function () { return {}; });
+      if (j && j.swapped) track('bind_swap', {});
+    } catch (e) { track('bind_error', {}); }
+    return true;
+  }
+
+  /* 위임장 파일에 담긴 이용권으로 결제를 이어받는다(다른 기기). 이미 이 기기에 이용권이 있으면 그대로 둔다. */
+  function redeemToken(tok) {
+    if (!tok || has()) return Promise.resolve(has());
+    return fetch('/api/pay/verify', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ token: tok }) })
+      .then(function (r) { return r.json(); })
+      .then(function (d) {
+        if (d && d.ok) { ls(PASS_KEY, { token: tok, orderNo: d.orderNo, exp: d.exp }); fire(); track('pass_redeem', { mode: 'docx' }); return true; }
+        return false;
+      })
+      .catch(function () { return false; });
+  }
+
   /* ── 재발급 링크(?pass=) ── */
   function redeem() {
     var q = new URLSearchParams(location.search);
@@ -254,7 +298,7 @@
     if (e.origin === location.origin && e.data && e.data.type === 'srpay:paid') fire();
   });
 
-  window.SRPay = { has: has, pass: pass, start: start, setGuard: setGuard, requirePaid: requirePaid, reissueUrl: reissueUrl, PRICE_LABEL: PRICE_LABEL, PASS_KEY: PASS_KEY, PENDING_KEY: PENDING_KEY };
+  window.SRPay = { has: has, pass: pass, start: start, setGuard: setGuard, requirePaid: requirePaid, reissueUrl: reissueUrl, bind: bind, redeemToken: redeemToken, PRICE_LABEL: PRICE_LABEL, PASS_KEY: PASS_KEY, PENDING_KEY: PENDING_KEY };
 
   function init() { restore(); redeem(); fire(); }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();

@@ -1048,7 +1048,7 @@ input.ocr-warn{border-color:#DC2626!important;box-shadow:0 0 0 3px rgba(220,38,3
     </div>
     <span class="pay-arrow" id="pay-arrow">→</span>
   </button>
-  <p class="pay-note" id="pay-note">토스페이·네이버페이·카카오페이로 결제합니다(토스페이는 PC에서 QR). 결제는 새 창에서 진행되며, 입력하신 내용은 이 화면에 그대로 남습니다. 입력 내용은 이 기기에만 저장되니 서류를 인쇄할 기기에서 진행하시면 편합니다. 다른 기기에서는 받아 둔 위임장 파일로 이어서 할 수 있습니다.</p>
+  <p class="pay-note" id="pay-note">토스페이·네이버페이·카카오페이로 결제합니다(토스페이는 PC에서 QR). 결제는 새 창에서 진행되며, 입력하신 내용은 이 화면에 그대로 남습니다. 입력 내용은 이 기기에만 저장되니 서류를 인쇄할 기기에서 진행하시면 편합니다. 휴대폰으로 결제했다면 받은 위임장 파일을 PC로 옮겨 「위임장 파일로 이어서 하기」에 올리세요. 결제와 입력 내용이 함께 이어집니다.</p>
   <div class="svc-terms">
     <div class="svc-terms-h">서비스 제공 방식과 시점</div>
     <dl class="svc-terms-l">
@@ -1115,8 +1115,8 @@ input.ocr-warn{border-color:#DC2626!important;box-shadow:0 0 0 3px rgba(220,38,3
 <!-- 출력 후 직접 적을 칸: 2026-10-10 페이지 카드 → 다운로드 직전 경고 팝업(blankgate.js)으로 옮김 -->
 
 
-<!-- ⑧ 로드맵 네비게이션 (다운로드 후 다음 단계) -->
-<div class="card">
+<!-- ⑧ 로드맵 네비게이션 — 결제 전에만 보인다. 결제 후에는 위임장 아래 「다음 단계」(#next-box) 하나만 -->
+<div class="card" id="nav-card">
   <div class="nav-eyebrow">다음 단계</div>
   <button id="btn-roadmap" class="navbtn" onclick="goRoadmap('bottom')">
     
@@ -1166,7 +1166,7 @@ input.ocr-warn{border-color:#DC2626!important;box-shadow:0 0 0 3px rgba(220,38,3
       </a>
 
       <div class="side-note">
-        입력하신 내용은 <b>이 브라우저 안에서만</b> 처리됩니다. 서버로 전송·저장되지 않습니다.<br>
+        입력하신 내용은 <b>이 브라우저 안에서만</b> 처리되며 서버에 저장되지 않습니다. 결제한 부동산인지 확인하기 위해 고유번호·소재지번을 <b>알아볼 수 없게 변환한 값</b>만 저장합니다.<br>
         주민등록번호는 비워두고 출력 후 직접 적으셔도 됩니다.<br>
         최종 확인은 관할 등기소 안내를 따라 주세요.
       </div>
@@ -1744,6 +1744,7 @@ async function downloadAll() {
   if (!SRPay.requirePaid()) return;
   if (!validate()) return;
   if (window.SRBlank && window.nfBlankItems && !(await SRBlank.confirm({ doc: '위임장', items: nfBlankItems() }))) return;
+  if (window.SRPay && SRPay.bind && !(await SRPay.bind({ uid: gv('property-uid'), addr: gv('jibun-address') }))) return; // 동일 부동산 확인
   try{window.SR&&SR.track('doc_download',{doc:'all'});}catch(e){}
   if (typeof JSZip === 'undefined') { showToast('❌ 라이브러리 로딩 중, 잠시 후 다시 시도해주세요', '#DC2626'); return; }
   try {
@@ -1850,7 +1851,7 @@ async function buildWimiFiles(d) {
       SETTLE_MONTH: d.settleMonth.trim() ? d.settleMonth : '  ',
     }, _wimi.tokens);
     const blob = await fillTemplate(_wimi.tpl, reps,
-      window.SRResume ? (zip => SRResume.embed(zip, resumePayload)) : null);
+      window.SRResume ? (zip => SRResume.embed(zip, resumePayload, (SRPay.pass() || {}).token)) : null);
     let name;
     if (jointBoth) {
       const bn = (d.buyers[k] && d.buyers[k].name) || ('매수인' + (k + 1));
@@ -1867,6 +1868,7 @@ async function downloadWimiOnly() {
   if (!SRPay.requirePaid()) return;
   if (!validate()) return;
   if (window.SRBlank && window.nfBlankItems && !(await SRBlank.confirm({ doc: '위임장', items: nfBlankItems() }))) return;
+  if (window.SRPay && SRPay.bind && !(await SRPay.bind({ uid: gv('property-uid'), addr: gv('jibun-address') }))) return; // 동일 부동산 확인
   try{window.SR&&SR.track('doc_download',{doc:'wimijang'});}catch(e){}
   if (typeof JSZip === 'undefined') { showToast('❌ 라이브러리 로딩 중, 잠시 후 다시 시도해주세요', '#DC2626'); return; }
   try {
@@ -1952,6 +1954,7 @@ function applyResume(p) {
 function nxShow(flash) {
   const box = document.getElementById('next-box'); if (!box) return;
   box.hidden = !(window.SRPay && SRPay.has());
+  const nav = document.getElementById('nav-card'); if (nav) nav.style.display = box.hidden ? '' : 'none'; // 이동 버튼은 한 곳만
   if (flash && !box.hidden) { box.classList.remove('pulse'); void box.offsetWidth; box.classList.add('pulse'); }
 }
 window.addEventListener('srpay:change', () => nxShow(false));

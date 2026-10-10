@@ -10,6 +10,7 @@ import * as review from './shared/worker/pay/review.js';
 import * as paCreate from './shared/worker/pay/payapp_create.js';
 import * as paNotify from './shared/worker/pay/payapp_notify.js';
 import * as paConfirm from './shared/worker/pay/payapp_confirm.js';
+import * as bind from './shared/worker/pay/bind.js';
 
 const TOSSPAY_API_KEY = defineSecret('TOSSPAY_API_KEY');
 const PAY_TOKEN_SECRET = defineSecret('PAY_TOKEN_SECRET');
@@ -19,6 +20,7 @@ const PAYAPP_LINKVAL = defineSecret('PAYAPP_LINKVAL');   // 페이앱 연동VALU
 const ROUTES = {
   '/api/pay/create': create, '/api/pay/confirm': confirm, '/api/pay/verify': verify, '/api/pay/review': review,
   '/api/pay/payapp-create': paCreate, '/api/pay/payapp-notify': paNotify, '/api/pay/payapp-confirm': paConfirm,
+  '/api/pay/bind': bind,
 };
 // 페이앱 결제통보는 form 방식(application/x-www-form-urlencoded)으로 온다 — 본문을 그대로 넘긴다.
 const RAW_BODY = new Set(['/api/pay/payapp-notify']);
@@ -51,6 +53,15 @@ const paStore = {
   async update(orderNo, patch) { await (await fs()).collection('payapp').doc(orderNo).set(patch, { merge: true }); },
 };
 
+// 부동산 확인: Firestore binds/{주문번호} = { u, a(HMAC 값), swaps, first, at } — 이용권을 처음 쓴 부동산에 묶는다.
+const bindStore = {
+  async get(orderNo) { const s = await (await fs()).collection('binds').doc(orderNo).get(); return s.exists ? s.data() : null; },
+  async set(orderNo, patch) {
+    const p = patch.first ? { ...patch, expireAt: new Date(patch.first + 90 * 86400 * 1000) } : patch; // 개인정보처리방침 제4조: 90일 이내 파기
+    await (await fs()).collection('binds').doc(orderNo).set(p, { merge: true });
+  },
+};
+
 function originOf(req) {
   const h = String(req.get('x-forwarded-host') || req.get('host') || '').split(',')[0].trim().toLowerCase();
   if (!HOSTS.test(h)) return 'https://www.selfregi24.com';
@@ -75,6 +86,7 @@ export const pay = onRequest(
         PAYAPP_LINKVAL: PAYAPP_LINKVAL.value(),
         saveReview,
         paStore,
+        bindStore,
       };
       const raw = RAW_BODY.has(req.path);
       const request = new Request(originOf(req) + req.path, {

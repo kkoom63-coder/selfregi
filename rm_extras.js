@@ -24,7 +24,11 @@
     var got = await SRResume.read(file);
     if (typeof got === 'string') { say(esc(SRResume.MSG[got] || '파일을 읽지 못했습니다.'), 'err'); trk('resume_docx', { mode: got.toLowerCase(), from: 'roadmap' }); return; }
     var r = got.d && got.d.r;
-    if (!r || !r.buyerName) { say('이 위임장 파일에는 매수인 정보가 없습니다. 서류 작성 화면에서 입력을 마친 뒤 받은 위임장을 올려 주세요.', 'err'); return; }
+    if (!r || !(r.buyerName || r.sellerName || r.jibun || r.aptName)) { say('이 위임장 파일에는 신청서에 넣을 정보가 없습니다. 서류 작성 화면에서 입력한 뒤 받은 위임장을 올려 주세요.', 'err'); return; }
+    var paid = '';
+    if (got.k && window.SRPay && SRPay.redeemToken && !SRPay.has()) {
+      paid = (await SRPay.redeemToken(got.k)) ? ' 결제도 확인되었습니다.' : ' 이 파일의 결제는 기한(30일)이 지났거나 취소되어 이어받지 못했습니다.';
+    }
     r.v = r.v || 3; r.ts = Date.now();
     try { localStorage.setItem('selfregi_form_v1', JSON.stringify(r)); } catch (e) {}
     var addr = String(r.jibun || '').trim();
@@ -35,7 +39,7 @@
       try { history.replaceState(null, '', location.pathname + '?addr=' + encodeURIComponent(addr) + location.hash); } catch (e) {}
     }
     try { restoreRelay(); } catch (e) {}
-    say('<b>위임장 파일에서 당사자·부동산 정보를 불러왔습니다.</b> 주민등록번호는 파일에 담기지 않으므로 신청서에 직접 적어 주세요. 앞 단계의 번호(취득세액·채권번호 등)는 이 기기에서 다시 입력해 주셔야 합니다.', 'ok');
+    say('<b>위임장 파일에서 당사자·부동산 정보를 불러왔습니다.</b>' + paid + ' 주민등록번호는 파일에 담기지 않으므로 신청서에 직접 적어 주세요. 앞 단계의 번호(취득세액·채권번호 등)는 이 기기에서 다시 입력해 주셔야 합니다.', 'ok');
     trk('resume_docx', { mode: 'ok', from: 'roadmap' });
   }
   function bindResume() {
