@@ -18,9 +18,24 @@
   function done(p) { return p && ls(DONE_KEY) === p.token.slice(0, 24); }
 
   function slots(html) { document.querySelectorAll('.rv-slot').forEach(function (s) { s.innerHTML = html; s.hidden = !html; }); }
+  /* 「나중에」 뒤 남는 한 줄 카드(2026-10-12 사용자 확정 A안): 질문 · 별 5개 · 후기 남기기.
+     별을 누르면 그 별점을 고른 상태로 팝업이 열린다. 가이드 버튼과 모양을 달리해 「할 일」로 보이게. */
   function laterButton() {
-    slots('<button type="button" class="rv-reopen">후기 남기기</button>');
-    document.querySelectorAll('.rv-reopen').forEach(function (b) { b.onclick = function () { open('reopen'); }; });
+    slots('<div class="rv-line"><span class="rv-l-ic" aria-hidden="true">' + STAR + '</span>'
+      + '<span class="rv-l-t" id="rv-l-t">서류 작성은 어떠셨나요?</span>'
+      + '<span class="rv-l-stars" role="group" aria-labelledby="rv-l-t">'
+      + [1, 2, 3, 4, 5].map(function (n) { return '<button type="button" class="rv-l-star" data-n="' + n + '" aria-label="' + n + '점 ' + LABELS[n] + '">' + STAR + '</button>'; }).join('')
+      + '</span><button type="button" class="rv-reopen">후기 남기기</button></div>');
+    document.querySelectorAll('.rv-line').forEach(function (line) {
+      var ss = line.querySelectorAll('.rv-l-star');
+      function hi(v) { ss.forEach(function (b) { b.classList.toggle('on', +b.dataset.n <= v); }); }
+      ss.forEach(function (b) {
+        b.addEventListener('mouseenter', function () { hi(+b.dataset.n); });
+        b.addEventListener('mouseleave', function () { hi(0); });
+        b.onclick = function () { open('line_star', +b.dataset.n); };
+      });
+      line.querySelector('.rv-reopen').onclick = function () { open('reopen'); };
+    });
   }
 
   function build() {
@@ -44,6 +59,7 @@
     document.body.appendChild(dlg);
     var f = dlg.querySelector('form'), rating = 0;
     function paint(h) { var v = h || rating; f.querySelectorAll('.rv-star').forEach(function (b) { b.classList.toggle('on', +b.dataset.n <= v); b.setAttribute('aria-checked', String(+b.dataset.n === rating)); }); f.querySelector('.rv-rl').textContent = LABELS[v] || ''; }
+    dlg._rate = function (n) { if (n >= 1 && n <= 5) { rating = n; paint(); } };
     f.querySelector('.rv-stars').addEventListener('mouseover', function (e) { var s = e.target.closest('.rv-star'); if (s) paint(+s.dataset.n); });
     f.querySelector('.rv-stars').addEventListener('mouseleave', function () { paint(); });
     f.addEventListener('click', function (e) {
@@ -77,9 +93,10 @@
     });
   }
 
-  function open(from) {
+  function open(from, preset) {
     var p = pass(); if (!p || done(p)) return;
     if (!dlg) build();
+    if (preset && dlg._rate) dlg._rate(preset);
     last = document.activeElement;
     dlg.hidden = false; document.documentElement.classList.add('rv-open');
     setTimeout(function () { try { dlg.querySelector('.rv').focus({ preventScroll: true }); } catch (e) {} }, 50); /* 첫 별에 포커스 테두리가 생기지 않게 팝업 자체에 */
@@ -129,7 +146,18 @@
     + '.rv-send{flex:1;min-height:48px;border:0;border-radius:10px;background:#0F172A;color:#fff;font-family:inherit;font-size:15px;font-weight:800;cursor:pointer}'
     + '.rv-send:disabled{opacity:.6;cursor:default}'
     + '.rv-later,.rv-reopen{min-height:48px;padding:0 16px;border:1px solid #E2E8F0;border-radius:10px;background:#fff;font-family:inherit;font-size:14px;font-weight:700;color:#475569;cursor:pointer}'
-    + '.rv-reopen{min-height:40px;margin-top:10px;font-size:13px;color:#0369A1;border-color:#BAE6FD;background:#F0F9FF}'
+    + '.rv-line{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:12px;padding:8px 8px 8px 12px;border:1px solid #E2E8F0;border-radius:12px;background:#F8FAFC}'
+    + '.rv-l-ic{flex:none;width:34px;height:34px;border-radius:50%;background:#fff;border:1px solid #E2E8F0;display:grid;place-items:center}'
+    + '.rv-l-ic svg{width:18px;height:18px;fill:#F59E0B}'
+    + '.rv-l-t{font-size:14px;font-weight:700;color:#0F172A}'
+    + '.rv-l-stars{display:flex;gap:0;margin-left:auto}'
+    + '.rv-l-star{width:36px;height:36px;padding:6px;border:0;border-radius:8px;background:none;cursor:pointer;line-height:0}'
+    + '.rv-l-star svg{width:24px;height:24px;fill:#fff;stroke:#64748B;stroke-width:1.4;stroke-linejoin:round;transition:fill .1s,stroke .1s}'
+    + '.rv-l-star.on svg{fill:#F59E0B;stroke:#D97706}'
+    + '.rv-l-star:focus-visible{outline:2px solid #0369A1;outline-offset:1px}'
+    + '.rv-line .rv-reopen{min-height:40px;border:0;background:#0F172A;color:#fff;font-weight:800;font-size:14px;padding:0 16px}'
+    + '@media(max-width:560px){.rv-l-t{flex:1 1 calc(100% - 48px)}.rv-l-stars{margin-left:-6px}.rv-line .rv-reopen{flex:1 1 auto;padding:0 12px}}'
+    + '@media(prefers-reduced-motion:reduce){.rv-l-star svg{transition:none}}'
     + '.rv-done b{display:block;font-size:17px;font-weight:800}.rv-done span{display:block;font-size:13.5px;color:#334155;margin:4px 0 14px}.rv-done .rv-ok{width:100%}'
     + '.rv:focus{outline:none}.rv :focus-visible,.rv-reopen:focus-visible{outline:2px solid #0369A1;outline-offset:2px}';
   var st = document.createElement('style'); st.id = 'rv-css'; st.textContent = css; document.head.appendChild(st);

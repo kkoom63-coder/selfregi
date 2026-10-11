@@ -2274,7 +2274,7 @@ function renderRelaySum(key){
 document.addEventListener('input', function(e){
   var t = e.target; if (!t.matches || !t.matches('[data-relay="bond"] input, [data-relay="fee"] input')) return;
   var v = t.value.replace(/[^0-9-]/g, ''); if (v === t.value) return;
-  t.value = v; if (!t._srWarned) { t._srWarned = true; showToast('번호는 숫자와 하이픈(-)만 입력됩니다.'); }
+  t.value = v; if (!t._srWarned) { t._srWarned = true; showToast('번호에는 숫자와 하이픈(-)만 쓸 수 있어 다른 문자는 지웠습니다.'); }
 }, true);
 function saveRelay(btn){
   const box = btn.closest('.relay-input[data-relay]');
@@ -2765,7 +2765,7 @@ const GUIDES = {
   ],
   /* 증여(2026-10-11): 실제 생성 문서(증여계약서·위임장·신청서)에 예시 데이터를 넣어 찍은 재현 이미지 */
   'stamp_gift':[
-    {text:"1. 증여계약서 — 증여인·수증인 날인", img:"stamp_gift_1.webp", desc:"증여인은 위임장과 같은 <b>인감도장</b>으로 찍는 것이 안전하고, 수증인 도장은 인감이 아니어도 됩니다. 수증인이 2명이면 두 사람 모두 찍습니다. 날인한 원본으로 구청 검인을 받습니다."},
+    {text:"1. 증여계약서 — 증여인·수증인 날인", img:"stamp_gift_1.webp", desc:"증여인은 위임장과 같은 <b>인감도장</b>으로 찍으세요. 수증인 도장은 인감이 아니어도 됩니다. 수증인이 2명이면 두 사람 모두 찍고, 날인한 원본으로 구청 검인을 받습니다."},
     {text:"2. 위임장 — 증여인 인감 날인", img:"stamp_gift_2.webp", desc:"날인 칸에 <b>증여인의 인감도장</b>(인감증명서와 같은 도장)을 선명하게 찍으세요. 2장 이상으로 인쇄되면 증여인 인감으로 간인합니다."},
     {text:"3. 신청서 — 신청인 날인", img:"stamp_gift_3.webp", desc:"등기소에 가는 사람이 신청인(또는 대리인)란에 도장을 찍습니다. 인감이 아니어도 되고, 신청서가 2장 이상이면 같은 도장으로 간인합니다."}
   ],
