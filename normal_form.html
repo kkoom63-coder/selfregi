@@ -1059,7 +1059,7 @@ input.ocr-warn{border-color:#DC2626!important;box-shadow:0 0 0 3px rgba(220,38,3
     </div>
     <span class="pay-arrow" id="pay-arrow">→</span>
   </button>
-  <p class="pay-note" id="pay-note">토스페이·네이버페이·카카오페이로 결제합니다(토스페이는 PC에서 QR). 결제는 새 창에서 진행되며, 입력하신 내용은 이 화면에 그대로 남습니다. 입력 내용은 이 기기에만 저장되니 서류를 인쇄할 기기에서 진행하시면 편합니다. 휴대폰으로 결제했다면 받은 위임장 파일을 PC로 옮겨 「위임장 파일로 이어서 하기」에 올리세요. 결제와 입력 내용이 함께 이어집니다.</p>
+  <p class="pay-note" id="pay-note">토스페이·네이버페이·카카오페이로 결제합니다(토스페이는 PC에서 QR).<br>결제는 새 창에서 진행되며, 입력하신 내용은 이 화면에 그대로 남습니다.</p>
   <div class="svc-terms">
     <div class="svc-terms-h">서비스 제공 방식과 시점</div>
     <dl class="svc-terms-l">
@@ -1149,7 +1149,7 @@ input.ocr-warn{border-color:#DC2626!important;box-shadow:0 0 0 3px rgba(220,38,3
         <div class="cp">위임장에 들어갈 내용</div>
         부동산의 표시 <span class="v e" id="pvProp">아직 입력 전</span><br>
         등기원인 <span class="v e" id="pvCause">아직 입력 전</span><br>
-        위임인(매도인) <span class="v e" id="pvSeller">아직 입력 전</span><br>
+        <span data-gift="위임인(증여인)">위임인(매도인)</span> <span class="v e" id="pvSeller">아직 입력 전</span><br>
         대리인 <span class="v e" id="pvAgent">아직 입력 전</span>
       </div>
       <div class="pv">
@@ -1158,7 +1158,7 @@ input.ocr-warn{border-color:#DC2626!important;box-shadow:0 0 0 3px rgba(220,38,3
         전유면적 <span class="v e" id="pvArea">아직 입력 전</span><br>
         대지권 비율 <span class="v e" id="pvRatio">아직 입력 전</span><br>
         이전할 지분 <span class="v e" id="pvShare">아직 입력 전</span><br>
-        거래가액 <span class="v e" id="pvPrice">아직 입력 전</span><br>
+        <span class="sale-only">거래가액 <span class="v e" id="pvPrice">아직 입력 전</span><br></span>
         부동산 고유번호 <span class="v e" id="pvUid">아직 입력 전</span>
       </div>
 
@@ -1345,6 +1345,7 @@ function switchDeal(type, btn) {
   document.querySelectorAll('.deal-tab-btn[data-deal]').forEach(b => b.classList.toggle('active', b.dataset.deal === type));
   if (btn && !btn.dataset.deal) btn.classList.add('active');
   const isGift = type === 'gift';
+  try { window.nfPvRender && window.nfPvRender(); } catch (e) {} // 미리보기 등기원인(매매/증여) 즉시 갱신
   if (isGift && document.getElementById('seller-joint') && document.getElementById('seller-joint').checked) {
     document.getElementById('seller-joint').checked = false; toggleJoint('seller'); // 증여인은 1명
   }
@@ -1492,7 +1493,7 @@ function renderPayState(){
     var url=SRPay.reissueUrl();
     note.innerHTML='재발급 링크: <a href="'+url+'" style="word-break:break-all">'+url.replace(/^https?:\/\//,'').slice(0,48)+'…</a> — 다른 기기에서도 이 링크로 다시 받으실 수 있습니다.';
   } else {
-    note.textContent='토스페이·네이버페이·카카오페이로 결제합니다(토스페이는 PC에서 QR). 결제는 새 창에서 진행되며, 입력하신 내용은 이 화면에 그대로 남습니다.';
+    note.innerHTML='토스페이·네이버페이·카카오페이로 결제합니다(토스페이는 PC에서 QR).<br>결제는 새 창에서 진행되며, 입력하신 내용은 이 화면에 그대로 남습니다.'; /* 괄호 뒤에서 줄바꿈 — 한 줄 + 몇 글자 넘침 방지(design.md 문구 길이) */
   }
 }
 window.addEventListener('srpay:change', function(e){
@@ -2191,7 +2192,7 @@ window.SR=window.SR||(function(){
     if(addr){prop=addr+(apt?' '+apt:'')+(dong?' 제'+dong+'동':'')+(ho?' 제'+ho+'호':'');}
     put('pvProp',prop,['jibun-address','floor','ho']);
     var y=v('year'),m=v('month'),d=v('day');
-    put('pvCause',(y&&m&&d)?(y+'년 '+m+'월 '+d+'일 매매'):'');
+    put('pvCause',(y&&m&&d)?(y+'년 '+m+'월 '+d+'일 '+(dealType==='gift'?'증여':'매매')):'');
     put('pvSeller', v('s-name') || v('c-name'), ['s-name']);
     put('pvAgent',  v('owner-name'));
     put('pvStruct', v('prop-struct'), ['prop-struct']);
