@@ -2612,13 +2612,19 @@ function geoSum(){
 
 /* 증여 화면: 이름 바꾸기(서류 작성 화면과 같은 단어표) · 매매 전용 줄 숨김 · 이용권 상품 · 번호 다시 매기기 */
 function rmApplyGift(){
-  const W = [['매도용 인감증명서', '인감증명서'], ['매도인', '증여인'], ['매수인', '수증인'], ['매매계약서', '증여계약서']];
+  /* 긴 문구 먼저. 2026-10-11: 화면에 처음 있는 글자만 바꿔서 「매매(분양)계약서 원본」「잔금일에 매도인에게」가 남았고,
+     나중에 그려지는 글자(편철표·안내·팝업)도 바뀌지 않았다 → 문구 추가 + 새로 생기는 글자 감시 */
+  const W = [['매매(분양)계약서 원본', '검인받은 증여계약서 원본'], ['잔금일에 매도인에게 받을 서류', '증여인에게 받을 서류'], ['1:1 매매 기준', '증여인 1명·수증인 1명 기준'], ['소유권이전등기신청서(매매)', '소유권이전등기신청서(증여)'],
+    ['매도용 인감증명서', '인감증명서'], ['매도인', '증여인'], ['매수인', '수증인'], ['매매계약서', '증여계약서']];
+  const SKIP = '[data-gift],script,style,nav,footer,#mnav,.nav-dd-menu';
+  const fix = n => { const p = n.parentElement; if (!p || p.closest(SKIP)) return;
+    let t = n.nodeValue; W.forEach(([a, b]) => { t = t.split(a).join(b); }); if (t !== n.nodeValue) n.nodeValue = t; };
+  const walk = root => { if (root.nodeType === 3) return fix(root); if (root.nodeType !== 1) return;
+    const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT); let n; while ((n = w.nextNode())) fix(n); };
   document.querySelectorAll('[data-gift]').forEach(el => { el.innerHTML = el.dataset.gift; });
-  const main = document.getElementById('main');
-  if (main) {
-    const w = document.createTreeWalker(main, NodeFilter.SHOW_TEXT, { acceptNode: n => (n.parentElement && n.parentElement.closest('[data-gift],script,style')) ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT });
-    let n; while ((n = w.nextNode())) { let t = n.nodeValue; W.forEach(([a, b]) => { t = t.split(a).join(b); }); if (t !== n.nodeValue) n.nodeValue = t; }
-  }
+  walk(document.body);
+  new MutationObserver(ms => ms.forEach(m => { if (m.type === 'characterData') walk(m.target); else m.addedNodes.forEach(walk); }))
+    .observe(document.body, { childList: true, subtree: true, characterData: true });
   document.querySelectorAll('.sale-only').forEach(el => { el.hidden = true; });
   document.querySelectorAll('.gift-only').forEach(el => { el.hidden = false; });
   let k = 0; document.querySelectorAll('#rl > .rl-i').forEach(li => { if (!li.hidden) { const n = li.querySelector('.rl-n'); if (n) n.textContent = String(++k); } });

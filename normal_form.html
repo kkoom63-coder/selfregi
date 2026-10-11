@@ -1312,23 +1312,39 @@ let dealType = 'sale';
 
 /* ── 증여(2026-10-11) — 같은 화면의 「매매/증여」 탭.
    색은 그대로 두고 이름만 바꾼다: data-gift 가 있는 요소는 그 내용으로 바꾸고,
-   data-gx 카드 안의 글자는 아래 단어표로 바꾼다. 매매 전용 칸(.sale-only)은 숨긴다. ── */
-const GIFT_WORDS = [['매도용 인감증명서', '인감증명서'], ['매도인', '증여인'], ['매수인', '수증인'], ['매수자', '수증자'],
+   화면 전체의 글자는 아래 단어표로 바꾼다(nav·푸터·탭 버튼 제외). 매매 전용 칸(.sale-only)은 숨긴다.
+   2026-10-11: 처음엔 data-gx 카드만 바꿔서 등기부 판독 결과·빈칸 경고·업로드 안내 등 나중에 그려지는 글자에
+   「매도인·매수인·잔금일」이 남았다 → 범위를 화면 전체로 넓히고, 증여 중에 새로 생기는 글자도 감시해 바꾼다. ── */
+const GIFT_WORDS = [
+  // 긴 문구 먼저(잔금 기준 안내 → 증여 기준)
+  ['잔금일에 매도인이 인감을 날인할 때 직접 적습니다', '증여인이 인감을 날인할 때 직접 적습니다'],
+  ['작성일의 연·월(잔금일)', '작성일의 연·월(계약일)'], ['잔금 당일 날짜를 적습니다', '날인하는 날짜를 적습니다'],
+  ['매수인 정보 · 매매계약 정보', '수증인 정보 · 증여계약 정보'], ['공동명의로 매수합니다', '공동명의로 증여받습니다'],
+  ['매도용 인감증명서', '인감증명서'], ['매도인', '증여인'], ['매수인', '수증인'], ['매수자', '수증자'],
   ['매매계약서', '증여계약서'], ['매매계약', '증여계약'], ['전부 이전', '전부 증여'], ['일부만 이전', '일부만 증여'], ['이전할 지분', '증여할 지분']];
+const GIFT_SKIP = '[data-gift],script,style,nav,footer,#mnav,.nav-dd-menu,.deal-tab-btn,[data-nogx]';
 const _giftOrig = new Map();
+function giftify(root) {
+  const fix = n => {
+    const p = n.parentElement; if (!p || p.closest(GIFT_SKIP)) return;
+    const o = n.nodeValue; let t = o;
+    GIFT_WORDS.forEach(([a, b]) => { t = t.split(a).join(b); });
+    if (t !== o) { if (!_giftOrig.has(n)) _giftOrig.set(n, o); n.nodeValue = t; }
+  };
+  if (root.nodeType === 3) return fix(root);
+  if (root.nodeType !== 1) return;
+  const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+  let n; while ((n = w.nextNode())) fix(n);
+}
+/* 증여 중에 새로 그려지는 글자(판독 결과·팝업·안내)도 바꾼다 */
+new MutationObserver(ms => {
+  if (dealType !== 'gift') return;
+  ms.forEach(m => { if (m.type === 'characterData') giftify(m.target); else m.addedNodes.forEach(giftify); });
+}).observe(document.body, { childList: true, subtree: true, characterData: true });
 function applyGiftText(on) {
   if (on) {
     document.querySelectorAll('[data-gift]').forEach(el => { if (el.dataset.sale === undefined) el.dataset.sale = el.innerHTML; el.innerHTML = el.dataset.gift; });
-    document.querySelectorAll('[data-gx]').forEach(sc => {
-      const w = document.createTreeWalker(sc, NodeFilter.SHOW_TEXT, {
-        acceptNode: n => (n.parentElement && n.parentElement.closest('[data-gift],script,style')) ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT });
-      let n;
-      while ((n = w.nextNode())) {
-        const o = n.nodeValue; let t = o;
-        GIFT_WORDS.forEach(([a, b]) => { t = t.split(a).join(b); });
-        if (t !== o) { if (!_giftOrig.has(n)) _giftOrig.set(n, o); n.nodeValue = t; }
-      }
-    });
+    giftify(document.body);
   } else {
     _giftOrig.forEach((o, n) => { n.nodeValue = o; }); _giftOrig.clear();
     document.querySelectorAll('[data-gift]').forEach(el => { if (el.dataset.sale !== undefined) el.innerHTML = el.dataset.sale; });
