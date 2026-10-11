@@ -215,6 +215,9 @@ td b.tot{font-weight:800;color:var(--navy)}
 .finish-btns .p:hover{background:#E0F2FE}
 .finish-btns .g{border:1px solid rgba(255,255,255,.35);color:#fff}
 .finish-btns .g:hover{background:rgba(255,255,255,.08)}
+.finish .finish-n{font-size:12.5px;color:#CBD5E1;margin-top:12px}
+#steps td a,#docs .src a{white-space:nowrap}
+#steps td a{color:var(--blue);font-weight:600;font-size:13px}
 @media(max-width:560px){.card{padding:18px 16px}.page-header{padding:32px 20px 24px}.sum dd{font-size:20px}}
 
 
@@ -357,8 +360,8 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:40px;p
         <tbody>
           <tr><td data-l="순서">1</td><td data-l="할 일">증여계약서 작성·날인</td><td data-l="어디서">증여인·수증인</td><td data-l="언제까지">계약일 = 등기원인일자</td></tr>
           <tr><td data-l="순서">2</td><td data-l="할 일">증여계약서 검인</td><td data-l="어디서">부동산 소재지 시·군·구청</td><td data-l="언제까지">취득세 신고 전</td></tr>
-          <tr><td data-l="순서">3</td><td data-l="할 일">취득세 신고·납부</td><td data-l="어디서">위택스 또는 구청 세무과</td><td data-l="언제까지">등기 접수 전</td></tr>
-          <tr><td data-l="순서">4</td><td data-l="할 일">국민주택채권 매입 · 등기신청수수료 납부</td><td data-l="어디서">은행 · 인터넷등기소</td><td data-l="언제까지">등기 접수 전</td></tr>
+          <tr><td data-l="순서">3</td><td data-l="할 일">취득세 신고·납부</td><td data-l="어디서">위택스 또는 구청 세무과 <a href="guide.html#g=wetax">화면 보기</a></td><td data-l="언제까지">등기 접수 전</td></tr>
+          <tr><td data-l="순서">4</td><td data-l="할 일">국민주택채권 매입 · 등기신청수수료 납부</td><td data-l="어디서">은행 · 인터넷등기소 <a href="guide.html#g=bondonline">채권</a> · <a href="guide.html#g=efee">수수료</a> 화면 보기</td><td data-l="언제까지">등기 접수 전</td></tr>
           <tr><td data-l="순서">5</td><td data-l="할 일">서류 편철 · 등기소 접수</td><td data-l="어디서">관할 등기소</td><td data-l="언제까지">—</td></tr>
           <tr class="us"><td data-l="순서">별도</td><td data-l="할 일">증여세 신고</td><td data-l="어디서">홈택스 또는 관할 세무서</td><td data-l="언제까지">증여일이 속한 달 말일부터 3개월</td></tr>
         </tbody>
@@ -443,7 +446,7 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:40px;p
       <li><b>대장</b> — 토지대장등본(대지권등록부 포함) · 집합건축물대장등본(전유부), 각 발행일부터 3개월 이내</li>
       <li><b>위임장</b> — 한 사람이 대신 접수할 때, 위임인의 인감도장 날인</li>
     </ul>
-    <p class="src">근거: 인감증명법 시행령 제13조(용도·전자 발급 제외), 부동산등기규칙 제60조의2(본인서명사실확인서로 대신 가능). 서류별 장수와 편철 순서는 결제 후 로드맵의 편철표에 정리됩니다.</p>
+    <p class="src">초본·등본·대장은 <a href="guide.html#g=gov24">정부24 발급 화면</a>에서 순서대로 볼 수 있습니다. 근거: 인감증명법 시행령 제13조(용도·전자 발급 제외), 부동산등기규칙 제60조의2(본인서명사실확인서로 대신 가능).</p>
   </section>
 
   <section class="card" id="scope" aria-labelledby="c6-h">
@@ -475,11 +478,12 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:40px;p
 
   <div class="finish">
     <h3>증여 서류를 자동완성합니다</h3>
-    <p>증여계약서(구청 검인용)·위임장·신청서를 Word 파일로 만듭니다. 부동산 1건 14,900원이며, 최종 확인은 관할 등기소 안내를 따라 주세요.</p>
+    <p>증여계약서(구청 검인용)·위임장·신청서를 Word 파일로 만듭니다. 부동산 1건 14,900원입니다.</p>
     <div class="finish-btns">
       <a href="normal_form.html?type=gift" class="p" data-cta="gift_guide">증여 서류 작성하기</a>
-      <a href="guide.html" class="g">셀프등기 가이드</a>
+      <a href="guide.html#g=wetax" class="g">납부·발급 화면 순서 보기</a>
     </div>
+    <p class="finish-n">취득세·채권·수수료 납부와 서류 발급 화면은 매매와 같아 셀프등기 가이드에서 함께 봅니다.</p>
   </div>
 </div>
 </main>

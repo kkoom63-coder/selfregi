@@ -215,8 +215,8 @@ header{background:var(--bg)}
 .ptab.on span{color:var(--navy)}
 .pgrid{max-width:780px;margin:0 auto 14px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
 .pcard{background:#fff;border:2px solid var(--border);border-radius:16px;padding:24px 22px;display:flex;flex-direction:column;gap:10px;text-align:left;box-shadow:var(--shadow);cursor:pointer;transition:border-color .15s}
-.pcard:hover{border-color:#94A3B8}
-.pcard.sel{border-color:var(--navy);cursor:default}
+.pcard:hover{border-color:var(--blue)}
+.pcard.sel{border-color:var(--blue);background:#E0F2FE;cursor:default} /* 아래 케이스 카드(.case-card.selected)와 같은 선택 표시 — 같은 페이지의 「고르는 카드」는 반응을 맞춘다 */
 .pcard:not(.sel) .pc-go{background:#fff;color:var(--navy);border:1.5px solid var(--navy)}
 .pcard .price-row{justify-content:flex-start;margin:2px 0 4px}
 .pcard .price-list{margin:0 0 4px}
