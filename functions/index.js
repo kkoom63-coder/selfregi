@@ -57,7 +57,7 @@ const paStore = {
 const bindStore = {
   async get(orderNo) { const s = await (await fs()).collection('binds').doc(orderNo).get(); return s.exists ? s.data() : null; },
   async set(orderNo, patch) {
-    const p = patch.first ? { ...patch, expireAt: new Date(patch.first + 90 * 86400 * 1000) } : patch; // 개인정보처리방침 제4조: 90일 이내 파기
+    const p = patch.first ? { ...patch, expireAt: new Date(patch.first + 89 * 86400 * 1000) } : patch; // 개인정보처리방침 제4조: 90일 이내 파기 — TTL 삭제가 만료 후 최대 24시간 늦어 89일로 둔다
     await (await fs()).collection('binds').doc(orderNo).set(p, { merge: true });
   },
 };
