@@ -683,7 +683,7 @@ input.ocr-warn{border-color:#DC2626!important;box-shadow:0 0 0 3px rgba(220,38,3
   </div></div>
   <div class="divider"></div>
   <div class="fg">
-    <div class="f"><label>동 <span class="req">*</span></label><input type="number" id="dong" placeholder="107"></div>
+    <div class="f"><label>동<span class="hint">(동이 없는 건물은 비워 두세요)</span></label><input type="number" id="dong" placeholder="107"></div>
     <div class="f"><label>호 <span class="req">*</span></label><input type="number" id="ho" placeholder="1204"></div>
   </div>
   <div class="divider"></div>
@@ -1801,6 +1801,8 @@ async function fillTemplate(b64, replacements, beforeSave) {
   const zip = await JSZip.loadAsync(bytes);
   let xml = await zip.file('word/document.xml').async('string');
   xml = xml.replace(TOKEN_DEFRAG, '{{$1}}');
+  /* 동이 없는 건물(2026-10-11): 「{{DONG}}동」이 「 동」으로 남지 않게 통째로 지운다 — 없는 동이 찍히면 등기부 표시와 달라진다 */
+  if ('DONG' in replacements && !String(replacements.DONG || '').trim()) xml = xml.replace(/ ?\{\{DONG\}\}동/g, '');
   for (const k in replacements) {
     const re = new RegExp('\\{\\{' + k + '\\}\\}', 'g');
     xml = xml.replace(re, xe(replacements[k]));
@@ -1858,7 +1860,7 @@ async function downloadAll() {
       SETTLE_YEAR: d.settleYear.trim() ? d.settleYear : '    ',
       SETTLE_MONTH: d.settleMonth.trim() ? d.settleMonth : '  ',
     }, _wimi.tokens));
-    blobDL(blob1, `위임장_${d.ownerName}_${d.dong}동${d.ho}호.docx`);
+    blobDL(blob1, `위임장_${d.ownerName}_${d.dong ? d.dong + '동' : ''}${d.ho}호.docx`);
 
     // 살짝 딜레이 후 신탁일부해지증서 (브라우저 다운로드 충돌 방지)
     await new Promise(r => setTimeout(r, 400));
@@ -1883,7 +1885,7 @@ async function downloadAll() {
       TRUST_ADDR2: '',
       TRUST_CEO: d.tCEO,
     });
-    blobDL(blob2, `신탁일부해지증서_${d.ownerName}_${d.dong}동${d.ho}호.docx`);
+    blobDL(blob2, `신탁일부해지증서_${d.ownerName}_${d.dong ? d.dong + '동' : ''}${d.ho}호.docx`);
 
     showToast('✅ 2개 서류 다운로드 완료!');
   } catch(e) { showToast('❌ ' + e.message, '#DC2626'); console.error(e); }
@@ -1926,7 +1928,7 @@ async function buildGiftContract(d) {
     CONTRACT_Y: (d.yr || '').trim() || '    ', CONTRACT_M: (d.mo || '').trim() || '  ', CONTRACT_D: (d.dy || '').trim() || '  ',
   };
   const blob = await fillTemplate(GIFT_CONTRACT_B64, reps, donees.length < 2 ? dropSecondDonee : null);
-  return { blob, name: `증여계약서_${donor.name || ''}_${d.dong}동${d.ho}호.docx` };
+  return { blob, name: `증여계약서_${donor.name || ''}_${d.dong ? d.dong + '동' : ''}${d.ho}호.docx` };
 }
 
 // =============================================
@@ -1972,9 +1974,9 @@ async function buildWimiFiles(d) {
     let name;
     if (jointBoth) {
       const bn = (d.buyers[k] && d.buyers[k].name) || ('매수인' + (k + 1));
-      name = `위임장_${k + 1}of${filings}_${bn}_${d.dong}동${d.ho}호.docx`;
+      name = `위임장_${k + 1}of${filings}_${bn}_${d.dong ? d.dong + '동' : ''}${d.ho}호.docx`;
     } else {
-      name = `위임장_${d.ownerName}_${d.dong}동${d.ho}호.docx`;
+      name = `위임장_${d.ownerName}_${d.dong ? d.dong + '동' : ''}${d.ho}호.docx`;
     }
     files.push({ blob, name });
   }
@@ -2095,7 +2097,7 @@ function goRoadmap(from) {
   const dong = gv('dong');
   const ho = gv('ho');
   let fullAddr = jibun;
-  if (dong && ho) fullAddr += ` ${dong}동 ${ho}호`;
+  if (ho) fullAddr += ` ${dong ? dong + '동 ' : ''}${ho}호`; // 동 없는 건물도 호는 붙인다
 
   // [신청서 릴레이] localStorage로 form→roadmap 데이터 전달.
   // 결제 여부는 별도 이용권(selfregi_pass_v1, pay.js)으로 판정한다.
@@ -2197,9 +2199,9 @@ window.SR=window.SR||(function(){
     } else if(ms.length){ e.textContent='읽지 못함'; e.className='v miss'; }
     else {e.textContent='아직 입력 전';e.className='v e';}
   }
-  var REQ=['owner-name','owner-address','s-name','s-addr','jibun-address','dong','ho',
+  var REQ=['owner-name','owner-address','s-name','s-addr','jibun-address','ho',
            'total-land','unit-land','transfer-denom','transfer-num'];
-  var OPT=['owner-rrn','apt-name','floor','prop-struct','prop-area','prop-road-address',
+  var OPT=['owner-rrn','apt-name','dong','floor','prop-struct','prop-area','prop-road-address',
            'property-uid','deal-price','land-category','land-area'];
   function frac(a,b){var x=v(a),y=v(b);return (x&&y)?(x+'분의 '+y):'';}
   function render(){
@@ -2953,7 +2955,7 @@ if (window.SRPay && SRPay.setGuard) SRPay.setGuard(function () {
   var DOC_W = '위임장', DOC_B = '위임장·신청서', DOC_S = '신청서';
   var MAP = [
     [['jibun-address'], DOC_B, '부동산의 표시 — 소재지번'],
-    [['dong','ho'], DOC_B, '부동산의 표시 — 동·호'],
+    [['ho'], DOC_B, '부동산의 표시 — 호'],
     [['prop-area'], DOC_B, '부동산의 표시 — 전유면적'],
     [['total-land','unit-land'], DOC_B, '대지권의 비율'],
     [['s-name'], DOC_B, '등기의무자(매도인) 성명'],
