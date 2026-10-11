@@ -2056,6 +2056,11 @@ function formSnapshot() {
 function buildResumePayload(d) {
   return { f: formSnapshot(), t: transferMode, r: relayForm(d) };
 }
+/* 링크로 이어서 하기(2026-10-12): 결제를 시작할 때 pay.js 가 불러 이 기기에 잠시 맡긴다.
+   결제 완료 화면이 이것을 재발급 링크 끝(#r=)에 담고 바로 지운다. 주민등록번호는 SRResume.scrub 이 뺀다. */
+window.SRResumeDraft = function () {
+  try { return window.SRResume ? SRResume.scrub(buildResumePayload(getData())) : null; } catch (e) { return null; }
+};
 function applyResume(p) {
   const f = (p && p.f) || {};
   if (p && p.r && p.r.dealType === 'gift' && dealType !== 'gift') switchDeal('gift');

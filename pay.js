@@ -97,6 +97,9 @@
     if (busy) return;
     if (has()) { fire(); return; }
     if (guardFn && !(opts && opts.skipGuard)) { try { if (!guardFn()) return; } catch (e) {} }
+    /* 링크로 이어서 하기(2026-10-12): 결제 완료 화면(pay_return)이 재발급 링크에 담을 입력 내용을 맡겨 둔다.
+       주민등록번호는 빠진 상태(SRResumeDraft)이고, 결제 완료 화면이 읽은 뒤 바로 지운다. */
+    try { var dr = window.SRResumeDraft && window.SRResumeDraft(); if (dr) localStorage.setItem('sr_resume_draft', JSON.stringify({ at: Date.now(), p: dr })); } catch (e) {}
     var m = opts && opts.method;
     if (!m) { openSheet('choose'); return; }   // 결제수단 선택(새 클릭에서 창을 열어야 팝업이 막히지 않는다)
     if (m === 'payapp') { startPayapp(); return; }

@@ -111,12 +111,54 @@
     } catch (e) { return 'BROKEN'; }
   }
 
+  /* ── 링크로 이어서 하기(2026-10-12) ──
+     재발급 링크 끝 「#r=…」에 위 파일과 같은 내용(주민등록번호·이메일 제외 + 결제 이용권)을 담는다.
+     # 뒤는 브라우저가 서버로 보내지 않으므로 서버·접속 기록에 남지 않는다.
+     압축(deflate-raw)이 되는 브라우저는 'z', 안 되면 'b'(압축 없음)로 시작한다. */
+  function toB64url(bytes) {
+    var bin = ''; for (var i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
+    return btoa(bin).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+  }
+  function fromB64url(s) {
+    var b = s.replace(/-/g, '+').replace(/_/g, '/'); while (b.length % 4) b += '=';
+    var bin = atob(b), out = new Uint8Array(bin.length);
+    for (var i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
+    return out;
+  }
+  async function pipe(bytes, Stream, mode) {
+    var r = new Blob([bytes]).stream().pipeThrough(new Stream(mode));
+    return new Uint8Array(await new Response(r).arrayBuffer());
+  }
+  async function toHash(payload, passToken) {
+    var o = { v: VERSION, ts: Date.now(), d: scrub(payload) };
+    if (passToken && /^[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+$/.test(passToken)) o.k = passToken;
+    var bytes = new TextEncoder().encode(JSON.stringify(o));
+    if (typeof CompressionStream === 'function') {
+      try { return 'z' + toB64url(await pipe(bytes, CompressionStream, 'deflate-raw')); } catch (e) {}
+    }
+    return 'b' + toB64url(bytes);
+  }
+  /* 「#r=…」 값 → { d, ts, k } 또는 오류 코드 문자열 */
+  async function fromHash(h) {
+    try {
+      var kind = h.charAt(0), bytes = fromB64url(h.slice(1));
+      if (kind === 'z') {
+        if (typeof DecompressionStream !== 'function') return 'OLDBROWSER';
+        bytes = await pipe(bytes, DecompressionStream, 'deflate-raw');
+      } else if (kind !== 'b') return 'BROKEN';
+      var o = JSON.parse(new TextDecoder().decode(bytes));
+      if (!o || !o.d) return 'BROKEN';
+      return { d: o.d, ts: o.ts || 0, v: o.v || 0, k: typeof o.k === 'string' ? o.k : '' };
+    } catch (e) { return 'BROKEN'; }
+  }
+
   var MSG = {
+    OLDBROWSER: '이 브라우저는 링크에 담긴 입력 내용을 열 수 없습니다. 최신 Chrome·Edge·Safari로 열거나 위임장 파일로 이어서 해 주세요.',
     NOLIB: '파일을 읽을 준비가 아직 되지 않았습니다. 잠시 후 다시 시도해 주세요.',
     NOTDOCX: 'Word(.docx) 파일이 아닙니다. 셀프등기24에서 받은 위임장 파일을 올려 주세요.',
     NODATA: '이 파일에는 이어서 하기 정보가 없습니다. 셀프등기24에서 받은 위임장 원본 파일(.docx)인지 확인해 주세요. 한글(HWP) 등 다른 형식으로 저장한 파일은 읽을 수 없습니다.',
     BROKEN: '파일의 이어서 하기 정보가 손상되어 읽지 못했습니다. 입력칸에 직접 입력해 주세요.'
   };
 
-  root.SRResume = { embed: embed, read: read, scrub: scrub, MSG: MSG, VERSION: VERSION };
+  root.SRResume = { embed: embed, read: read, scrub: scrub, toHash: toHash, fromHash: fromHash, MSG: MSG, VERSION: VERSION };
 })(typeof self !== 'undefined' ? self : this);

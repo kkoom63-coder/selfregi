@@ -42,8 +42,9 @@
 
   /* 재발급 링크(?pass=)로 들어왔을 때의 안내 — pay.js 가 부른다.
      이 기기에 입력값이 없으면 위임장 파일로 이어서 하라고 안내한다. */
+  var FROM_LINK = /[#&]r=/.test(location.hash); // 링크에 입력 내용이 함께 왔으면 「위임장 파일 올리기」 안내를 하지 않는다
   window.SRRedeemMsg = function () {
-    if (typeof hasFormInput === 'function' && hasFormInput())
+    if (FROM_LINK || (typeof hasFormInput === 'function' && hasFormInput()))
       return '재발급 링크가 확인되었습니다. 다시 결제하지 않고 서류를 받으실 수 있습니다.';
     setTimeout(function () {
       var b = $('resume-box'); if (!b) return;
@@ -52,5 +53,24 @@
     return '결제가 확인되었습니다. 이 기기에는 입력 내용이 없습니다. 받아 두신 위임장 파일을 「위임장 파일로 이어서 하기」에 올리면 입력 내용이 복원됩니다.';
   };
 
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bindResume); else bindResume();
+  /* 링크로 이어서 하기(2026-10-12): 재발급 링크 끝 「#r=…」에 담긴 입력 내용·이용권을 복원한다.
+     복원 뒤 주소창에서 #r= 부분을 지워, 새로고침·북마크로 다시 덮어쓰지 않게 한다. */
+  async function onHash() {
+    var m = location.hash.match(/[#&]r=([A-Za-z0-9_-]+)/);
+    if (!m || !window.SRResume || !SRResume.fromHash) return;
+    try { history.replaceState(null, '', location.pathname + location.search); } catch (e) {}
+    var got = await SRResume.fromHash(m[1]);
+    if (typeof got === 'string') { say(esc(SRResume.MSG[got] || '링크의 입력 내용을 읽지 못했습니다.'), 'err'); trk('resume_link', { mode: got.toLowerCase() }); return; }
+    var n = applyResume(got.d);
+    var paid = '';
+    if (got.k && window.SRPay && SRPay.redeemToken && !SRPay.has()) {
+      paid = (await SRPay.redeemToken(got.k)) ? ' 결제도 확인되어 바로 내려받을 수 있습니다.' : ' 이 링크의 결제는 기한(30일)이 지났거나 취소되어 이어받지 못했습니다.';
+    }
+    say('<b>링크에서 입력 내용 ' + n + '칸을 불러왔습니다.</b>' + paid + ' 주민등록번호는 링크에 담기지 않으니 필요하면 다시 입력해 주세요.', 'ok');
+    var b = $('resume-box'); if (b) setTimeout(function () { b.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 300);
+    trk('resume_link', { mode: 'ok' });
+  }
+  function init() { bindResume(); onHash(); }
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
 })();
