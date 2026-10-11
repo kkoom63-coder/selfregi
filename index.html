@@ -214,15 +214,16 @@ header{background:var(--bg)}
 .ptab.on{border-color:var(--navy);color:var(--navy);box-shadow:inset 0 0 0 1px var(--navy)}
 .ptab.on span{color:var(--navy)}
 .pgrid{max-width:780px;margin:0 auto 14px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
-.pcard{background:#fff;border:1.5px solid var(--border);border-radius:16px;padding:24px 22px;display:flex;flex-direction:column;gap:10px;text-align:left;box-shadow:var(--shadow)}
-.pcard.main{border:2px solid var(--navy)}
+.pcard{background:#fff;border:2px solid var(--border);border-radius:16px;padding:24px 22px;display:flex;flex-direction:column;gap:10px;text-align:left;box-shadow:var(--shadow);cursor:pointer;transition:border-color .15s}
+.pcard:hover{border-color:#94A3B8}
+.pcard.sel{border-color:var(--navy);cursor:default}
+.pcard:not(.sel) .pc-go{background:#fff;color:var(--navy);border:1.5px solid var(--navy)}
 .pcard .price-row{justify-content:flex-start;margin:2px 0 4px}
 .pcard .price-list{margin:0 0 4px}
 .pc-k{font-size:13px;font-weight:700;color:#64748B}
 .pc-t{font-size:17px;font-weight:800;color:var(--navy)}
 .pc-warn{margin:0;font-size:13px;line-height:1.6;color:#9A3412;background:#FFF7ED;border:1px solid #FED7AA;border-radius:10px;padding:9px 12px}
 .pc-go{margin-top:auto;display:flex;align-items:center;justify-content:center;min-height:48px;border-radius:12px;background:var(--navy);color:#fff;font-weight:800;font-size:15px;text-decoration:none}
-.pc-go.sub{background:#fff;color:var(--navy);border:1.5px solid var(--navy)}
 .pcommon{padding:24px 28px}
 @media(max-width:760px){.ptabs{display:flex}.pgrid{grid-template-columns:1fr}.pcard.off{display:none}}
 .price-box{max-width:780px;margin:0 auto;background:#fff;border:1.5px solid var(--border);border-radius:16px;padding:36px 28px;text-align:center;box-shadow:var(--shadow)}
@@ -694,7 +695,7 @@ html.mnav-open,html.mnav-open body{overflow:hidden}
   <div class="nav-inner">
       <div class="nav-scroll">
     <a href="index.html" class="nav-logo"><svg class="nav-mark" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><g fill="#0F172A"><rect x="9" y="41" width="14" height="14" rx="1.5"/><rect x="25" y="41" width="14" height="14" rx="1.5"/><rect x="25" y="25" width="14" height="14" rx="1.5"/><rect x="41" y="41" width="14" height="14" rx="1.5"/><rect x="41" y="25" width="14" height="14" rx="1.5"/></g><rect x="41" y="9" width="14" height="14" rx="1.5" fill="#0369A1"/></svg><strong class="nav-wm">셀프등기<b>24</b></strong></a>
-    <span class="nav-dd"><button type="button" class="nav-a nav-dd-btn" aria-expanded="false" aria-controls="nav-dd-guide">셀프등기 가이드<svg class="nav-dd-ic" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M3 4.5 6 7.5 9 4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button><span class="nav-dd-menu" id="nav-dd-guide" hidden><a href="guide.html">소유권이전등기 가이드<span>매매 절차·준비서류 전체</span></a><a href="joint.html">공동명의 셀프등기<span>단독명의와 달라지는 점</span></a><a href="reject.html">반려·각하 점검<span>접수 전에 확인할 항목</span></a><a href="cancel_guide.html">근저당권 말소 가이드<span>대출을 다 갚았을 때</span></a></span></span>
+    <span class="nav-dd"><button type="button" class="nav-a nav-dd-btn" aria-expanded="false" aria-controls="nav-dd-guide">셀프등기 가이드<svg class="nav-dd-ic" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M3 4.5 6 7.5 9 4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button><span class="nav-dd-menu" id="nav-dd-guide" hidden><a href="guide.html">소유권이전등기 가이드<span>매매 절차·준비서류 전체</span></a><a href="joint.html">공동명의 셀프등기<span>단독명의와 달라지는 점</span></a><a href="gift_guide.html">증여 셀프등기<span>가족 간 증여 절차·신고</span></a><a href="cancel_guide.html">근저당권 말소 가이드<span>대출을 다 갚았을 때</span></a><a href="reject.html">반려·각하 점검<span>접수 전에 확인할 항목</span></a></span></span>
     <a href="cost.html" class="nav-a">등기비용 비교</a>
     <span class="nav-dd"><button type="button" class="nav-a nav-dd-btn" aria-expanded="false" aria-controls="nav-dd-calc">부동산 계산기<svg class="nav-dd-ic" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M3 4.5 6 7.5 9 4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button><span class="nav-dd-menu" id="nav-dd-calc" hidden><a href="calculator.html">취득세 계산기<span>매매로 취득할 때</span></a><a href="gift_tax.html">증여 취득세 계산기<span>증여로 취득할 때</span></a></span></span>
     <a href="https://selfregi.tistory.com" class="nav-a" target="_blank" rel="noopener">블로그</a>
@@ -1016,7 +1017,7 @@ html.mnav-open,html.mnav-open body{overflow:hidden}
     <button type="button" class="ptab" role="tab" aria-selected="false" aria-controls="pc-gift" id="pt-gift" data-p="gift">증여 <span>14,900원</span></button>
   </div>
   <div class="pgrid">
-    <section class="pcard main" id="pc-sale" role="tabpanel" aria-labelledby="pt-sale">
+    <section class="pcard sel" id="pc-sale" role="tabpanel" aria-labelledby="pt-sale">
       <div class="pc-k">가장 많이 쓰는</div>
       <div class="pc-t">매매 소유권이전</div>
       <div class="price-row"><span class="price-amt">9,900<em>원</em></span><span class="price-per">/ 부동산 1건 · 부가세 포함</span></div>
@@ -1031,11 +1032,11 @@ html.mnav-open,html.mnav-open body{overflow:hidden}
       <div class="pc-t">증여 소유권이전</div>
       <div class="price-row"><span class="price-amt">14,900<em>원</em></span><span class="price-per">/ 부동산 1건 · 부가세 포함</span></div>
       <ul class="price-list">
-        <li><b>증여계약서(구청 검인용)</b> · 위임장 · 소유권이전등기신청서(증여) 자동완성 (Word 파일)</li>
-        <li>증여인 1명 · 수증인 2명까지</li>
+        <li>증여계약서(구청 검인용) · 위임장 · 소유권이전등기신청서(증여) 자동완성 (Word 파일)</li>
+        <li>증여인 1명 · 수증인 2명까지 <a href="gift_guide.html">증여 등기 안내</a></li>
       </ul>
-      <p class="pc-warn">대출·전세를 함께 넘기는 부담부증여, 미성년 수증인은 대상이 아닙니다. 증여세 신고는 수증인이 직접 합니다.</p>
-      <a class="pc-go sub" href="normal_form.html?type=gift">증여 서류 작성하기</a>
+      <p class="pc-warn">대가 없는 단순 증여만 제공합니다(부담부증여 등 제외)</p>
+      <a class="pc-go" href="normal_form.html?type=gift">증여 서류 작성하기</a>
     </section>
   </div>
   <div class="price-box pcommon">
@@ -1071,17 +1072,20 @@ html.mnav-open,html.mnav-open body{overflow:hidden}
   </div>
 </div>
 <script>
-/* 요금 탭(모바일) — 데스크톱에서는 탭이 숨고 카드 두 장이 나란히 보인다 */
+/* 요금 고르기 — 모바일은 위 탭으로 카드 한 장씩, 데스크톱은 카드 두 장 중 누른 카드가 선택(테두리·버튼 강조) */
 (function(){
   var tabs = document.querySelectorAll('.ptab');
-  function pick(k){
+  var cards = { sale: document.getElementById('pc-sale'), gift: document.getElementById('pc-gift') };
+  function pick(k, track){
     tabs.forEach(function(t){ var on = t.dataset.p === k; t.classList.toggle('on', on); t.setAttribute('aria-selected', on ? 'true' : 'false'); });
-    document.getElementById('pc-sale').classList.toggle('off', k !== 'sale');
-    document.getElementById('pc-gift').classList.toggle('off', k !== 'gift');
-    try{ window.SR && SR.track('price_tab', { p: k }); }catch(e){}
+    Object.keys(cards).forEach(function(n){ cards[n].classList.toggle('off', n !== k); cards[n].classList.toggle('sel', n === k); });
+    if (track) { try{ window.SR && SR.track('price_tab', { p: k }); }catch(e){} }
   }
-  tabs.forEach(function(t){ t.addEventListener('click', function(){ pick(t.dataset.p); }); });
-  document.getElementById('pc-gift').classList.add('off');
+  tabs.forEach(function(t){ t.addEventListener('click', function(){ pick(t.dataset.p, true); }); });
+  Object.keys(cards).forEach(function(n){
+    cards[n].addEventListener('click', function(e){ if (e.target.closest('a') || cards[n].classList.contains('sel')) return; pick(n, true); });
+  });
+  pick('sale', false);
 })();
 </script>
 

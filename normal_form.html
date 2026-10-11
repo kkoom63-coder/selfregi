@@ -569,7 +569,7 @@ input.ocr-warn{border-color:#DC2626!important;box-shadow:0 0 0 3px rgba(220,38,3
   <div class="nav-inner">
     <div class="nav-scroll">
       <a href="index.html" class="nav-logo"><svg class="nav-mark" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><g fill="#0F172A"><rect x="9" y="41" width="14" height="14" rx="1.5"/><rect x="25" y="41" width="14" height="14" rx="1.5"/><rect x="25" y="25" width="14" height="14" rx="1.5"/><rect x="41" y="41" width="14" height="14" rx="1.5"/><rect x="41" y="25" width="14" height="14" rx="1.5"/></g><rect x="41" y="9" width="14" height="14" rx="1.5" fill="#0369A1"/></svg><strong class="nav-wm">셀프등기<b>24</b></strong></a>
-      <span class="nav-dd"><button type="button" class="nav-a nav-dd-btn" aria-expanded="false" aria-controls="nav-dd-guide">셀프등기 가이드<svg class="nav-dd-ic" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M3 4.5 6 7.5 9 4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button><span class="nav-dd-menu" id="nav-dd-guide" hidden><a href="guide.html">소유권이전등기 가이드<span>매매 절차·준비서류 전체</span></a><a href="joint.html">공동명의 셀프등기<span>단독명의와 달라지는 점</span></a><a href="reject.html">반려·각하 점검<span>접수 전에 확인할 항목</span></a><a href="cancel_guide.html">근저당권 말소 가이드<span>대출을 다 갚았을 때</span></a></span></span>
+      <span class="nav-dd"><button type="button" class="nav-a nav-dd-btn" aria-expanded="false" aria-controls="nav-dd-guide">셀프등기 가이드<svg class="nav-dd-ic" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M3 4.5 6 7.5 9 4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button><span class="nav-dd-menu" id="nav-dd-guide" hidden><a href="guide.html">소유권이전등기 가이드<span>매매 절차·준비서류 전체</span></a><a href="joint.html">공동명의 셀프등기<span>단독명의와 달라지는 점</span></a><a href="gift_guide.html">증여 셀프등기<span>가족 간 증여 절차·신고</span></a><a href="cancel_guide.html">근저당권 말소 가이드<span>대출을 다 갚았을 때</span></a><a href="reject.html">반려·각하 점검<span>접수 전에 확인할 항목</span></a></span></span>
       <a href="cost.html" class="nav-a">등기비용 비교</a>
       <span class="nav-dd"><button type="button" class="nav-a nav-dd-btn" aria-expanded="false" aria-controls="nav-dd-calc">부동산 계산기<svg class="nav-dd-ic" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M3 4.5 6 7.5 9 4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button><span class="nav-dd-menu" id="nav-dd-calc" hidden><a href="calculator.html">취득세 계산기<span>매매로 취득할 때</span></a><a href="gift_tax.html">증여 취득세 계산기<span>증여로 취득할 때</span></a></span></span>
       <a href="https://selfregi.tistory.com" class="nav-a" target="_blank" rel="noopener">블로그</a>
@@ -665,11 +665,7 @@ input.ocr-warn{border-color:#DC2626!important;box-shadow:0 0 0 3px rgba(220,38,3
     <strong>일반매매:</strong> 매매계약에 따라 소유권을 이전하는 경우입니다. 매도인은 개인(또는 법인)입니다. 분양·신축 아파트의 신탁해지, 토지·단독주택은 이 화면에서 작성하지 않습니다.
   </div>
   <div class="ntc wrn gift-only" id="gift-warn" hidden>
-    <strong>대가 없는 단순 증여만 작성할 수 있습니다.</strong> 아래에 해당하면 이 화면의 서류로 진행하지 마시고 세무사·법무사에게 확인해 주세요.
-    <br>· 대출이나 전세보증금을 함께 넘기는 <b>부담부증여</b>
-    <br>· <b>미성년 수증인</b>(법정대리인이 대신 서명하는 경우)
-    <br>· 토지·단독주택, 증여인 2명 이상 또는 수증인 3명 이상
-    <br><b>증여세 신고는 이 서비스가 하지 않습니다.</b> 수증인이 증여받은 날이 속한 달의 말일부터 3개월 안에 홈택스 또는 관할 세무서에 신고합니다.
+    <strong>대가 없는 단순 증여만 작성합니다</strong> (부담부증여·미성년 수증인 제외)
   </div>
 </div>
 
@@ -1372,7 +1368,7 @@ function switchDeal(type, btn) {
   // 안내 문구
   const desc = document.getElementById('deal-desc');
   if (isGift) {
-    desc.innerHTML = '<strong>증여:</strong> 대가 없이 가족 등에게 소유권을 넘기는 경우입니다. 증여인(현재 소유자) 1명, 수증인 2명까지 작성합니다. 결제 금액은 14,900원이고 증여계약서가 함께 만들어집니다.';
+    desc.innerHTML = '<strong>증여:</strong> 증여인 1명·수증인 2명까지 · 증여세 신고는 수증인이 직접 합니다 · <a href="gift_guide.html" target="_blank" rel="noopener">증여 절차 보기</a>';
   } else if (isTrust) {
     desc.innerHTML = '<strong>신탁해지:</strong> 분양받은 신축 물건의 신탁등기를 해지하며 소유권을 이전하는 경우입니다. 매도인은 부동산신탁회사입니다.';
   } else {
