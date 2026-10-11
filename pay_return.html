@@ -133,7 +133,7 @@ p{font-size:14.5px;line-height:1.7;color:#334155;margin:0 0 12px}
     x.font='700 27px '+F; x.fillStyle='#0F172A'; y+=24;
     ['QR을 휴대폰 카메라로 찍으면 입력 내용과 결제가 함께 이어집니다.'].forEach(function(t){ wrapText(x,t,W-112).forEach(function(l){ x.fillText(l,56,y); y+=40; }); });
     x.font='500 25px '+F; x.fillStyle='#475569';
-    ['위 주소(글자)로 들어오면 결제만 이어지니, 입력 내용은 위임장 파일로 불러오세요.','이 이미지는 본인만 보관하세요. 링크를 가진 사람은 이 결제로 서류를 받을 수 있습니다.']
+    ['위 주소(글자)로 들어오면 결제만 이어지니, 입력 내용은 위임장 파일로 불러오세요.','개인정보가 담긴 이미지이므로 반드시 본인만 보관해 주세요. 링크를 가진 사람은 이 결제로 서류를 받을 수 있습니다.']
       .forEach(function(t){ y+=8; wrapText(x,t,W-112).forEach(function(l){ x.fillText(l,56,y); y+=36; }); });
     return c;
   }
@@ -169,7 +169,7 @@ p{font-size:14.5px;line-height:1.7;color:#334155;margin:0 0 12px}
   /* link: 입력 내용까지 담긴 링크(#r=) · short: 결제만 담긴 링크(이용권 카드 글자용) */
   function keepPass(link, short, orderNo, ud){
     var sh=document.getElementById('sh'), cd=document.getElementById('cd'), kk=document.getElementById('kk');
-    var msg='셀프등기24 서류 이용권 ('+ud+'까지)\n이 링크를 열면 입력 내용과 결제가 함께 이어집니다. 본인만 보관하세요.';
+    var msg='셀프등기24 서류 이용권 ('+ud+'까지)\n이 링크를 열면 입력 내용과 결제가 함께 이어집니다. 개인정보가 담긴 링크이므로 반드시 본인만 보관해 주세요.';
     if(kk){
       if(kakaoReady()) kk.onclick=function(){
         try{ Kakao.Share.sendDefault({ objectType:'text', text:msg, link:{ mobileWebUrl:link, webUrl:link }, buttonTitle:'서류 이어서 받기' }); trk('pass_share',{mode:'kakao'}); }
@@ -214,7 +214,7 @@ p{font-size:14.5px;line-height:1.7;color:#334155;margin:0 0 12px}
         box.innerHTML='<h1>결제가 완료되었습니다</h1>'+
           '<p>'+(hasOpener?'원래 화면으로 돌아가 위임장부터 내려받으세요. 신청서는 제세공과금 납부 후 이어서 받습니다. 이 창은 닫으셔도 됩니다.':'아래 버튼으로 돌아가 위임장부터 내려받으세요. 신청서는 제세공과금 납부 후 이어서 받습니다.')+'</p>'+
           '<div class="re"><b>재발급 링크 ('+ud+'까지)</b><input readonly value="'+esc(link)+'" onclick="this.select()" aria-label="재발급 링크">'+
-          '<small>'+(full?'이 링크를 열면 <b>입력 내용(주민등록번호 제외)과 결제가 함께 이어집니다.</b> PC에서 인쇄하려면 나에게 보내 두고 PC에서 여세요.':'신청서까지 받으실 때까지 이 링크로 다시 결제하지 않고 이용하실 수 있습니다.')+' 본인만 보관하세요.</small>'+
+          '<small>'+(full?'이 링크를 열면 <b>입력 내용(주민등록번호 제외)과 결제가 함께 이어집니다.</b> PC에서 인쇄하려면 나에게 보내 두고 PC에서 여세요. <b>입력하신 개인정보가 담긴 링크이므로 반드시 본인만 보관해 주세요.</b>':'신청서까지 받으실 때까지 이 링크로 다시 결제하지 않고 이용하실 수 있습니다. <b>결제 정보가 담긴 링크이므로 반드시 본인만 보관해 주세요.</b>')+'</small>'+
           '<button class="kk" id="kk" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#191919" d="M12 3C6.5 3 2 6.6 2 11c0 2.8 1.9 5.3 4.7 6.7l-.9 3.4c-.1.3.3.6.6.4l4-2.6c.5.1 1 .1 1.6.1 5.5 0 10-3.6 10-8S17.5 3 12 3z"/></svg>카카오톡으로 보내기</button>'+
           '<p class="kk-n" id="kk-n">받는 사람에서 「나와의 채팅」을 고르면 나에게 보관됩니다</p>'+
           '<div class="keep"><button class="btn" id="sh" type="button">'+(navigator.share?'다른 앱으로 보내기':'링크 복사')+'</button><button class="btn out" id="cd" type="button">이용권 카드 저장</button></div>'+
