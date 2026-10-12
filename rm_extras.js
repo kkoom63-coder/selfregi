@@ -113,7 +113,7 @@
 
   function sheetHtml(P) {
     var h = '<div class="bd-sheet">' +
-      '<div class="bd-top"><div class="bd-t">내 등기 서류 편철표</div>' +
+      '<div class="bd-top"><div class="bd-t">최종 서류 체크리스트</div>' +
       '<div class="bd-m">' + (P.prop ? esc(P.prop) + '<br>' : '') +
       '매도인 ' + P.sN + '명 · 매수인 ' + P.bN + '명 · <b>신청서 ' + P.filings + '건</b>' + (P.court ? ' · 제출: ' + esc(P.court) : '') + '</div></div>';
     if (!P.has) h += '<p class="bd-warn">이 기기에 당사자 정보가 없어 1:1 매매 기준으로 만들었습니다. 서류 작성 화면을 거치거나 위임장 파일을 올리면 내 케이스에 맞춰집니다.</p>';
@@ -131,14 +131,14 @@
       '<li>여러 장으로 된 서류는 장 사이에 간인합니다 — 위임장은 매도인 인감, 신청서는 신청인 도장.</li>' +
       '<li>신청서 「첨부서면」란의 통수를 위 표의 숫자대로 적습니다' + (P.filings > 1 ? ' — 2건차 신청서에는 「전건첨부원용」을 적습니다' : '') + '.</li>' +
       '<li>등기필정보의 일련번호·비밀번호를 신청서에 적었는지, 원본을 챙겼는지 확인합니다.</li></ul></div>' +
-      '<p class="bd-foot">편철 순서는 신청서 첨부서면 순서를 따랐습니다. 접수 전 관할 등기소에서 확인하세요. · 셀프등기24</p></div>';
+      '<p class="bd-foot">제출 순서는 신청서 첨부서면 순서를 따랐습니다. 접수 전 관할 등기소에서 확인하세요. · 셀프등기24</p></div>';
     return h;
   }
 
   function ensureModal() {
     var el = $('bd-modal'); if (el) return el;
     el = document.createElement('div'); el.id = 'bd-modal'; el.className = 'bd-modal';
-    el.setAttribute('role', 'dialog'); el.setAttribute('aria-modal', 'true'); el.setAttribute('aria-label', '내 등기 서류 편철표');
+    el.setAttribute('role', 'dialog'); el.setAttribute('aria-modal', 'true'); el.setAttribute('aria-label', '최종 서류 체크리스트');
     el.innerHTML = '<div class="bd-bg" data-close></div><div class="bd-c"><div class="bd-bar"><button type="button" class="bd-print">인쇄하기</button><button type="button" class="bd-x" data-close>닫기</button></div><div class="bd-body" id="bd-body"></div></div>';
     document.body.appendChild(el);
     el.addEventListener('click', function (e) {
