@@ -199,6 +199,7 @@ select{cursor:pointer;appearance:auto}
 .pay-btn .ds{font-size:12px;color:rgba(255,255,255,.82);margin-top:2px}
 .pay-arrow{margin-left:auto;font-size:20px;font-weight:800;opacity:.9}
 .pay-note{font-size:12.5px;color:#475569;text-align:center;margin-top:10px;line-height:1.6}
+.pn-mo{display:none}@media(max-width:768px){.pn-mo{display:inline}} /* 휴대폰 결제 → PC 인쇄 걱정 해소(링크로 이어하기) */
 /* 서비스 제공 방식·시점 고지 (PG 심사 요건). 결제 직전에 놓이므로 시각적 무게를 낮춘다 —
    흰 배경·1px 테두리로 카드와 같은 층위에 두고, 강조는 라벨 열에만 준다.
    dt/dd로 짠 이유: 스캔이 쉽고 스크린리더에 항목-값 관계가 그대로 전달된다. */
@@ -1059,7 +1060,7 @@ input.ocr-warn{border-color:#DC2626!important;box-shadow:0 0 0 3px rgba(220,38,3
     </div>
     <span class="pay-arrow" id="pay-arrow">→</span>
   </button>
-  <p class="pay-note" id="pay-note">토스페이·네이버페이·카카오페이로 결제합니다. PC에서 토스페이는 QR로 결제합니다.<br>결제는 새 창에서 진행되며, 입력하신 내용은 이 화면에 그대로 남습니다.</p>
+  <p class="pay-note" id="pay-note">토스페이·네이버페이·카카오페이로 결제합니다. PC에서 토스페이는 QR로 결제합니다.<br>결제는 새 창에서 진행되며, 입력하신 내용은 이 화면에 그대로 남습니다.<span class="pn-mo"><br>휴대폰에서 결제해도 링크를 보내 두면 PC에서 이어서 인쇄할 수 있습니다.</span></p>
   <div class="svc-terms">
     <div class="svc-terms-h">서비스 제공 방식과 시점</div>
     <dl class="svc-terms-l">
@@ -1509,7 +1510,7 @@ function renderPayState(){
     var url=SRPay.reissueUrl();
     note.innerHTML='재발급 링크: <a href="'+url+'" style="word-break:break-all">'+url.replace(/^https?:\/\//,'').slice(0,48)+'…</a> — 다른 기기에서도 이 링크로 다시 받으실 수 있습니다.';
   } else {
-    note.innerHTML='토스페이·네이버페이·카카오페이로 결제합니다. PC에서 토스페이는 QR로 결제합니다.<br>결제는 새 창에서 진행되며, 입력하신 내용은 이 화면에 그대로 남습니다.'; /* 괄호 뒤에서 줄바꿈 — 한 줄 + 몇 글자 넘침 방지(design.md 문구 길이) */
+    note.innerHTML='토스페이·네이버페이·카카오페이로 결제합니다. PC에서 토스페이는 QR로 결제합니다.<br>결제는 새 창에서 진행되며, 입력하신 내용은 이 화면에 그대로 남습니다.<span class="pn-mo"><br>휴대폰에서 결제해도 링크를 보내 두면 PC에서 이어서 인쇄할 수 있습니다.</span>'; /* 괄호 뒤에서 줄바꿈 — 한 줄 + 몇 글자 넘침 방지(design.md 문구 길이) */
   }
 }
 window.addEventListener('srpay:change', function(e){
