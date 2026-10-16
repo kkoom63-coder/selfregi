@@ -197,7 +197,7 @@ p{font-size:14.5px;line-height:1.7;color:#334155;margin:0 0 12px}
       .then(function(r){return r.json();})
       .then(function(d){
         if(PA && d && d.pending){
-          if(waits++<15){ box.className='card'; box.innerHTML='<h1>결제를 확인하고 있습니다</h1><p>네이버페이·카카오페이 결제 결과를 받는 중입니다. 잠시만 기다려 주세요.</p>'; setTimeout(function(){confirm(tries);},2000); return; }
+          if(waits++<15){ box.className='card'; box.innerHTML='<h1>결제를 확인하고 있습니다</h1><p>네이버페이 결제 결과를 받는 중입니다. 잠시만 기다려 주세요.</p>'; setTimeout(function(){confirm(tries);},2000); return; }
           fail('결제 확인이 늦어지고 있습니다. 1~2분 뒤 이 화면을 새로고침해 주세요.'); return;
         }
         if(!d||!d.ok){ fail((d&&d.msg)||'결제 승인에 실패했습니다.'); return; }

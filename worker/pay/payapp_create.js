@@ -1,4 +1,4 @@
-// POST /api/pay/payapp-create — 페이앱(네이버페이·카카오페이) 결제 건을 만든다.
+// POST /api/pay/payapp-create — 페이앱(네이버페이 — 카카오페이는 페이앱 미지원, 2026-10-17 확인) 결제 건을 만든다.
 // 주문번호를 서버가 정해 저장소에 남기고, 브라우저는 그 번호(var1)로 페이앱 결제창을 연다.
 // 금액은 서버 값만 쓴다. 결제 확인은 페이앱 결제통보(payapp_notify)가 저장소에 남긴 기록으로만 한다.
 import { PRODUCTS, productKey, PAYAPP_USERID, PAYAPP_SHOP, PAYAPP_TYPES, json, secret, payappKeys, makeOrderNo, readJson } from '../../lib/paycore.js';

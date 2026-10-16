@@ -1,4 +1,4 @@
-/* 셀프등기24 결제 · 이용권 (토스페이 · 페이앱 네이버페이/카카오페이 — 2026-10-10 추가)
+/* 셀프등기24 결제 · 이용권 (토스페이 · 페이앱 네이버페이 — 2026-10-10 추가)
  *
  * 흐름: 결제 버튼 → /api/pay/create → 토스페이 결제창(새 창) → pay_return.html
  *       → /api/pay/confirm(서버가 상태·금액 확인 후 승인) → 이용권을 localStorage에 저장
@@ -127,7 +127,7 @@
       });
   }
 
-  /* ── 페이앱(네이버페이·카카오페이) ──
+  /* ── 페이앱(네이버페이) ──
      페이앱 스크립트는 이름이 'PayAppWindow'인 창에 form 을 보낸다(window.open('', 'PayAppWindow')).
      클릭 직후 같은 이름으로 창을 먼저 열어 두면 그 창을 재사용해 팝업 차단을 피한다. */
   var PA_JS = 'https://lite.payapp.kr/public/api/v2/payapp-lite.js', paJs = null;
@@ -147,7 +147,7 @@
     track('begin_checkout', { value: P().price, currency: 'KRW', payment_type: 'payapp', product: cur });
     var w = null;
     try { w = window.open('', 'PayAppWindow', 'width=480,height=780'); } catch (e) { w = null; }
-    if (w) { try { w.document.title = '네이버페이·카카오페이 결제'; w.document.body.innerHTML = '<p style="font:15px sans-serif;padding:24px;color:#334155">결제창을 여는 중입니다…</p>'; } catch (e) {} }
+    if (w) { try { w.document.title = '네이버페이 결제'; w.document.body.innerHTML = '<p style="font:15px sans-serif;padding:24px;color:#334155">결제창을 여는 중입니다…</p>'; } catch (e) {} }
     Promise.all([
       fetch('/api/pay/payapp-create', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ product: cur }) }).then(asJson),
       loadPa(),
@@ -276,7 +276,7 @@
         '<li>문서 오류 등 회사 귀책은 전액 환불 (<a href="terms.html#a6" target="_blank" rel="noopener">이용약관 제6조</a>)</li></ul>' +
         '<div class="srp-k">결제 수단을 고르세요</div>' +
         '<button type="button" class="srp-go" data-m="toss">토스페이 <small>토스 앱 · PC는 QR</small></button>' +
-        '<button type="button" class="srp-go srp-pa" data-m="payapp">네이버페이 · 카카오페이</button>' +
+        '<button type="button" class="srp-go srp-pa" data-m="payapp">네이버페이</button>' +
         '<button type="button" class="srp-x" data-close>닫기</button>' +
         '</div>';
       var css = document.createElement('style');
