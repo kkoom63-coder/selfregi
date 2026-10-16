@@ -16,7 +16,7 @@
     try{var q=new URLSearchParams(location.search).get('notrack');
       if(q==='1')localStorage.setItem('sr_notrack','1');if(q==='0')localStorage.removeItem('sr_notrack');
       if(localStorage.getItem('sr_notrack')==='1')off=true;}catch(e){}
-    if(off)window['ga-disable-'+ID]=true;gtag('config',ID);})();
+    if(off)window['ga-disable-'+ID]=true;gtag('set',{page_location:cl(location.href),page_referrer:cl(document.referrer)});gtag('config',ID);function cl(u){try{var x=new URL(u);if(x.hostname!==location.hostname)return u;var k=[];x.searchParams.forEach(function(v,n){if(!/^(utm_|n_)|^(gclid|type|track)$/.test(n))k.push(n);});k.forEach(function(n){x.searchParams.delete(n);});x.hash='';return x.toString();}catch(e){return '';}}})(); /* GA 주소 정리(2026-10-17): 우리 사이트 주소는 utm·광고·type·track 외 파라미터를 지우고 보낸다 — ?addr=(동·호수)·?pass=(재발급 토큰)·결제 번호가 GA에 남지 않게. 이전 페이지 주소(referrer)도 같은 기준 */
 </script>
 <meta name="naver-site-verification" content="2e442750977a16adfcde43b6ef81aa427e86df63" />
 <meta name="google-site-verification" content="0Q51gTkzJTX1g5WdTZomNbVdIhC4WIdP04v1WOFmGIo" />
