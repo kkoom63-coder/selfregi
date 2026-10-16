@@ -360,6 +360,7 @@ html.mnav-open,html.mnav-open body{overflow:hidden}
 
 /* 잔금대출 질문 (2026-10-07) — 대출 매수자는 은행 지정 법무사인 경우가 많아 안내를 나눈다 */
 /* 잔금일 기준 할 일 달력(2026-10-17) — 결과 아래 법무사 보수 상자·잔금대출 질문을 대체 */
+.pl [hidden]{display:none}
 .pl{margin-top:20px;background:#fff;border:1px solid var(--border);border-radius:12px;padding:20px 18px}
 .pl-h{font-size:17px;font-weight:800;color:var(--navy)}
 .pl-sub{font-size:13px;color:var(--muted);margin:4px 0 12px}
@@ -377,7 +378,7 @@ html.mnav-open,html.mnav-open body{overflow:hidden}
 .pl-bar{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
 .pl-bar button{min-height:44px;border:1.5px solid var(--border);border-radius:10px;background:#fff;font-family:inherit;font-size:14px;font-weight:700;color:var(--navy);cursor:pointer}
 .pl-fee{margin:14px 0 0;padding-top:12px;border-top:1px solid var(--border);font-size:13.5px;color:#334155}
-.pl-fee a{color:var(--blue);font-weight:700}
+.pl-fn a{color:var(--blue);font-weight:700}
 .pl-fn{margin:6px 0 0;font-size:11.5px;color:var(--muted);line-height:1.6}
 </style>
 </head>
@@ -534,13 +535,13 @@ html.mnav-open,html.mnav-open body{overflow:hidden}
       <!-- 잔금일 기준 할 일 달력(2026-10-17): 단계는 스크립트가 그린다(#pl-list) -->
       <div class="pl" id="plan">
         <div class="pl-h">잔금일 기준 할 일 달력</div>
-        <p class="pl-sub">잔금일을 넣으면 날짜가 나옵니다. 잔금 2주 전쯤 다시 열어 보세요.</p>
+        <p class="pl-sub">잔금일을 넣으면 은행·매도인·등기소 할 일이 날짜로 나옵니다.</p>
         <label class="pl-in"><span>잔금일</span><input type="date" id="pl-date"></label>
         <ol class="pl-list" id="pl-list"></ol>
         <div class="pl-dl" id="pl-dl" hidden></div>
         <div class="pl-bar" id="pl-bar" hidden><button type="button" id="pl-share">휴대폰에 보관</button><button type="button" id="pl-ics">캘린더에 추가</button></div>
-        <p class="pl-fee">법무사에게 맡기면 세금과 별도로 보수 약 <b id="r-lawyer-fee">0원</b>이 듭니다. <a href="cost.html">비용 비교 →</a></p>
-        <p class="pl-fn">* 법무사 보수: 대한법무사협회 보수기준 별표(2026. 8. 20. 개정) 기본보수 상한 · 실비·부가세 별도 · 법무사마다 다름. 날짜는 일반적인 순서이며 최종 확인은 관할 등기소.</p>
+        <p class="pl-fee">법무사에게 맡기면 세금과 별도로 보수 약 <b id="r-lawyer-fee">0원</b>이 듭니다.<br><a href="normal_form.html" class="pl-go">셀프로 서류 자동완성 · 9,900원 →</a></p>
+        <p class="pl-fn">* 법무사 보수: 대한법무사협회 보수기준 별표(2026. 8. 20. 개정) 기본보수 상한 · 실비·부가세 별도 · 법무사마다 다름. 날짜는 일반적인 순서이며 최종 확인은 관할 등기소. <a href="cost.html">비용 비교 →</a></p>
       </div>
     </div>
   </div>
@@ -987,11 +988,11 @@ window.SR=window.SR||(function(){
    calc_plan: 잔금일 첫 입력 · calc_plan_save: 보관(mode=share|ics) */
 (function(){
   var inp=document.getElementById('pl-date'),list=document.getElementById('pl-list');if(!inp||!list)return;
-  var WD='일월화수목금토', FORM='<a href="normal_form.html" class="pl-go">서류 자동완성 · 9,900원 →</a>';
+  var WD='일월화수목금토';
   var STEPS=[
     [-30,'D-30','은행에 셀프 이전등기 되는지 묻기','잔금대출이 있으면 은행이 지정 법무사에게 이전등기까지 맡기도록 하는 경우가 많습니다. 대출이 없으면 건너뜁니다.'],
     [-14,'D-14','매도인에게 서류 부탁하기','부동산 매도용 인감증명서 — 매수인 이름·주소가 정확히 들어가야 합니다.'],
-    [-7,'D-7','내 서류 준비','주민등록초본(주소 전체 이력)·건축물대장 등. 위임장·신청서는 자동완성으로.',1],
+    [-7,'D-7','내 서류 준비','주민등록초본(주소 전체 이력)·건축물대장 등. 위임장·신청서는 아래 자동완성으로.'],
     [0,'잔금일','잔금 · 매도인 서류 받기','등기필증·인감증명서를 받고 위임장에 매도인 인감을 받습니다.'],
     [1,'다음 평일','취득세 내고 등기소 한 번','위택스 취득세 등{T} → 국민주택채권·수수료 → 관할 등기소 접수.']];
   function base(){return /^\d{4}-\d{2}-\d{2}$/.test(inp.value)?new Date(inp.value+'T00:00:00'):null;}
@@ -1005,10 +1006,10 @@ window.SR=window.SR||(function(){
   function render(){
     var b=base();
     list.innerHTML=STEPS.map(function(s){
-      return '<li><div class="pl-d"><b>'+s[1]+'</b><small>'+(b?md(day(b,s)):'')+'</small></div><div class="pl-t"><b>'+s[2]+'</b><small>'+desc(s)+'</small>'+(s[4]?FORM:'')+'</div></li>';
+      return '<li><div class="pl-d"><b>'+s[1]+'</b><small>'+(b?md(day(b,s)):'')+'</small></div><div class="pl-t"><b>'+s[2]+'</b><small>'+desc(s)+'</small>'+'</div></li>';
     }).join('');
     var dl=document.getElementById('pl-dl');
-    dl.hidden=document.getElementById('pl-bar').hidden=!b;
+    dl.hidden=document.getElementById('pl-bar').hidden=list.hidden=!b; /* 잔금일 넣기 전엔 접어 둔다(모바일 길이) */
     if(b)dl.innerHTML='신고·등기 기한: 잔금일부터 60일 — <b>'+md(add(b,60))+'</b>까지';
   }
   function track(n,d){try{window.SR&&SR.track(n,d||{});}catch(e){}}
