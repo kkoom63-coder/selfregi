@@ -105,6 +105,7 @@
 </script>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;800&display=swap" rel="stylesheet">
 <style>
+body{word-break:keep-all;overflow-wrap:break-word} /* 한국어 단어 중간 줄바꿈 방지 — 팝업·패널 포함 사이트 전체 기본값(2026-10-17) */
 /* 키보드 사용자용 본문 바로가기. position:fixed 로 둔다 —
    absolute+left:-9999px 는 body{overflow-x:hidden}에 잘려 포커스를 받아도 안 보이는 경우가 있다. */
 .skip-link{position:fixed;top:-64px;left:8px;background:var(--navy);color:#fff;padding:10px 16px;min-height:44px;display:inline-flex;align-items:center;border-radius:8px;font-size:13px;font-weight:700;text-decoration:none;z-index:var(--z-skip);transition:top .15s}
@@ -196,9 +197,9 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,
 .res-row.highlight{background:#fffbeb; color:#92400e;}
 .res-row.highlight .l, .res-row.highlight .v{color:#B45309; font-weight:700;}
 
-.res-total{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;background:#E0F2FE;border-top:1.5px solid #BAE6FD}
-.res-total .l{font-size:15px;font-weight:700;color:var(--navy)}
-.res-total .v{font-size:22px;font-weight:800;color:var(--navy)}
+.res-total{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:14px 16px;background:#E0F2FE;border-top:1.5px solid #BAE6FD}
+.res-total .l{min-width:0;font-size:15px;font-weight:700;color:var(--navy)}
+.res-total .v{flex:none;white-space:nowrap;font-size:22px;font-weight:800;color:var(--navy)} /* 금액은 두 줄로 깨지지 않게(2026-10-17) */
 .res-ph{padding:22px 18px;color:var(--muted);font-size:13px}
 .ph-lead{text-align:center;color:#b0bcc8;font-size:13px;margin-bottom:18px}
 .ph-ex{background:#F8FAFC;border:1px solid var(--border);border-radius:10px;padding:16px 18px}
@@ -220,13 +221,6 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,
 .ntc.inf{background:#E0F2FE;border:1px solid #BAE6FD;color:#075985}
 
 /* 강력한 마이크로 SaaS CTA */
-.cta-box{margin-top:20px;text-align:center;background:#fff;border:2px solid var(--gold);border-radius:12px;padding:24px 16px;box-shadow:0 8px 24px rgba(3,105,161,.15); position:relative; overflow:hidden;}
-.cta-box::before{content:'';position:absolute;top:0;left:0;width:100%;height:4px;background:var(--gold);}
-.cta-eyebrow{font-size:13px;color:var(--gold);font-weight:800;margin-bottom:6px; display:inline-block;}
-.cta-title{font-size:16px;color:var(--navy);font-weight:800;margin-bottom:20px;word-break:keep-all; line-height:1.4;}
-.cta-title span{color:#d32f2f; text-decoration:underline; text-underline-offset: 4px; font-size:18px;}
-.cta-btn{display:block;background:var(--blue);color:#fff;text-decoration:none;padding:15px 20px;border-radius:8px;font-weight:700;font-size:15px;box-shadow:0 4px 12px rgba(3,105,161,.3);transition:all .2s; animation: pulse 2s infinite;}
-.cta-btn:active{transform:scale(0.98);}
 @keyframes pulse {
   0% { box-shadow: 0 0 0 0 rgba(3,105,161, 0.4); }
   70% { box-shadow: 0 0 0 10px rgba(3,105,161, 0); }
@@ -365,15 +359,26 @@ html.mnav-open,html.mnav-open body{overflow:hidden}
 .page-eyebrow{font-size:12px}
 
 /* 잔금대출 질문 (2026-10-07) — 대출 매수자는 은행 지정 법무사인 경우가 많아 안내를 나눈다 */
-.loan-q{margin:14px 0 12px;text-align:left}
-.loan-t{font-size:14px;font-weight:700;color:var(--navy);margin-bottom:8px}
-.loan-b{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.loan-b button{min-height:44px;padding:0 10px;border:1px solid var(--border);border-radius:10px;background:#fff;font-family:inherit;font-size:13.5px;font-weight:700;color:#334155;cursor:pointer}
-.loan-b button[aria-pressed="true"]{background:var(--blue);border-color:var(--blue);color:#fff}
-.loan-a{margin:10px 0 0;font-size:13px;line-height:1.65;color:#334155;word-break:keep-all}
-.loan-a b{color:var(--navy)}
-.loan-a a{color:var(--blue);font-weight:700}
-@media(max-width:400px){.loan-b{grid-template-columns:1fr}}
+/* 잔금일 기준 할 일 달력(2026-10-17) — 결과 아래 법무사 보수 상자·잔금대출 질문을 대체 */
+.pl{margin-top:20px;background:#fff;border:1px solid var(--border);border-radius:12px;padding:20px 18px}
+.pl-h{font-size:17px;font-weight:800;color:var(--navy)}
+.pl-sub{font-size:13px;color:var(--muted);margin:4px 0 12px}
+.pl-in{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.pl-in span{font-size:14px;font-weight:700;color:var(--navy);white-space:nowrap}
+.pl-in input{flex:1;min-width:0;min-height:44px;border:1.5px solid var(--blue);border-radius:10px;padding:0 12px;font-family:inherit;font-size:15px;font-weight:600;color:var(--navy);background:#fff}
+.pl-list{list-style:none;margin:0;padding:0}
+.pl-list li{display:flex;gap:12px;padding:12px 0;border-top:1px solid #F1F5F9}
+.pl-list li:first-child{border-top:0}
+.pl-d{flex:none;width:68px}
+.pl-d b{display:block;font-size:13px;color:var(--blue)}.pl-d small{font-size:12.5px;color:var(--muted)}
+.pl-t{min-width:0}.pl-t b{display:block;font-size:15px;color:var(--navy)}.pl-t small{display:block;font-size:13px;color:#475569;margin-top:2px;line-height:1.55}
+.pl-go{display:inline-block;white-space:nowrap;margin-top:8px;background:var(--blue);color:#fff;border-radius:8px;padding:9px 12px;font-size:13.5px;font-weight:700;text-decoration:none}
+.pl-dl{margin-top:8px;background:#FEF3C7;border-radius:10px;padding:10px 12px;font-size:13.5px;color:#78350F}
+.pl-bar{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+.pl-bar button{min-height:44px;border:1.5px solid var(--border);border-radius:10px;background:#fff;font-family:inherit;font-size:14px;font-weight:700;color:var(--navy);cursor:pointer}
+.pl-fee{margin:14px 0 0;padding-top:12px;border-top:1px solid var(--border);font-size:13.5px;color:#334155}
+.pl-fee a{color:var(--blue);font-weight:700}
+.pl-fn{margin:6px 0 0;font-size:11.5px;color:var(--muted);line-height:1.6}
 </style>
 </head>
 <body>
@@ -526,23 +531,16 @@ html.mnav-open,html.mnav-open body{overflow:hidden}
         자세한 순서는 <a href="guide.html#flow" style="color:#92400e;font-weight:700">셀프등기 가이드</a>에서 확인하세요.
       </div>
 
-      <!-- 동적 법무사 비용 CTA Hook -->
-      <div class="cta-box">
-        <span class="cta-eyebrow">법무사에게 맡기는 경우</span>
-        <div class="cta-title">
-          세금과 별도로 법무사 보수 약<br>
-          <span id="r-lawyer-fee">0원</span>이 듭니다.
-        </div>
-        <div class="loan-q" role="group" aria-labelledby="loan-q-t">
-          <div class="loan-t" id="loan-q-t">잔금대출을 받으시나요?</div>
-          <div class="loan-b"><button type="button" data-loan="no" aria-pressed="false">아니요, 대출 없이 삽니다</button><button type="button" data-loan="yes" aria-pressed="false">네, 대출을 받습니다</button></div>
-          <p class="loan-a" id="loan-no" hidden><b>대출이 없으면 셀프등기로 진행할 수 있습니다.</b> 등기부 한 장으로 위임장·신청서를 자동완성합니다.</p>
-          <p class="loan-a" id="loan-yes" hidden><b>대출이 있으면 은행이 근저당 설정을 위해 지정 법무사에게 이전등기까지 맡기도록 하는 경우가 많습니다.</b> 잔금 전에 은행에 「소유권이전등기는 셀프로 해도 되는지」 먼저 물어보세요. <a href="guide.html">셀프등기 가이드</a></p>
-        </div>
-        <a href="normal_form.html" class="cta-btn">수수료 <span id="r-lawyer-btn-amt">0원</span> 아끼는 서류 자동완성 시작</a>
-        <p style="font-size:12px; color:#475569; margin-top:10px; margin-bottom:0;">민감정보는 서버에 저장하지 않고, 브라우저에서 Word 파일로 자동완성합니다</p>
-        <p style="font-size:12px; color:var(--muted); margin-top:6px; margin-bottom:0; line-height:1.4; word-break:keep-all;">* 대한법무사협회 「법무사보수기준」 제9조 기본보수표(과세표준액 구간별 누진)로 산출한 <b>기본보수 상한액</b>입니다. 가산보수·교통비 등 실비·부가가치세는 포함되어 있지 않아 실제 청구액은 이보다 클 수 있으며, 법무사마다 다릅니다. (대한법무사협회 「법무사보수기준」 별표, 2026. 8. 20. 개정 기준)</p>
-        <p style="font-size:13px; margin-top:10px; margin-bottom:0;"><a href="cost.html" style="color:var(--blue); font-weight:700;">매매가별 법무사 보수·e-Form 비용 비교 →</a></p>
+      <!-- 잔금일 기준 할 일 달력(2026-10-17): 단계는 스크립트가 그린다(#pl-list) -->
+      <div class="pl" id="plan">
+        <div class="pl-h">잔금일 기준 할 일 달력</div>
+        <p class="pl-sub">잔금일을 넣으면 날짜가 나옵니다. 잔금 2주 전쯤 다시 열어 보세요.</p>
+        <label class="pl-in"><span>잔금일</span><input type="date" id="pl-date"></label>
+        <ol class="pl-list" id="pl-list"></ol>
+        <div class="pl-dl" id="pl-dl" hidden></div>
+        <div class="pl-bar" id="pl-bar" hidden><button type="button" id="pl-share">휴대폰에 보관</button><button type="button" id="pl-ics">캘린더에 추가</button></div>
+        <p class="pl-fee">법무사에게 맡기면 세금과 별도로 보수 약 <b id="r-lawyer-fee">0원</b>이 듭니다. <a href="cost.html">비용 비교 →</a></p>
+        <p class="pl-fn">* 법무사 보수: 대한법무사협회 보수기준 별표(2026. 8. 20. 개정) 기본보수 상한 · 실비·부가세 별도 · 법무사마다 다름. 날짜는 일반적인 순서이며 최종 확인은 관할 등기소.</p>
       </div>
     </div>
   </div>
@@ -832,7 +830,6 @@ function calc(){
   // 법무사 비용 동적 바인딩
   const lawyerFeeFmt = (lawyerFee / 10000).toLocaleString('ko-KR') + '만 원';
   document.getElementById('r-lawyer-fee').textContent = lawyerFeeFmt;
-  document.getElementById('r-lawyer-btn-amt').textContent = lawyerFeeFmt;
 
   const warn = document.getElementById('r-warn');
   if(warnMsg){ warn.textContent=warnMsg; warn.style.display='block'; }
@@ -908,7 +905,7 @@ window.SR=window.SR||(function(){
   },true);
   document.addEventListener('click',function(e){
     var a=e.target&&e.target.closest&&e.target.closest('a[href^="normal_form.html"]');
-    if(a) SR.track('calc_cta',{from:a.classList.contains('cta-btn')?'result':'nav'});
+    if(a) SR.track('calc_cta',{from:a.closest('.pl')?'plan':(a.classList.contains('cta-btn')?'result':'nav')});
   },true);
 })();
 </script>
@@ -986,8 +983,59 @@ window.SR=window.SR||(function(){
 })();
 </script>
 <script>
-/* 잔금대출 질문: 답에 따라 안내를 바꾸고 calc_loan 이벤트로 대출 비율을 잰다 */
-(function(){var bs=document.querySelectorAll("[data-loan]");if(!bs.length)return;bs.forEach(function(b){b.addEventListener("click",function(){var v=b.dataset.loan;bs.forEach(function(x){x.setAttribute("aria-pressed",String(x===b));});document.getElementById("loan-no").hidden=v!=="no";document.getElementById("loan-yes").hidden=v!=="yes";try{window.SR&&SR.track("calc_loan",{mode:v});}catch(e){}});});})();
+/* 잔금일 기준 할 일 달력(2026-10-17). 잔금일은 이 화면과 공유 링크(?bal=)에만 쓰고 저장하지 않는다.
+   calc_plan: 잔금일 첫 입력 · calc_plan_save: 보관(mode=share|ics) */
+(function(){
+  var inp=document.getElementById('pl-date'),list=document.getElementById('pl-list');if(!inp||!list)return;
+  var WD='일월화수목금토', FORM='<a href="normal_form.html" class="pl-go">서류 자동완성 · 9,900원 →</a>';
+  var STEPS=[
+    [-30,'D-30','은행에 셀프 이전등기 되는지 묻기','잔금대출이 있으면 은행이 지정 법무사에게 이전등기까지 맡기도록 하는 경우가 많습니다. 대출이 없으면 건너뜁니다.'],
+    [-14,'D-14','매도인에게 서류 부탁하기','부동산 매도용 인감증명서 — 매수인 이름·주소가 정확히 들어가야 합니다.'],
+    [-7,'D-7','내 서류 준비','주민등록초본(주소 전체 이력)·건축물대장 등. 위임장·신청서는 자동완성으로.',1],
+    [0,'잔금일','잔금 · 매도인 서류 받기','등기필증·인감증명서를 받고 위임장에 매도인 인감을 받습니다.'],
+    [1,'다음 평일','취득세 내고 등기소 한 번','위택스 취득세 등{T} → 국민주택채권·수수료 → 관할 등기소 접수.']];
+  function base(){return /^\d{4}-\d{2}-\d{2}$/.test(inp.value)?new Date(inp.value+'T00:00:00'):null;}
+  function add(b,n){var d=new Date(b);d.setDate(d.getDate()+n);return d;}
+  function weekday(d){while(d.getDay()===0||d.getDay()===6)d.setDate(d.getDate()+1);return d;}
+  function day(b,s){var d=add(b,s[0]);return s[0]>0?weekday(d):d;}
+  function md(d){return (d.getMonth()+1)+'/'+d.getDate()+'('+WD[d.getDay()]+')';}
+  function ymd(d){return d.getFullYear()+('0'+(d.getMonth()+1)).slice(-2)+('0'+d.getDate()).slice(-2);}
+  function tax(){var t=(document.getElementById('r-total').textContent||'').trim();return /\d/.test(t)?' '+t:'';}
+  function desc(s){return s[3].replace('{T}',tax());}
+  function render(){
+    var b=base();
+    list.innerHTML=STEPS.map(function(s){
+      return '<li><div class="pl-d"><b>'+s[1]+'</b><small>'+(b?md(day(b,s)):'')+'</small></div><div class="pl-t"><b>'+s[2]+'</b><small>'+desc(s)+'</small>'+(s[4]?FORM:'')+'</div></li>';
+    }).join('');
+    var dl=document.getElementById('pl-dl');
+    dl.hidden=document.getElementById('pl-bar').hidden=!b;
+    if(b)dl.innerHTML='신고·등기 기한: 잔금일부터 60일 — <b>'+md(add(b,60))+'</b>까지';
+  }
+  function track(n,d){try{window.SR&&SR.track(n,d||{});}catch(e){}}
+  function link(){return location.origin+location.pathname+'?bal='+inp.value+'#plan';}
+  var told=false;
+  inp.addEventListener('change',function(){render();if(!told&&base()){told=true;track('calc_plan');}});
+  document.addEventListener('input',function(e){if(e.target!==inp)setTimeout(render,0);});
+  document.getElementById('pl-share').addEventListener('click',function(){
+    var b=base(),btn=this;if(!b)return;track('calc_plan_save',{mode:'share'});
+    if(navigator.share){navigator.share({title:'잔금일 기준 할 일 달력',text:'잔금일 '+md(b)+' 기준 셀프등기 할 일',url:link()}).catch(function(){});return;}
+    function done(){btn.textContent='링크 복사됨';setTimeout(function(){btn.textContent='휴대폰에 보관';},2000);}
+    try{navigator.clipboard.writeText(link()).then(done,function(){prompt('이 링크를 보관하세요',link());});}catch(e){prompt('이 링크를 보관하세요',link());}
+  });
+  document.getElementById('pl-ics').addEventListener('click',function(){
+    var b=base();if(!b)return;track('calc_plan_save',{mode:'ics'});
+    function esc(t){return String(t).replace(/([,;\\])/g,'\\$1');}
+    var L=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//selfregi24//plan//KO','CALSCALE:GREGORIAN'],stamp=ymd(new Date())+'T000000Z';
+    STEPS.forEach(function(s,i){var d=day(b,s);
+      L.push('BEGIN:VEVENT','UID:'+ymd(b)+'-'+i+'@selfregi24.com','DTSTAMP:'+stamp,'DTSTART;VALUE=DATE:'+ymd(d),'DTEND;VALUE=DATE:'+ymd(add(d,1)),
+        'SUMMARY:'+esc('[셀프등기] '+s[2]),'DESCRIPTION:'+esc(desc(s)+' '+link()),'END:VEVENT');});
+    L.push('END:VCALENDAR');
+    var a=document.createElement('a');a.href=URL.createObjectURL(new Blob([L.join('\r\n')],{type:'text/calendar'}));
+    a.download='selfregi24_잔금일정.ics';document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);a.remove();},1000);
+  });
+  var q=/[?&]bal=(\d{4}-\d{2}-\d{2})/.exec(location.search);if(q)inp.value=q[1];
+  render();
+})();
 </script>
 </body>
 </html>
