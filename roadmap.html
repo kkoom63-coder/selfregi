@@ -519,7 +519,7 @@ html.pv-open,html.pv-open body{overflow:hidden}
 .rs-t{display:block;font-size:17px;font-weight:800;color:var(--navy)}
 .rs-need p{font-size:14px;color:#334155;line-height:1.65;margin:6px 0 12px}
 .rs-up{display:flex;align-items:center;justify-content:center;min-height:52px;border-radius:10px;background:var(--blue);color:#fff;font-size:15.5px;font-weight:800;cursor:pointer}
-.rs-need .rs-alt{font-size:13px;color:#475569;margin:10px 0 0}
+.rs-need.over{background:#E0F2FE;border-style:dashed}
 .rs-need .rs-alt a{color:var(--blue);font-weight:700}
 .rs .rs-msg:empty{display:none}
 .rs .rs-msg{margin-top:8px}
@@ -732,6 +732,7 @@ body>footer{margin-bottom:96px}
     <h1>나만의 셀프등기 로드맵</h1>
     <p data-gift="증여계약서 검인을 받고 취득세·채권·수수료를 낸 뒤 영수증의 금액과 번호를 넣으면 신청서(증여)가 채워집니다. 넣은 값은 이 기기에 저장되어 며칠에 나눠 진행해도 됩니다.">취득세·채권·인지·수수료를 내고 받은 영수증의 금액과 번호를 넣으면 신청서가 채워집니다. 넣은 값은 이 기기에 저장되어 며칠에 나눠 진행해도 됩니다.</p>
 
+    <div id="ap-warn-top"></div>
     <details class="geo-d" id="geo-d"><summary><b>관할 구청·등기소</b><span id="geo-sum">주소 확인 중</span></summary>
     <section class="geo" id="geo" aria-labelledby="geo-h">
       <div class="geo-hd"><h2 id="geo-h">관할 정보</h2><span>취득세 신고처와 신청서 제출처</span></div>
@@ -780,12 +781,11 @@ body>footer{margin-bottom:96px}
       <div class="rs-act"><a href="normal_form.html">입력 내용 고치기</a><label for="fi-resume-sin">다른 위임장 파일 올리기</label></div>
     </div>
     <div class="rs-need" id="rs-need" hidden>
-      <b class="rs-t">먼저 받아 둔 위임장 파일을 올려 주세요</b>
-      <p>위임장 파일(.docx)에 입력한 당사자·부동산 정보와 결제가 함께 담겨 있습니다. 올리면 신청서에 바로 들어갑니다.</p>
-      <label class="rs-up" for="fi-resume-sin">위임장 파일 올리기</label>
-      <p class="rs-alt">위임장을 아직 받지 않았다면 <a href="normal_form.html">서류 작성 화면</a>에서 등기부등본부터 올려 주세요.</p>
+      <b class="rs-t">위임장 파일이나 등기부를 올려 주세요</b>
+      <p>받아 둔 위임장(.docx)은 신청서에 바로 들어가고, 등기부(PDF·사진)는 서류 작성 화면에서 자동으로 읽습니다. 파일을 끌어다 놓아도 됩니다.</p>
+      <label class="rs-up" for="fi-resume-sin">파일 올리기</label>
     </div>
-    <input type="file" id="fi-resume-sin" data-resume="lg-resume-sin" accept=".docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document" style="display:none">
+    <input type="file" id="fi-resume-sin" data-resume="lg-resume-sin" accept=".docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document,application/pdf,image/*" multiple style="display:none">
     <div class="rs-msg" id="lg-resume-sin" role="status" aria-live="polite"></div>
   </section>
 
@@ -2080,7 +2080,10 @@ function renderPreview(){
   });
   host.innerHTML = html;
   const w = document.getElementById('ap-warn');
-  if(w) w.innerHTML = hasForm ? '' : '<div class="ap-warn"><b>이 기기에 작성한 내용이 없습니다.</b> <a href="normal_form.html">서류 작성 화면</a>에서 이어서 오거나, 맨 위 「위임장 파일 올리기」로 불러오세요.</div>';
+  if(w) w.innerHTML = '';
+  /* 2026-10-17: 「작성한 내용 없음」은 오른쪽이 아니라 왼쪽 맨 위(관할 카드 위)에 */
+  const wt = document.getElementById('ap-warn-top');
+  if(wt) wt.innerHTML = hasForm ? '' : '<div class="ap-warn"><b>이 기기에 작성한 내용이 없습니다.</b> <a href="normal_form.html">서류 작성 화면</a>에서 이어서 오거나, 아래 칸에 받아 둔 위임장 파일이나 등기부를 올려 주세요.</div>';
   const set = (id, n) => { const el = document.getElementById(id); if(el) el.textContent = n; };
   set('pvDone', done); set('pvLeft', left); set('pvOpt', opt);
   _rmBlanks = blanks;
@@ -2600,7 +2603,6 @@ function geoSum(){
   const miss = document.getElementById('addr-missing');
   const missing = miss && !miss.hidden && miss.style.display !== 'none';
   if(s2) s2.textContent = missing ? '주소를 입력하면 표시됩니다' : [g && g.textContent, d && d.textContent].filter(Boolean).join(' · ');
-  if(missing) document.getElementById('geo-d').open = true;
 }
 (function(){
   let t = 0;
@@ -3129,6 +3131,36 @@ window.SR=window.SR||(function(){
   p.addEventListener('click',function(e){ if(e.target.closest&&e.target.closest('a')) close(); });
   document.addEventListener('keydown',function(e){ if(e.key==='Escape'&&!p.hidden){ close(); btn.focus(); } });
   window.addEventListener('resize',function(){ if(window.innerWidth>768&&!p.hidden) close(); });
+})();
+</script>
+<script>
+/* 2026-10-17 로드맵 업로드 칸: 위임장(.docx)은 기존 이어서 하기로, 등기부(PDF·사진)는 서류 작성 화면으로 넘겨 바로 판독한다(IndexedDB 경유, 서버 전송 없음). 끌어다 놓기 지원 */
+(function(){
+  var fi = document.getElementById('fi-resume-sin'), box = document.getElementById('rs-need'); if(!fi) return;
+  function isDocxFile(f){return !!f&&(/\.docx$/i.test(f.name||'')||/wordprocessingml/.test(f.type||''));}
+  function srIdb(){return new Promise(function(ok,no){var r=indexedDB.open('sr_handoff',1);r.onupgradeneeded=function(){r.result.createObjectStore('f');};r.onsuccess=function(){ok(r.result);};r.onerror=function(){no(r.error);};});}
+  function toForm(regs){
+    var gift = !!(document.getElementById('rg') && !document.getElementById('rg').hidden);
+    var go = function(){ location.href = 'normal_form.html?handoff=reg' + (gift ? '&type=gift' : ''); };
+    try{ window.SR && SR.track('rm_reg_handoff', {}); }catch(e){}
+    if(!window.indexedDB) return go();
+    srIdb().then(function(db){ var tx = db.transaction('f','readwrite'); tx.objectStore('f').put(regs, 'reg'); tx.oncomplete = go; tx.onerror = go; }).catch(go);
+  }
+  function take(fl, e){
+    var a = [].slice.call(fl || []), regs = a.filter(function(f){ return !isDocxFile(f); });
+    if(regs.length){ if(e) e.stopImmediatePropagation(); toForm(regs); return true; }
+    return false;
+  }
+  /* 등기부면 위임장 처리기(rm_extras)보다 먼저 가로챈다 */
+  fi.addEventListener('change', function(e){ if(take(fi.files, e)) fi.value = ''; }, true);
+  if(box){
+    ['dragenter','dragover'].forEach(function(t){ box.addEventListener(t, function(e){ e.preventDefault(); box.classList.add('over'); }); });
+    ['dragleave','drop'].forEach(function(t){ box.addEventListener(t, function(e){ e.preventDefault(); box.classList.remove('over'); }); });
+    box.addEventListener('drop', function(e){
+      var fl = e.dataTransfer && e.dataTransfer.files; if(!fl || !fl.length || take(fl)) return;
+      try{ var dt = new DataTransfer(); dt.items.add(fl[0]); fi.files = dt.files; fi.dispatchEvent(new Event('change')); }catch(_){}
+    });
+  }
 })();
 </script>
 </body>

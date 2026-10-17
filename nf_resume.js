@@ -29,6 +29,7 @@
       '.' + paid + ' 주민등록번호는 파일에 담기지 않으므로 필요하면 다시 입력해 주세요. 내려받기 전 원본 서류와 대조하는 확인은 이 기기에서 다시 해 주셔야 합니다.', 'ok');
     trk('resume_docx', { mode: 'ok' });
   }
+  window.nfResumeFile = function (f) { onResumeFile(f); }; /* 등기부 칸에 .docx를 올렸을 때(normal_form route) */
   function bindResume() {
     var fi = $('fi-resume');
     if (fi) fi.addEventListener('change', function () { onResumeFile(fi.files && fi.files[0]); fi.value = ''; });
@@ -47,10 +48,10 @@
     if (FROM_LINK || (typeof hasFormInput === 'function' && hasFormInput()))
       return '재발급 링크가 확인되었습니다. 다시 결제하지 않고 서류를 받으실 수 있습니다.';
     setTimeout(function () {
-      var b = $('resume-box'); if (!b) return;
+      var b = $('dz-reg') || $('resume-box'); if (!b) return;
       b.classList.add('hl'); b.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }, 600);
-    return '결제가 확인되었습니다. 이 기기에는 입력 내용이 없습니다. 받아 두신 위임장 파일을 「위임장 파일로 이어서 하기」에 올리면 입력 내용이 복원됩니다.';
+    return '결제가 확인되었습니다. 이 기기에는 입력 내용이 없습니다. 받아 두신 위임장 파일을 위 「등기사항전부증명서 올리기」 칸에 올리면 입력 내용이 복원됩니다.';
   };
 
   /* 링크로 이어서 하기(2026-10-12): 재발급 링크 끝 「#r=…」에 담긴 입력 내용·이용권을 복원한다.

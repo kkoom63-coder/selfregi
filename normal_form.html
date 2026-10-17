@@ -490,7 +490,7 @@ input.ocr-warn{border-color:#DC2626!important;box-shadow:0 0 0 3px rgba(220,38,3
 .dz-ic{width:34px;height:40px;margin-bottom:10px}
 .ocr-stage .slot-t{font-size:16px;margin-bottom:6px}
 .ocr-stage .pr,.ocr-stage .plg{align-self:stretch}
-.ocr-self{margin:0;font-size:12.5px;color:#475569;text-align:center}
+.ocr-self{margin:0;font-size:12.5px;color:#475569}
 
 /* ===== 모바일 정리 (2026-10-06) =====
    바깥 14 + 카드 22 + 상자 20px 여백이 겹쳐 글 폭이 280px 안팎이었다 → 여백을 줄이고 글자 크기를 4단계로 묶는다. */
@@ -563,7 +563,7 @@ input.ocr-warn{border-color:#DC2626!important;box-shadow:0 0 0 3px rgba(220,38,3
 .h1-docs{display:flex;flex-wrap:wrap;gap:6px}.h1-docs span{padding:4px 12px;border-radius:999px;background:#E0F2FE;border:1px solid #BAE6FD;color:#0369A1;font-size:13px;font-weight:700;white-space:nowrap}
 .pay-seq-n{margin-top:8px;padding-top:8px;border-top:1px dashed #BAE6FD;font-size:13px;color:#334155;line-height:1.65}
 .pay-state{margin:0 0 10px;padding:10px 12px;border-radius:10px;background:#F0F9FF;border:1px solid #BAE6FD;color:#0C4A6E;font-size:13.5px;line-height:1.6}.pay-state a{color:#0369A1;font-weight:700}
-.reg-how{margin:8px 0 0;font-size:13px;color:#475569;text-align:center}.reg-how a{color:#0369A1;font-weight:700}
+.reg-how{margin:8px 0 4px;font-size:13px;color:#475569}.reg-how a{color:#0369A1;font-weight:700}
 @media(max-width:760px){.reg-how{display:none}}
 @media(max-width:760px){.noreg{display:grid;gap:6px;margin-top:4px;padding:12px;border:1px solid var(--border);border-radius:10px;background:#fff}}
 .noreg-t{font-size:13px;font-weight:700;color:var(--navy)}
@@ -613,9 +613,9 @@ input.ocr-warn{border-color:#DC2626!important;box-shadow:0 0 0 3px rgba(220,38,3
       <div class="drop" id="dz-reg">
         <svg class="dz-ic" viewBox="0 0 40 48" aria-hidden="true" focusable="false"><path d="M4 2h22l10 10v32a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z" fill="#fff" stroke="#0369A1" stroke-width="2"/><path d="M26 2v10h10" fill="none" stroke="#0369A1" stroke-width="2"/><path d="M9 22h20M9 28h20M9 34h13" stroke="#93C5FD" stroke-width="2.4" stroke-linecap="round"/></svg>
         <div class="slot-t">등기사항전부증명서 올리기</div>
-        <div class="sub">인터넷등기소에서 받은 PDF는 글자를 그대로 가져옵니다.<br><b>사진이면 여러 장을 한꺼번에</b> 올려 주세요.</div>
+        <div class="sub">인터넷등기소에서 받은 PDF는 글자를 그대로 가져옵니다.<br><b>사진이면 여러 장을 한꺼번에</b> 올려 주세요.<br>받아 둔 위임장(.docx)을 올리면 입력했던 내용이 이어집니다.</div>
         <label class="fb" for="fi-reg">파일 선택</label>
-        <input type="file" id="fi-reg" accept="application/pdf,image/*" multiple style="display:none">
+        <input type="file" id="fi-reg" accept="application/pdf,image/*,.docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document" multiple style="display:none">
         <div class="pr" id="pr-reg"><i></i></div>
         <div class="plg" id="lg-reg"></div>
       </div>
@@ -653,14 +653,8 @@ input.ocr-warn{border-color:#DC2626!important;box-shadow:0 0 0 3px rgba(220,38,3
     <details class="raw-d" id="ocr-raw-box" hidden><summary>추출한 원문 보기</summary><pre id="ocr-raw"></pre></details>
   </div>
 
-  <!-- 위임장 파일로 이어서 하기 (resume.js · nf_resume.js) — 다른 기기에서 이어 할 때 -->
-  <div class="resume" id="resume-box">
-    <div class="rs-t">받아 둔 위임장 파일이 있으신가요?</div>
-    <p class="rs-d">셀프등기24에서 받은 위임장(.docx)을 올리면 입력했던 내용이 그대로 복원됩니다. 다른 기기에서 이어서 할 때 쓰세요. 주민등록번호는 파일에 담지 않으므로 필요하면 다시 입력해 주세요.</p>
-    <label class="fb" for="fi-resume">위임장 파일로 이어서 하기</label>
-    <input type="file" id="fi-resume" accept=".docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document" style="display:none">
-    <div class="plg rs-msg" id="lg-resume" role="status" aria-live="polite"></div>
-  </div>
+  <!-- 위임장 파일로 이어서 하기(2026-10-17): 위 등기부 칸이 .docx도 받는다. 여기는 결과 메시지만 -->
+  <div id="resume-box"><div class="plg rs-msg" id="lg-resume" role="status" aria-live="polite"></div></div>
 
 </div>
 
@@ -2883,9 +2877,23 @@ if (window.SRPay && SRPay.setGuard) SRPay.setGuard(function () {
     }finally{ dz.classList.remove('busy'); }
   }
 
+  /* 2026-10-17: 한 칸에서 등기부(PDF·사진)와 받아 둔 위임장(.docx)을 함께 받는다 — .docx는 이어서 하기로 */
+  function isDocxFile(f){return !!f&&(/\.docx$/i.test(f.name||'')||/wordprocessingml/.test(f.type||''));}
+  function route(fl){
+    var a = [].slice.call(fl || []), dx = a.filter(isDocxFile), rest = a.filter(function(f){ return !isDocxFile(f); });
+    if(dx.length && window.nfResumeFile) window.nfResumeFile(dx[0]);
+    if(rest.length) handle(rest);
+  }
+  /* 로드맵에서 올린 등기부(IndexedDB로 넘어옴) → 바로 판독 */
+  function srIdb(){return new Promise(function(ok,no){var r=indexedDB.open('sr_handoff',1);r.onupgradeneeded=function(){r.result.createObjectStore('f');};r.onsuccess=function(){ok(r.result);};r.onerror=function(){no(r.error);};});}
+  if(/[?&]handoff=reg/.test(location.search) && window.indexedDB){
+    srIdb().then(function(db){ var st = db.transaction('f','readwrite').objectStore('f'), g = st.get('reg');
+      g.onsuccess = function(){ var fl = g.result; st.delete('reg'); if(fl && fl.length){ var c = $('ocr-card'); if(c) c.scrollIntoView({block:'start'}); route(fl); trk('ocr_handoff',{}); } };
+    }).catch(function(){});
+  }
   var fi = $('fi-reg'), dz = $('dz-reg');
   if(fi) fi.addEventListener('change', function(){
-    var fl = fi.files; handle(fl);
+    route(fi.files);
     /* 같은 파일을 다시 고를 때도 change 가 뜨도록 비운다. */
     try{ fi.value = ''; }catch(e){}
   });
@@ -2896,7 +2904,7 @@ if (window.SRPay && SRPay.setGuard) SRPay.setGuard(function () {
       dz.addEventListener(t,function(e){ e.preventDefault(); dz.classList.remove('over'); }); });
     dz.addEventListener('drop', function(e){
       var fl = e.dataTransfer && e.dataTransfer.files;
-      if(fl && fl.length) handle(fl);
+      if(fl && fl.length) route(fl);
     });
   }
 
