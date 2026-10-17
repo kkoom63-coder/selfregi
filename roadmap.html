@@ -3163,6 +3163,7 @@ window.SR=window.SR||(function(){
   }
 })();
 </script>
+<script src="siga.js"></script>
 <script>
 /* 2026-10-17 시가표준액 자동 입력 — 공동주택가격(국토부 공시)을 브이월드에서 조회해 1단계 「시가표준액」 칸을 채운다.
    · 키: 브이월드 웹 인증키(도메인 www.selfregi24.com 등록, 브라우저용 공개 키). JSONP 호출이라 서버를 거치지 않는다.
@@ -3170,42 +3171,7 @@ window.SR=window.SR||(function(){
    · 이미 값이 있으면 건드리지 않는다. 공동명의는 지분(분모·분자)이 있을 때만 지분별로 나눠 넣는다.
    · 신축·오피스텔 등 공시가격이 없으면 기존 안내(공시가격 알리미)를 그대로 둔다. */
 (function(){
-  var KEY = 'B8D64799-EEB1-4F30-A20E-8F5F4CA4C29A', DOM = 'https://www.selfregi24.com', LK = 'sr_siga_v1', LIM = 5, KEEP = 30 * 864e5;
-  function jsonp(url, p){
-    return new Promise(function(ok, no){
-      var cb = 'srvw' + Date.now() + Math.floor(Math.random() * 1e4), s = document.createElement('script');
-      var t = setTimeout(function(){ end(); no('timeout'); }, 8000);
-      function end(){ clearTimeout(t); try { delete window[cb]; } catch (e) { window[cb] = undefined; } s.remove(); }
-      window[cb] = function(d){ end(); ok(d); };
-      var q = new URLSearchParams(Object.assign({}, p, { key: KEY, domain: DOM, format: 'json', callback: cb }));
-      s.src = url + '?' + q.toString(); s.onerror = function(){ end(); no('error'); };
-      document.head.appendChild(s);
-    });
-  }
-  function load(){ try { return JSON.parse(localStorage.getItem(LK) || '{}') || {}; } catch (e) { return {}; } }
-  function save(o){ try { localStorage.setItem(LK, JSON.stringify(o)); } catch (e) {} }
-  function digits(x){ return String(x || '').replace(/[^0-9]/g, ''); }
-  async function lookup(addr, dong, ho){
-    var id = addr + '|' + dong + '|' + ho, S = load(), now = Date.now(), today = new Date().toISOString().slice(0, 10);
-    S.c = S.c || {};
-    if (S.c[id] && now - S.c[id].t < KEEP) return S.c[id];
-    if (S.d !== today) { S.d = today; S.n = 0; }
-    if (S.n >= LIM) return null;
-    S.n++; save(S);
-    var r = await jsonp('https://api.vworld.kr/req/search', { service: 'search', request: 'search', version: '2.0', query: addr, type: 'address', category: 'parcel', size: '1' });
-    var it = r && r.response && r.response.result && r.response.result.items && r.response.result.items[0];
-    if (!it || !it.id) return null;
-    var y = new Date().getFullYear(), hit = null;
-    for (var yr of [y, y - 1]) {
-      var p = { pnu: it.id, stdrYear: String(yr), hoNm: ho, numOfRows: '1', pageNo: '1' };
-      if (dong) p.dongNm = dong;
-      var d = await jsonp('https://api.vworld.kr/ned/data/getApartHousingPriceAttr', p);
-      var f = d && d.apartHousingPrices && d.apartHousingPrices.field;
-      if (f && f.length && digits(f[0].pblntfPc)) { hit = { v: digits(f[0].pblntfPc), y: yr, t: now }; break; }
-    }
-    if (hit) { S = load(); S.c = S.c || {}; S.c[id] = hit; save(S); }
-    return hit;
-  }
+  async function lookup(a, d, h){ if (!window.SRSiga) return null; var r = await SRSiga.lookup(a, d, h); return r && !r.err ? r : null; } /* 조회·쿨다운은 siga.js */ function digits(x){ return String(x || '').replace(/[^0-9]/g, ''); }
   async function run(){
     if (typeof RELAY === 'undefined' || typeof relayFilled !== 'function' || relayFilled('siga')) return;
     var f = {}; try { f = JSON.parse(localStorage.getItem('selfregi_form_v1') || '{}') || {}; } catch (e) {}

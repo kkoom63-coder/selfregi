@@ -197,6 +197,19 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,
 .res-row.highlight{background:#fffbeb; color:#92400e;}
 .res-row.highlight .l, .res-row.highlight .v{color:#B45309; font-weight:700;}
 
+/* 2026-10-17 주소로 공시가격·채권 */
+.adr-d{margin:4px 0 14px;border:1px solid var(--border);border-radius:10px;background:#fff}
+.adr-d>summary{cursor:pointer;list-style:none;padding:11px 14px;font-size:13.5px;font-weight:700;color:var(--blue)}
+.adr-d>summary::-webkit-details-marker{display:none}.adr-d>summary span{font-weight:500;color:var(--muted)}
+.adr-row{display:flex;gap:8px;flex-wrap:wrap;padding:0 14px}
+.adr-row input{flex:1 1 180px;min-width:0;min-height:44px;border:1.5px solid var(--border);border-radius:8px;padding:0 12px;font-family:inherit;font-size:15px}
+.adr-row input#adr-dh{flex:0 1 170px}
+.adr-row button{flex:none;min-height:44px;padding:0 18px;border:0;border-radius:8px;background:var(--blue);color:#fff;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer}
+.adr-msg{margin:8px 14px 12px;font-size:12.5px;color:var(--muted);line-height:1.6}
+.bond-box{margin-top:12px;border:1px solid #BAE6FD;background:#F0F9FF;border-radius:10px;padding:12px 14px;font-size:13.5px;color:#0C4A6E;line-height:1.7}
+.bond-box b{color:var(--navy)}.bond-box .bb-row{display:flex;justify-content:space-between;gap:10px}.bond-box .bb-row span:last-child{white-space:nowrap;font-weight:700;color:var(--navy)}
+.bond-box .bb-sum{margin-top:6px;padding-top:6px;border-top:1px dashed #BAE6FD}
+.bond-box .bb-fn{margin-top:6px;font-size:12px;color:#475569}
 .res-total{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:14px 16px;background:#E0F2FE;border-top:1.5px solid #BAE6FD}
 .res-total .l{min-width:0;font-size:15px;font-weight:700;color:var(--navy)}
 .res-total .v{flex:none;white-space:nowrap;font-size:22px;font-weight:800;color:var(--navy)} /* 금액은 두 줄로 깨지지 않게(2026-10-17) */
@@ -431,6 +444,11 @@ html.mnav-open,html.mnav-open body{overflow:hidden}
       </div>
     </div>
 
+    <!-- 2026-10-17 주소로 공시가격·국민주택채권(선택) — 접힌 한 줄. 조회는 siga.js(브이월드) -->
+    <details class="adr-d" id="adr-d"><summary>아파트 주소로 공시가격·국민주택채권까지 계산 <span>(선택)</span></summary>
+      <div class="adr-row"><input type="text" id="adr" placeholder="지번 주소 (예: 송파구 잠실동 19)" autocomplete="off"><input type="text" id="adr-dh" placeholder="동·호 (예: 104동 901호)" autocomplete="off"><button type="button" id="adr-go">조회</button></div>
+      <p class="adr-msg" id="adr-msg">공시가격은 국토부 공동주택가격(브이월드)에서 가져옵니다. 신축·오피스텔은 조회되지 않을 수 있습니다.</p>
+    </details>
     <hr class="divider">
 
     <div class="field" style="margin-bottom:14px">
@@ -523,6 +541,7 @@ html.mnav-open,html.mnav-open body{overflow:hidden}
         <span class="l">예상 납부 총액 <span class="rate-tag" id="r-tag"></span></span>
         <span class="v" id="r-total">—</span>
       </div>
+      <div class="bond-box" id="r-bond" hidden></div>
       <div class="ntc warn" id="r-warn" style="display:none"></div>
 
       <div class="ntc warn" style="margin-top:12px">
@@ -1034,6 +1053,49 @@ window.SR=window.SR||(function(){
   });
   var q=/[?&]bal=(\d{4}-\d{2}-\d{2})/.exec(location.search);if(q)inp.value=q[1];
   render();
+})();
+</script>
+<script src="siga.js"></script>
+<script>
+/* 2026-10-17 주소로 공시가격·국민주택채권 — 주택도시기금법 시행령 별표 부표 15.가.1)(주택 소유권 이전, 2025.8.26 개정본 확인)
+   특별시·광역시 / 그 밖의 지역. 세종·제주(특별자치) 적용 구분은 [미확인] → 그 밖의 지역으로 계산하고 안내에 요율을 표시한다.
+   최저매입 1만원, 1만원 미만 단수는 5천원 이상 올림·미만 버림(별표 4.). 즉시매도 할인율은 매일 바뀌어 계산하지 않는다. */
+(function(){
+  var go = document.getElementById('adr-go'); if (!go) return;
+  var T = [[2e7,13,13],[5e7,19,14],[1e8,21,16],[1.6e8,23,18],[2.6e8,26,21],[6e8,31,26]];
+  function rate(v, metro){ var r = 0; T.forEach(function(t){ if (v >= t[0]) r = metro ? t[1] : t[2]; }); return r; }
+  function round10k(x){ var m = Math.floor(x / 10000), rest = x - m * 10000; return (m + (rest >= 5000 ? 1 : 0)) * 10000; }
+  function won(n){ return Number(n).toLocaleString('ko-KR') + '원'; }
+  function num(id){ return Number(String((document.getElementById(id) || {}).textContent || '').replace(/[^0-9]/g, '')) || 0; }
+  var last = null, msg = document.getElementById('adr-msg'), box = document.getElementById('r-bond');
+  function draw(){
+    if (!last) { box.hidden = true; return; }
+    var v = Number(last.v), metro = /특별시|광역시/.test(last.parcel) && !/특별자치/.test(last.parcel), r = rate(v, metro), bond = r ? Math.max(round10k(v * r / 1000), 10000) : 0;
+    var tax = num('r-total'), fee = 18000, sum = tax + fee + bond;
+    box.innerHTML =
+      '<div class="bb-row"><span>' + last.y + '년 공시가격 · ' + last.where + '</span><span>' + won(v) + '</span></div>' +
+      '<div class="bb-row"><span>채권 매입액 (' + r + '/1,000)</span><span>' + won(bond) + '</span></div>' +
+      '<div class="bb-row"><span>등기신청수수료</span><span>' + won(fee) + '</span></div>' +
+      (tax ? '<div class="bb-row bb-sum"><span><b>잔금일 준비 현금</b></span><span>' + won(sum) + '</span></div>' : '') +
+      '<div class="bb-fn">준비 현금 = 세금 + 수수료 + 채권 매입액(' + (metro ? '특별시·광역시' : '그 밖의 지역') + ' 요율). 채권은 은행에서 바로 되팔면(즉시매도) 매입액이 아니라 할인 차액만 부담합니다. 할인율은 매일 바뀝니다. 최종 확인은 관할 등기소·은행.</div>';
+    box.hidden = false;
+  }
+  go.addEventListener('click', async function(){
+    var addr = document.getElementById('adr').value.trim(), dh = document.getElementById('adr-dh').value;
+    var dm = /([0-9A-Za-z가-힣]+)\s*동/.exec(dh), hm = /(\d+)\s*호/.exec(dh) || /(\d+)\s*$/.exec(dh.trim());
+    if (!addr || !hm) { msg.textContent = '지번 주소와 호수를 넣어 주세요. (예: 송파구 잠실동 19 / 104동 901호)'; return; }
+    go.disabled = true; msg.textContent = '조회 중입니다…';
+    var r = null; try { r = window.SRSiga ? await SRSiga.lookup(addr, dm ? dm[1] : '', hm[1]) : null; } catch (e) {}
+    go.disabled = false;
+    try { window.SR && SR.track('calc_siga', { mode: r && !r.err ? 'ok' : (r && r.err) || 'none' }); } catch (e) {}
+    if (r && r.err === 'limit') { msg.textContent = '오늘 조회 횟수(5회)를 모두 썼습니다. 내일 다시 조회하거나 부동산 공시가격 알리미에서 확인해 주세요.'; return; }
+    if (!r) { msg.innerHTML = '공시가격을 찾지 못했습니다. 신축·오피스텔이거나 주소·동·호가 다를 수 있습니다. <a href="https://www.realtyprice.kr/" target="_blank" rel="noopener">부동산 공시가격 알리미</a>에서 확인해 주세요.'; return; }
+    last = Object.assign({ where: (dm ? dm[1].replace(/동$/, '') + '동 ' : '') + hm[1] + '호' }, r);
+    msg.textContent = '조회했습니다. 계산 결과 아래에 채권과 준비 현금이 표시됩니다.';
+    draw();
+  });
+  var t = document.getElementById('r-total');
+  if (t) new MutationObserver(draw).observe(t, { childList: true, characterData: true, subtree: true });
 })();
 </script>
 </body>
