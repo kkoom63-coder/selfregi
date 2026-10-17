@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-DR3W5XWF50"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  (function(){var ID='G-DR3W5XWF50',off=location.hostname!=='www.selfregi24.com';
+    try{var q=new URLSearchParams(location.search).get('notrack');
+      if(q==='1')localStorage.setItem('sr_notrack','1');if(q==='0')localStorage.removeItem('sr_notrack');
+      if(localStorage.getItem('sr_notrack')==='1')off=true;}catch(e){}
+    if(off)window['ga-disable-'+ID]=true;gtag('set',{page_location:cl(location.href),page_referrer:cl(document.referrer)});gtag('config',ID);function cl(u){try{var x=new URL(u);if(x.hostname!==location.hostname)return u;var k=[];x.searchParams.forEach(function(v,n){if(!/^(utm_|n_)|^(gclid|type|track)$/.test(n))k.push(n);});k.forEach(function(n){x.searchParams.delete(n);});x.hash='';return x.toString();}catch(e){return '';}}})();
+</script>
+<script>window.va=window.va||function(){(window.vaq=window.vaq||[]).push(arguments);};</script>
+<meta charset="UTF-8">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>세금·채권 납부 따라 하기 | 셀프등기24</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+/* 시제품(2026-10-18): 가이드 2단계(납부)를 한 화면 한 할 일로. 화면 자료는 guide_shots.js 공유 */
+:root{
+  --navy:#0F172A;--blue:#0369A1;--blue-h:#075985;
+  --text:#020617;--sub:#334155;--sub2:#475569;--muted:#64748B;--border:#E2E8F0;
+  --bg:#F8FAFC;--card:#fff;
+  --info-bg:#E0F2FE;--info-bd:#BAE6FD;--info-tx:#075985;
+  --warn-bg:#FFF7ED;--warn-bd:#FED7AA;--warn-tx:#7C2D12;
+  --ok:#047857;--ok-bg:#ECFDF5;--ok-bd:#A7F3D0;
+  --radius:12px;--shadow:0 1px 3px rgba(2,6,23,.06);--float:0 12px 32px rgba(15,23,42,.14);
+  --read:640px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{font-family:'Noto Sans KR',system-ui,sans-serif;background:var(--bg);color:var(--text);font-size:14.5px;line-height:1.6;word-break:keep-all;min-height:100vh}
+button{font:inherit;cursor:pointer}
+a{color:var(--blue)}
+
+/* 위쪽: 브랜드 줄 + 단계 줄 + 채운 칸 */
+.top{position:sticky;top:0;z-index:100;background:#fff;border-bottom:1px solid var(--border)}
+.top-in{max-width:var(--read);margin:0 auto;padding:10px 16px 12px}
+.brand{display:flex;align-items:center;justify-content:space-between;font-size:13.5px}
+.logo{font-weight:800;color:var(--navy);text-decoration:none;font-size:15px}
+.logo i{font-style:normal;color:var(--blue)}
+.exit{color:var(--muted);text-decoration:none}
+.stages{display:flex;gap:6px;margin-top:10px}
+.stg{flex:1;text-align:center;font-size:12px;font-weight:700;color:var(--muted);padding-top:6px;border-top:3px solid var(--border)}
+.stg.done{color:var(--ok);border-color:var(--ok)}
+.stg.on{color:var(--blue);border-color:var(--blue)}
+.meter{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:10px;background:var(--info-bg);border:1px solid var(--info-bd);border-radius:10px;padding:8px 12px}
+.meter-l{font-size:12.5px;color:var(--info-tx);font-weight:700}
+.meter-v{font-size:15px;font-weight:800;color:var(--info-tx)}
+.tasks{display:flex;gap:6px;margin-top:8px;overflow-x:auto}
+.tk{flex:none;font-size:12px;font-weight:700;padding:3px 10px;border-radius:999px;background:#F1F5F9;color:var(--muted);border:1px solid var(--border)}
+.tk.on{background:#fff;color:var(--blue);border-color:var(--blue)}
+.tk.done{background:var(--ok-bg);color:var(--ok);border-color:var(--ok-bd)}
+
+/* 본문 */
+.main{max-width:var(--read);margin:0 auto;padding:20px 16px 120px}
+.eyebrow{font-size:12.5px;font-weight:700;color:var(--blue)}
+.q{font-size:22px;font-weight:800;color:var(--navy);line-height:1.4;margin:4px 0 6px}
+.why{font-size:13.5px;color:var(--sub2);margin-bottom:16px}
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tile{width:100%;background:#fff;border:1.5px solid var(--border);border-radius:var(--radius);padding:16px 12px;text-align:left;min-height:84px;display:flex;flex-direction:column;gap:2px}
+.tile b{font-size:14.5px;color:var(--navy)}
+.tile span{font-size:12.5px;color:var(--muted)}
+.tile[aria-pressed="true"]{border-color:var(--blue);background:var(--info-bg)}
+.tile[aria-pressed="true"] b{color:var(--info-tx)}
+.tile.wide{grid-column:1/-1;min-height:0;padding:13px 14px}
+.note{font-size:12.5px;color:var(--muted);margin-top:10px}
+
+.shot{background:#fff;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow)}
+.shot-img{position:relative;background:#F1F5F9;display:flex;align-items:center;justify-content:center;min-height:180px}
+.shot-img img{display:block;width:100%;height:auto;max-height:40vh;object-fit:contain}
+.badge{position:absolute;right:8px;top:8px;font-size:11px;font-weight:700;color:var(--sub);background:rgba(255,255,255,.92);border:1px solid var(--border);border-radius:999px;padding:1px 8px}
+.shot-b{padding:14px 16px 16px}
+.shot-t{font-size:16px;font-weight:700;color:var(--navy);margin:0 0 4px}
+.shot-d{font-size:14px;color:var(--sub)}
+.more{background:none;border:0;color:var(--blue);font-weight:700;font-size:13.5px;padding:8px 0 0}
+.site{display:inline-block;margin-top:10px;font-size:13.5px;font-weight:700;text-decoration:none}
+.skip{display:block;margin-top:14px;font-size:13.5px;color:var(--sub2);background:none;border:0;text-decoration:underline;text-underline-offset:3px}
+
+.fields{display:flex;flex-direction:column;gap:12px;margin-top:4px}
+.fld label{display:block;font-size:13.5px;font-weight:700;color:var(--navy);margin-bottom:4px}
+.fld small{font-weight:400;color:var(--muted);margin-left:6px}
+.fld input{width:100%;font:inherit;font-size:16px;padding:12px 14px;border:1px solid var(--border);border-radius:8px;background:#fff;color:var(--text)}
+.fld input:focus{outline:2px solid var(--info-bd);border-color:var(--blue)}
+
+.warn{background:var(--warn-bg);border:1px solid var(--warn-bd);color:var(--warn-tx);border-radius:var(--radius);padding:12px 14px;font-size:13.5px;margin-top:14px}
+.warn b{font-weight:700}
+
+/* 끝 화면: 상태 + 다음 할 일 */
+.card{background:#fff;border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow);overflow:hidden}
+.row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 16px;border-top:1px solid var(--border);font-size:14px}
+.row:first-child{border-top:0}
+.row .k{color:var(--sub)}
+.row .v{font-weight:700;color:var(--navy);text-align:right}
+.row .v.miss{color:var(--muted);font-weight:500}
+.row button{background:none;border:0;color:var(--blue);font-weight:700;font-size:13px;margin-left:8px}
+.next{margin-top:14px}
+.next a{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;border-top:1px solid var(--border);text-decoration:none;color:var(--navy);font-weight:700;font-size:14.5px}
+.next a:first-child{border-top:0}
+.next a small{display:block;font-weight:400;font-size:12.5px;color:var(--muted)}
+.next a::after{content:"→";color:var(--blue);font-weight:700}
+.next a.primary{background:var(--blue);color:#fff}
+.next a.primary small{color:#E0F2FE}
+.next a.primary::after{color:#fff}
+
+/* 하단 고정 버튼 */
+.foot{position:fixed;left:0;right:0;bottom:0;z-index:150;background:#fff;border-top:1px solid var(--border);padding:10px 16px calc(10px + env(safe-area-inset-bottom))}
+.foot-in{max-width:var(--read);margin:0 auto;display:flex;gap:10px}
+.btn{flex:1;width:100%;border:0;border-radius:10px;padding:13px;font-weight:700;font-size:15px;background:var(--blue);color:#fff;text-align:center;text-decoration:none}
+.btn:hover{background:var(--blue-h)}
+.btn.line{flex:0 0 96px;background:#fff;color:var(--sub);border:1px solid var(--border)}
+
+/* 자세히 보기 시트 */
+.sheet-bg{position:fixed;inset:0;z-index:1000;background:rgba(15,23,42,.4);display:none}
+.sheet-bg.on{display:block}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:1001;background:#fff;border-radius:16px 16px 0 0;box-shadow:var(--float);max-height:70vh;overflow:auto;transform:translateY(100%);transition:transform .2s ease;visibility:hidden}
+.sheet.on{transform:none;visibility:visible}
+.sheet-in{max-width:var(--read);margin:0 auto;padding:12px 16px calc(20px + env(safe-area-inset-bottom))}
+.grab{width:36px;height:4px;border-radius:999px;background:var(--border);margin:0 auto 12px}
+.sheet h3{font-size:15px;font-weight:700;color:var(--navy);margin-bottom:6px}
+.sheet p{font-size:14px;color:var(--sub);margin-bottom:8px}
+.sheet .tip{background:#FEF9EC;border:1px solid #F5E3B3;color:#854F0B;border-radius:8px;padding:10px 12px;font-size:13.5px}
+.sheet-x{display:block;width:100%;margin-top:12px;border:1px solid var(--border);background:#fff;border-radius:10px;padding:11px;font-weight:700;color:var(--sub)}
+.toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);z-index:1200;background:var(--navy);color:#fff;font-size:13.5px;padding:9px 16px;border-radius:999px;opacity:0;transition:opacity .2s;pointer-events:none}
+.toast.on{opacity:1}
+.disc{font-size:12px;color:var(--muted);margin-top:16px}
+@media (min-width:768px){.q{font-size:26px}.main{padding-top:28px}}
+</style>
+</head>
+<body>
+
+<header class="top"><div class="top-in">
+  <div class="brand"><a class="logo" href="index.html">셀프등기<i>24</i></a><a class="exit" href="guide.html">가이드로 나가기</a></div>
+  <div class="stages" id="stages" aria-label="전체 단계">
+    <div class="stg done">1 서류 준비</div><div class="stg on" aria-current="step">2 납부</div><div class="stg">3 서류 작성</div><div class="stg">4 접수</div>
+  </div>
+  <div class="meter"><span class="meter-l">신청서에 들어갈 값</span><span class="meter-v" id="meter">0 / 7</span></div>
+  <div class="tasks" id="tasks"></div>
+</div></header>
+
+<main class="main" id="view" aria-live="polite"></main>
+
+<div class="foot"><div class="foot-in" id="foot"></div></div>
+
+<div class="sheet-bg" id="sheetBg"></div>
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetT"><div class="sheet-in">
+  <div class="grab"></div><h3 id="sheetT"></h3><div id="sheetB"></div>
+  <button type="button" class="sheet-x" id="sheetX">닫기</button>
+</div></div>
+<div class="toast" id="toast" role="status"></div>
+
+<script src="guide_shots.js"></script>
+<script>
+window.SR=window.SR||(function(){
+  var ALLOW=['key','from','doc','track','step'],DENY=/\d{6}\s*-\s*\d{7}|\d{10,}|@/;
+  function sane(d){var out={},n=0;for(var i=0;i<ALLOW.length;i++){if(n>=2)break;var k=ALLOW[i],v=d[k];
+    if(v===undefined||v===null)continue;if(['string','number','boolean'].indexOf(typeof v)<0)continue;
+    if(typeof v==='string'){if(DENY.test(v))continue;v=v.slice(0,40);}out[k]=v;n++;}return out;}
+  function track(name,data){var d=sane(data||{});
+    try{if(typeof window.va==='function')window.va('event',{name:name,data:d});}catch(e){}
+    try{if(typeof window.gtag==='function')window.gtag('event',name,d);}catch(e){}}
+  return {track:track};
+})();
+</script>
+<script>
+/* ===== 납부 따라 하기 =====
+   흐름: 이미 끝낸 것 고르기 → (할 일마다) 화면 따라 하기 → 영수증 값 옮겨 적기 → 끝 화면(상태 + 서류 작성으로)
+   값 저장: guide.html·roadmap.html과 같은 번호 보관함(selfregi_relay_v1, 문자열 스키마 = 매수인 1의 값) */
+var TASKS=[
+  {key:'wetax',name:'취득세',done:'취득세 냈어요',sub:'위택스 · 납부확인서',fields:['tax','edu','rural','siga'],
+   site:['위택스','https://www.wetax.go.kr'],enterQ:'납부확인서에서 옮겨 적으세요',enterWhy:'신청서 세액란과 시가표준액란에 그대로 들어갑니다.'},
+  {key:'bondonline',name:'국민주택채권',done:'채권 샀어요',sub:'은행 · 매입 영수증',fields:['bondamt','bond'],
+   site:['주택도시기금','https://nhuf.molit.go.kr'],enterQ:'채권 매입 영수증에서 옮겨 적으세요',enterWhy:'신청서 국민주택채권란에 들어갑니다.'},
+  {key:'stamp',name:'전자수입인지',done:'인지 출력했어요',sub:'종이문서용 · 출력 1회',fields:[],
+   site:['전자수입인지','https://www.e-revenuestamp.or.kr'],enterQ:'전자수입인지를 출력하셨나요?',enterWhy:'출력한 인지는 신청서에 붙여 냅니다. 번호를 적는 칸은 없습니다.'},
+  {key:'efee',name:'등기신청수수료',done:'수수료 냈어요',sub:'인터넷등기소 · 영수필확인서',fields:['fee'],
+   site:['인터넷등기소','https://www.iros.go.kr'],enterQ:'영수필확인서에서 옮겨 적으세요',enterWhy:'신청서 등기신청수수료란에 납부번호가 들어갑니다.'}
+];
+var RMETA={
+  tax:{label:'취득세액',hint:'납부확인서 「취득세」',num:true},
+  edu:{label:'지방교육세',hint:'납부확인서',num:true},
+  rural:{label:'농어촌특별세',hint:'없으면 비워 두세요',num:true},
+  siga:{label:'시가표준액',hint:'신고서 「시가표준액」',num:true},
+  bondamt:{label:'채권매입금액',hint:'영수증 「매입금액」',num:true},
+  bond:{label:'채권발행번호',hint:'영수증 「채권발행번호」',num:false},
+  fee:{label:'수수료 납부번호',hint:'영수필확인서 「납부번호」',num:false}
+};
+var RORDER=['tax','edu','rural','siga','bondamt','bond','fee'];
+var RELAY_KEY='selfregi_relay_v1',RELAY_TS_KEY='selfregi_relay_ts_v1',FLOW_KEY='selfregi_gflow_v1';
+var SHOT={};(window.SHOTS||(typeof SHOTS!=='undefined'?SHOTS:[])).forEach(function(s){SHOT[s.key]=s;});
+
+function readRelay(){try{return JSON.parse(localStorage.getItem(RELAY_KEY)||'{}')||{};}catch(e){return {};}}
+function writeRelay(vals){ /* 기존 값과 합친다 — 로드맵의 다른 키를 지우지 않는다 */
+  var r=readRelay();Object.keys(vals).forEach(function(k){r[k]=vals[k];});
+  try{localStorage.setItem(RELAY_KEY,JSON.stringify(r));localStorage.setItem(RELAY_TS_KEY,String(Date.now()));}catch(e){}
+}
+function readFlow(){try{return JSON.parse(localStorage.getItem(FLOW_KEY)||'{}')||{};}catch(e){return {};}}
+function writeFlow(f){try{localStorage.setItem(FLOW_KEY,JSON.stringify(f));}catch(e){}}
+var FLOW=readFlow(); /* {pre:{key:true}, fin:{key:true}, doneSent} */
+FLOW.pre=FLOW.pre||{};FLOW.fin=FLOW.fin||{};
+
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function digits(v){return String(v||'').replace(/[^\d]/g,'');}
+function won(v){var n=Number(digits(v));return n?n.toLocaleString('ko-KR')+'원':'';}
+var MARK=/\((재현 이미지|실제 화면)[^)]*\)/g;
+function isRecreated(d){return /\(재현 이미지/.test(d);}
+/* 한 줄 설명: 원문 첫 문장(★ 팁·괄호 표기 제외). 나머지는 「자세히 보기」로 */
+function firstLine(d){
+  var t=d.replace(MARK,'').split('★')[0].trim();
+  var m=t.match(/^.*?(니다|세요|요)\.(?=\s|$)/);return m?m[0]:t;
+}
+function bodyOf(d){return d.split('★')[0].replace(MARK,'').trim();}
+function tipOf(d){var i=d.indexOf('★');return i<0?'':d.slice(i+1).replace(MARK,'').trim();}
+
+/* ---- 주소(해시) = 화면 상태. 뒤로 가기가 이전 화면으로 간다 ---- */
+function go(h){if(location.hash.replace(/^#/,'')===h)render();else location.hash=h;}
+function parse(){var o={};location.hash.replace(/^#/,'').split('&').forEach(function(p){var kv=p.split('=');if(kv[0])o[kv[0]]=decodeURIComponent(kv[1]||'');});return o;}
+function taskIdx(key){for(var i=0;i<TASKS.length;i++)if(TASKS[i].key===key)return i;return -1;}
+function entry(t){return 't='+t.key+'&m='+(FLOW.pre[t.key]?'enter':'walk')+'&s=0';}
+function nextAfter(i){return i+1<TASKS.length?entry(TASKS[i+1]):'m=end';}
+
+var V=document.getElementById('view'),F=document.getElementById('foot');
+function foot(html){F.innerHTML=html;}
+function render(){
+  var st=parse();sheet(false);renderTop(st);
+  if(st.m==='walk')return viewWalk(st);
+  if(st.m==='enter')return viewEnter(st);
+  if(st.m==='end')return viewEnd();
+  viewStart();
+}
+function filledCount(){var r=readRelay(),n=0;RORDER.forEach(function(k){if(String(r[k]||'').trim())n++;});return n;}
+function renderTop(st){
+  var sg=document.querySelectorAll('#stages .stg'),end=st.m==='end'; /* 끝 화면에서는 납부 완료 → 서류 작성 차례 */
+  sg[1].className='stg '+(end?'done':'on');sg[2].className='stg'+(end?' on':'');
+  sg[end?1:2].removeAttribute('aria-current');sg[end?2:1].setAttribute('aria-current','step');
+  document.getElementById('meter').textContent=filledCount()+' / 7';
+  document.getElementById('tasks').innerHTML=TASKS.map(function(t){
+    var c=FLOW.fin[t.key]?'done':(st.t===t.key?'on':'');return '<span class="tk '+c+'">'+(FLOW.fin[t.key]?'✓ ':'')+t.name+'</span>';
+  }).join('');
+}
+
+/* 1) 이미 끝낸 것 고르기 */
+function viewStart(){
+  V.innerHTML='<div class="eyebrow">2단계 · 납부</div><h1 class="q">이미 끝낸 것을 고르세요</h1>'
+    +'<p class="why">고른 것은 번호만 옮겨 적고, 나머지는 화면을 따라 하면 됩니다.</p>'
+    +'<div class="tiles">'+TASKS.map(function(t){
+      return '<button type="button" class="tile" data-k="'+t.key+'" aria-pressed="'+(FLOW.pre[t.key]?'true':'false')+'"><b>'+t.done+'</b><span>'+t.sub+'</span></button>';
+    }).join('')+'<button type="button" class="tile wide" data-k="none" aria-pressed="false"><b>아직 하나도 안 했어요</b></button></div>'
+    +'<p class="note">순서는 취득세 → 채권 → 인지 → 수수료입니다. 채권 금액은 취득세 신고 때 나오는 시가표준액으로 정해집니다.</p>';
+  V.querySelectorAll('.tile').forEach(function(b){b.addEventListener('click',function(){
+    var k=b.getAttribute('data-k');
+    if(k==='none'){FLOW.pre={};V.querySelectorAll('.tile').forEach(function(x){x.setAttribute('aria-pressed','false');});b.setAttribute('aria-pressed','true');}
+    else{FLOW.pre[k]=!FLOW.pre[k];b.setAttribute('aria-pressed',FLOW.pre[k]?'true':'false');V.querySelector('[data-k="none"]').setAttribute('aria-pressed','false');}
+    writeFlow(FLOW);
+  });});
+  foot('<button type="button" class="btn" id="go">시작하기</button>');
+  document.getElementById('go').onclick=function(){
+    SR.track('gflow_start',{step:Object.keys(FLOW.pre).filter(function(k){return FLOW.pre[k];}).length});
+    go(entry(TASKS[0]));
+  };
+}
+
+/* 2) 화면 따라 하기 — 한 화면에 한 단계 */
+function viewWalk(st){
+  var i=taskIdx(st.t);if(i<0)return go('');
+  var t=TASKS[i],g=SHOT[t.key];if(!g)return go('t='+t.key+'&m=enter');
+  var s=Math.max(0,Math.min(Number(st.s)||0,g.steps.length-1)),p=g.steps[s],last=s===g.steps.length-1;
+  V.innerHTML='<div class="eyebrow">'+t.name+' · '+(s+1)+' / '+g.steps.length+'</div>'
+    +'<div class="shot" style="margin-top:8px"><div class="shot-img">'+(isRecreated(p.d)?'<span class="badge">재현 이미지</span>':'')
+    +'<img src="'+esc(p.img)+'" alt="'+esc(p.t)+' 화면"></div>'
+    +'<div class="shot-b"><h1 class="shot-t">'+esc(p.t)+'</h1><p class="shot-d">'+esc(firstLine(p.d))+'</p>'
+    +'<button type="button" class="more" id="more">자세히 보기 ›</button><br>'
+    +'<a class="site" href="'+t.site[1]+'" target="_blank" rel="noopener">'+t.site[0]+' 열기 ↗</a></div></div>'
+    +'<button type="button" class="skip" id="skipTo">이미 했어요 — 번호만 적기</button>';
+  document.getElementById('more').onclick=function(){
+    var tip=tipOf(p.d);
+    sheet(true,p.t,'<p>'+esc(bodyOf(p.d))+'</p>'+(tip?'<div class="tip">'+esc(tip)+'</div>':''));
+    SR.track('gflow_more',{key:t.key,step:s+1});
+  };
+  document.getElementById('skipTo').onclick=function(){go('t='+t.key+'&m=enter');};
+  foot('<button type="button" class="btn line" id="prev">이전</button><button type="button" class="btn" id="next">'+(last?'다 했어요':'다음')+'</button>');
+  document.getElementById('prev').onclick=function(){
+    if(s>0)return go('t='+t.key+'&m=walk&s='+(s-1));
+    if(i>0)return go('t='+TASKS[i-1].key+'&m=enter');
+    go('');
+  };
+  document.getElementById('next').onclick=function(){
+    SR.track('gflow_step',{key:t.key,step:s+1});
+    go(last?'t='+t.key+'&m=enter':'t='+t.key+'&m=walk&s='+(s+1));
+  };
+}
+
+/* 3) 영수증 값 옮겨 적기 */
+function viewEnter(st){
+  var i=taskIdx(st.t);if(i<0)return go('');
+  var t=TASKS[i],r=readRelay(),choice=FLOW.fin[t.key]&&!t.fields.length?'printed':'';
+  var html='<div class="eyebrow">'+t.name+' · 번호 적기</div><h1 class="q">'+t.enterQ+'</h1><p class="why">'+t.enterWhy+'</p>';
+  if(t.fields.length){
+    html+='<div class="fields">'+t.fields.map(function(k){var m=RMETA[k],val=r[k]||'';
+      if(m.num&&digits(val))val=Number(digits(val)).toLocaleString('ko-KR');
+      return '<div class="fld"><label for="f-'+k+'">'+m.label+'<small>'+m.hint+'</small></label>'
+        +'<input id="f-'+k+'" data-k="'+k+'" inputmode="'+(m.num?'numeric':'text')+'" autocomplete="off" value="'+esc(val)+'" placeholder="'+(m.num?'숫자만':'번호')+'"></div>';
+    }).join('')+'</div>';
+  }else{
+    html+='<div class="tiles"><button type="button" class="tile" data-v="printed" aria-pressed="'+(choice?'true':'false')+'"><b>출력했어요</b><span>신청서에 붙일 인지</span></button>'
+      +'<button type="button" class="tile" data-v="exempt" aria-pressed="false"><b>매매가 1억원 이하</b><span>주택은 인지세가 없습니다</span></button></div>';
+  }
+  html+='<p class="note">이 기기에만 저장되고 60일 뒤 지워집니다. 신청서 자동완성 때 그대로 쓰입니다.</p>';
+  V.innerHTML=html;
+  V.querySelectorAll('.tile[data-v]').forEach(function(b){b.addEventListener('click',function(){
+    choice=b.getAttribute('data-v');V.querySelectorAll('.tile[data-v]').forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false');});
+  });});
+  V.querySelectorAll('input[data-k]').forEach(function(inp){if(RMETA[inp.getAttribute('data-k')].num)
+    inp.addEventListener('input',function(){var d=digits(inp.value);inp.value=d?Number(d).toLocaleString('ko-KR'):'';});});
+  foot('<button type="button" class="btn line" id="later">나중에</button><button type="button" class="btn" id="save">저장하고 다음</button>');
+  document.getElementById('later').onclick=function(){go(nextAfter(i));};
+  document.getElementById('save').onclick=function(){
+    if(!t.fields.length){
+      if(!choice)return toast('하나를 골라 주세요');
+      FLOW.fin[t.key]=true;writeFlow(FLOW);SR.track('gflow_save',{key:t.key,step:choice});return go(nextAfter(i));
+    }
+    var vals={},filled=0;
+    V.querySelectorAll('input[data-k]').forEach(function(inp){var k=inp.getAttribute('data-k'),v=inp.value.trim();
+      if(RMETA[k].num)v=digits(v);vals[k]=v;if(v)filled++;});
+    if(!filled)return toast('하나 이상 적어 주세요. 나중에 적으려면 「나중에」를 누르세요');
+    writeRelay(vals);FLOW.fin[t.key]=true;writeFlow(FLOW);
+    SR.track('gflow_save',{key:t.key,step:filled});toast('저장했습니다');go(nextAfter(i));
+  };
+}
+
+/* 4) 끝 화면 — 위는 상태, 아래는 다음 할 일 */
+function viewEnd(){
+  var r=readRelay();
+  function val(k){var x=String(r[k]||'').trim();return x?'<span class="v">'+esc(RMETA[k].num?won(x):x)+'</span>':'<span class="v miss">미입력</span>';}
+  var tax=['tax','edu','rural'].reduce(function(a,k){return a+(Number(digits(r[k]))||0);},0);
+  var rows=[
+    ['취득세 등 합계',tax?'<span class="v">'+tax.toLocaleString('ko-KR')+'원</span>':'<span class="v miss">미입력</span>','wetax'],
+    ['시가표준액',val('siga'),'wetax'],
+    ['채권매입금액',val('bondamt'),'bondonline'],
+    ['채권발행번호',val('bond'),'bondonline'],
+    ['전자수입인지',FLOW.fin.stamp?'<span class="v">확인</span>':'<span class="v miss">미확인</span>','stamp'],
+    ['수수료 납부번호',val('fee'),'efee']
+  ];
+  var miss=rows.filter(function(x){return /miss/.test(x[1]);}).length,ok=rows.length-miss;
+  V.innerHTML='<div class="eyebrow">2단계 · 납부 '+(miss?'· '+miss+'개 남음':'완료')+'</div>'
+    +'<h1 class="q">'+(miss?'저장한 번호를 확인하세요':'납부를 마쳤습니다')+'</h1>'
+    +'<p class="why">이 번호들이 소유권이전등기 신청서에 자동으로 들어갑니다.</p>'
+    +'<div class="card">'+rows.map(function(x){return '<div class="row"><span class="k">'+x[0]+'</span><span>'+x[1]+'<button type="button" data-fix="'+x[2]+'">수정</button></span></div>';}).join('')+'</div>'
+    +'<div class="card next"><a class="primary" href="normal_form.html" data-cta="form"><span>이 번호로 서류 작성하기<small>위임장·신청서 자동완성 · Word 파일 다운로드</small></span></a>'
+    +'<a href="roadmap.html" data-cta="roadmap"><span>이미 결제했어요<small>로드맵에서 신청서 받기</small></span></a></div>'
+    +'<div class="warn"><b>위임장에는 매도인 인감도장이 필요합니다.</b> 잔금일이 지났다면 매도인 날인 일정을 먼저 잡으세요.</div>'
+    +'<p class="disc">세액·채권 금액은 각 기관 영수증 기준입니다. 최종 확인은 관할 등기소에서 하세요.</p>';
+  V.querySelectorAll('[data-fix]').forEach(function(b){b.onclick=function(){go('t='+b.getAttribute('data-fix')+'&m=enter');};});
+  V.querySelectorAll('[data-cta]').forEach(function(a){a.addEventListener('click',function(){SR.track('gflow_cta',{doc:a.getAttribute('data-cta'),step:ok});});});
+  if(!FLOW.doneSent){FLOW.doneSent=true;writeFlow(FLOW);SR.track('gflow_done',{step:ok});}
+  foot('<button type="button" class="btn line" id="back">처음으로</button><a class="btn" href="normal_form.html" id="ctaFoot">서류 작성하기</a>');
+  document.getElementById('back').onclick=function(){go('');};
+  document.getElementById('ctaFoot').addEventListener('click',function(){SR.track('gflow_cta',{doc:'form_foot',step:ok});});
+}
+
+/* 자세히 보기 시트 */
+var SB=document.getElementById('sheetBg'),SH=document.getElementById('sheet');
+function sheet(on,title,body){
+  if(on){document.getElementById('sheetT').textContent=title;document.getElementById('sheetB').innerHTML=body;}
+  SB.classList.toggle('on',!!on);SH.classList.toggle('on',!!on);
+  if(on)document.getElementById('sheetX').focus();
+}
+SB.onclick=function(){sheet(false);};document.getElementById('sheetX').onclick=function(){sheet(false);};
+document.addEventListener('keydown',function(e){if(e.key==='Escape')sheet(false);});
+var _tt;function toast(m){var t=document.getElementById('toast');t.textContent=m;t.classList.add('on');clearTimeout(_tt);_tt=setTimeout(function(){t.classList.remove('on');},2200);}
+
+window.addEventListener('hashchange',function(){render();window.scrollTo(0,0);});
+render();
+</script>
+</body>
+</html>
