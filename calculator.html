@@ -1088,7 +1088,7 @@ window.SR=window.SR||(function(){
     var r = null; try { r = window.SRSiga ? await SRSiga.lookup(addr, dm ? dm[1] : '', hm[1]) : null; } catch (e) {}
     go.disabled = false;
     try { window.SR && SR.track('calc_siga', { mode: r && !r.err ? 'ok' : (r && r.err) || 'none' }); } catch (e) {}
-    if (r && r.err === 'limit') { msg.textContent = '오늘 조회 횟수(5회)를 모두 썼습니다. 내일 다시 조회하거나 부동산 공시가격 알리미에서 확인해 주세요.'; return; }
+    if (r && r.err === 'limit') { msg.textContent = '오늘 조회 횟수(30회)를 모두 썼습니다. 내일 다시 조회하거나 부동산 공시가격 알리미에서 확인해 주세요.'; return; }
     if (!r) { msg.innerHTML = '공시가격을 찾지 못했습니다. 신축·오피스텔이거나 주소·동·호가 다를 수 있습니다. <a href="https://www.realtyprice.kr/" target="_blank" rel="noopener">부동산 공시가격 알리미</a>에서 확인해 주세요.'; return; }
     last = Object.assign({ where: (dm ? dm[1].replace(/동$/, '') + '동 ' : '') + hm[1] + '호' }, r);
     msg.textContent = '조회했습니다. 계산 결과 아래에 채권과 준비 현금이 표시됩니다.';

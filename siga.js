@@ -1,10 +1,10 @@
 /* 셀프등기24 공시가격 조회 (2026-10-17) — 로드맵 시가표준액 자동 입력 · 계산기 국민주택채권 계산이 함께 쓴다.
    · 브이월드 웹 인증키(도메인 www.selfregi24.com 등록, 브라우저용 공개 키). JSONP 호출이라 서버를 거치지 않는다.
    · 주소 검색(req/search, 지번) → 필지고유번호(PNU) → 공동주택가격(ned getApartHousingPriceAttr, 올해·작년 순).
-   · 쿨다운: 같은 집(주소|동|호)은 이 브라우저에 30일 저장(재조회 없음), 네트워크 조회는 브라우저당 하루 5회.
+   · 쿨다운: 같은 집(주소|동|호)은 이 브라우저에 30일 저장(재조회 없음), 네트워크 조회는 브라우저당 하루 30회(브이월드 키 한도 일 9,999,999건, 2026-10-17 확인).
    SRSiga.lookup(addr, dong, ho) → { v:'2785000000', y:2026, parcel:'서울특별시 송파구 잠실동 19' } | null | { err:'limit' } */
 (function () {
-  var KEY = 'B8D64799-EEB1-4F30-A20E-8F5F4CA4C29A', DOM = 'https://www.selfregi24.com', LK = 'sr_siga_v1', LIM = 5, KEEP = 30 * 864e5;
+  var KEY = 'B8D64799-EEB1-4F30-A20E-8F5F4CA4C29A', DOM = 'https://www.selfregi24.com', LK = 'sr_siga_v1', LIM = 30, KEEP = 30 * 864e5;
   function jsonp(url, p) {
     return new Promise(function (ok, no) {
       var cb = 'srvw' + Date.now() + Math.floor(Math.random() * 1e4), s = document.createElement('script');
