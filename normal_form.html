@@ -558,6 +558,13 @@ input.ocr-warn{border-color:#DC2626!important;box-shadow:0 0 0 3px rgba(220,38,3
 
 /* 등기부 파일이 없는 모바일 이용자 안내 — 760px 이하에서만 */
 .noreg{display:none}
+/* 2026-10-17: 제목 옆 서류 말풍선 · 결제 후 납부 안내 · 결제 카드 입력 상태 한 줄 · PC 등기부 받는 법 */
+.h1-row{display:flex;flex-wrap:wrap;align-items:center;gap:6px 12px;margin-bottom:4px}.h1-row h1{margin-bottom:0}
+.h1-docs{display:flex;flex-wrap:wrap;gap:6px}.h1-docs span{padding:4px 12px;border-radius:999px;background:#E0F2FE;border:1px solid #BAE6FD;color:#0369A1;font-size:13px;font-weight:700;white-space:nowrap}
+.pay-seq-n{margin-top:8px;padding-top:8px;border-top:1px dashed #BAE6FD;font-size:13px;color:#334155;line-height:1.65}
+.pay-state{margin:0 0 10px;padding:10px 12px;border-radius:10px;background:#F0F9FF;border:1px solid #BAE6FD;color:#0C4A6E;font-size:13.5px;line-height:1.6}.pay-state a{color:#0369A1;font-weight:700}
+.reg-how{margin:8px 0 0;font-size:13px;color:#475569;text-align:center}.reg-how a{color:#0369A1;font-weight:700}
+@media(max-width:760px){.reg-how{display:none}}
 @media(max-width:760px){.noreg{display:grid;gap:6px;margin-top:4px;padding:12px;border:1px solid var(--border);border-radius:10px;background:#fff}}
 .noreg-t{font-size:13px;font-weight:700;color:var(--navy)}
 .noreg-a{display:flex;align-items:center;min-height:44px;padding:0 12px;border:1px solid var(--border);border-radius:8px;background:#F8FAFC;font-family:inherit;font-size:13.5px;font-weight:600;color:var(--blue);text-decoration:none;text-align:left;cursor:pointer}
@@ -582,7 +589,7 @@ input.ocr-warn{border-color:#DC2626!important;box-shadow:0 0 0 3px rgba(220,38,3
 
 <header>
   <div class="hi">
-    <h1>소유권이전등기 서류 자동완성</h1>
+    <div class="h1-row"><h1>소유권이전등기 서류 자동완성</h1><div class="h1-docs" data-gift="<span>증여계약서</span><span>위임장</span><span>소유권이전 신청서</span>"><span>위임장</span><span>소유권이전 신청서</span></div></div>
     <p>등기사항전부증명서 한 장을 올리면 위임장·신청서에 들어갈 부동산 정보와 매도인 성명이 채워집니다.</p>
   </div>
   </header>
@@ -612,6 +619,7 @@ input.ocr-warn{border-color:#DC2626!important;box-shadow:0 0 0 3px rgba(220,38,3
         <div class="pr" id="pr-reg"><i></i></div>
         <div class="plg" id="lg-reg"></div>
       </div>
+      <p class="reg-how">등기부가 없다면 <a href="https://www.iros.go.kr" target="_blank" rel="noopener" data-nr="iros-pc">인터넷등기소</a>에서 열람(700원)한 뒤 PDF로 저장해 올리세요.</p>
       <p class="ocr-self">매수인 정보 · 매매계약 정보 · 이전할 지분은 직접 입력합니다</p>
       <!-- 휴대폰에 등기부 파일이 없는 사람(모바일 진입자 판독 0명, 10/1~7) -->
       <div class="noreg">
@@ -1043,17 +1051,18 @@ input.ocr-warn{border-color:#DC2626!important;box-shadow:0 0 0 3px rgba(220,38,3
 <div class="card" id="pay-card" data-gx>
   <div class="pay-seq">
       <div class="pay-seq-h">결제 후 진행 순서</div>
-      <ol data-gift="<li><b>증여계약서·위임장 받기</b> — 결제 직후 내려받아 증여인 인감 날인을 받습니다.</li><li><b>구청에서 계약서 검인</b> — 부동산 소재지 구청에 증여계약서 원본을 내고 검인을 받습니다.</li><li><b>취득세 등 납부</b> — 취득세(증여)·국민주택채권·등기신청수수료를 내고 영수증의 번호를 확인합니다.</li><li><b>신청서 받기</b> — 로드맵에서 납부 번호를 입력하면 소유권이전등기신청서(증여)가 완성됩니다.</li>">
+      <ol data-gift="<li><b>증여계약서·위임장 받기</b> — 결제 직후 내려받아 증여인 인감 날인을 받습니다.</li><li><b>구청에서 계약서 검인</b> — 부동산 소재지 구청에 증여계약서 원본을 내고 검인을 받습니다.</li><li><b>신청서 받기</b> — 로드맵에서 납부 번호를 입력하면 소유권이전등기신청서(증여)가 완성됩니다.</li>">
         <li><b>위임장 받기</b> — 결제 직후 내려받아 잔금일에 매도인 인감 날인을 받습니다.</li>
-        <li><b>제세공과금 납부</b> — 취득세·국민주택채권·등기신청수수료를 내고 영수증의 번호를 확인합니다.</li>
         <li><b>신청서 받기</b> — 로드맵에서 납부 번호를 입력하면 소유권이전등기신청서가 완성됩니다.</li>
       </ol>
       <p data-gift="세 서류 모두 한 번 결제에 포함됩니다.">두 서류 모두 한 번 결제에 포함됩니다.</p>
+      <p class="pay-seq-n" data-gift="제세공과금(취득세(증여)·등기신청수수료 등)은 등기신청서 작성 전에 납부를 마치는 것이 좋습니다. 납부하지 않으셨다면 신청서 작성 페이지에서 납부를 완료하시기 바랍니다.">제세공과금(취득세·등기신청수수료 등)은 등기신청서 작성 전에 납부를 마치는 것이 좋습니다. 납부하지 않으셨다면 신청서 작성 페이지에서 납부를 완료하시기 바랍니다.</p>
     </div>
   <label id="kind-ack-box" style="display:flex;gap:10px;align-items:flex-start;padding:12px 14px;margin:0 0 12px;border:1px solid var(--border);border-radius:10px;background:#F8FAFC;font-size:13.5px;line-height:1.65;cursor:pointer;word-break:keep-all">
     <input type="checkbox" id="kind-ack" style="width:20px;height:20px;margin-top:2px;flex-shrink:0">
-    <span>이 부동산은 <b>아파트·오피스텔 등 집합건물</b>입니다. 등기부 표제부에 「1동의 건물의 표시」와 「대지권의 표시」가 있습니다. <span style="color:var(--muted)">토지·단독주택은 서류 양식이 달라 현재 결제를 받지 않습니다.</span></span>
+    <span id="kind-ack-t">이 부동산은 <b>아파트·오피스텔 등 집합건물</b>입니다. 등기부 표제부에 「1동의 건물의 표시」와 「대지권의 표시」가 있습니다. <span style="color:var(--muted)">토지·단독주택은 서류 양식이 달라 현재 결제를 받지 않습니다.</span></span>
   </label>
+  <p class="pay-state" id="pay-state" hidden></p>
   <button id="btn-pay" class="pay-btn" onclick="SRPay.start()">
     <div style="text-align:left">
       <div class="dn" id="pay-dn">9,900원 결제하고 서류 받기</div>
@@ -2293,6 +2302,36 @@ window.SR=window.SR||(function(){
 <script src="regfields.js"></script>
 <script src="resume.js"></script>
 <script src="pay.js"></script>
+<script>
+/* 2026-10-17 결제 카드 보조: ① 판독이 집합건물을 확인하면 확인칸을 자동 처리 ② 결제 버튼 위 한 줄로 입력 상태(입력 전/빈 항목 N개)를 알린다.
+   값은 「문서 반영 미리보기」의 tlDone·tlLeft를 읽는다. 다 채웠거나 결제했으면 숨긴다. */
+(function(){
+  window.nfKindOk = function(){
+    var a = document.getElementById('kind-ack'), t = document.getElementById('kind-ack-t'), b = document.getElementById('kind-ack-box');
+    if (!a || !t || a.dataset.auto) return;
+    a.checked = true; a.dataset.auto = '1';
+    t.innerHTML = '<b>등기부에서 집합건물을 확인했습니다.</b> 「1동의 건물의 표시」·「대지권의 표시」가 있는 등기부입니다.';
+    if (b) { b.style.borderColor = '#86EFAC'; b.style.background = '#F0FDF4'; }
+    try { window.SR && SR.track('nf_kind_auto', {}); } catch (e) {}
+  };
+  var el = document.getElementById('pay-state'), L = document.getElementById('tlLeft'), D = document.getElementById('tlDone');
+  window.nfPayMode = function(){ var d = +(D && D.textContent) || 0, l = +(L && L.textContent) || 0; return d === 0 ? 'empty' : (l > 0 ? 'partial' : 'full'); };
+  if (!el || !L || !D) return;
+  function up(){
+    var m = nfPayMode();
+    if ((window.SRPay && SRPay.has()) || m === 'full') { el.hidden = true; return; }
+    el.hidden = false;
+    el.innerHTML = m === 'empty'
+      ? '아직 입력 전입니다. <a href="#ocr-card">등기부 한 장을 올리면</a> 대부분 자동으로 채워집니다.'
+      : '아직 비어 있는 항목 <b>' + L.textContent + '개</b> — 비워 둔 칸은 출력 후 손으로 적어도 됩니다.';
+  }
+  var mo = new MutationObserver(up);
+  mo.observe(L, { childList: true, characterData: true, subtree: true });
+  mo.observe(D, { childList: true, characterData: true, subtree: true });
+  window.addEventListener('srpay:change', up);
+  up();
+})();
+</script>
 <script src="blankgate.js"></script>
 <script>
 /* 결제 대상 제한(2026-09-26): 집합건물 매매만. 부동산 종류가 토지면 막고, 그 밖에는 집합건물 확인 체크를 받는다. */
@@ -2322,7 +2361,7 @@ if (window.SRPay && SRPay.setGuard) SRPay.setGuard(function () {
   var btn = document.getElementById('btn-pay');
   if (btn && 'IntersectionObserver' in window) {
     var io = new IntersectionObserver(function (es) {
-      if (es.some(function (x) { return x.isIntersecting; })) { once('nf_pay_view'); io.disconnect(); }
+      if (es.some(function (x) { return x.isIntersecting; })) { once('nf_pay_view', { mode: window.nfPayMode ? nfPayMode() : '' }); io.disconnect(); }
     }, { threshold: 0.5 });
     io.observe(btn);
   }
@@ -2592,6 +2631,7 @@ if (window.SRPay && SRPay.setGuard) SRPay.setGuard(function () {
         + '<div class="iss-d">'+body+'</div>' + (btns ? '<div class="iss-a">'+btns+'</div>' : '') + '</div>';
     }).join('');
     trk('ocr_accept',{key:String(filled)});
+    if(res && res.docType === '집합건물' && window.nfKindOk) window.nfKindOk(); /* 등기부 표제부로 확인 → 체크 대신 확인 표시 */
     try{ window.nfRegMini && window.nfRegMini(rows, res); }catch(_){}
   }
 
