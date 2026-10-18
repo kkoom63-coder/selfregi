@@ -778,6 +778,8 @@ body>footer{margin-bottom:96px}
 </div>
 
 <main id="main">
+  <!-- 내 셀프등기 진행 줄(2026-10-19, journey.js) — 서류 작성 화면과 같은 줄 -->
+  <div id="jr"></div>
   <section class="rs" id="rm-start" aria-label="신청서에 들어갈 정보">
     <div class="rs-have" id="rs-have" hidden>
       <div class="rs-k">신청서에 들어갈 정보</div>
@@ -3203,6 +3205,8 @@ window.SR=window.SR||(function(){
   if (document.readyState === 'complete') setTimeout(run, 300); else window.addEventListener('load', function(){ setTimeout(run, 300); });
 })();
 </script>
+<script src="journey.js"></script>
+<script>(function(){function r(){try{SRJourney.render(document.getElementById('jr'),{page:'roadmap'});}catch(e){}}r();window.addEventListener('srpay:change',r);window.addEventListener('storage',r);document.addEventListener('click',function(e){if(e.target.closest&&e.target.closest('.relay-input button,.rl-next'))setTimeout(r,50);});})();</script>
 <script src="receiptpdf.js"></script>
 <script>
 /* 납부확인서 PDF → 1번 칸 자동 입력(2026-10-19). 값은 기존 saveRelay를 거쳐 저장한다. */
@@ -3229,6 +3233,7 @@ function rcptUpload(input){
     msg.className = 'rcpt-msg ' + (r.sumOk ? 'ok' : 'warn');
     msg.textContent = (r.sumOk ? '채웠습니다 — 세액 합계 ' + fmtNum(r.total) + '원 일치.' : '채웠습니다. 세액 합계가 맞지 않아 납부확인서와 한 번 대조해 주세요.') + sigaNote;
     showToast('납부확인서에서 세액을 채웠습니다.');
+    try{SRJourney.render(document.getElementById('jr'),{page:'roadmap'});}catch(e){}
   });
 }
 </script>
