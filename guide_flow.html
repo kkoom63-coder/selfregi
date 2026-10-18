@@ -90,6 +90,9 @@ a{color:var(--blue)}
 .fld input{width:100%;font:inherit;font-size:16px;padding:12px 14px;border:1px solid var(--border);border-radius:8px;background:#fff;color:var(--text)}
 .fld input:focus{outline:2px solid var(--info-bd);border-color:var(--blue)}
 
+.rcpt{margin:0 0 16px;padding:12px 14px;background:#F0F9FF;border:1px dashed #7DD3FC;border-radius:var(--radius)}
+.rcpt-btn{display:block;cursor:pointer}
+.rcpt .note{margin-top:8px}
 .warn{background:var(--warn-bg);border:1px solid var(--warn-bd);color:var(--warn-tx);border-radius:var(--radius);padding:12px 14px;font-size:13.5px;margin-top:14px}
 .warn b{font-weight:700}
 
@@ -157,6 +160,7 @@ a{color:var(--blue)}
 <div class="toast" id="toast" role="status"></div>
 
 <script src="guide_shots.js"></script>
+<script src="receiptpdf.js"></script>
 <script>
 window.SR=window.SR||(function(){
   var ALLOW=['key','from','doc','track','step'],DENY=/\d{6}\s*-\s*\d{7}|\d{10,}|@/;
@@ -312,8 +316,17 @@ function viewEnter(st){
     html+='<div class="tiles"><button type="button" class="tile" data-v="printed" aria-pressed="'+(choice?'true':'false')+'"><b>출력했어요</b><span>신청서에 붙일 인지</span></button>'
       +'<button type="button" class="tile" data-v="exempt" aria-pressed="false"><b>매매가 1억원 이하</b><span>주택은 인지세가 없습니다</span></button></div>';
   }
+  if(t.key==='wetax')html='<div class="rcpt"><label class="btn rcpt-btn">납부확인서 PDF 올리기 — 자동으로 채우기<input type="file" accept="application/pdf,.pdf" hidden id="rcptIn"></label><p class="note" id="rcptMsg">위택스·이택스 납부내역에서 받은 납부확인서 PDF를 올리면 아래 칸이 채워집니다.</p></div>'+html;
   html+='<p class="note">이 기기에만 저장되고 60일 뒤 지워집니다. 신청서 자동완성 때 그대로 쓰입니다.</p>';
   V.innerHTML=html;
+  var ri=document.getElementById('rcptIn');
+  if(ri)ri.addEventListener('change',function(){var f=ri.files&&ri.files[0],msg=document.getElementById('rcptMsg');ri.value='';if(!f||!window.SRReceipt)return;
+    msg.textContent='읽는 중…';
+    SRReceipt.parse(f).then(function(r){SR.track('receipt_ocr',{key:r.kind,from:'gflow'});
+      if(r.kind!=='receipt'){msg.textContent=r.msg;return;}
+      [['tax',r.tax],['edu',r.edu],['rural',r.rural||'0'],['siga',r.siga]].forEach(function(p){var el=document.getElementById('f-'+p[0]);if(el&&p[1])el.value=Number(p[1]).toLocaleString('ko-KR');});
+      msg.textContent=r.sumOk?'채웠습니다 — 세액 합계 '+Number(r.total).toLocaleString('ko-KR')+'원 일치. 「저장하고 다음」을 누르세요.':'채웠습니다. 세액 합계가 맞지 않아 납부확인서와 대조해 주세요.';
+    });});
   V.querySelectorAll('.tile[data-v]').forEach(function(b){b.addEventListener('click',function(){
     choice=b.getAttribute('data-v');V.querySelectorAll('.tile[data-v]').forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false');});
   });});
