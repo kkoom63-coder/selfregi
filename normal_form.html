@@ -1061,6 +1061,7 @@ input.ocr-warn{border-color:#DC2626!important;box-shadow:0 0 0 3px rgba(220,38,3
       <p data-gift="세 서류 모두 한 번 결제에 포함됩니다.">두 서류 모두 한 번 결제에 포함됩니다.</p>
       <p class="pay-seq-n" data-gift="제세공과금(취득세(증여)·등기신청수수료 등)은 등기신청서 작성 전에 납부를 마치는 것이 좋습니다. 납부하지 않으셨다면 신청서 작성 페이지에서 납부를 완료하시기 바랍니다.">제세공과금(취득세·등기신청수수료 등)은 등기신청서 작성 전에 납부를 마치는 것이 좋습니다. 납부하지 않으셨다면 신청서 작성 페이지에서 납부를 완료하시기 바랍니다.</p>
     </div>
+  <p class="ntc inf pay-when" style="margin:0 0 12px" data-gift="<strong>결제는 서류가 필요할 때 해도 됩니다.</strong> 입력한 내용은 이 기기에 남아 있습니다."><strong>결제는 위임장이 필요한 잔금 전날 해도 됩니다.</strong> 입력한 내용은 이 기기에 남아 있습니다.</p>
   <label id="kind-ack-box" style="display:flex;gap:10px;align-items:flex-start;padding:12px 14px;margin:0 0 12px;border:1px solid var(--border);border-radius:10px;background:#F8FAFC;font-size:13.5px;line-height:1.65;cursor:pointer;word-break:keep-all">
     <input type="checkbox" id="kind-ack" style="width:20px;height:20px;margin-top:2px;flex-shrink:0">
     <span id="kind-ack-t">이 부동산은 <b>아파트·오피스텔 등 집합건물</b>입니다. 등기부 표제부에 「1동의 건물의 표시」와 「대지권의 표시」가 있습니다. <span style="color:var(--muted)">토지·단독주택은 서류 양식이 달라 현재 결제를 받지 않습니다.</span></span>
@@ -2308,7 +2309,7 @@ window.SR=window.SR||(function(){
 <script src="resume.js"></script>
 <script src="pay.js"></script>
 <script src="journey.js"></script>
-<script>(function(){function r(){try{SRJourney.render(document.getElementById('jr'),{page:'form'});}catch(e){}}r();window.addEventListener('srpay:change',r);window.addEventListener('storage',r);})();</script>
+<script>(function(){function r(){try{SRJourney.render(document.getElementById('jr'),{page:'form'});}catch(e){}}r();window.addEventListener('srpay:change',r);window.addEventListener('storage',r);document.addEventListener('click',function(e){if(e.target.closest&&e.target.closest('.deal-tab-btn'))setTimeout(r,60);});})();</script>
 <script>
 /* 2026-10-17 결제 카드 보조: ① 판독이 집합건물을 확인하면 확인칸을 자동 처리 ② 결제 버튼 위 한 줄로 입력 상태(입력 전/빈 항목 N개)를 알린다.
    값은 「문서 반영 미리보기」의 tlDone·tlLeft를 읽는다. 다 채웠거나 결제했으면 숨긴다. */

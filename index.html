@@ -706,6 +706,7 @@ html.mnav-open,html.mnav-open body{overflow:hidden}
       <a href="#start" class="nav-a cta">서류 작성하기</a>
     </div>
 </nav>
+<div id="jr-band"></div>
 
 <main id="main">
 <!-- 히어로 -->
@@ -946,7 +947,7 @@ html.mnav-open,html.mnav-open body{overflow:hidden}
     <div class="guide-jump-l">소유권이전등기 가이드 바로가기</div>
     <div class="guide-links">
       <a href="guide.html#what" class="guide-a"><span class="guide-a-t">부동산 등기와 셀프등기란</span></a>
-      <a href="guide.html#docs" class="guide-a"><span class="guide-a-t">준비 서류 체크리스트</span></a>
+      <a href="guide.html#step-1" class="guide-a"><span class="guide-a-t">준비 서류 체크리스트</span></a>
       <a href="guide.html#flow" class="guide-a"><span class="guide-a-t">진행 절차 한눈에</span></a>
     </div>
     <a class="gb-proof" href="guide.html" onclick="trackProof()">
@@ -1649,5 +1650,7 @@ function demoLoop(el, run, finish){
   window.addEventListener('resize',function(){ if(window.innerWidth>768&&!p.hidden) close(); });
 })();
 </script>
+<script src="journey.js"></script>
+<script>try{SRJourney.band(document.getElementById('jr-band'),'index');}catch(e){}</script>
 </body>
 </html>

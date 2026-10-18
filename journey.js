@@ -16,12 +16,26 @@
     return { info: !!form, pass: pass, taxDone: paidKeys === 3, any: !!form || pass || paidKeys > 0 };
   }
 
-  var STEPS = [
+  var SALE = [
     { n: 1, t: '등기부·정보', s: '자동으로 채우기', href: 'normal_form.html#ocr-card' },
     { n: 2, t: '위임장', s: '잔금 전날 · 결제', href: 'normal_form.html#pay-card' },
     { n: 3, t: '세금 납부', s: '잔금일 이후', href: 'roadmap.html#r1' },
     { n: 4, t: '신청서·등기소', s: '접수 한 번', href: 'roadmap.html#r4' }
   ];
+  /* 증여에는 잔금이 없다 — 계약서·위임장 날인 → 구청 검인 → 취득세(증여) → 신청서 */
+  var GIFT = [
+    SALE[0],
+    { n: 2, t: '증여계약서·위임장', s: '날인 전 · 결제', href: 'normal_form.html#pay-card' },
+    { n: 3, t: '검인·세금 납부', s: '구청 검인 · 취득세', href: 'roadmap.html#r1' },
+    { n: 4, t: '신청서·등기소', s: '접수 한 번', href: 'roadmap.html#r4' }
+  ];
+  function isGift(){
+    var tab = document.querySelector('.deal-tab-btn.active');
+    if (tab) return /증여/.test(tab.textContent);
+    if (/[?&]type=gift/.test(location.search)) return true;
+    var f = read('selfregi_form_v1'); return !!(f && f.dealType === 'gift');
+  }
+  var STEPS = SALE;
 
   var CSS = '.jr{background:#fff;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 3px rgba(2,6,23,.06);padding:14px 16px;margin:0 0 14px}'
     + '.jr-h{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px;margin-bottom:10px}.jr-h b{font-size:14.5px;color:#0F172A}.jr-h span{font-size:12.5px;color:#64748B}'
@@ -45,6 +59,7 @@
   function render(el, opt){
     if (!el) return;
     ensureCss();
+    STEPS = isGift() ? GIFT : SALE;
     var page = (opt && opt.page) || 'form';
     var st = state(), done = [st.info, st.pass, st.taxDone, false];
     var cur = done.indexOf(false);
@@ -81,5 +96,23 @@
     });
   }
 
-  window.SRJourney = { render: render, state: state };
+  /* 홈·가이드 맨 위 「이어서 하기」 띠 — 저장된 진행이 있을 때만(삼쩜삼 「이미 신청하셨나요?」 방식) */
+  function band(el, from){
+    if (!el) return;
+    STEPS = isGift() ? GIFT : SALE;
+    var st = state();
+    if (!st.any) { el.innerHTML = ''; return; }
+    var done = [st.info, st.pass, st.taxDone, false], cur = done.indexOf(false), s = STEPS[cur];
+    if (!document.getElementById('jrb-css')) {
+      var c = document.createElement('style'); c.id = 'jrb-css';
+      c.textContent = '.jrb{display:flex;align-items:center;justify-content:space-between;gap:10px;max-width:1200px;margin:0 auto;padding:10px 16px;font-size:13.5px;color:#075985}'
+        + '.jrb-w{background:#E0F2FE;border-bottom:1px solid #BAE6FD}.jrb b{font-weight:700}.jrb a{flex:none;color:#fff;background:#0369A1;border-radius:8px;padding:7px 12px;font-weight:700;text-decoration:none}';
+      document.head.appendChild(c);
+    }
+    el.innerHTML = '<div class="jrb-w"><div class="jrb"><span><b>내 셀프등기</b> · 다음 할 일 ' + s.n + ' ' + s.t + '</span>'
+      + '<a href="' + s.href + '" data-jrb="1">이어서 →</a></div></div>';
+    el.querySelector('[data-jrb]').addEventListener('click', function(){ track('journey_band', { from: from || '', step: s.n }); });
+  }
+
+  window.SRJourney = { render: render, state: state, band: band };
 })();
