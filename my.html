@@ -124,6 +124,16 @@ button{font-family:inherit;cursor:pointer}
 .pv-low{font-style:normal;font-size:11.5px;font-weight:700;color:var(--warn-tx);background:var(--card);border:1px solid var(--warn-bd);border-radius:999px;padding:0 6px}
 .pv-wide{width:100%;max-width:220px}
 .pv-r.full{grid-template-columns:minmax(0,1fr);gap:4px}
+.pe-p{padding:8px 0;border-top:1px solid var(--line)}
+.pe-p:first-of-type{border-top:0}
+.pe-t{font-size:13px;font-weight:700;color:var(--navy);margin-bottom:6px}
+.pe-f{display:grid;grid-template-columns:60px minmax(0,1fr);gap:6px;align-items:center;margin-bottom:6px}
+.pe-f label{font-size:12.5px;color:var(--sub2)}
+.pe-f .pv-in{width:100%;min-width:0}
+.pe-sh span{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--sub2)}
+.pe-sh span .pv-in{width:64px}
+.pe-ck{margin:2px -8px 6px}
+.pe .btn{margin-top:8px;font-size:14px;padding:11px 12px}
 .pv-f{display:grid;grid-template-columns:52px minmax(0,1fr);gap:6px;align-items:center;margin-bottom:6px}
 .pv-f label{font-size:12.5px;color:var(--sub2)}
 .pv-f .pv-in{width:100%}
@@ -331,10 +341,14 @@ var mode='real',S=realState();
 function demoOn(){return mode!=='real';}
 function saveHub(){if(demoOn())return;wr(K.hub,S.hub);syncForm();}
 function saveRelay(vals){
-  Object.keys(vals).forEach(function(k){S.relay[k]=vals[k];});
+  Object.keys(vals).forEach(function(k){S.relay[k]=Array.isArray(vals[k])?(vals[k][0]||''):vals[k];});
   if(demoOn())return;
-  var r=rd(K.relay)||{};Object.keys(vals).forEach(function(k){r[k]=vals[k];}); /* 다른 키는 지우지 않는다 */
-  wr(K.relay,r);try{localStorage.setItem(K.relayTs,String(Date.now()));}catch(e){}
+  /* 1행 값은 selfregi_relay_v1(가이드·로드맵 공용 문자열), 공동명의 배열은 selfregi_relay_multi_v1(로드맵과 같은 키). 다른 키는 지우지 않는다 */
+  var r=rd(K.relay)||{},m=rd(K.relayM),mt=false;
+  Object.keys(vals).forEach(function(k){var v=vals[k];
+    if(Array.isArray(v)){r[k]=v[0]||'';m=m||{};m[k]=v.slice();mt=true;}
+    else{r[k]=v;if(m&&Array.isArray(m[k])){m[k]=[v];mt=true;}}}); /* 단독으로 저장하면 예전 2행이 로드맵 합계에 섞이지 않게 비운다 */
+  wr(K.relay,r);if(mt)wr(K.relayM,m);try{localStorage.setItem(K.relayTs,String(Date.now()));}catch(e){}
 }
 function saveFin(key){
   S.fin[key]=true;if(demoOn())return;
@@ -579,7 +593,14 @@ function regCard(){
 }
 var SHARE=['전부','2분의 1'];
 var ADDR_F=[['jibun','소재지번','예: 서울특별시 마포구 아현동 777'],['apt','건물명','없으면 비워 두세요'],['dong','동','없으면 비워 두세요'],['floor','층',''],['ho','호','']];
+function pnames(a){return a.map(function(q){return q.name;}).filter(has).join(', ');}
+function paddrs(a){if(!a.some(function(q){return has(q.addr);}))return '';return a.map(function(q){return has(q.addr)?q.addr:'주소 입력 전';}).join(' / ');}
+function mask(r){var d=digits(r);return d.length===13?d.slice(0,6)+'-'+d[6]+'******':'';}
 function pvRow(k,v,inp,key){
+  if(key==='party'){
+    var opt=k==='매수인 주민등록번호',lw=k==='매도인'&&reg()&&reg().low&&reg().low.seller&&!S.hub.partyOk;
+    return '<div class="pv-r'+(lw?' low':'')+'"><span class="pv-k">'+k+'</span><span class="pv-v'+(has(v)||opt?'':' miss')+'">'+(has(v)?esc(v):(opt?'<span class="pv-s">비워 두면 출력 후 직접 적습니다</span>':'아직 입력 전'))
+      +(lw?' <i class="pv-low">확인 필요</i>':'')+' <button type="button" class="pv-x" data-edit="party">'+(has(v)?'고치기':'입력')+'</button></span></div>';}
   if(key==='addr'&&OPEN.ed_addr){var p=prop();
     return '<div class="pv-r full"><span class="pv-k">'+k+'</span><span class="pv-v">'+ADDR_F.map(function(a){
       return '<span class="pv-f"><label for="ed-'+a[0]+'">'+a[1]+'</label><input id="ed-'+a[0]+'" class="pv-in" data-ed="addr" data-sub="'+a[0]+'" value="'+esc(p[a[0]])+'"'+(a[2]?' placeholder="'+a[2]+'"':'')+(a[0]==='floor'||a[0]==='ho'||a[0]==='dong'?' inputmode="text"':'')+' autocomplete="off"></span>';}).join('')
@@ -599,22 +620,77 @@ function pvCard(g){
   var x=S.form||{},R=S.relay||{},cd=S.hub.cause||'',p=prop(),P=party();
   var cause=cd?cd.replace(/^(\d+)-0?(\d+)-0?(\d+)$/,'$1년 $2월 $3일 매매'):(has(x.causeYr)?(x.causeYr+'년 '+x.causeMo+'월 '+x.causeDy+'일 매매'):'');
   var price=ed('price')?won(ed('price')):(has(x.dealPrice)?won(x.dealPrice):''),buyer=buyerName(),agent=(P.b[Math.min(+P.agent||0,P.b.length-1)]||{}).name||'';
-  var common=[['부동산의 표시',addr(),0,'addr'],['구조',p.struct,0,'struct'],['전유면적',has(p.area)?p.area+'㎡':'',0,'area'],['대지권 비율',has(p.total)&&has(p.unit)?p.total+'분의 '+p.unit:'',0,'land'],['이전할 지분',shareTxt(),0,'share'],['등기원인',cause,'cause'],['매도인',sellerName(),0,'seller'],['매수인',buyer,0,'buyer']];
+  var common=[['부동산의 표시',addr(),0,'addr'],['구조',p.struct,0,'struct'],['전유면적',has(p.area)?p.area+'㎡':'',0,'area'],['대지권 비율',has(p.total)&&has(p.unit)?p.total+'분의 '+p.unit:'',0,'land'],['이전할 지분',shareTxt(),0,'share'],['등기원인',cause,'cause'],
+    ['매도인',pnames(P.s),0,'party'],['매도인 주소',paddrs(P.s),0,'party'],['매수인',pnames(P.b),0,'party'],['매수인 주소',paddrs(P.b),0,'party']];
   var poa=[['대리인',agent]];
-  var app=[['거래가액',price,0,'price'],['거래신고관리번호',ed('report')||x.dealReportNo||'',0,'report'],['부동산 고유번호',p.uid,0,'uid'],['시가표준액',won(R.siga)],['취득세',won(R.tax)],['국민주택채권',[won(R.bondamt),R.bond].filter(Boolean).join(' · ')],['수수료 납부번호',R.fee||'']];
-  var all=common.concat(poa,app),ok=all.filter(function(r){return has(r[1]);}).length;
+  var RF=demoOn()?null:relayFull(S.form||{}),sg=RF?rsum(RF.siga):Number(digits(R.siga)),ba=RF?rsum(RF.bondamt):Number(digits(R.bondamt)),bn=RF?RF.bond.filter(has).join(' / '):(R.bond||''),fe=RF?RF.fee.filter(has).join(' / '):(R.fee||'');
+  var app=[['매수인 주민등록번호',P.b.map(function(q,i){return mask(rrnOf(i));}).filter(has).join(', '),0,'party'],['거래가액',price,0,'price'],['거래신고관리번호',ed('report')||x.dealReportNo||'',0,'report'],['부동산 고유번호',p.uid,0,'uid'],['시가표준액',won(sg)],['취득세',won(R.tax)],['국민주택채권',[won(ba),bn].filter(Boolean).join(' · ')],['수수료 납부번호',fe]];
+  var all=common.concat(poa,app).filter(function(r){return r[0]!=='매수인 주민등록번호';}),ok=all.filter(function(r){return has(r[1]);}).length; /* 주민등록번호는 비워도 되는 칸이라 세지 않는다 */
   var lowN=Object.keys(g.low||{}).filter(function(k){return !ed(k);}).length;
   return '<section class="ocr" id="reg" aria-labelledby="ocr-t"><div class="ch"><div class="ci ok">✓</div><div class="ct" id="ocr-t">등기부로 자동 채우기</div>'
     +'<button type="button" class="ch-a" data-reup="1">다시 올리기</button></div>'
     +'<p class="sum"><span class="lv'+(g.got<6||g.ocr?' oc':'')+'">'+(g.got<6?'정확도 낮음':(g.ocr?'정확도 보통':'정확도 높음'))+'</span>등기부에서 <b>'+g.got+'칸</b>을 채웠습니다. 값이 서류에 이렇게 들어갑니다.</p>'
     +(lowN?'<p class="pv-warn"><b>확인 필요 '+lowN+'칸</b> — 등기부 원본과 대조하고, 다르면 「고치기」로 바로 고치세요.</p>':'')
     +'<div class="pv"><div class="pv-h">위임장 · 신청서 공통</div>'+common.map(function(r){return pvRow(r[0],r[1],r[2],r[3]);}).join('')+'</div>'
+    +(OPEN.ed_party?partyEd():'')
     +'<div class="pv"><div class="pv-h">위임장에만</div>'+poa.map(function(r){return pvRow(r[0],r[1]);}).join('')+'</div>'
     +'<div class="pv"><div class="pv-h">신청서에만</div>'+app.map(function(r){return pvRow(r[0],r[1],0,r[3]);}).join('')+'</div>'
     +courtBox(g)
     +'<div class="pv-cnt"><span>입력을 마친 항목</span><b class="g">'+ok+'</b><span>아직 비어 있는 항목</span><b class="o">'+(all.length-ok)+'</b></div>'
-    +'<div class="ocr-next"><a class="btn line" href="normal_form.html" data-handoff="1">공동명의 · 주소 · 주민번호 입력하기</a></div></section>';
+    +(OPEN.ed_party?'':'<div class="ocr-next"><button type="button" class="btn line" data-edit="party">매도인·매수인 주소 · 공동명의 입력</button></div>')+'</section>';
 }
+
+/* 매도인·매수인 입력 — 서류 작성 화면의 당사자 칸(공동명의·지분·대리인)과 같은 값. 부수 규칙은 domain.md 공동명의 표 */
+function pIn(id,lab,val,ph,cls){return '<span class="pe-f'+(cls?' '+cls:'')+'"><label for="'+id+'">'+lab+'</label><input id="'+id+'" class="pv-in" value="'+esc(val||'')+'"'+(ph?' placeholder="'+ph+'"':'')+' autocomplete="off"'+(/rrn/.test(id)?' inputmode="numeric"':'')+'></span>';}
+function pShare(w,i,q){return '<span class="pe-f pe-sh"><label for="pe-'+w+i+'-sd">지분</label><span><input id="pe-'+w+i+'-sd" class="pv-in" inputmode="numeric" value="'+esc(q.sd||'')+'" aria-label="지분 분모"> 분의 <input id="pe-'+w+i+'-sn" class="pv-in" inputmode="numeric" value="'+esc(q.sn||'')+'" aria-label="지분 분자"></span></span>';}
+/* 편집 중 값 — 공동명의 체크를 바꿔 다시 그려도 적던 값이 남게 OPEN에 잠시 둔다(저장 전에는 저장소에 쓰지 않는다) */
+function peRead(){
+  function g(id){var e=document.getElementById(id);return e?e.value.trim():null;}
+  var P=OPEN.pdraft||clone(party());
+  ['s','b'].forEach(function(w){while(P[w].length<2)P[w].push({name:'',addr:'',sd:'',sn:''});
+    [0,1].forEach(function(i){['name','addr','sd','sn'].forEach(function(k){var v=g('pe-'+w+i+'-'+k);if(v!==null)P[w][i][k]=k==='sd'||k==='sn'?digits(v):v;});});});
+  var r=OPEN.prrn||[rrnOf(0),rrnOf(1)];[0,1].forEach(function(i){var v=g('pe-b'+i+'-rrn');if(v!==null)r[i]=v;});OPEN.prrn=r;
+  var ag=g('pe-agent');if(ag!==null)P.agent=+ag;
+  var sj=document.getElementById('pe-sj'),bj=document.getElementById('pe-bj');if(sj)OPEN.pjs=sj.checked;if(bj)OPEN.pjb=bj.checked;
+  OPEN.pdraft=P;return P;
+}
+function shareOk(a){var d1=+a[0].sd,n1=+a[0].sn,d2=+a[1].sd,n2=+a[1].sn;if(!d1||!n1||!d2||!n2)return null;return n1*d2+n2*d1===d1*d2;}
+function peSave(){
+  var P=peRead(),js=!!OPEN.pjs,jb=!!OPEN.pjb,r=OPEN.prrn||[];
+  if(r.slice(0,jb?2:1).some(function(v){return has(v)&&digits(v).length!==13;}))return toast('주민등록번호는 13자리 숫자로 적거나 비워 두세요',1);
+  var s=P.s.slice(0,js?2:1),b=P.b.slice(0,jb?2:1);
+  if(!js)s[0]=Object.assign({},s[0],{sd:'',sn:''});if(!jb)b[0]=Object.assign({},b[0],{sd:'',sn:''});
+  S.hub.party={s:s,b:b,agent:jb?Math.min(+P.agent||0,1):0};S.hub.partyOk=1;
+  function fr(v){var d=digits(v);return d.length===13?d.slice(0,6)+'-'+d.slice(6):'';}
+  /* 주민등록번호는 selfregi_form_v1에만 — hubForm이 rrnOf로 읽어 그대로 저장한다 */
+  S.form=Object.assign({},S.form||{},{buyers:b.map(function(q,i){return {name:q.name,addr:q.addr,rrn:fr(r[i])};}),buyerRrn:fr(r[0])});
+  OPEN.ed_party=false;OPEN.pdraft=OPEN.prrn=OPEN.pjs=OPEN.pjb=null;saveHub();track('hub_party',{key:s.length+':'+b.length});
+  var bad=(js&&shareOk(s)===false)||(jb&&shareOk(b)===false);
+  toast(bad?'저장했습니다. 지분 합계가 1이 아닙니다 — 등기부와 대조해 주세요.':'저장했습니다',bad,bad);render();
+}
+function partyEd(){
+  var P=clone(OPEN.pdraft||party()),js=OPEN.pjs!=null?OPEN.pjs:P.s.length>1,jb=OPEN.pjb!=null?OPEN.pjb:P.b.length>1,h='';
+  var rv=function(i){return OPEN.prrn?(OPEN.prrn[i]||''):rrnOf(i);};
+  while(P.s.length<2)P.s.push({name:'',addr:'',sd:'',sn:''});while(P.b.length<2)P.b.push({name:'',addr:'',sd:'',sn:''});
+  function one(w,i,q,joint){var t=(w==='s'?'매도인':'매수인')+(joint?' '+(i+1):'');
+    return '<div class="pe-p"><div class="pe-t">'+t+'</div>'+pIn('pe-'+w+i+'-name','성명',q.name,'')
+      +pIn('pe-'+w+i+'-addr','주소',q.addr,w==='s'?'초본상 현재 주소':'등본상 주소')
+      +(w==='b'?pIn('pe-b'+i+'-rrn','주민번호',rv(i),'비워 두면 출력 후 직접'):'')
+      +(joint?pShare(w,i,q):'')+'</div>';}
+  h+='<div class="pv pe" id="pe"><div class="pv-h">매도인 · 매수인</div>'
+    +one('s',0,P.s[0],js)
+    +'<label class="ck pe-ck'+(js?' on':'')+'"><input type="checkbox" id="pe-sj"'+(js?' checked':'')+'><span>매도인이 2명(공동명의)</span></label>'
+    +(js?one('s',1,P.s[1],true):'')
+    +one('b',0,P.b[0],jb)
+    +'<label class="ck pe-ck'+(jb?' on':'')+'"><input type="checkbox" id="pe-bj"'+(jb?' checked':'')+'><span>매수인이 2명(공동명의)</span></label>'
+    +(jb?one('b',1,P.b[1],true):'')
+    +(jb?'<span class="pe-f"><label for="pe-agent">대리인</label><select id="pe-agent" class="pv-in">'+[0,1].map(function(i){return '<option value="'+i+'"'+((+P.agent||0)===i?' selected':'')+'>매수인 '+(i+1)+(has(P.b[i].name)?'('+esc(P.b[i].name)+')':'')+' — 등기소에 가는 사람</option>';}).join('')+'</select></span>':'')
+    +'<p class="sm" id="pe-sum">'+partySum(js,jb)+'</p>'
+    +'<button type="button" class="btn" data-pe="ok">완료</button></div>';
+  return h;
+}
+/* 신청서·위임장 부수(등기예규 제1363호 — 양쪽이 모두 2인일 때만 2부) */
+function partySum(js,jb){return js&&jb?'매도인·매수인이 모두 2명이라 신청서·위임장을 매수인별로 2부 만들고, 매매목록을 함께 냅니다.':'신청서·위임장은 1부입니다.'+(jb?' 등기소에 가지 않는 매수인은 위임인으로 위임장에 들어갑니다.':'');}
 
 /* 관할 등기소 — 부동산 소재지 기준(court.js, 로드맵과 같은 표) */
 function courtBox(g){
@@ -678,9 +754,14 @@ var PAYTX={
 function shotN(key){var s=shotOf(key);return s?s.steps.length:0;}
 function shotBtn(k,primary){var key=T[k].shot;if(!shotN(key))return '';
   return '<button type="button" class="btn'+(primary?'':' line')+'" data-shot="'+key+'">화면 가이드 보기</button>';}
+/* 공동명의면 시가표준액·채권은 매수인별, 수수료 납부번호는 신청서별 칸(로드맵 MULTI_KEYS와 같은 행 기준) */
 function fieldsHtml(k){
-  return FIELDS[k].map(function(x){var v=S.relay[x[0]]||'';if(x[3]&&digits(v))v=Number(digits(v)).toLocaleString('ko-KR');
-    return '<div class="fld"><label for="f-'+x[0]+'">'+x[1]+'<small>'+x[2]+'</small></label><input id="f-'+x[0]+'" data-f="'+x[0]+'" data-num="'+x[3]+'" inputmode="'+(x[3]?'numeric':'text')+'" autocomplete="off" value="'+esc(v)+'" placeholder="'+(x[3]?'숫자만':'번호')+'"></div>';}).join('');
+  var RF=demoOn()?null:relayFull(S.form||{}),P=party();
+  return FIELDS[k].map(function(x){var key=x[0],n=RF&&MULTI.indexOf(key)>-1?RF[key].length:1,out='';
+    for(var j=0;j<n;j++){var v=RF&&MULTI.indexOf(key)>-1?(RF[key][j]||''):(S.relay[key]||'');if(x[3]&&digits(v))v=Number(digits(v)).toLocaleString('ko-KR');
+      var id='f-'+key+(j?'-'+j:''),who=n>1?(key==='fee'?' · 신청서 '+(j+1):' · '+((P.b[j]&&P.b[j].name)||('매수인 '+(j+1)))):'';
+      out+='<div class="fld"><label for="'+id+'">'+x[1]+esc(who)+'<small>'+x[2]+'</small></label><input id="'+id+'" data-f="'+key+'" data-i="'+j+'" data-n="'+n+'" data-num="'+x[3]+'" inputmode="'+(x[3]?'numeric':'text')+'" autocomplete="off" value="'+esc(v)+'" placeholder="'+(x[3]?'숫자만':'번호')+'"></div>';}
+    return out;}).join('')+(RF&&RF.siga.length>1&&k!=='efee'?'<p class="sm">공동명의는 지분대로 나눈 금액을 매수인별로 적습니다.</p>':'');
 }
 function ckList(list,store,cls){var c=S.hub[store]||{};
   return list.map(function(x){return '<label class="ck'+(c[x.id]?' on':'')+(cls?' '+cls:'')+'"><input type="checkbox" id="ck-'+x.id+'" data-ck="'+x.id+'" data-store="'+store+'"'+(c[x.id]?' checked':'')+'><span>'+x.t+(x.s?'<small>'+esc(x.s)+'</small>':'')+'</span></label>';}).join('');}
@@ -981,10 +1062,15 @@ function bind(){
   A.querySelectorAll('[data-ck]').forEach(function(x){x.onchange=function(){var id=x.getAttribute('data-ck'),st=x.getAttribute('data-store');S.hub[st]=S.hub[st]||{};if(x.checked)S.hub[st][id]=1;else delete S.hub[st][id];saveHub();render();};});
   A.querySelectorAll('input[data-num="1"]').forEach(function(i){i.addEventListener('input',function(){var d=digits(i.value);i.value=d?Number(d).toLocaleString('ko-KR'):'';});});
   A.querySelectorAll('[data-save]').forEach(function(x){x.onclick=function(){var k=x.getAttribute('data-save'),vals={},n=0;
-    A.querySelectorAll('#p-'+k+' [data-f]').forEach(function(i){var v=i.value.trim();if(i.getAttribute('data-num')==='1')v=digits(v);vals[i.getAttribute('data-f')]=v;if(v)n++;});
+    A.querySelectorAll('#p-'+k+' [data-f]').forEach(function(i){var v=i.value.trim(),key=i.getAttribute('data-f');if(i.getAttribute('data-num')==='1')v=digits(v);
+      if(+i.getAttribute('data-n')>1){vals[key]=vals[key]||[];vals[key][+i.getAttribute('data-i')]=v;}else vals[key]=v;if(v)n++;});
     if(!n)return toast('하나 이상 적어 주세요');
     saveRelay(vals);track('hub_save',{key:k});OPEN[k]=false;toast('저장했습니다');var nk=nowKey();render();if(nk&&nk!=='reg'&&!blocked(nk))goTask(nk);};});
-  A.querySelectorAll('[data-edit]').forEach(function(x){x.onclick=function(){var k=x.getAttribute('data-edit');OPEN['ed_'+k]=true;render();var i=A.querySelector('[data-ed="'+k+'"]');if(i)i.focus();};});
+  A.querySelectorAll('[data-edit]').forEach(function(x){x.onclick=function(){var k=x.getAttribute('data-edit');OPEN['ed_'+k]=true;
+    if(k==='party'){OPEN.pdraft=OPEN.prrn=OPEN.pjs=OPEN.pjb=null;render();scrollToEl(document.getElementById('pe'));var n=document.getElementById('pe-s0-name');if(n)n.focus({preventScroll:true});return;}
+    render();var i=A.querySelector('[data-ed="'+k+'"]');if(i)i.focus();};});
+  ['pe-sj','pe-bj'].forEach(function(id){var c=document.getElementById(id);if(c)c.onchange=function(){peRead();render();};});
+  A.querySelectorAll('[data-pe]').forEach(function(x){x.onclick=peSave;});
   function edSave(k){
     var E=S.hub.edit=S.hub.edit||{};
     if(k==='addr'){A.querySelectorAll('[data-sub]').forEach(function(i){var f=i.getAttribute('data-sub'),v=i.value.trim();
@@ -996,11 +1082,7 @@ function bind(){
       if(k==='price')v=digits(v);if(k==='area')v=v.replace(/\s*(㎡|m2|m²)$/,'');
       if(k==='land'&&v&&!frac(v))return toast('「38520.6분의 41.27」처럼 적어 주세요');
       if(k==='share'&&v&&v!=='전부'&&!frac(v))return toast('「3분의 1」처럼 적어 주세요');
-      if(k==='seller'||k==='buyer'){
-        var names=v.split(/\s*[,，]\s*/).filter(Boolean).slice(0,2),P=S.hub.party=S.hub.party||party(),arr=P[k==='seller'?'s':'b'];
-        if(!names.length)names=[''];
-        names.forEach(function(n,j){arr[j]=arr[j]||{name:'',addr:'',sd:'',sn:''};arr[j].name=n;});arr.length=names.length;
-      }else if(v)E[k]=v;else delete E[k];
+      if(v)E[k]=v;else delete E[k];
     }
     OPEN['ed_'+k]=false;saveHub();track('hub_edit',{key:k});render();}
   A.querySelectorAll('[data-edok]').forEach(function(x){x.onclick=function(){edSave(x.getAttribute('data-edok'));};});
@@ -1018,7 +1100,7 @@ function bind(){
     msg.textContent='읽는 중…';
     SRReceipt.parse(fl).then(function(r){track('receipt_ocr',{key:r.kind,from:'hub'});
       if(r.kind!=='receipt'){msg.textContent=r.msg;return;}
-      [['tax',r.tax],['edu',r.edu],['rural',r.rural||''],['siga',r.siga]].forEach(function(p){var el=document.getElementById('f-'+p[0]);if(el&&p[1])el.value=Number(p[1]).toLocaleString('ko-KR');});
+      [['tax',r.tax],['edu',r.edu],['rural',r.rural||''],['siga',document.getElementById('f-siga-1')?'':r.siga]].forEach(function(p){var el=document.getElementById('f-'+p[0]);if(el&&p[1])el.value=Number(p[1]).toLocaleString('ko-KR');});
       msg.textContent=r.sumOk?'채웠습니다 — 세액 합계 '+Number(r.total).toLocaleString('ko-KR')+'원 일치. 「저장」을 누르세요.':'채웠습니다. 세액 합계가 맞지 않아 납부확인서와 대조해 주세요.';
     });};
   A.querySelectorAll('[data-stamp="0"]').forEach(function(x){x.onclick=function(){S.fin.stamp=false;if(!demoOn()){var fl=rd(K.flow)||{};fl.fin=fl.fin||{};delete fl.fin.stamp;wr(K.flow,fl);}render();};});
