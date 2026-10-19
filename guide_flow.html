@@ -55,7 +55,7 @@ a{color:var(--blue)}
 .meter-l{font-size:12.5px;color:var(--info-tx);font-weight:700}
 .meter-v{font-size:15px;font-weight:800;color:var(--info-tx)}
 .tasks{display:flex;gap:6px;margin-top:8px;overflow-x:auto}
-.tk{flex:none;font-size:12px;font-weight:700;padding:3px 10px;border-radius:999px;background:#F1F5F9;color:var(--muted);border:1px solid var(--border)}
+.tk{flex:none;font-family:inherit;cursor:pointer;font-size:12px;font-weight:700;padding:3px 10px;border-radius:999px;background:#F1F5F9;color:var(--muted);border:1px solid var(--border)}
 .tk.on{background:#fff;color:var(--blue);border-color:var(--blue)}
 .tk.done{background:var(--ok-bg);color:var(--ok);border-color:var(--ok-bd)}
 
@@ -246,8 +246,9 @@ function renderTop(st){
   sg[end?1:2].removeAttribute('aria-current');sg[end?2:1].setAttribute('aria-current','step');
   document.getElementById('meter').textContent=filledCount()+' / 7';
   document.getElementById('tasks').innerHTML=TASKS.map(function(t){
-    var c=FLOW.fin[t.key]?'done':(st.t===t.key?'on':'');return '<span class="tk '+c+'">'+(FLOW.fin[t.key]?'✓ ':'')+t.name+'</span>';
+    var c=FLOW.fin[t.key]?'done':(st.t===t.key?'on':'');return '<button type="button" class="tk '+c+'" data-walk="'+t.key+'" aria-label="'+t.name+' 화면 설명 보기">'+(FLOW.fin[t.key]?'✓ ':'')+t.name+'</button>';
   }).join('');
+  document.querySelectorAll('#tasks [data-walk]').forEach(function(b){b.onclick=function(){go('t='+b.getAttribute('data-walk')+'&m=walk&s=0');};});
 }
 
 /* 1) 이미 끝낸 것 고르기 */
@@ -317,8 +318,10 @@ function viewEnter(st){
       +'<button type="button" class="tile" data-v="exempt" aria-pressed="false"><b>매매가 1억원 이하</b><span>주택은 인지세가 없습니다</span></button></div>';
   }
   if(t.key==='wetax')html='<div class="rcpt"><label class="btn rcpt-btn">납부확인서 PDF 올리기 — 자동으로 채우기<input type="file" accept="application/pdf,.pdf" hidden id="rcptIn"></label><p class="note" id="rcptMsg">위택스·이택스 납부내역에서 받은 납부확인서 PDF를 올리면 아래 칸이 채워집니다.</p></div>'+html;
+  if(SHOT[t.key])html+='<button type="button" class="skip" id="rewalk">'+t.name+' 화면 설명 다시 보기</button>';
   html+='<p class="note">이 기기에만 저장되고 60일 뒤 지워집니다. 신청서 자동완성 때 그대로 쓰입니다.</p>';
   V.innerHTML=html;
+  var rw=document.getElementById('rewalk');if(rw)rw.onclick=function(){go('t='+t.key+'&m=walk&s=0');};
   var ri=document.getElementById('rcptIn');
   if(ri)ri.addEventListener('change',function(){var f=ri.files&&ri.files[0],msg=document.getElementById('rcptMsg');ri.value='';if(!f||!window.SRReceipt)return;
     msg.textContent='읽는 중…';
@@ -365,11 +368,13 @@ function viewEnd(){
   V.innerHTML='<div class="eyebrow">2단계 · 납부 '+(miss?'· '+miss+'개 남음':'완료')+'</div>'
     +'<h1 class="q">'+(miss?'저장한 번호를 확인하세요':'납부를 마쳤습니다')+'</h1>'
     +'<p class="why">이 번호들이 소유권이전등기 신청서에 자동으로 들어갑니다.</p>'
-    +'<div class="card">'+rows.map(function(x){return '<div class="row"><span class="k">'+x[0]+'</span><span>'+x[1]+'<button type="button" data-fix="'+x[2]+'">수정</button></span></div>';}).join('')+'</div>'
+    +'<div class="card">'+rows.map(function(x){return '<div class="row"><span class="k">'+x[0]+'</span><span>'+x[1]+(SHOT[x[2]]?'<button type="button" data-walk2="'+x[2]+'">방법</button>':'')+'<button type="button" data-fix="'+x[2]+'">수정</button></span></div>';}).join('')+'</div>'
+    +'<p class="note">「방법」을 누르면 그 항목의 화면 설명을 처음부터 다시 볼 수 있습니다.</p>'
     +'<div class="card next"><a class="primary" href="normal_form.html" data-cta="form"><span>이 번호로 서류 작성하기<small>위임장·신청서 자동완성 · Word 파일 다운로드</small></span></a>'
     +'<a href="roadmap.html" data-cta="roadmap"><span>이미 결제했어요<small>로드맵에서 신청서 받기</small></span></a></div>'
     +'<div class="warn"><b>위임장에는 매도인 인감도장이 필요합니다.</b> 잔금일이 지났다면 매도인 날인 일정을 먼저 잡으세요.</div>'
     +'<p class="disc">세액·채권 금액은 각 기관 영수증 기준입니다. 최종 확인은 관할 등기소에서 하세요.</p>';
+  V.querySelectorAll('[data-walk2]').forEach(function(b){b.onclick=function(){go('t='+b.getAttribute('data-walk2')+'&m=walk&s=0');};});
   V.querySelectorAll('[data-fix]').forEach(function(b){b.onclick=function(){go('t='+b.getAttribute('data-fix')+'&m=enter');};});
   V.querySelectorAll('[data-cta]').forEach(function(a){a.addEventListener('click',function(){SR.track('gflow_cta',{doc:a.getAttribute('data-cta'),step:ok});});});
   if(!FLOW.doneSent){FLOW.doneSent=true;writeFlow(FLOW);SR.track('gflow_done',{step:ok});}
