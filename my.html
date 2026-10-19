@@ -368,6 +368,8 @@ window.SR=window.SR||(function(){
 <script>
 (function(){
 'use strict';
+/* 증여는 아직 서류 작성 화면에서만 — ?type=gift(홈·증여 계산기·재발급 링크)는 그 화면으로 넘긴다(이용권 ?pass=·#r= 그대로) */
+if(/[?&]type=gift(&|$)/.test(location.search)){location.replace('normal_form.html'+location.search+location.hash);return;}
 var PDF_WORKER=window.HUB_PDF_WORKER||'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 try{if(window.pdfjsLib)pdfjsLib.GlobalWorkerOptions.workerSrc=PDF_WORKER;}catch(e){}
 
@@ -652,13 +654,14 @@ function regCard(){
     +'<div class="drop" id="dz">'+DZ_IC
     +'<div class="slot-t">등기사항전부증명서 올리기</div>'
     +'<div class="sub">인터넷등기소에서 받은 PDF는 글자를 그대로 가져옵니다.<br><b>사진이면 여러 장을 한꺼번에</b> 올려 주세요.</div>'
-    +'<label class="fb" for="fi">파일 선택</label><input type="file" id="fi" accept="application/pdf,image/*" multiple hidden>'
+    +'<label class="fb" for="fi">파일 선택</label><input type="file" id="fi" accept="application/pdf,image/*,.docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document" multiple hidden>'
     +(OCR.busy?'<div class="pr"><i style="width:'+Math.round(OCR.pct*100)+'%"></i></div>':'')
     +'<div class="say">'+esc(OCR.say)+'</div></div>'
     +(OCR.err?'<div class="ocr-err">'+OCR.err+'</div>':'')
     +'<p class="ocr-docs"><b>취득세 납부확인서</b>도 올리면 서류에 들어갈 값이 자동으로 채워집니다.</p>'
     +'<p class="reg-how">등기부가 없다면 인터넷등기소에서 회원가입 없이 열람(700원)한 뒤 PDF로 저장해 올리세요.</p>'
     +'<a class="iros" href="https://www.iros.go.kr" target="_blank" rel="noopener">인터넷등기소 바로가기 ↗</a>'
+    +'<p class="reg-how">받아 둔 위임장 파일(.docx)을 올리면 다른 기기에서 입력한 내용을 이어서 씁니다.</p>'
     +'</section>';
 }
 var SHARE=['전부','2분의 1'];
@@ -915,6 +918,8 @@ function isPdf(fl){return /pdf/i.test(fl.type)||/\.pdf$/i.test(fl.name);}
 var PHOTO_MSG='<b>사진·스캔 PDF는 서류 작성 화면에서 읽습니다.</b> 이 시제품은 인터넷등기소 PDF 원본만 바로 읽습니다.<a class="btn line" href="normal_form.html" data-handoff="1">서류 작성 화면에서 읽기</a>';
 function readReg(files){
   var list=[].slice.call(files||[]);if(!list.length)return;
+  var dx=list.filter(function(fl){return /\.docx$/i.test(fl.name||'')||/wordprocessingml/.test(fl.type||'');})[0];
+  if(dx)return resumeDocx(dx); /* 위임장 파일 → 이어서 하기 */
   OCR.files=list;var pdf=list.filter(isPdf)[0];
   track('hub_ocr',{type:pdf?'pdf':'image'});
   if(!pdf){setOcr({err:PHOTO_MSG,say:''});return;}
@@ -1099,6 +1104,44 @@ async function dlDoc(kind){
   }catch(e){toast('서류를 만들지 못했습니다 — '+(e&&e.message||e),1);}
   dlBusy=false;
 }
+/* ---------- 이어서 하기 — 재발급 링크 #r= · 받아 둔 위임장(.docx). 서류 작성 화면(nf_resume.js)과 같은 데이터 ---------- */
+var GIFT_URL='normal_form.html?type=gift';
+function importPayload(d){
+  var r=(d&&d.r)||{},sf=(d&&d.f)||{};
+  if(r.dealType==='gift')return 'gift';
+  function fv(id){return sf[id]&&sf[id].v?String(sf[id].v):'';}
+  var E=S.hub.edit=S.hub.edit||{};
+  [['jibun','jibun'],['apt','aptName'],['dong','dong'],['floor','floor'],['ho','ho'],['struct','propStruct'],['area','propArea'],['uid','propertyUid'],['report','dealReportNo']].forEach(function(p){if(has(r[p[1]]))E[p[0]]=String(r[p[1]]);});
+  if(has(r.dealPrice))E.price=digits(r.dealPrice);
+  if(has(r.total)&&has(r.unit))E.land=r.total+'분의 '+r.unit;
+  var sh=has(r.transferShare)?r.transferShare:(d.t==='part'&&has(fv('transfer-denom'))&&has(fv('transfer-num'))?fv('transfer-denom')+'분의 '+fv('transfer-num'):'');if(has(sh))E.share=sh;
+  if(has(r.causeYr)&&has(r.causeMo)&&has(r.causeDy))S.hub.cause=r.causeYr+'-'+('0'+r.causeMo).slice(-2)+'-'+('0'+r.causeDy).slice(-2);
+  /* 다른 집의 등기부 판독 결과가 남아 있으면 점검 결과가 섞이지 않게 비운다 */
+  if(S.hub.reg&&has(r.jibun)&&S.hub.reg.addr!==r.jibun)S.hub.reg=null;
+  var ex={dealType:'sale'};if(!has(r.settleYear)&&has(fv('settle-year'))){ex.settleYear=fv('settle-year');ex.settleMonth=fv('settle-month');} /* 10/20 이전 파일은 r에 잔금 연·월이 없다 */
+  S.form=Object.assign({},S.form||{},r,ex);S.hub.party=null;partyInit();
+  saveHub();return 'ok';
+}
+async function resumeFrom(got,how){
+  if(typeof got==='string'){toast(SRResume.MSG[got]||'입력 내용을 읽지 못했습니다.',1,1);track('resume_'+how,{mode:got.toLowerCase(),from:'hub'});return;}
+  if(importPayload(got.d)==='gift'){location.href=GIFT_URL;return;}
+  var paid='';
+  if(got.k&&window.SRPay&&SRPay.redeemToken&&!SRPay.has('sale'))paid=(await SRPay.redeemToken(got.k))?' 결제도 확인되었습니다.':' 결제는 기한(30일)이 지났거나 취소되어 이어받지 못했습니다.';
+  S.pass=!!(window.SRPay&&SRPay.has('sale'));
+  toast('입력 내용을 불러왔습니다.'+paid+' 주민등록번호는 담기지 않으니 필요하면 다시 입력해 주세요.',0,1);
+  track('resume_'+how,{mode:'ok',from:'hub'});render();
+}
+async function resumeDocx(fl){if(!window.SRResume)return toast('파일을 읽을 준비가 되지 않았습니다. 새로고침 후 다시 시도해 주세요.',1);resumeFrom(await SRResume.read(fl),'docx');}
+(function(){var m=location.hash.match(/[#&]r=([A-Za-z0-9_-]+)/);if(!m||!window.SRResume||!SRResume.fromHash)return;
+  try{history.replaceState(null,'',location.pathname+location.search);}catch(e){}
+  SRResume.fromHash(m[1]).then(function(got){resumeFrom(got,'link');});})();
+/* 재발급 링크(?pass=) 안내 — pay.js가 부른다. 증여 이용권이면 증여 서류 화면으로 */
+window.SRRedeemMsg=function(){
+  if(addr()||sellerName()||buyerName())return '재발급 링크가 확인되었습니다. 다시 결제하지 않고 서류를 받으실 수 있습니다.';
+  return '결제가 확인되었습니다. 이 기기에는 입력 내용이 없습니다. 받아 두신 위임장 파일을 맨 위 등기부 칸에 올리면 입력 내용이 복원됩니다.';
+};
+window.SRSetDeal=function(p){if(p==='gift')location.href=GIFT_URL;};
+
 window.showToast=function(m,bg){toast(m,/DC2626|B45309/i.test(bg||''),1);}; /* pay.js 안내가 이 화면 알림으로 나온다 */
 window.addEventListener('srpay:change',function(){if(demoOn())return;var was=S.pass;S.pass=!!(window.SRPay&&SRPay.has('sale'));
   if(S.pass!==was){if(S.pass){OPEN.pass=true;toast('결제가 완료되었습니다. 위임장을 내려받으세요.',0,1);}render();if(S.pass)scrollToEl(document.getElementById('t-pass'));}});
