@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap" rel="stylesheet">
+<!--HUB:START-->
+<title>내 셀프등기</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* 「내 셀프등기」 허브 시제품 v3(2026-10-19). 서류 작성(normal_form) + 로드맵 + 가이드 화면을 한 화면에.
+   레이아웃: 휴대폰 한 단(최대 560px) — 내 집 카드 → 0 등기부(판독·문서 반영 미리보기) → 지금 할 일 → 시점별 3단계(잔금 전 / 잔금 당일 / 접수).
+   저장: selfregi_form_v1(읽기) · selfregi_pass(_gift)_v1(읽기) · selfregi_relay_v1(납부 번호) · selfregi_gflow_v1(인지)
+   · selfregi_hub_v1(잔금일·체크·등기부 판독 요약·이미 낸 것·완료 표시, 새 키) */
+:root{
+  --navy:#0F172A;--blue:#0369A1;--blue-h:#075985;
+  --text:#020617;--sub:#334155;--sub2:#475569;--muted:#64748B;--border:#E2E8F0;
+  --bg:#F8FAFC;--card:#fff;--line:#F1F5F9;
+  --info-bg:#E0F2FE;--info-bd:#BAE6FD;--info-tx:#075985;
+  --ok:#047857;--ok-bg:#ECFDF5;--ok-bd:#A7F3D0;
+  --warn-bg:#FFF7ED;--warn-bd:#FED7AA;--warn-tx:#7C2D12;
+  --tip-bg:#FEF9EC;--tip-bd:#F5E3B3;--tip-tx:#854F0B;
+  --sky:#7DD3FC;--on-navy:#CBD5E1;--scrim:rgba(15,23,42,.55);
+  --radius:12px;--shadow:0 1px 3px rgba(2,6,23,.06);
+  --font:'Noto Sans KR',system-ui,-apple-system,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:14.5px;line-height:1.6;word-break:keep-all;-webkit-text-size-adjust:100%}
+a{color:var(--blue)}
+button{font-family:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.task-b:focus-visible{outline-offset:-3px;border-radius:10px}
+.wrap{max-width:560px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 120px}
+
+/* 상단 */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:var(--card);border-bottom:1px solid var(--border)}
+.top-in{max-width:560px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:10px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.logo{font-weight:800;font-size:16px;color:var(--navy);text-decoration:none}.logo i{font-style:normal;color:var(--blue)}
+.top-a{font-size:13.5px;font-weight:700;color:var(--sub2);text-decoration:none}
+
+/* 내 집 카드 */
+.home{margin-top:16px;background:var(--navy);color:#fff;border-radius:16px;padding:18px 18px 16px}
+.home-eb{font-size:12.5px;font-weight:700;color:var(--sky);letter-spacing:.02em}
+.home-addr{font-size:19px;font-weight:800;line-height:1.4;margin-top:4px}
+.home-addr.empty{font-size:16px;font-weight:700;color:var(--on-navy)}
+.home-sub{font-size:13px;color:var(--on-navy);margin-top:2px}
+.home-date{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:14px;padding-top:12px;border-top:1px solid rgba(255,255,255,.14)}
+.home-date label{font-size:13px;color:var(--on-navy)}
+.home-date input{font:inherit;font-size:14px;color:#fff;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.22);border-radius:8px;padding:6px 8px;color-scheme:dark}
+.dday{font-size:13.5px;font-weight:700;color:#fff;margin-top:8px}
+.dday small{display:block;font-size:12.5px;font-weight:400;color:var(--on-navy)}
+.bar{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-top:14px}
+.bar span{height:5px;border-radius:999px;background:rgba(255,255,255,.18)}
+.bar span.on{background:var(--sky)}.bar span.done{background:#fff}
+.bar-l{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-top:6px;font-size:12px;color:var(--on-navy)}
+.bar-l b{color:#fff;font-weight:700}
+
+/* 0 등기부 — 서류 작성 페이지 「0 등기부로 자동 채우기」와 같은 모양 */
+.ocr{margin-top:12px;background:linear-gradient(#F0F9FF,var(--card) 140px);border:1.5px solid var(--sky);border-radius:var(--radius);padding:16px 14px;box-shadow:var(--shadow)}
+.ch{display:grid;grid-template-columns:32px minmax(0,1fr) auto;column-gap:10px;row-gap:2px;align-items:start;margin-bottom:12px}
+.ci{width:32px;height:32px;border-radius:8px;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800}
+.ci.ok{background:var(--ok)}
+.ct{font-size:15.5px;font-weight:700;color:var(--navy);line-height:32px}
+.ch-a{align-self:center;font-size:13px;font-weight:700;color:var(--blue);background:none;border:0;padding:0}
+.hero-note{background:var(--info-bg);border:1px solid var(--info-bd);color:var(--info-tx);border-radius:10px;padding:10px 12px;font-size:13.5px;margin:0 0 12px}
+.hero-note b{font-weight:700}
+.drop{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;border:1.5px dashed var(--blue);border-radius:10px;background:#F0F9FF;padding:18px 14px}
+.drop.over{background:var(--info-bg)}
+.dz-ic{width:34px;height:40px;margin-bottom:10px}
+.slot-t{font-size:16px;font-weight:800;color:var(--navy);margin-bottom:6px;letter-spacing:-.3px}
+.drop .sub{font-size:12.5px;color:var(--muted);line-height:1.7}
+.fb{display:inline-block;margin-top:13px;height:42px;line-height:42px;padding:0 22px;font-size:14px;font-weight:700;color:#fff;background:var(--blue);border:0;border-radius:8px;cursor:pointer}
+.fb:hover{background:var(--blue-h)}
+.pr{align-self:stretch;height:5px;background:var(--border);border-radius:3px;margin-top:14px;overflow:hidden}
+.pr i{display:block;height:100%;width:0;background:var(--blue);transition:width .4s ease}
+.say{align-self:stretch;font-size:12.5px;color:var(--sub2);margin-top:8px}
+.say:empty{display:none}
+.reg-how{margin:12px 0 0;font-size:13px;color:var(--sub2)}
+.ocr-docs{margin:10px 0 0;font-size:12.5px;color:var(--sub2)}
+.ocr-docs b{color:var(--navy);font-weight:600}
+.iros{display:inline-flex;align-items:center;height:28px;margin-top:6px;padding:0 10px;border-radius:6px;background:var(--sub2);color:#fff;font-size:12px;font-weight:600;text-decoration:none}
+.iros:hover{background:var(--sub)}
+.court{display:flex;align-items:center;justify-content:space-between;gap:10px;border:1px solid var(--border);border-radius:10px;background:var(--card);padding:9px 12px;margin-bottom:8px;font-size:13.5px}
+.court-k{color:var(--sub2);flex:none}
+.court-n{flex:1;min-width:0;font-weight:700;color:var(--navy)}
+.court-a{font-size:12.5px;color:var(--muted)}
+.court-m{flex:none;font-size:13px;font-weight:700;color:var(--blue);text-decoration:none}
+.ocr-all{display:inline-block;margin-top:12px;font-size:13.5px;font-weight:700;color:var(--blue);background:none;border:0;padding:0}
+.ocr-err{background:var(--warn-bg);border:1px solid var(--warn-bd);color:var(--warn-tx);border-radius:10px;padding:10px 12px;font-size:13px;margin-top:10px}
+.ocr-err .btn{margin-top:8px}
+
+/* 문서 반영 미리보기(서류 작성 페이지 오른쪽 패널과 같은 내용) */
+.sum{font-size:13.5px;color:var(--sub);margin:0 0 10px}
+.sum b{color:var(--navy)}
+.lv{display:inline-block;font-size:12px;font-weight:700;padding:1px 8px;border-radius:999px;margin-right:6px;background:var(--ok-bg);color:var(--ok)}
+.lv.oc{background:var(--warn-bg);color:var(--warn-tx)}
+.pv{border:1px solid var(--border);border-radius:10px;background:var(--card);padding:12px;margin-bottom:8px}
+.pv-h{font-size:12px;font-weight:700;color:var(--muted);margin-bottom:6px}
+.pv-r{display:grid;grid-template-columns:104px minmax(0,1fr);gap:8px;padding:5px 0;font-size:13.5px;border-top:1px solid var(--line)}
+.pv-r:first-of-type{border-top:0}
+.pv-k{color:var(--sub2)}
+.pv-v{color:var(--navy);font-weight:500;overflow-wrap:anywhere}
+.pv-v.miss{color:var(--muted);font-weight:400}
+.pv-v.miss::before{content:'';display:inline-block;width:6px;height:6px;border-radius:50%;background:#EA580C;margin:0 6px 2px 0}
+.pv-in{font:inherit;font-size:14px;padding:3px 6px;border:1px solid var(--border);border-radius:6px;color:var(--text);background:var(--card)}
+.pv-s{font-size:12px;color:var(--muted)}
+.pv-x{border:0;background:none;padding:0;margin-left:6px;font-size:12.5px;font-weight:700;color:var(--blue)}
+.pay-p{display:flex;align-items:baseline;gap:8px;margin:0 0 2px}
+.pay-p b{font-size:22px;font-weight:800;color:var(--navy);font-variant-numeric:tabular-nums}
+.pay-p span{font-size:13px;color:var(--muted)}
+.panel .pay-d{font-size:13px;color:var(--sub2);margin:0 0 10px}
+.svc{margin-top:10px;border:1px solid var(--border);border-radius:10px;padding:0 12px}
+.svc summary{cursor:pointer;padding:10px 0;font-size:13px;font-weight:700;color:var(--sub)}
+.svc dl{display:grid;grid-template-columns:64px minmax(0,1fr);gap:6px 10px;margin:0 0 10px;font-size:12.5px;color:var(--sub)}
+.svc dt{font-weight:700;color:var(--navy)}.svc dd{margin:0}
+.svc .sm{margin:0 0 10px}
+.pv-r.low{background:var(--warn-bg);margin:0 -12px;padding:5px 12px}
+.pv-low{font-style:normal;font-size:11.5px;font-weight:700;color:var(--warn-tx);background:var(--card);border:1px solid var(--warn-bd);border-radius:999px;padding:0 6px}
+.pv-wide{width:100%;max-width:220px}
+.pv-warn{background:var(--warn-bg);border:1px solid var(--warn-bd);color:var(--warn-tx);border-radius:10px;padding:8px 12px;font-size:13px;margin:0 0 8px}
+.pv-cnt{display:grid;grid-template-columns:1fr auto;gap:2px 10px;font-size:13px;color:var(--sub2);margin:10px 2px 0}
+.pv-cnt b{font-variant-numeric:tabular-nums;text-align:right}
+.pv-cnt .g{color:var(--ok)}.pv-cnt .o{color:#C2410C}
+.ocr-next{margin-top:12px}
+
+/* 지금 할 일 */
+.now{margin-top:12px;background:var(--card);border:1.5px solid var(--blue);border-radius:16px;padding:16px 16px 14px;box-shadow:var(--shadow)}
+.now-eb{font-size:12.5px;font-weight:700;color:var(--blue)}
+.now-t{font-size:18px;font-weight:800;color:var(--navy);margin:2px 0 0;line-height:1.4}
+.now-d{font-size:13.5px;color:var(--sub2);margin:4px 0 0}
+.now .btn{margin-top:12px}
+.now.wait{border-color:var(--border)}.now.wait .now-eb{color:var(--muted)}
+.btn{display:block;width:100%;border:0;border-radius:10px;padding:13px 14px;font-size:15px;font-weight:700;text-align:center;text-decoration:none;background:var(--blue);color:#fff}
+.btn:hover{background:var(--blue-h)}
+.btn.line{background:var(--card);color:var(--sub);border:1px solid var(--border)}
+.btn.line:hover{background:var(--line)}
+
+/* 시점별 단계 */
+.ph{margin-top:26px}
+.ph-h{display:grid;grid-template-columns:32px minmax(0,1fr);column-gap:10px;align-items:center;padding:0 2px 10px}
+.ph-n{width:32px;height:32px;border-radius:8px;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800}
+.ph-t{font-size:15.5px;font-weight:800;color:var(--navy);margin:0;line-height:1.3}
+.ph-w{display:block;font-size:12.5px;font-weight:400;color:var(--muted)}
+.list{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+.list>*+*{border-top:1px solid var(--line)}
+.task-b{display:flex;align-items:center;gap:12px;width:100%;background:none;border:0;padding:13px 14px;text-align:left;color:inherit}
+.dot{flex:none;width:24px;height:24px;border-radius:50%;border:2px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff}
+.task.done .dot{background:var(--ok);border-color:var(--ok)}
+.task.paid .dot{border-color:var(--ok);background:var(--card);color:var(--ok)}
+.task.now .dot{border-color:var(--blue);box-shadow:inset 0 0 0 4px var(--card);background:var(--blue)}
+.task-tx{flex:1;min-width:0}
+.task-t{display:block;font-size:14.5px;font-weight:700;color:var(--navy)}
+.task.done .task-t{color:var(--sub2)}
+.task-n{display:block;font-size:12.5px;color:var(--muted);margin-top:1px;overflow-wrap:anywhere}
+.task.now .task-n{color:var(--blue);font-weight:700}
+.pill{flex:none;font-size:12px;font-weight:700;padding:2px 9px;border-radius:999px;background:var(--line);color:var(--muted);white-space:nowrap}
+.pill.ok{background:var(--ok-bg);color:var(--ok)}.pill.now{background:var(--info-bg);color:var(--info-tx)}
+.chev{flex:none;width:8px;height:8px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(45deg);margin:-4px 2px 0 0;transition:transform .15s}
+.task.open .chev{transform:rotate(-135deg);margin-top:4px}
+.panel{padding:2px 14px 16px 50px}
+.panel p{margin:0 0 10px;font-size:13.5px;color:var(--sub)}
+.panel .btn{font-size:14px;padding:11px 12px}
+.panel .btn+.btn{margin-top:8px}
+p.sm,.sm{font-size:12.5px;color:var(--muted);margin:10px 0 0}
+.fld{margin-bottom:10px}
+.fld label{display:block;font-size:13px;font-weight:700;color:var(--sub);margin-bottom:4px}
+.fld label small{font-weight:400;color:var(--muted);margin-left:6px}
+.fld input{width:100%;font:inherit;font-size:16px;padding:10px 12px;border:1px solid var(--border);border-radius:8px;background:var(--card);color:var(--text);font-variant-numeric:tabular-nums}
+.link{display:inline-block;margin-top:10px;font-size:13.5px;font-weight:700;color:var(--blue);background:none;border:0;padding:0;text-decoration:none}
+.ck-g{margin:0 0 12px}
+.ck-g h4{margin:0 0 6px;font-size:13px;color:var(--sub2)}
+.ck{display:flex;gap:10px;align-items:flex-start;padding:7px 8px;margin:0 -8px;border-radius:8px;font-size:13.5px;color:var(--sub);cursor:pointer}
+.ck input{flex:none;width:18px;height:18px;margin:2px 0 0;accent-color:var(--ok)}
+.ck small{display:block;font-size:12.5px;color:var(--muted)}
+.ck.on{background:var(--ok-bg)}
+.ck.on>span{color:var(--navy)}
+.rs{list-style:none;margin:0 0 12px;padding:0}
+.rs li{display:grid;grid-template-columns:auto minmax(0,1fr);gap:8px;padding:7px 0;font-size:13.5px;color:var(--sub);border-top:1px solid var(--line)}
+.rs li:first-child{border-top:0}
+.rs i{font-style:normal;font-size:12px;font-weight:700;padding:1px 8px;border-radius:999px;align-self:start;margin-top:1px;white-space:nowrap}
+.rs i.ok{background:var(--ok-bg);color:var(--ok)}.rs i.no{background:var(--warn-bg);color:var(--warn-tx)}.rs i.ck2{background:var(--line);color:var(--sub2)}
+.rs small{display:block;font-size:12.5px;color:var(--muted)}
+.warn{background:var(--warn-bg);border:1px solid var(--warn-bd);color:var(--warn-tx);border-radius:10px;padding:10px 12px;font-size:13px;margin:0 0 10px}
+.tip{background:var(--tip-bg);border:1px solid var(--tip-bd);color:var(--tip-tx);border-radius:8px;padding:9px 11px;font-size:12.5px;margin:0 0 10px}
+.panel .tip{margin-top:4px}
+
+/* 이미 낸 것 고르기 — 가이드를 보고 온 사람 / 처음 해 보는 사람 */
+.ask{padding:14px}
+.ask-q{font-size:14.5px;font-weight:700;color:var(--navy);margin:0}
+.ask-d{font-size:12.5px;color:var(--muted);margin:2px 0 10px}
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.tile{width:100%;text-align:left;background:var(--card);border:1.5px solid var(--border);border-radius:10px;padding:10px 12px;font-size:13.5px;font-weight:700;color:var(--navy)}
+.tile small{display:block;font-size:12px;font-weight:400;color:var(--muted)}
+.tile[aria-pressed="true"]{border-color:var(--ok);background:var(--ok-bg);color:var(--ok)}
+.tile.wide{grid-column:1/-1}
+.ask .btn{margin-top:10px;font-size:14px;padding:11px 12px}
+.ask .link{margin-top:6px}
+
+.disc{margin-top:22px;font-size:12.5px;color:var(--muted)}
+.toast{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:300;background:var(--navy);color:#fff;font-size:13.5px;padding:9px 16px;border-radius:999px;opacity:0;transition:opacity .2s;pointer-events:none;white-space:nowrap}
+.toast.on{opacity:1}
+
+/* 화면 가이드 — guide.html 팝업과 같은 자료(guide_shots.js), 이 화면 안에서 연다 */
+.gm{position:fixed;inset:0;z-index:200;background:var(--scrim);display:flex;align-items:flex-end;justify-content:center}
+.gm[hidden]{display:none}
+.gm-in{width:100%;max-width:560px;max-height:calc(100% - 24px - env(safe-area-inset-top,0px));background:var(--card);border-radius:16px 16px 0 0;display:flex;flex-direction:column;overflow:hidden}
+.gm-h{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 16px 10px;border-bottom:1px solid var(--border)}
+.gm-ht{font-size:14px;font-weight:700;color:var(--navy);min-width:0}
+.gm-ht small{display:block;font-size:12px;font-weight:400;color:var(--muted)}
+.gm-x{flex:none;border:1px solid var(--border);background:var(--card);border-radius:8px;padding:6px 10px;font-size:13px;font-weight:700;color:var(--sub)}
+.gm-b{overflow:auto;padding:12px 16px}
+.gm-img{position:relative;background:var(--line);border:1px solid var(--border);border-radius:10px;overflow:hidden;min-height:160px;display:flex;align-items:center;justify-content:center}
+.gm-img img{display:block;width:100%;height:auto}
+.gm-badge{position:absolute;right:8px;top:8px;font-size:11px;font-weight:700;color:var(--sub);background:rgba(255,255,255,.92);border:1px solid var(--border);border-radius:999px;padding:1px 8px}
+.gm-t{font-size:15px;font-weight:800;color:var(--navy);margin:12px 0 4px}
+.gm-d{font-size:13.5px;color:var(--sub);margin:0 0 10px}
+.gm-dots{display:flex;flex-wrap:wrap;gap:5px;justify-content:center;margin:4px 0 2px}
+.gm-dots button{width:8px;height:8px;border-radius:50%;border:0;padding:0;background:var(--border)}
+.gm-dots button.on{background:var(--blue);width:18px;border-radius:999px}
+.gm-f{display:grid;grid-template-columns:96px 1fr;gap:8px;padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--border)}
+.gm-f .btn{font-size:14px;padding:12px}
+.gm-f .btn:disabled{opacity:.45;cursor:default}
+
+/* 시제품 전용 — 예시 상태 전환 */
+.demo{position:fixed;left:0;right:0;bottom:0;z-index:80;background:var(--card);border-top:1px solid var(--border);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:8px calc(8px + env(safe-area-inset-bottom,0px))}
+.demo-in{max-width:560px;margin:0 auto}
+.demo-l{font-size:12px;color:var(--muted);margin-bottom:6px}
+.demo-s{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}
+.demo-s button{flex:none;font-size:12.5px;font-weight:700;padding:6px 10px;border-radius:999px;border:1px solid var(--border);background:var(--card);color:var(--sub2)}
+.demo-s button[aria-pressed="true"]{background:var(--navy);border-color:var(--navy);color:#fff}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<header class="top"><div class="top-in">
+  <a class="logo" href="index.html">셀프등기<i>24</i></a>
+  <a class="top-a" href="guide.html">셀프등기 가이드</a>
+</div></header>
+
+<main class="wrap" id="app" aria-live="polite"></main>
+
+<div class="gm" id="gm" hidden role="dialog" aria-modal="true" aria-labelledby="gmT"><div class="gm-in">
+  <div class="gm-h"><div class="gm-ht" id="gmT"></div><button type="button" class="gm-x" id="gmX">닫기</button></div>
+  <div class="gm-b" id="gmB"></div>
+  <div class="gm-f"><button type="button" class="btn line" id="gmPrev">이전</button><button type="button" class="btn" id="gmNext">다음</button></div>
+</div></div>
+
+<div class="demo" id="demo"><div class="demo-in">
+  <div class="demo-l">시제품 보기 — 예시 상태로 바꿔 봅니다(저장값은 바뀌지 않습니다)</div>
+  <div class="demo-s" id="demoS"></div>
+</div></div>
+<div class="toast" id="toast" role="status"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="regparse.js"></script>
+<script src="guide_shots.js"></script>
+<script src="court.js"></script>
+<script src="siga.js"></script>
+<script src="receiptpdf.js"></script>
+<script>
+(function(){
+'use strict';
+var PDF_WORKER=window.HUB_PDF_WORKER||'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+try{if(window.pdfjsLib)pdfjsLib.GlobalWorkerOptions.workerSrc=PDF_WORKER;}catch(e){}
+
+/* ---------- 저장값 ---------- */
+var K={form:'selfregi_form_v1',pass:'selfregi_pass_v1',passG:'selfregi_pass_gift_v1',relay:'selfregi_relay_v1',relayTs:'selfregi_relay_ts_v1',flow:'selfregi_gflow_v1',hub:'selfregi_hub_v1'};
+function rd(k){try{return JSON.parse(localStorage.getItem(k)||'null');}catch(e){return null;}}
+function wr(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
+function has(v){return v!=null&&String(v).trim()!=='';}
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function digits(v){return String(v||'').replace(/[^\d]/g,'');}
+function won(v){var n=Number(digits(v));return n?n.toLocaleString('ko-KR')+'원':'';}
+function track(n,d){try{window.SR&&SR.track(n,d);}catch(e){}}
+function clone(o){return JSON.parse(JSON.stringify(o));}
+
+function realState(){
+  var pass=[rd(K.pass),rd(K.passG)].some(function(p){return p&&p.token&&p.exp>Date.now();});
+  var flow=rd(K.flow)||{};
+  return {form:rd(K.form),pass:pass,relay:rd(K.relay)||{},fin:flow.fin||{},hub:rd(K.hub)||{}};
+}
+
+/* 시제품 예시 상태 — 화면 판단용. 저장소에는 쓰지 않는다. 값은 모두 지어낸 예시 */
+function dAdd(n){var d=new Date();d.setDate(d.getDate()+n);return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2);}
+var EX_REG={addr:'서울특별시 마포구 아현동 777',apt:'예시아파트',dong:'101',floor:'12',ho:'1203',struct:'철근콘크리트구조',area:'84.97',
+  land:'38520.6분의 41.27',uid:'1101-2010-000000',owners:[{name:'김매도',share:'',regAddr:'서울특별시 마포구 예시로 1'}],
+  liens:[{purpose:'근저당권설정',amount:'360,000,000',creditor:'예시은행'}],blockers:[],isTrust:false,sepReg:false,ocr:false,got:8,low:{land:1}};
+var EX_FORM={buyerName:'이매수'};
+var DEMOS=[
+  {k:'real',t:'이 기기 저장값'},
+  {k:'first',t:'처음 온 사람',s:{form:null,pass:false,relay:{},fin:{},hub:{}}},
+  {k:'info',t:'등기부 올림 · 잔금 D-9',s:{form:null,pass:false,relay:{},fin:{},hub:{reg:EX_REG,balance:dAdd(9),checks:{d1:1,d2:1,d3:1}}}},
+  {k:'d1',t:'채권·수수료 냄 · 잔금 D-1',s:{form:EX_FORM,pass:false,relay:{bondamt:'3456000',bond:'2610-1234-5678',fee:'14-00-12-3456789'},fin:{},hub:{reg:EX_REG,balance:dAdd(1),pre:{bond:1,efee:1},asked:1,checks:{d1:1,d2:1,d3:1,d4:1,d5:1,d6:1,d7:1,q1:1}}}},
+  {k:'day',t:'잔금 당일',s:{form:EX_FORM,pass:true,relay:{bondamt:'3456000',bond:'2610-1234-5678',fee:'14-00-12-3456789'},fin:{stamp:true},hub:{reg:EX_REG,balance:dAdd(0),asked:1,checks:{d1:1,d2:1,d3:1,d4:1,d5:1,d6:1,d7:1,q1:1,q2:1}}}},
+  {k:'ready',t:'납부 끝 · 접수 전',s:{form:EX_FORM,pass:true,relay:{tax:'12000000',edu:'1200000',siga:'1080000000',bondamt:'3456000',bond:'2610-1234-5678',fee:'14-00-12-3456789'},fin:{stamp:true},hub:{reg:EX_REG,balance:dAdd(-2),asked:1,checks:{d1:1,d2:1,d3:1,d4:1,d5:1,d6:1,d7:1,q1:1,q2:1,s1:1,s2:1,s3:1},apply:true}}}
+];
+var mode='real',S=realState();
+function demoOn(){return mode!=='real';}
+function saveHub(){if(!demoOn())wr(K.hub,S.hub);}
+function saveRelay(vals){
+  Object.keys(vals).forEach(function(k){S.relay[k]=vals[k];});
+  if(demoOn())return;
+  var r=rd(K.relay)||{};Object.keys(vals).forEach(function(k){r[k]=vals[k];}); /* 다른 키는 지우지 않는다 */
+  wr(K.relay,r);try{localStorage.setItem(K.relayTs,String(Date.now()));}catch(e){}
+}
+function saveFin(key){
+  S.fin[key]=true;if(demoOn())return;
+  var fl=rd(K.flow)||{};fl.fin=fl.fin||{};fl.fin[key]=true;fl.pre=fl.pre||{};wr(K.flow,fl);
+}
+
+/* ---------- 날짜 ---------- */
+function today(){var d=new Date();d.setHours(0,0,0,0);return d;}
+function daysTo(iso){if(!iso)return null;var p=iso.split('-'),d=new Date(+p[0],+p[1]-1,+p[2]);return Math.round((d-today())/864e5);}
+function md(iso){var p=iso.split('-');return (+p[1])+'월 '+(+p[2])+'일';}
+function when(){var n=daysTo(S.hub.balance);if(n==null)return 'none';return n>0?'before':(n===0?'day':'after');}
+
+/* ---------- 등기부 판독 요약(서류 작성 페이지 buildRows와 같은 규칙) ---------- */
+function splitJibun(j){var o={addr:j||'',apt:'',dong:''};if(!j)return o;
+  var m=j.match(/^(.*?)\s*([가-힣A-Za-z0-9·\.]+)\s*제\s*([0-9가-힣]+)\s*동\s*$/);if(m)return {addr:m[1].trim(),apt:m[2].trim(),dong:m[3]};
+  m=j.match(/^(.*?\d+(?:-\d+)?)\s+(.+)$/);if(m){o.addr=m[1].trim();o.apt=m[2].trim();}return o;}
+function splitExcl(e){var m=String(e||'').match(/제\s*(\d+)\s*층\s*제\s*([0-9가-힣]+)\s*호/);return m?{floor:m[1],ho:m[2]}:{floor:'',ho:''};}
+function summarize(res){
+  var P=res.property||{},jb=splitJibun(P.jibunAddress),ex=splitExcl(P.exclusiveNo),r=P.landRightRatio;
+  var g={addr:jb.addr,apt:jb.apt,dong:jb.dong,floor:ex.floor,ho:ex.ho,
+    struct:String(P.exclusiveStruct||'').replace(/[\d.,]+\s*(?:㎡|m2|m²).*$/,'').trim(),area:P.exclusiveArea||'',
+    land:r?(r.denom+'분의 '+r.num):'',uid:res.uid||'',
+    owners:(res.owners||[]).map(function(o){return {name:o.name||'',share:o.shareRaw||'',regAddr:o.registryAddress||''};}),
+    liens:(res.activeLiens||[]).map(function(L){return {purpose:L.purpose||'',amount:L.maxAmount||'',creditor:L.creditor||''};}),
+    blockers:(res.blockers||[]).map(function(b){return b.purpose;}),isTrust:!!res.isTrust,
+    sepReg:!!(P.separateReg&&P.separateReg.value),ocr:!!res._ocr};
+  var CF=res.confidence||{},LOW={jibunAddress:'addr',exclusiveNo:'addr',exclusiveArea:'area',landRightRatio:'land',owners:'seller'};
+  g.low={};Object.keys(LOW).forEach(function(k){if(CF[k]==='low')g.low[LOW[k]]=1;});
+  if((res._confirm||[]).length)g.low.addr=1;
+  g.got=['addr','floor','ho','struct','area','land','uid'].filter(function(k){return has(g[k]);}).length+(g.owners.length&&has(g.owners[0].name)?1:0);
+  return g;
+}
+
+/* ---------- 준비 서류 ---------- */
+var DOCS=[
+  {g:'계약 때 받은 서류',items:[
+    {id:'d1',t:'매매계약서 원본',s:'취득세 신고와 등기 신청에 모두 필요'},
+    {id:'d2',t:'부동산거래계약 신고필증',s:'통상 중개사가 신고 후 교부'},
+    {id:'d3',t:'등기사항전부증명서(등기부등본)',s:'잔금일 기준 최신본'}]},
+  {g:'매수인 준비서류',items:[
+    {id:'d4',t:'주민등록등본',s:'주민번호 뒷자리 포함으로 발급(별표로 가리면 보정 요구가 많음)'},
+    {id:'d5',t:'토지대장 · 건축물대장(집합·전유부)',s:'정부24 무료 발급'},
+    {id:'d6',t:'가족관계증명서',s:'취득세 신고용 — 등기 신청 때는 제출하지 않음'},
+    {id:'d7',t:'신분증 · 도장',s:'등기소 가는 날'}]}
+];
+var DOC_ITEMS=DOCS[0].items.concat(DOCS[1].items);
+/* 위임장에 들어갈 매도인 주소(초본)와 인감증명서의 매수인 인적사항은 위임장 결제 전에 맞춰 둔다 */
+var REQ=[
+  {id:'q1',t:'매도인 주민등록초본 미리 받기',s:'위임장에 들어갈 매도인 현재 주소 · 등기부 주소와 다르면 이어지는 이력까지'},
+  {id:'q2',t:'매수인 인적사항을 매도인에게 전달',s:'매도용 인감증명서에 적힐 이름·주소·주민번호 — 틀리면 각하 · 공동명의면 전원'}
+];
+var SELLER=[
+  {id:'s1',t:'등기필정보(구 등기필증·등기권리증) 원본',s:'사본·사진은 안 됩니다'},
+  {id:'s2',t:'부동산 매도용 인감증명서 원본',s:'미리 전달한 매수인 인적사항과 같은지 확인'},
+  {id:'s3',t:'위임장에 매도인 인감 날인',s:'인감증명서와 같은 도장 · 2장 이상이면 간인'}
+];
+function cnt(list){var c=S.hub.checks||{};return list.filter(function(x){return c[x.id];}).length;}
+
+/* ---------- 반려 최종 점검(reject.html 26개 중 단독 매매에 자주 걸리는 것) — 맨 아래 한 곳에만 ---------- */
+var RJ=[
+  {t:'등기원인일자는 매매계약 체결일',s:'잔금일과 혼동하기 쉽습니다'},
+  {t:'초본·등본에 주민번호 뒷자리가 보이게 발급',s:'별표로 가린 서류는 보정 요구가 많습니다'},
+  {t:'거래가액이 계약서·신고필증·신청서에서 모두 같게',s:''},
+  {t:'첨부서류는 발행일부터 3개월 이내',s:''}
+];
+/* 올린 등기부를 읽어 나온 결과 — 문제 없음도 그대로 보여준다(점검했다는 사실이 정보다) */
+function regScan(){
+  var g=S.hub.reg;
+  if(!g)return '<div class="ck-g"><h4>등기부 점검</h4><p class="sm" style="margin:0">맨 위 0번에 등기부를 올리면 근저당·압류·신탁을 자동으로 점검합니다.</p></div>';
+  var li=[];
+  function row(ok,label,t,sub){li.push('<li><i class="'+(ok?'ok':'no')+'">'+label+'</i><span>'+t+(sub?'<small>'+esc(sub)+'</small>':'')+'</span></li>');}
+  row(!g.liens.length,g.liens.length?'확인 필요':'없음','근저당권'+(g.liens.length?' '+g.liens.length+'건 — 잔금일 상환·말소 서류를 받기로 했는지':''),g.liens.map(function(L){return (L.creditor||L.purpose)+(L.amount?' · 채권최고액 '+L.amount+'원':'');}).join(' / '));
+  row(!g.blockers.length,g.blockers.length?'확인 필요':'없음','압류·가압류·가처분'+(g.blockers.length?' — '+esc(g.blockers.join('·')):''),'');
+  row(!g.isTrust,g.isTrust?'확인 필요':'아님','신탁(현재 소유자가 수탁자)','');
+  if(g.sepReg)row(false,'확인 필요','표제부 「별도등기 있음」','');
+  g.owners.forEach(function(o){if(o.regAddr)row(false,'대조','매도인 등기부 주소 — 초본의 현재 주소와 이어지는지',o.regAddr);});
+  return '<div class="ck-g"><h4>등기부 자동 점검</h4><ul class="rs">'+li.join('')+'</ul></div>';
+}
+
+/* ---------- 할 일 ---------- */
+function f(k){return has(S.relay[k]);}
+function pre(k){return !!(S.hub.pre&&S.hub.pre[k]);}
+function reg(){return S.hub.reg||null;}
+function ed(k){var E=S.hub.edit||{};return has(E[k])?E[k]:'';}
+function addr(){var g=reg(),x=S.form;if(ed('addr'))return ed('addr');
+  if(g&&has(g.addr))return g.addr+(has(g.apt)?' '+g.apt:'')+(has(g.ho)?' '+(has(g.dong)?g.dong+'동 ':'')+g.ho+'호':'');
+  if(x&&has(x.jibun))return x.jibun+(has(x.ho)?' '+(has(x.dong)?x.dong+'동 ':'')+x.ho+'호':'');return '';}
+function sellerName(){if(ed('seller'))return ed('seller');var g=reg();if(g&&g.owners.length)return g.owners.map(function(o){return o.name;}).join(', ');return S.form&&S.form.sellerName||'';}
+var PAY=['bond','stamp','efee','wetax'];
+function paid(k){return k==='stamp'?!!S.fin.stamp:f({bond:'bond',efee:'fee',wetax:'tax'}[k]);}
+function payLeft(){return PAY.filter(function(k){return !paid(k);}).length;}
+
+var PHASES=[
+  {k:'pre',n:1,t:'셀프등기 사전 준비',w:'잔금일 전에 끝내 둘 것',tasks:['docs','ask','bond','stamp','efee','wetax','req','pass']},
+  {k:'day',n:2,t:'잔금 당일',w:'매도인을 만나는 날',tasks:['seller']},
+  {k:'file',n:3,t:'신청서 · 접수',w:'납부를 마친 뒤',tasks:['apply','rj','visit']}
+];
+var T={
+  docs:{t:'준비서류부터 확인하세요',shot:'gov24',done:function(){return cnt(DOC_ITEMS)===DOC_ITEMS.length;},note:function(d){return d?'모두 준비함':cnt(DOC_ITEMS)+' / '+DOC_ITEMS.length+' 준비 · 눌러서 하나씩 체크';}},
+  req:{t:'매도인에게 미리 받을 것',done:function(){return cnt(REQ)===REQ.length;},note:function(d){return d?'모두 받음':'위임장을 받기 전에 · '+cnt(REQ)+' / '+REQ.length;}},
+  bond:{t:'국민주택채권 매입',shot:'bondonline',pay:1,done:function(){return f('bond');},
+    note:function(d){return d?'발행번호 '+S.relay.bond:(pre('bond')?'납부완료 · 영수증 번호만 적기':'공시가격으로 금액이 정해집니다');}},
+  stamp:{t:'전자수입인지 구매',shot:'stamp',pay:1,done:function(){return !!S.fin.stamp;},
+    note:function(d){return d?'출력함':(pre('stamp')?'납부완료 · 출력 확인':'신청서에 붙일 인지');}},
+  efee:{t:'등기신청수수료 납부',shot:'efee',pay:1,done:function(){return f('fee');},
+    note:function(d){return d?'납부번호 '+S.relay.fee:(pre('efee')?'납부완료 · 영수증 번호만 적기':'인터넷등기소 · 18,000원');}},
+  pass:{t:'위임장 Word 파일 다운로드',shot:'seal',done:function(){return S.pass;},
+    note:function(d){return d?'결제 완료 · 다시 받기 가능':'잔금 전날까지 출력 · 매도인 인감 날인용';}},
+  seller:{t:'매도인 날인·서류 받기',done:function(){return cnt(SELLER)===SELLER.length;},note:function(){return cnt(SELLER)+' / '+SELLER.length+' 받음';}},
+  wetax:{t:'취득세 납부',shot:'wetax',pay:1,done:function(){return f('tax');},
+    note:function(d){return d?'취득세 '+won(S.relay.tax):(pre('wetax')?'납부완료 · 영수증 번호만 적기':'위택스 · 납부확인서');}},
+  apply:{t:'소유권이전등기 신청서 받기',shot:'app',done:function(){return !!S.hub.apply;},
+    note:function(d){if(d)return '받음 · 납부 번호 반영';if(!S.pass)return '위임장 결제 후';var n=payLeft();return n?'납부 번호 '+n+'건 남음':'납부 번호가 자동으로 들어갑니다';}},
+  rj:{t:'반려 사유 점검',done:function(){return !!S.hub.rjok;},
+    note:function(d){if(d)return '확인함';var g=S.hub.reg;if(!g)return '등기부를 올리면 자동 점검';var n=(g.liens.length?1:0)+(g.blockers.length?1:0)+(g.isTrust?1:0)+(g.sepReg?1:0);return '등기부 자동 점검 · '+(n?'확인 필요 '+n+'건':'특이사항 없음');}},
+  visit:{t:'등기소 접수',done:function(){return !!S.hub.visit;},note:function(d){return d?'접수 완료':'관할 등기소 한 번 · 제출 순서대로';}}
+};
+/* 진행 순서. 이미 냈다고 고른 납부는 번호가 없어도 다음으로 넘어간다(가이드를 보고 온 사람) */
+var ORDER=['docs','bond','stamp','efee','wetax','req','pass','seller','apply','rj','visit'];
+function settled(k){return T[k].done()||(T[k].pay&&pre(k));}
+function blocked(k){
+  if(k==='seller'&&when()==='before')return '잔금일 당일';
+  if(k==='apply'&&(!S.pass||payLeft()))return T.apply.note(false);
+  if(k==='visit'&&!S.hub.apply)return '신청서를 받은 뒤';
+  return '';
+}
+function nowKey(){
+  if(!addr())return 'reg';
+  /* 잔금 D-1·당일인데 위임장이 없으면 그것부터 — 매도인 날인을 놓치면 다시 찾아가야 한다 */
+  var n=daysTo(S.hub.balance);if(n!=null&&n<=1&&n>=0&&!S.pass)return 'pass';
+  var i;for(i=0;i<ORDER.length;i++){var k=ORDER[i];if(!settled(k)&&!blocked(k))return k;}
+  for(i=0;i<ORDER.length;i++){if(!settled(ORDER[i]))return ORDER[i];}
+  return null;
+}
+
+/* ---------- 그리기 ---------- */
+var A=document.getElementById('app'),OPEN={},OCR={busy:false,err:'',files:null,pct:0,say:''};
+function render(){
+  var nk=nowKey(),html=homeCard()+regCard();
+  if(addr())html+=nowCard(nk);
+  PHASES.forEach(function(p){
+    html+='<section class="ph" aria-labelledby="ph-'+p.k+'"><div class="ph-h"><span class="ph-n">'+p.n+'</span><h2 class="ph-t" id="ph-'+p.k+'">'+p.t+'<span class="ph-w">'+p.w+'</span></h2></div><div class="list">';
+    p.tasks.forEach(function(k){html+=k==='ask'?askRow():taskRow(k,nk);});
+    html+='</div></section>';
+  });
+  html+='<p class="disc">세액·채권 금액은 각 기관 영수증 기준이며, 최종 확인은 관할 등기소에서 하세요.</p>';
+  A.innerHTML=html;bind();
+}
+
+function homeCard(){
+  var a=addr(),w=when(),n=daysTo(S.hub.balance),dd='';
+  if(w==='before')dd='잔금 D-'+n+'<small>'+(n===1?'내일 매도인을 만납니다 · 위임장을 오늘 출력하세요':'채권·인지·수수료는 지금 미리 낼 수 있습니다')+'</small>';
+  else if(w==='day')dd='오늘 잔금일<small>매도인 날인·서류를 받고 취득세를 납부하세요</small>';
+  else if(w==='after'){var left=60+n;dd='잔금 후 '+(-n)+'일째<small>등기 신청 기한 '+(left>=0?'D-'+left:(-left)+'일 지남')+' · 잔금일부터 60일, 넘기면 과태료</small>';}
+  var st=[!!a&&S.pass&&PAY.every(settled),T.seller.done(),!!S.hub.visit],cur=st.indexOf(false),labels=['사전 준비','잔금 당일','접수'];
+  var sub=sellerName()?'매도인 '+sellerName():'';
+  return '<section class="home" aria-label="내 집">'
+    +'<div class="home-eb">내 셀프등기</div>'
+    +(a?'<div class="home-addr">'+esc(a)+'</div>'+(sub?'<div class="home-sub">'+esc(sub)+'</div>':'')
+       :'<div class="home-addr empty">아직 집 정보가 없어요</div><div class="home-sub">등기부를 올리면 주소와 매도인이 여기에 나옵니다</div>')
+    +'<div class="home-date"><label for="bal">잔금일</label><input type="date" id="bal" value="'+esc(S.hub.balance||'')+'"></div>'
+    +(dd?'<div class="dday">'+dd+'</div>':'')
+    +'<div class="bar" aria-hidden="true">'+labels.map(function(l,i){return '<span class="'+(st[i]?'done':(i===cur?'on':''))+'"></span>';}).join('')+'</div>'
+    +'<div class="bar-l">'+labels.map(function(l,i){return i===cur?'<b>'+l+'</b>':'<span>'+l+'</span>';}).join('')+'</div>'
+    +'</section>';
+}
+
+/* 0 등기부 — 올리기 전: 강조 문구 + 업로드 상자 / 올린 뒤: 문서 반영 미리보기 */
+var DZ_IC='<svg class="dz-ic" viewBox="0 0 40 48" aria-hidden="true" focusable="false"><path d="M4 2h22l10 10v32a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z" fill="#fff" stroke="#0369A1" stroke-width="2"/><path d="M26 2v10h10" fill="none" stroke="#0369A1" stroke-width="2"/><path d="M9 22h20M9 28h20M9 34h13" stroke="#93C5FD" stroke-width="2.4" stroke-linecap="round"/></svg>';
+function regCard(){
+  var g=reg();
+  if(g&&!OPEN.reup)return pvCard(g);
+  return '<section class="ocr" id="reg" aria-labelledby="ocr-t"><div class="ch"><div class="ci">0</div><div class="ct" id="ocr-t">등기부로 자동 채우기</div>'
+    +(g?'<button type="button" class="ch-a" data-reup="0">취소</button>':'<span></span>')+'</div>'
+    +'<p class="hero-note"><b>등기부 한 장이면 자동으로 채워집니다.</b> 민감정보는 출력 후 적어도 됩니다.</p>'
+    +'<div class="drop" id="dz">'+DZ_IC
+    +'<div class="slot-t">등기사항전부증명서 올리기</div>'
+    +'<div class="sub">인터넷등기소에서 받은 PDF는 글자를 그대로 가져옵니다.<br><b>사진이면 여러 장을 한꺼번에</b> 올려 주세요.</div>'
+    +'<label class="fb" for="fi">파일 선택</label><input type="file" id="fi" accept="application/pdf,image/*" multiple hidden>'
+    +(OCR.busy?'<div class="pr"><i style="width:'+Math.round(OCR.pct*100)+'%"></i></div>':'')
+    +'<div class="say">'+esc(OCR.say)+'</div></div>'
+    +(OCR.err?'<div class="ocr-err">'+OCR.err+'</div>':'')
+    +'<p class="ocr-docs"><b>취득세 납부확인서</b>도 올리면 서류에 들어갈 값이 자동으로 채워집니다.</p>'
+    +'<p class="reg-how">등기부가 없다면 인터넷등기소에서 회원가입 없이 열람(700원)한 뒤 PDF로 저장해 올리세요.</p>'
+    +'<a class="iros" href="https://www.iros.go.kr" target="_blank" rel="noopener">인터넷등기소 바로가기 ↗</a>'
+    +'</section>';
+}
+var SHARE=['전부','2분의 1'];
+function pvRow(k,v,inp,key){
+  if(key&&OPEN['ed_'+key])return '<div class="pv-r"><label class="pv-k" for="ed-'+key+'">'+k+'</label><span class="pv-v">'
+    +(key==='share'?'<select id="ed-'+key+'" class="pv-in" data-ed="'+key+'">'+SHARE.concat(['직접 입력']).map(function(o){return '<option'+(o===v?' selected':'')+'>'+o+'</option>';}).join('')+'</select>'
+      :'<input id="ed-'+key+'" class="pv-in pv-wide" data-ed="'+key+'" value="'+esc(key==='price'?digits(v):v)+'"'+(key==='price'?' inputmode="numeric" placeholder="숫자만"':key==='report'?' placeholder="신고필증의 관리번호" autocomplete="off"':'')+'>')
+    +' <button type="button" class="pv-x" data-edok="'+key+'">완료</button></span></div>';
+  var low=key&&reg()&&reg().low&&reg().low[key]&&!ed(key);
+  if(key)return '<div class="pv-r'+(low?' low':'')+'"><span class="pv-k">'+k+'</span><span class="pv-v'+(has(v)?'':' miss')+'">'+(has(v)?esc(v):'아직 입력 전')
+    +(low?' <i class="pv-low">확인 필요</i>':'')+' <button type="button" class="pv-x" data-edit="'+key+'">'+(has(v)?'고치기':'입력')+'</button></span></div>';
+  if(inp==='cause'&&!has(v))return '<div class="pv-r"><label class="pv-k" for="cause">등기원인</label><span class="pv-v"><input type="date" id="cause" class="pv-in" aria-label="매매계약 체결일"> <small class="pv-s">매매계약 체결일</small></span></div>';
+  return '<div class="pv-r"><span class="pv-k">'+k+'</span><span class="pv-v'+(has(v)?'':' miss')+'">'+(has(v)?esc(v):'아직 입력 전')+(inp==='cause'&&S.hub.cause?' <button type="button" class="pv-x" data-cause="x">고치기</button>':'')+'</span></div>';}
+function pvCard(g){
+  var x=S.form||{},R=S.relay||{},cd=S.hub.cause||'';
+  var cause=has(x.causeYr)?(x.causeYr+'년 '+x.causeMo+'월 '+x.causeDy+'일 매매'):(cd?cd.replace(/^(\d+)-0?(\d+)-0?(\d+)$/,'$1년 $2월 $3일 매매'):'');
+  var price=ed('price')?won(ed('price')):(has(x.dealPrice)?won(x.dealPrice):''),buyer=ed('buyer')||x.buyerName||'';
+  var common=[['부동산의 표시',addr(),0,'addr'],['구조',ed('struct')||g.struct,0,'struct'],['전유면적',ed('area')||(has(g.area)?g.area+'㎡':''),0,'area'],['대지권 비율',ed('land')||g.land,0,'land'],['이전할 지분',ed('share')||'전부',0,'share'],['등기원인',cause,'cause'],['매도인',sellerName(),0,'seller'],['매수인',buyer,0,'buyer']];
+  var poa=[['대리인',buyer]];
+  var app=[['거래가액',price,0,'price'],['거래신고관리번호',ed('report')||x.dealReportNo||'',0,'report'],['부동산 고유번호',ed('uid')||g.uid,0,'uid'],['시가표준액',won(R.siga)],['취득세',won(R.tax)],['국민주택채권',[won(R.bondamt),R.bond].filter(Boolean).join(' · ')],['수수료 납부번호',R.fee||'']];
+  var all=common.concat(poa,app),ok=all.filter(function(r){return has(r[1]);}).length;
+  var lowN=Object.keys(g.low||{}).filter(function(k){return !ed(k);}).length;
+  return '<section class="ocr" id="reg" aria-labelledby="ocr-t"><div class="ch"><div class="ci ok">✓</div><div class="ct" id="ocr-t">등기부로 자동 채우기</div>'
+    +'<button type="button" class="ch-a" data-reup="1">다시 올리기</button></div>'
+    +'<p class="sum"><span class="lv'+(g.got<6||g.ocr?' oc':'')+'">'+(g.got<6?'정확도 낮음':(g.ocr?'정확도 보통':'정확도 높음'))+'</span>등기부에서 <b>'+g.got+'칸</b>을 채웠습니다. 값이 서류에 이렇게 들어갑니다.</p>'
+    +(lowN?'<p class="pv-warn"><b>확인 필요 '+lowN+'칸</b> — 등기부 원본과 대조하고, 다르면 「고치기」로 바로 고치세요.</p>':'')
+    +'<div class="pv"><div class="pv-h">위임장 · 신청서 공통</div>'+common.map(function(r){return pvRow(r[0],r[1],r[2],r[3]);}).join('')+'</div>'
+    +'<div class="pv"><div class="pv-h">위임장에만</div>'+poa.map(function(r){return pvRow(r[0],r[1]);}).join('')+'</div>'
+    +'<div class="pv"><div class="pv-h">신청서에만</div>'+app.map(function(r){return pvRow(r[0],r[1],0,r[3]);}).join('')+'</div>'
+    +courtBox(g)
+    +'<div class="pv-cnt"><span>입력을 마친 항목</span><b class="g">'+ok+'</b><span>아직 비어 있는 항목</span><b class="o">'+(all.length-ok)+'</b></div>'
+    +'<div class="ocr-next"><a class="btn line" href="normal_form.html" data-handoff="1">공동명의 · 주소 · 주민번호 입력하기</a></div></section>';
+}
+
+/* 관할 등기소 — 부동산 소재지 기준(court.js, 로드맵과 같은 표) */
+function courtBox(g){
+  var c=window.SRCourt&&g&&g.addr?SRCourt.find(g.addr):null;
+  function one(o,k){return '<div class="court"><span class="court-k">'+k+'</span><span class="court-n">'+esc(o.n)+'</span><a class="court-m" href="https://map.naver.com/v5/search/'+encodeURIComponent(o.n)+'" target="_blank" rel="noopener">지도 ↗</a></div>';}
+  if(!c)return '<div class="court"><span class="court-k">관할 등기소</span><span class="court-a">주소로 찾지 못함 · 인터넷등기소에서 확인</span></div>';
+  if(c.ambiguous)return c.opts.map(function(o,i){return one(o,i?'또는':'관할 등기소');}).join('');
+  return one(c,'관할 등기소');
+}
+
+function nowCard(nk){
+  if(!nk)return '<section class="now"><div class="now-eb">모두 마쳤습니다</div><h1 class="now-t">수고하셨습니다</h1><p class="now-d">등기필정보는 명의인별로 한 번만 교부됩니다. 받은 날 안전한 곳에 보관하세요.</p></section>';
+  var why=blocked(nk);
+  if(why){
+    return '<section class="now wait"><div class="now-eb">다음 할 일 · '+esc(why)+'</div><h1 class="now-t">'+T[nk].t+'</h1>'
+      +'<p class="now-d">'+(S.hub.balance&&why==='잔금일 당일'?md(S.hub.balance)+' 잔금일에 합니다.':esc(T[nk].note(false)))+'</p>'
+      +'</section>';
+  }
+  var cta={docs:'준비서류 체크하기',req:'받을 것 확인',bond:'채권 매입하기',stamp:'인지 출력하기',efee:'수수료 납부하기',pass:'위임장 받기',seller:'받을 서류 확인',wetax:'취득세 납부하기',apply:'신청서 받기',rj:'최종 점검하기',visit:'등기소 가는 날 확인'}[nk];
+  var n=daysTo(S.hub.balance),d=nk==='pass'&&n!=null&&n<=1&&n>=0?'잔금일에 매도인 인감 날인을 받아야 합니다. 오늘 출력해 두세요.':T[nk].note(false);
+  return '<section class="now"><div class="now-eb">지금 할 일</div><h1 class="now-t">'+T[nk].t+'</h1>'
+    +'<p class="now-d">'+esc(d)+'</p><button type="button" class="btn" data-go="'+nk+'">'+cta+'</button></section>';
+}
+
+/* 이미 낸 것 고르기 — 가이드를 보고 온 사람은 고른 것만 번호를 적고 넘어간다 */
+var PRE_T={bond:['국민주택채권','은행 · 매입 영수증'],stamp:['수입인지','전자수입인지'],efee:['등기신청수수료','인터넷등기소'],wetax:['취득세','위택스 · 납부확인서']};
+function askRow(){
+  var P=S.hub.pre||{};
+  if(S.hub.asked&&!OPEN.ask){
+    var n=PAY.filter(function(k){return P[k];}).length;
+    return '<div class="ask"><p class="ask-q">'+(n?'납부완료 '+n+'건':'화면 가이드를 보며 진행')+'</p><button type="button" class="link" data-ask="open">다시 고르기</button></div>';
+  }
+  return '<div class="ask"><p class="ask-q">이미 납부한 항목을 고르세요</p><p class="ask-d">고른 항목은 영수증 번호만 적으면 됩니다.</p><div class="tiles">'
+    +PAY.map(function(k){return '<button type="button" class="tile" data-pre="'+k+'" aria-pressed="'+(!!P[k])+'">'+PRE_T[k][0]+'<small>'+PRE_T[k][1]+'</small></button>';}).join('')
+    +'<button type="button" class="tile wide" data-pre="none" aria-pressed="false">해당 없음 — 화면 가이드를 보며 진행</button></div>'
+    +'<button type="button" class="btn" data-ask="done">확인</button></div>';
+}
+
+function taskRow(k,nk){
+  var t=T[k],d=t.done(),pd=!d&&t.pay&&pre(k),why=d||pd?'':blocked(k),isNow=k===nk,open=!!OPEN[k]||k==='pass';
+  var cls='task'+(d?' done':'')+(pd?' paid':'')+(isNow?' now':'')+(open?' open':'');
+  var pill=d?'<span class="pill ok">완료</span>':(isNow&&!why?'<span class="pill now">지금</span>':(pd?'<span class="pill ok">납부완료</span>':(why?'<span class="pill">'+esc(why)+'</span>':(T[k].pay?'<span class="pill">잔금 전 가능</span>':''))));
+  return '<div class="task '+cls.slice(5)+'" id="t-'+k+'"><button type="button" class="task-b" data-tg="'+k+'" aria-expanded="'+open+'" aria-controls="p-'+k+'">'
+    +'<span class="dot" aria-hidden="true">'+(d||pd?'✓':'')+'</span>'
+    +'<span class="task-tx"><span class="task-t">'+t.t+'</span><span class="task-n">'+esc(t.note(d))+'</span></span>'
+    +pill+'<span class="chev" aria-hidden="true"></span></button>'
+    +(open?'<div class="panel" id="p-'+k+'">'+panel(k,d)+'</div>':'')+'</div>';
+}
+
+/* 할 일마다 그 자리에서 펼치는 내용 */
+var FIELDS={
+  wetax:[['tax','취득세액','납부확인서 「취득세」',1],['edu','지방교육세','납부확인서',1],['rural','농어촌특별세','없으면 비워 두세요',1],['siga','시가표준액','신고서 「시가표준액」',1]],
+  bond:[['bondamt','채권매입금액','영수증 「매입금액」',1],['bond','채권발행번호','영수증 「채권발행번호」',0]],
+  efee:[['fee','수수료 납부번호','영수필확인서 「납부번호」',0]]
+};
+var PAYTX={
+  bond:'공시가격(시가표준액)으로 금액이 정해져 잔금 전에 살 수 있습니다.',
+  efee:'잔금 1~2주 전에 미리 내 두면 당일이 가벼워집니다.',
+  wetax:'잔금일 당일 위택스로 내거나, 잔금 전 구청 세무과를 방문해 미리 신고·납부할 수 있습니다. 등기에는 <b>납부확인서</b>를 씁니다.'
+};
+function shotN(key){var s=shotOf(key);return s?s.steps.length:0;}
+function shotBtn(k,primary){var key=T[k].shot;if(!shotN(key))return '';
+  return '<button type="button" class="btn'+(primary?'':' line')+'" data-shot="'+key+'">화면 가이드 보기</button>';}
+function fieldsHtml(k){
+  return FIELDS[k].map(function(x){var v=S.relay[x[0]]||'';if(x[3]&&digits(v))v=Number(digits(v)).toLocaleString('ko-KR');
+    return '<div class="fld"><label for="f-'+x[0]+'">'+x[1]+'<small>'+x[2]+'</small></label><input id="f-'+x[0]+'" data-f="'+x[0]+'" data-num="'+x[3]+'" inputmode="'+(x[3]?'numeric':'text')+'" autocomplete="off" value="'+esc(v)+'" placeholder="'+(x[3]?'숫자만':'번호')+'"></div>';}).join('');
+}
+function ckList(list,store,cls){var c=S.hub[store]||{};
+  return list.map(function(x){return '<label class="ck'+(c[x.id]?' on':'')+(cls?' '+cls:'')+'"><input type="checkbox" id="ck-'+x.id+'" data-ck="'+x.id+'" data-store="'+store+'"'+(c[x.id]?' checked':'')+'><span>'+x.t+(x.s?'<small>'+esc(x.s)+'</small>':'')+'</span></label>';}).join('');}
+function panel(k,d){
+  switch(k){
+  case 'docs':
+    return DOCS.map(function(g){return '<div class="ck-g"><h4>'+g.g+'</h4>'+ckList(g.items,'checks')+'</div>';}).join('')
+      +'<p class="tip">첨부서류는 발행일부터 3개월 이내여야 합니다.</p>'+shotBtn('docs');
+  case 'bond': case 'efee': case 'wetax':
+    var why=blocked(k),p=pre(k)||d;
+    return (why?'<div class="warn">'+esc(why)+'에 할 수 있습니다. 순서만 미리 봐 두세요.</div>':'')
+      +'<p>'+PAYTX[k]+'</p>'
+      +(k==='bond'&&reg()?'<button type="button" class="btn line" data-siga="1">공시가격으로 채권 금액 계산</button><p class="sm" id="sigaMsg">'+(OCR.siga||'')+'</p>':'')
+      +(p?'':shotBtn(k,true))
+      +(k==='wetax'?'<label class="btn line" style="margin-top:8px" for="rcpt">납부확인서 PDF 올리기 — 자동으로 채우기</label><input type="file" id="rcpt" accept="application/pdf,.pdf" hidden><p class="sm" id="rcptMsg"></p>':'')
+      +'<div style="margin-top:12px">'+fieldsHtml(k)+'</div><button type="button" class="btn'+(p?'':' line')+'" data-save="'+k+'">저장</button>'
+      +(p?shotBtn(k):'');
+  case 'stamp':
+    return '<p>종이 신청서에는 전자수입인지를 출력해 붙입니다. 매매가 1억원 이하 주택은 인지세가 없습니다.</p>'
+      +(d?'<button type="button" class="link" data-stamp="0">출력 전으로 되돌리기</button>':'<button type="button" class="btn" data-stamp="1">출력했어요</button>')+shotBtn('stamp',false);
+  case 'pass':
+    if(d)return '<p>결제한 위임장은 다시 받을 수 있습니다. 매도인 인감도장으로 날인하고, 2장 이상이면 간인합니다.</p><a class="btn line" href="normal_form.html#pay-card">위임장 다시 받기</a>'+shotBtn('pass');
+    return '<div class="pay-p"><b>9,900원</b><span>부동산 1건 · 부가세 포함</span></div>'
+      +'<p class="pay-d">위임장 · 소유권이전등기신청서 · 매매목록(해당 시)</p>'
+      +'<a class="btn" href="normal_form.html#pay-card">9,900원 결제하고 서류 받기</a>'
+      +'<p class="sm">토스페이 · 네이버페이 · 잔금 전날까지 출력해 잔금일에 매도인 인감 날인을 받으세요.</p>'
+      +'<details class="svc"><summary>서비스 제공 방식과 시점</summary><dl>'
+      +'<dt>제공 방식</dt><dd>브라우저에서 Word(.docx) 파일로 내려받습니다. 별도 배송이나 승인 대기가 없습니다.</dd>'
+      +'<dt>제공 시점</dt><dd>위임장은 결제 승인 직후, 신청서는 제세공과금 납부 후 번호를 입력하는 즉시 내려받습니다.</dd>'
+      +'<dt>재발급</dt><dd>결제일부터 30일 이내, 동일 부동산·동일 매수인에 한해 횟수 제한 없이 무상입니다.</dd>'
+      +'<dt>환불</dt><dd>회사 귀책(문서 오류·미제공 등) 사유를 안 날부터 7일 이내 요청하시면 3영업일 이내 전액 환불합니다. 디지털 콘텐츠 특성상 단순 변심에 따른 환불은 제한됩니다.</dd>'
+      +'</dl><p class="sm">자세한 내용은 <a href="terms.html">이용약관 제5·6조</a>를 확인해 주세요.</p></details>'
+      +'<p class="sm">본 서비스는 법률 자문을 제공하지 않습니다. 입력하지 않아 공란으로 생성된 부분은 직접 작성해 제출해야 하며, 공란으로 제출해 보정·반려된 경우의 책임은 이용자에게 있습니다.</p>'
+      +shotBtn('pass');
+  case 'req':
+    return '<div class="ck-g">'+ckList(REQ,'checks')+'</div>';
+  case 'seller':
+    return '<div class="ck-g">'+ckList(SELLER,'checks')+'</div>';
+  case 'apply':
+    var w2=blocked('apply');
+    return '<p>위임장에 쓴 정보와 납부 번호가 들어간 신청서를 Word 파일로 받습니다.</p>'
+      +(w2?'<div class="warn">'+esc(w2)+' 받을 수 있습니다.</div>':'<a class="btn" href="roadmap.html#r4">신청서 Word 파일 다운로드</a>')
+      +shotBtn('apply')+(!d&&!w2?'<button type="button" class="link" data-mark="apply">받았어요 — 완료로 표시</button>':'');
+  case 'rj':
+    return regScan()
+      +'<div class="ck-g"><h4>자주 틀리는 것</h4><ul class="rs">'+RJ.map(function(x){return '<li><i class="ck2">확인</i><span>'+x.t+(x.s?'<small>'+esc(x.s)+'</small>':'')+'</span></li>';}).join('')+'</ul></div>'
+      +'<a class="btn line" href="reject.html">반려·각하 상세보기</a>'
+      +(!d?'<button type="button" class="btn" style="margin-top:8px" data-mark="rjok">확인했어요</button>':'');
+  case 'visit':
+    return '<div class="ck-g"><h4>방문 전, 가방에 넣으면서 확인해 보세요</h4>'
+      +['신분증 · 매수인 도장','신청서 · 위임장(날인·간인)','취득세 납부확인서 · 채권 영수증 · 인지 · 수수료 영수필확인서','매도인 서류(등기필정보 · 인감증명서) · 내 서류 원본']
+        .map(function(t,i){return '<label class="ck"><input type="checkbox" id="bag-'+i+'"><span>'+t+'</span></label>';}).join('')+'</div>'
+      +'<a class="link" href="roadmap.html#r4">관할 등기소 · 제출 순서 보기 ›</a>'
+      +(!d&&S.hub.apply?'<button type="button" class="btn" style="margin-top:12px" data-mark="visit">접수했어요</button>':'');
+  }
+  return '';
+}
+
+/* ---------- 공시가격 → 채권 매입액(계산기와 같은 요율·반올림) ---------- */
+var BT=[[2e7,13,13],[5e7,19,14],[1e8,21,16],[1.6e8,23,18],[2.6e8,26,21],[6e8,31,26]];
+function bondOf(v,parcel){var metro=/특별시|광역시/.test(parcel)&&!/특별자치/.test(parcel),r=0;BT.forEach(function(t){if(v>=t[0])r=metro?t[1]:t[2];});
+  if(!r)return {r:0,amt:0};var x=v*r/1000,m=Math.floor(x/10000);return {r:r,amt:Math.max((m+(x-m*10000>=5000?1:0))*10000,10000)};}
+function sigaGo(){
+  var g=reg();if(!g)return;var msg=document.getElementById('sigaMsg');if(msg)msg.textContent='공시가격 조회 중…';
+  var done=function(o){if(!o||!o.v){OCR.siga='공시가격을 찾지 못했습니다. 은행 화면에서 조회해 주세요.';render();return;}
+    var b=bondOf(Number(o.v),o.parcel||g.addr);
+    OCR.siga=o.y+'년 공시가격 '+won(o.v)+' · 채권 매입액 '+won(b.amt)+'('+b.r+'/1,000). 은행 화면에서 공시가격을 다시 조회하지 않고 이 금액을 그대로 쓰면 됩니다.';
+    S.relay.bondamt=String(b.amt);render();track('hub_siga',{});};
+  if(demoOn())return done({v:1080000000,y:2026,parcel:g.addr});
+  if(!window.SRSiga){OCR.siga='공시가격 조회를 불러오지 못했습니다.';render();return;}
+  SRSiga.lookup(g.addr,g.dong,g.ho).then(function(o){if(o&&o.err==='limit'){OCR.siga='오늘 조회 한도를 넘었습니다. 내일 다시 시도해 주세요.';render();return;}done(o);},function(){done(null);});
+}
+
+/* ---------- 등기부 판독(서류 작성 페이지와 같은 RegParse — PDF 원본은 글자를 그대로 읽는다) ---------- */
+function readBuf(fl){return new Promise(function(ok,no){var r=new FileReader();r.onload=function(){ok(r.result);};r.onerror=function(){no(new Error('파일을 읽지 못했습니다.'));};r.readAsArrayBuffer(fl);});}
+function setOcr(o){Object.keys(o).forEach(function(k){OCR[k]=o[k];});render();}
+function isPdf(fl){return /pdf/i.test(fl.type)||/\.pdf$/i.test(fl.name);}
+var PHOTO_MSG='<b>사진·스캔 PDF는 서류 작성 화면에서 읽습니다.</b> 이 시제품은 인터넷등기소 PDF 원본만 바로 읽습니다.<a class="btn line" href="normal_form.html" data-handoff="1">서류 작성 화면에서 읽기</a>';
+function readReg(files){
+  var list=[].slice.call(files||[]);if(!list.length)return;
+  OCR.files=list;var pdf=list.filter(isPdf)[0];
+  track('hub_ocr',{type:pdf?'pdf':'image'});
+  if(!pdf){setOcr({err:PHOTO_MSG,say:''});return;}
+  if(!window.pdfjsLib||!window.RegParse){setOcr({err:'판독 모듈을 불러오지 못했습니다. 새로고침 후 다시 시도해 주세요.',say:''});return;}
+  setOcr({busy:true,err:'',pct:.15,say:'발급 원본을 여는 중…'});
+  readBuf(pdf).then(function(buf){return RegParse.parseRegistry(pdfjsLib,buf);}).then(function(res){
+    if(!res||!res.ok){
+      if(res&&res.reason==='NO_TEXT_LAYER'){setOcr({busy:false,err:PHOTO_MSG,say:''});return;}
+      throw new Error(res&&res.reason==='NOT_REGISTRY'?'등기사항전부증명서로 보이지 않습니다. 다른 파일을 올리셨는지 확인해 주세요.':((res&&res.warnings&&res.warnings[0])||'내용을 알아보지 못했습니다.'));
+    }
+    var g=summarize(res);
+    /* 소재지번을 못 읽었으면 등기부가 아니거나 거의 읽지 못한 것 — 빈 미리보기를 「정확도 높음」으로 보여주지 않는다 */
+    if(!has(g.addr))throw new Error('등기부를 제대로 읽지 못했습니다. <a href="https://www.iros.go.kr" target="_blank" rel="noopener">인터넷등기소</a>에서 등기사항전부증명서를 새로 발급받아 PDF로 올리면 정확하게 읽힙니다.');
+    S.hub.reg=g;saveHub();OPEN.reup=false;
+    track('hub_ocr_ok',{step:S.hub.reg.got});
+    setOcr({busy:false,pct:1,say:'',err:''});
+    toast('등기부에서 '+S.hub.reg.got+'칸을 채웠습니다');
+    scrollToEl(document.getElementById('reg'));
+  }).catch(function(e){var m=e&&e.message?e.message:String(e);setOcr({busy:false,say:'',err:'<b>읽지 못했습니다.</b> '+(/<a /.test(m)?m:esc(m))});});
+}
+/* 서류 작성 화면으로 넘길 때 올린 파일을 같이 넘긴다(서류 작성 페이지의 ?handoff=reg — 같은 IndexedDB) */
+function handoff(href){
+  if(!OCR.files||!window.indexedDB){location.href=href;return;}
+  var r=indexedDB.open('sr_handoff',1);
+  r.onupgradeneeded=function(){r.result.createObjectStore('f');};
+  r.onsuccess=function(){try{var tx=r.result.transaction('f','readwrite');tx.objectStore('f').put(OCR.files,'reg');tx.oncomplete=function(){location.href=href+(href.indexOf('?')<0?'?':'&')+'handoff=reg';};}catch(e){location.href=href;}};
+  r.onerror=function(){location.href=href;};
+}
+
+/* ---------- 화면 가이드(guide.html 팝업과 같은 자료) ---------- */
+var SH=(typeof SHOTS!=='undefined'?SHOTS:window.SHOTS)||[];
+function shotOf(key){for(var i=0;i<SH.length;i++)if(SH[i].key===key)return SH[i];return null;}
+function parseCap(d){var src=null,tip=null,body=d;
+  var mRec=body.match(/\s*\(재현 이미지[^)]*\)\s*/);if(mRec){src='rec';body=body.replace(mRec[0],' ');}
+  if(body.indexOf('(실제 화면)')>-1){src='real';body=body.replace('(실제 화면)','');}
+  var st=body.indexOf('★');if(st>-1){tip=body.slice(st+1).trim();body=body.slice(0,st);}
+  return {body:body.trim(),tip:tip,src:src};}
+var GM=document.getElementById('gm'),G={cur:null,step:0,back:null};
+function openShot(key){G.cur=shotOf(key);if(!G.cur)return;G.step=0;G.back=document.activeElement;GM.hidden=false;document.body.style.overflow='hidden';drawShot();track('hub_shot',{key:key});document.getElementById('gmNext').focus();}
+function closeShot(){GM.hidden=true;document.body.style.overflow='';G.cur=null;if(G.back&&G.back.focus)try{G.back.focus();}catch(e){}}
+function drawShot(){
+  var s=G.cur,p=s.steps[G.step],cap=parseCap(p.d),n=s.steps.length;
+  document.getElementById('gmT').innerHTML=esc(s.title)+'<small>'+(G.step+1)+' / '+n+'</small>';
+  document.getElementById('gmB').innerHTML='<div class="gm-img">'+(cap.src?'<span class="gm-badge">'+(cap.src==='real'?'실제 화면':'재현 이미지')+'</span>':'')
+    +'<img src="'+esc(p.img)+'" alt="'+esc(p.t)+' 화면"></div>'
+    +'<h3 class="gm-t">'+(G.step+1)+'. '+esc(p.t)+'</h3><p class="gm-d">'+esc(cap.body)+'</p>'
+    +(cap.tip?'<p class="tip"><b>TIP</b> '+esc(cap.tip)+'</p>':'')
+    +'<div class="gm-dots">'+s.steps.map(function(_,i){return '<button type="button" data-gs="'+i+'" class="'+(i===G.step?'on':'')+'" aria-label="'+(i+1)+'단계"></button>';}).join('')+'</div>';
+  document.getElementById('gmB').scrollTop=0;
+  document.getElementById('gmPrev').disabled=G.step===0;
+  document.getElementById('gmNext').textContent=G.step===n-1?'다 봤어요':'다음';
+  for(var i=1;i<=2;i++){var nx=s.steps[G.step+i];if(nx){var im=new Image();im.src=nx.img;}}
+  document.querySelectorAll('[data-gs]').forEach(function(b){b.onclick=function(){G.step=+b.getAttribute('data-gs');drawShot();};});
+}
+function stepShot(d){if(!G.cur)return;var n=G.cur.steps.length;if(G.step+d<0)return;if(G.step+d>=n){closeShot();return;}G.step+=d;drawShot();}
+document.getElementById('gmPrev').onclick=function(){stepShot(-1);};
+document.getElementById('gmNext').onclick=function(){stepShot(1);};
+document.getElementById('gmX').onclick=closeShot;
+GM.addEventListener('click',function(e){if(e.target===GM)closeShot();});
+document.addEventListener('keydown',function(e){if(GM.hidden)return;if(e.key==='Escape')closeShot();if(e.key==='ArrowLeft')stepShot(-1);if(e.key==='ArrowRight')stepShot(1);});
+(function(){var x0=null,b=document.getElementById('gmB');
+  b.addEventListener('touchstart',function(e){x0=e.touches.length===1?e.touches[0].clientX:null;},{passive:true});
+  b.addEventListener('touchend',function(e){if(x0==null)return;var dx=e.changedTouches[0].clientX-x0;x0=null;if(Math.abs(dx)>50)stepShot(dx<0?1:-1);});})();
+
+/* ---------- 동작 ---------- */
+function toast(m){var t=document.getElementById('toast');t.textContent=m;t.classList.add('on');clearTimeout(t._t);t._t=setTimeout(function(){t.classList.remove('on');},2200);}
+function scrollToEl(el){if(el)window.scrollTo({top:el.getBoundingClientRect().top+window.pageYOffset-70,behavior:'smooth'});}
+function goTask(k){if(k==='reg'){scrollToEl(document.getElementById('reg'));return;}OPEN[k]=true;render();scrollToEl(document.getElementById('t-'+k));}
+function bind(){
+  var b=document.getElementById('bal');
+  if(b)b.addEventListener('change',function(){S.hub.balance=b.value||'';saveHub();track('hub_balance',{});render();});
+  var fi=document.getElementById('fi'),dz=document.getElementById('dz');
+  if(fi)fi.onchange=function(){readReg(fi.files);};
+  if(dz){['dragenter','dragover'].forEach(function(t){dz.addEventListener(t,function(e){e.preventDefault();dz.classList.add('over');});});
+    ['dragleave','drop'].forEach(function(t){dz.addEventListener(t,function(e){e.preventDefault();dz.classList.remove('over');});});
+    dz.addEventListener('drop',function(e){var fl=e.dataTransfer&&e.dataTransfer.files;if(fl&&fl.length)readReg(fl);});}
+  A.querySelectorAll('[data-reup]').forEach(function(x){x.onclick=function(){OPEN.reup=x.getAttribute('data-reup')==='1';OCR.err='';render();};});
+  A.querySelectorAll('[data-all]').forEach(function(x){x.onclick=function(){track('hub_door',{key:'all'});scrollToEl(document.getElementById('ph-pre'));};});
+  A.querySelectorAll('[data-handoff]').forEach(function(x){x.addEventListener('click',function(e){e.preventDefault();track('hub_handoff',{});handoff(x.getAttribute('href'));});});
+  A.querySelectorAll('[data-tg]').forEach(function(x){x.onclick=function(){var k=x.getAttribute('data-tg');if(k==='pass')return;OPEN[k]=!OPEN[k];if(OPEN[k])track('hub_task',{key:k});render();};});
+  A.querySelectorAll('[data-go]').forEach(function(x){x.onclick=function(){var k=x.getAttribute('data-go');track('hub_now',{key:k});goTask(k);};});
+  A.querySelectorAll('[data-shot]').forEach(function(x){x.onclick=function(){openShot(x.getAttribute('data-shot'));};});
+  A.querySelectorAll('[data-pre]').forEach(function(x){x.onclick=function(){var k=x.getAttribute('data-pre');S.hub.pre=S.hub.pre||{};
+    if(k==='none'){S.hub.pre={};S.hub.asked=1;OPEN.ask=false;saveHub();track('hub_pre',{step:0});var nk=nowKey();render();if(nk&&nk!=='reg')goTask(nk);return;}
+    S.hub.pre[k]=S.hub.pre[k]?0:1;saveHub();render();};});
+  A.querySelectorAll('[data-ask]').forEach(function(x){x.onclick=function(){
+    if(x.getAttribute('data-ask')==='open'){OPEN.ask=true;render();return;}
+    S.hub.asked=1;OPEN.ask=false;saveHub();var P=S.hub.pre||{};track('hub_pre',{step:PAY.filter(function(k){return P[k];}).length});
+    var nk=nowKey();render();if(nk&&nk!=='reg')goTask(nk);};});
+  A.querySelectorAll('[data-ck]').forEach(function(x){x.onchange=function(){var id=x.getAttribute('data-ck'),st=x.getAttribute('data-store');S.hub[st]=S.hub[st]||{};if(x.checked)S.hub[st][id]=1;else delete S.hub[st][id];saveHub();render();};});
+  A.querySelectorAll('input[data-num="1"]').forEach(function(i){i.addEventListener('input',function(){var d=digits(i.value);i.value=d?Number(d).toLocaleString('ko-KR'):'';});});
+  A.querySelectorAll('[data-save]').forEach(function(x){x.onclick=function(){var k=x.getAttribute('data-save'),vals={},n=0;
+    A.querySelectorAll('#p-'+k+' [data-f]').forEach(function(i){var v=i.value.trim();if(i.getAttribute('data-num')==='1')v=digits(v);vals[i.getAttribute('data-f')]=v;if(v)n++;});
+    if(!n)return toast('하나 이상 적어 주세요');
+    saveRelay(vals);track('hub_save',{key:k});OPEN[k]=false;toast('저장했습니다');var nk=nowKey();render();if(nk&&nk!=='reg'&&!blocked(nk))goTask(nk);};});
+  A.querySelectorAll('[data-edit]').forEach(function(x){x.onclick=function(){var k=x.getAttribute('data-edit');OPEN['ed_'+k]=true;render();var i=document.getElementById('ed-'+k);if(i)i.focus();};});
+  function edSave(k){var i=document.getElementById('ed-'+k);if(!i)return;var v=i.value.trim();
+    S.hub.edit=S.hub.edit||{};if(k==='price')v=digits(v);if(v)S.hub.edit[k]=v;else delete S.hub.edit[k];
+    OPEN['ed_'+k]=false;saveHub();track('hub_edit',{key:k});render();}
+  A.querySelectorAll('[data-edok]').forEach(function(x){x.onclick=function(){edSave(x.getAttribute('data-edok'));};});
+  A.querySelectorAll('[data-ed]').forEach(function(i){var k=i.getAttribute('data-ed');
+    if(i.tagName==='SELECT')i.onchange=function(){if(i.value==='직접 입력'){var p=i.parentNode;p.innerHTML='<input id="ed-share" class="pv-in pv-wide" data-ed="share" placeholder="예: 3분의 1"> <button type="button" class="pv-x" data-edok="share">완료</button>';
+        p.querySelector('[data-edok]').onclick=function(){edSave('share');};document.getElementById('ed-share').focus();return;}edSave(k);};
+    else i.onkeydown=function(e){if(e.key==='Enter'){e.preventDefault();edSave(k);}};});
+  A.querySelectorAll('[data-siga]').forEach(function(x){x.onclick=sigaGo;});
+  var cz=document.getElementById('cause');if(cz)cz.onchange=function(){S.hub.cause=cz.value;saveHub();render();};
+  A.querySelectorAll('[data-cause]').forEach(function(x){x.onclick=function(){S.hub.cause='';saveHub();render();};});
+  var rc=document.getElementById('rcpt');
+  if(rc)rc.onchange=function(){var fl=rc.files&&rc.files[0],msg=document.getElementById('rcptMsg');rc.value='';if(!fl||!window.SRReceipt)return;
+    msg.textContent='읽는 중…';
+    SRReceipt.parse(fl).then(function(r){track('receipt_ocr',{key:r.kind,from:'hub'});
+      if(r.kind!=='receipt'){msg.textContent=r.msg;return;}
+      [['tax',r.tax],['edu',r.edu],['rural',r.rural||''],['siga',r.siga]].forEach(function(p){var el=document.getElementById('f-'+p[0]);if(el&&p[1])el.value=Number(p[1]).toLocaleString('ko-KR');});
+      msg.textContent=r.sumOk?'채웠습니다 — 세액 합계 '+Number(r.total).toLocaleString('ko-KR')+'원 일치. 「저장」을 누르세요.':'채웠습니다. 세액 합계가 맞지 않아 납부확인서와 대조해 주세요.';
+    });};
+  A.querySelectorAll('[data-stamp="0"]').forEach(function(x){x.onclick=function(){S.fin.stamp=false;if(!demoOn()){var fl=rd(K.flow)||{};fl.fin=fl.fin||{};delete fl.fin.stamp;wr(K.flow,fl);}render();};});
+  A.querySelectorAll('[data-stamp="1"]').forEach(function(x){x.onclick=function(){saveFin('stamp');OPEN.stamp=false;toast('저장했습니다');render();};});
+  A.querySelectorAll('[data-mark]').forEach(function(x){x.onclick=function(){var k=x.getAttribute('data-mark');S.hub[k]=true;saveHub();OPEN[k==='rjok'?'rj':k]=false;render();};});
+}
+
+/* 시제품 예시 상태 전환 */
+var DS=document.getElementById('demoS');
+function setMode(k){mode=k;var d=DEMOS.filter(function(x){return x.k===k;})[0];
+  S=k==='real'?realState():clone(d.s);OPEN={};OCR={busy:false,err:'',files:null,pct:0,say:''};
+  DS.querySelectorAll('[data-demo]').forEach(function(x){x.setAttribute('aria-pressed',String(x.getAttribute('data-demo')===k));});}
+DS.innerHTML=DEMOS.map(function(d){return '<button type="button" data-demo="'+d.k+'" aria-pressed="'+(d.k===mode)+'">'+d.t+'</button>';}).join('');
+DS.querySelectorAll('[data-demo]').forEach(function(btn){btn.onclick=function(){setMode(btn.getAttribute('data-demo'));render();window.scrollTo(0,0);};});
+
+window.addEventListener('storage',function(){if(!demoOn()){S=realState();render();}});
+render();
+})();
+</script>
+<!--HUB:END-->
+</body>
+</html>

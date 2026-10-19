@@ -1009,6 +1009,12 @@ input.ocr-warn{border-color:#DC2626!important;box-shadow:0 0 0 3px rgba(220,38,3
     <input type="text" id="deal-price" placeholder="예: 350000000">
     <span class="fn">숫자만 입력하면 됩니다. 매매계약서 또는 신고필증 기준 금액입니다.</span>
   </div></div>
+  <div class="divider"></div>
+  <div class="fg s1"><div class="f">
+    <label>거래신고관리번호</label>
+    <input type="text" id="deal-report-no" placeholder="예: 12345-2025-4-1234567" autocomplete="off">
+    <span class="fn">부동산거래계약 신고필증에 적힌 관리번호입니다. 신청서 거래신고관리번호 칸에 들어갑니다.</span>
+  </div></div>
   </div>
   <div class="ntc inf gift-only" hidden>증여계약서에는 금액을 적지 않습니다. 대가 없는 증여계약서는 인지세가 없습니다(국세청 해석).</div>
 </div>
@@ -1164,6 +1170,7 @@ input.ocr-warn{border-color:#DC2626!important;box-shadow:0 0 0 3px rgba(220,38,3
         대지권 비율 <span class="v e" id="pvRatio">아직 입력 전</span><br>
         이전할 지분 <span class="v e" id="pvShare">아직 입력 전</span><br>
         <span class="sale-only">거래가액 <span class="v e" id="pvPrice">아직 입력 전</span><br></span>
+        <span class="sale-only">거래신고관리번호 <span class="v e" id="pvReport">아직 입력 전</span><br></span>
         부동산 고유번호 <span class="v e" id="pvUid">아직 입력 전</span>
       </div>
 
@@ -2212,7 +2219,7 @@ window.SR=window.SR||(function(){
   var REQ=['owner-name','owner-address','s-name','s-addr','jibun-address','ho',
            'total-land','unit-land','transfer-denom','transfer-num'];
   var OPT=['owner-rrn','apt-name','dong','floor','prop-struct','prop-area','prop-road-address',
-           'property-uid','deal-price','land-category','land-area'];
+           'property-uid','deal-price','deal-report-no','land-category','land-area'];
   function frac(a,b){var x=v(a),y=v(b);return (x&&y)?(x+'분의 '+y):'';}
   function render(){
     var addr=v('jibun-address'), apt=v('apt-name'), dong=v('dong'), ho=v('ho');
@@ -2232,6 +2239,7 @@ window.SR=window.SR||(function(){
     put('pvShare',  (typeof transferShareText==='function') ? transferShareText() : frac('transfer-denom','transfer-num'));
     var pr=v('deal-price');
     put('pvPrice',  pr?(pr.replace(/[^0-9]/g,'').replace(/\B(?=(\d{3})+(?!\d))/g,',')+'원'):'');
+    put('pvReport', v('deal-report-no'));
     var done=0,left=0,opt=0,i;
     for(i=0;i<REQ.length;i++){ var e=document.getElementById(REQ[i]);
       if(!e||e.offsetParent===null) continue; if(v(REQ[i]))done++;else left++; }
@@ -3024,7 +3032,8 @@ if (window.SRPay && SRPay.setGuard) SRPay.setGuard(function () {
     [['year','month','day'], DOC_B, '등기원인과 그 연월일(계약일)'],
     [['settle-year','settle-month'], DOC_W, '작성일의 연·월(잔금일)'],
     [['transfer-denom','transfer-num'], DOC_B, '이전할 지분'],
-    [['deal-price'], DOC_S, '거래가액']
+    [['deal-price'], DOC_S, '거래가액'],
+    [['deal-report-no'], DOC_S, '거래신고관리번호']
   ];
   var ALWAYS = [
     [DOC_B, '등기의무자(매도인) 주민등록번호', '잔금일에 매도인이 인감을 날인할 때 직접 적습니다'],
