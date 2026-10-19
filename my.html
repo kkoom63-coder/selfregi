@@ -1,6 +1,21 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-DR3W5XWF50"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  /* 실제 주소(www)에서만 수집한다. 테스트·미리보기 주소는 제외.
+     ?notrack=1 로 한 번 열면 이 브라우저는 계속 제외된다(?notrack=0 으로 해제). */
+  (function(){var ID='G-DR3W5XWF50',off=location.hostname!=='www.selfregi24.com';
+    try{var q=new URLSearchParams(location.search).get('notrack');
+      if(q==='1')localStorage.setItem('sr_notrack','1');if(q==='0')localStorage.removeItem('sr_notrack');
+      if(localStorage.getItem('sr_notrack')==='1')off=true;}catch(e){}
+    if(off)window['ga-disable-'+ID]=true;gtag('set',{page_location:cl(location.href),page_referrer:cl(document.referrer)});gtag('config',ID);function cl(u){try{var x=new URL(u);if(x.hostname!==location.hostname)return u;var k=[];x.searchParams.forEach(function(v,n){if(!/^(utm_|n_)|^(gclid|type|track)$/.test(n))k.push(n);});k.forEach(function(n){x.searchParams.delete(n);});x.hash='';return x.toString();}catch(e){return '';}}})(); /* GA 주소 정리(2026-10-17): 우리 사이트 주소는 utm·광고·type·track 외 파라미터를 지우고 보낸다 — ?addr=(동·호수)·?pass=(재발급 토큰)·결제 번호가 GA에 남지 않게. 이전 페이지 주소(referrer)도 같은 기준 */
+</script>
 <meta charset="UTF-8">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
@@ -283,6 +298,61 @@ p.sm,.sm{font-size:12.5px;color:var(--muted);margin:10px 0 0}
 </div></div>
 <div class="toast" id="toast" role="status"></div>
 
+<!-- 셀프등기24 계측 레이어 v1 (벤더 독립) -->
+<script>
+/* SR.track(name, data)
+   - Vercel Web Analytics(window.va)가 있으면 전송 (Pro 플랜에서만 대시보드 집계)
+   - GA4(gtag)가 있으면 전송
+   - 위 둘이 없어도 이 기기 localStorage에 집계되어 SR.report()로 즉시 확인 가능
+   - 개인정보는 절대 싣지 않는다: 이벤트명 + 최대 2개 키(짧은 식별자)만 */
+window.SR=window.SR||(function(){
+  var LK='selfregi_events_v1',MAX=500;
+  function readLog(){try{return JSON.parse(localStorage.getItem(LK)||'[]')||[];}catch(e){return[];}}
+  function writeLog(a){try{localStorage.setItem(LK,JSON.stringify(a.slice(-MAX)));}catch(e){}}
+  var ALLOW=['key','from','doc','track','step','type','mode']; /* 허용된 키만 통과 */
+  var DENY=/\d{6}\s*-\s*\d{7}|\d{10,}|@/;                  /* 주민번호·긴 숫자열·이메일 차단 */
+  function sane(d){ /* 개인정보 차단 + 키 2개 제한(Vercel Pro 상한) */
+    var out={},n=0;
+    for(var i=0;i<ALLOW.length;i++){
+      if(n>=2)break;
+      var k=ALLOW[i],v=d[k];
+      if(v===undefined||v===null)continue;
+      if(['string','number','boolean'].indexOf(typeof v)<0)continue;
+      if(typeof v==='string'){if(DENY.test(v))continue;v=v.slice(0,40);}
+      out[k]=v;n++;
+    }
+    return out;
+  }
+  function track(name,data){
+    var d=sane(data||{});
+    try{if(typeof window.va==='function')window.va('event',{name:name,data:d});}catch(e){}
+    try{if(typeof window.gtag==='function')window.gtag('event',name,d);}catch(e){}
+    var log=readLog();
+    log.push({n:name,d:d,t:Date.now(),p:location.pathname.replace(/^.*\//,'')});
+    writeLog(log);
+  }
+  function report(){ /* 콘솔에서 SR.report() 호출 → 이 기기 집계 요약 */
+    var log=readLog(),by={};
+    log.forEach(function(e){by[e.n]=(by[e.n]||0)+1;});
+    console.table(by);
+    var g=log.filter(function(e){return e.n==='guide_open';}).length;
+    var f=log.filter(function(e){return e.n==='form_enter';}).length;
+    var dl=log.filter(function(e){return e.n==='doc_download';}).length;
+    console.log('가이드 열람 '+g+'회 → 작성 진입 '+f+'회 → 서류 발급 '+dl+'회');
+    if(g)console.log('가이드→작성 전환율 '+(f/g*100).toFixed(1)+'%');
+    if(f)console.log('작성→발급 전환율 '+(dl/f*100).toFixed(1)+'%');
+    return by;
+  }
+  function exportCsv(){
+    var log=readLog(),rows=['event,key,ts,page'];
+    log.forEach(function(e){rows.push([e.n,(e.d&&(e.d.key||e.d.doc||e.d.from))||'',new Date(e.t).toISOString(),e.p].join(','));});
+    return rows.join('\n');
+  }
+  function reset(){try{localStorage.removeItem(LK);}catch(e){}}
+  return {track:track,report:report,exportCsv:exportCsv,reset:reset};
+})();
+</script>
+<script>try{if(window.SR){var r=document.referrer||'';var from=/normal_form\.html/.test(r)?'form':(/roadmap\.html/.test(r)?'roadmap':(/guide/.test(r)?'guide':(/selfregi/.test(r)?'index':'direct')));SR.track('hub_enter',{from:from});}}catch(e){}</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script src="tpl_wimi.js"></script>
