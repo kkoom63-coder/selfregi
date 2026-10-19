@@ -207,7 +207,12 @@ p.sm,.sm{font-size:12.5px;color:var(--muted);margin:10px 0 0}
 .ask .link{margin-top:6px}
 
 .disc{margin-top:22px;font-size:12.5px;color:var(--muted)}
-.toast{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:300;background:var(--navy);color:#fff;font-size:13.5px;padding:9px 16px;border-radius:999px;opacity:0;transition:opacity .2s;pointer-events:none;white-space:nowrap}
+.toast{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:300;background:var(--navy);color:#fff;font-size:13.5px;padding:9px 16px;border-radius:12px;opacity:0;transition:opacity .2s;pointer-events:none;width:max-content;max-width:calc(100% - 32px);text-align:center}
+.toast.err{background:var(--warn-tx)}
+.dg-ck{margin:0 0 12px;padding:10px 12px;border:1px solid var(--warn-bd);background:var(--warn-bg);border-radius:10px;color:var(--warn-tx)}
+.dg-ck b{font-weight:700}
+.dg-ck small{color:var(--warn-tx)}
+#dgOk:disabled{opacity:.45;cursor:default}
 .toast.on{opacity:1}
 
 /* 화면 가이드 — guide.html 팝업과 같은 자료(guide_shots.js), 이 화면 안에서 연다 */
@@ -255,6 +260,13 @@ p.sm,.sm{font-size:12.5px;color:var(--muted);margin:10px 0 0}
   <div class="gm-f"><button type="button" class="btn line" id="gmPrev">이전</button><button type="button" class="btn" id="gmNext">다음</button></div>
 </div></div>
 
+<!-- 다운로드 직전 확인 — 원본 대조 체크(필수) + 손으로 적을 칸 + 이용약관 제7조. 서류 작성 화면의 ocr-confirm·빈칸 팝업을 한 장으로 -->
+<div class="gm" id="dg" hidden role="dialog" aria-modal="true" aria-labelledby="dgT"><div class="gm-in">
+  <div class="gm-h"><div class="gm-ht" id="dgT"></div><button type="button" class="gm-x" id="dgX">닫기</button></div>
+  <div class="gm-b" id="dgB"></div>
+  <div class="gm-f"><button type="button" class="btn line" id="dgNo">돌아가기</button><button type="button" class="btn" id="dgOk" disabled>내려받기</button></div>
+</div></div>
+
 <div class="demo" id="demo"><div class="demo-in">
   <div class="demo-l">시제품 보기 — 예시 상태로 바꿔 봅니다(저장값은 바뀌지 않습니다)</div>
   <div class="demo-s" id="demoS"></div>
@@ -262,6 +274,12 @@ p.sm,.sm{font-size:12.5px;color:var(--muted);margin:10px 0 0}
 <div class="toast" id="toast" role="status"></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="tpl_wimi.js"></script>
+<script src="tpl_apply.js"></script>
+<script src="docgen.js"></script>
+<script src="resume.js"></script>
+<script src="pay.js"></script>
 <script src="regparse.js"></script>
 <script src="guide_shots.js"></script>
 <script src="court.js"></script>
@@ -274,7 +292,7 @@ var PDF_WORKER=window.HUB_PDF_WORKER||'https://cdnjs.cloudflare.com/ajax/libs/pd
 try{if(window.pdfjsLib)pdfjsLib.GlobalWorkerOptions.workerSrc=PDF_WORKER;}catch(e){}
 
 /* ---------- 저장값 ---------- */
-var K={form:'selfregi_form_v1',pass:'selfregi_pass_v1',passG:'selfregi_pass_gift_v1',relay:'selfregi_relay_v1',relayTs:'selfregi_relay_ts_v1',flow:'selfregi_gflow_v1',hub:'selfregi_hub_v1'};
+var K={form:'selfregi_form_v1',pass:'selfregi_pass_v1',passG:'selfregi_pass_gift_v1',relay:'selfregi_relay_v1',relayM:'selfregi_relay_multi_v1',relayTs:'selfregi_relay_ts_v1',flow:'selfregi_gflow_v1',hub:'selfregi_hub_v1'};
 function rd(k){try{return JSON.parse(localStorage.getItem(k)||'null');}catch(e){return null;}}
 function wr(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
 function has(v){return v!=null&&String(v).trim()!=='';}
@@ -289,7 +307,8 @@ function clone(o){return JSON.parse(JSON.stringify(o));}
   if(!f.ts){f.ts=Date.now();wr(K.form,f);return;}
   if(Date.now()-Number(f.ts)>30*24*3600*1000){try{localStorage.removeItem(K.form);}catch(e){}}})();
 function realState(){
-  var pass=[rd(K.pass),rd(K.passG)].some(function(p){return p&&p.token&&p.exp>Date.now();});
+  /* 허브는 매매만 — 증여 이용권으로는 매매 서류가 열리지 않는다(pay.js 상품별 이용권) */
+  var pass=[rd(K.pass)].some(function(p){return p&&p.token&&p.exp>Date.now();});
   var flow=rd(K.flow)||{};
   return {form:rd(K.form),pass:pass,relay:rd(K.relay)||{},fin:flow.fin||{},hub:rd(K.hub)||{}};
 }
@@ -683,10 +702,12 @@ function panel(k,d){
     return '<p>종이 신청서에는 전자수입인지를 출력해 붙입니다. 매매가 1억원 이하 주택은 인지세가 없습니다.</p>'
       +(d?'<button type="button" class="link" data-stamp="0">출력 전으로 되돌리기</button>':'<button type="button" class="btn" data-stamp="1">출력했어요</button>')+shotBtn('stamp',false);
   case 'pass':
-    if(d)return '<p>결제한 위임장은 다시 받을 수 있습니다. 매도인 인감도장으로 날인하고, 2장 이상이면 간인합니다.</p><a class="btn line" href="normal_form.html#pay-card">위임장 다시 받기</a>'+shotBtn('pass');
+    if(d){var ru=window.SRPay&&!demoOn()?SRPay.reissueUrl():'';
+      return '<p>위임장을 인쇄해 매도인 인감도장으로 날인받고, 2장 이상이면 간인합니다.</p><button type="button" class="btn" data-dl="wimi">위임장 Word 파일 다운로드</button>'
+        +(ru?'<p class="sm">재발급 링크: <a href="'+esc(ru)+'" style="word-break:break-all">'+esc(ru.replace(/^https?:\/\//,'').slice(0,40))+'…</a> — 다른 기기에서도 다시 받을 수 있습니다.</p>':'')+shotBtn('pass');}
     return '<div class="pay-p"><b>9,900원</b><span>부동산 1건 · 부가세 포함</span></div>'
       +'<p class="pay-d">위임장 · 소유권이전등기신청서 · 매매목록(해당 시)</p>'
-      +'<a class="btn" href="normal_form.html#pay-card">9,900원 결제하고 서류 받기</a>'
+      +'<button type="button" class="btn" data-pay="1">9,900원 결제하고 서류 받기</button>'
       +'<p class="sm">토스페이 · 네이버페이 · 잔금 전날까지 출력해 잔금일에 매도인 인감 날인을 받으세요.</p>'
       +'<details class="svc"><summary>서비스 제공 방식과 시점</summary><dl>'
       +'<dt>제공 방식</dt><dd>브라우저에서 Word(.docx) 파일로 내려받습니다. 별도 배송이나 승인 대기가 없습니다.</dd>'
@@ -694,7 +715,7 @@ function panel(k,d){
       +'<dt>재발급</dt><dd>결제일부터 30일 이내, 동일 부동산·동일 매수인에 한해 횟수 제한 없이 무상입니다.</dd>'
       +'<dt>환불</dt><dd>회사 귀책(문서 오류·미제공 등) 사유를 안 날부터 7일 이내 요청하시면 3영업일 이내 전액 환불합니다. 디지털 콘텐츠 특성상 단순 변심에 따른 환불은 제한됩니다.</dd>'
       +'</dl><p class="sm">자세한 내용은 <a href="terms.html">이용약관 제5·6조</a>를 확인해 주세요.</p></details>'
-      +'<p class="sm">본 서비스는 법률 자문을 제공하지 않습니다. 입력하지 않아 공란으로 생성된 부분은 직접 작성해 제출해야 하며, 공란으로 제출해 보정·반려된 경우의 책임은 이용자에게 있습니다.</p>'
+      +'<p class="sm">본 서비스는 법률 자문을 제공하지 않습니다. 입력하지 않은 칸은 공란으로 인쇄되니 직접 적어 제출하세요. 제출 전 등기기록·관련 서류와 일치하는지 확인할 책임은 이용자에게 있습니다(<a href="terms.html#a7">이용약관 제7조</a>).</p>'
       +shotBtn('pass');
   case 'req':
     return '<div class="ck-g">'+ckList(REQ,'checks')+'</div>';
@@ -702,9 +723,10 @@ function panel(k,d){
     return '<div class="ck-g">'+ckList(SELLER,'checks')+'</div>';
   case 'apply':
     var w2=blocked('apply');
-    return '<p>위임장에 쓴 정보와 납부 번호가 들어간 신청서를 Word 파일로 받습니다.</p>'
-      +(w2?'<div class="warn">'+esc(w2)+' 받을 수 있습니다.</div>':'<a class="btn" href="roadmap.html#r4">신청서 Word 파일 다운로드</a>')
-      +shotBtn('apply')+(!d&&!w2?'<button type="button" class="link" data-mark="apply">받았어요 — 완료로 표시</button>':'');
+    var mk=window.SRDoc&&S.form&&SRDoc.mokrokNeeded(S.form);
+    return '<p>위임장에 쓴 정보와 납부 번호가 들어간 신청서를 Word 파일로 받습니다.'+(mk?' 매도인·매수인이 모두 2인이라 신청서 2건과 매매목록을 함께 받습니다.':'')+'</p>'
+      +(w2?'<div class="warn">'+esc(w2)+' 받을 수 있습니다.</div>':'<button type="button" class="btn" data-dl="apply">신청서 Word 파일 다운로드</button>')
+      +shotBtn('apply');
   case 'rj':
     return regScan()
       +'<div class="ck-g"><h4>자주 틀리는 것</h4><ul class="rs">'+RJ.map(function(x){return '<li><i class="ck2">확인</i><span>'+x.t+(x.s?'<small>'+esc(x.s)+'</small>':'')+'</span></li>';}).join('')+'</ul></div>'
@@ -810,8 +832,129 @@ document.addEventListener('keydown',function(e){if(GM.hidden)return;if(e.key==='
   b.addEventListener('touchstart',function(e){x0=e.touches.length===1?e.touches[0].clientX:null;},{passive:true});
   b.addEventListener('touchend',function(e){if(x0==null)return;var dx=e.changedTouches[0].clientX-x0;x0=null;if(Math.abs(dx)>50)stepShot(dx<0?1:-1);});})();
 
+/* ---------- 서류 내려받기(docgen.js — 서류 작성 화면·로드맵과 같은 생성 코드) ---------- */
+/* 번호 보관함 — 로드맵 restoreRelay와 같은 병합 규칙(가이드에서 새로 적은 1번째 값 우선). 행 수는 지금 인원에 맞춰 자른다 */
+var MULTI=['siga','bondamt','bond','fee'];
+function rows(f){var pt=window.SRDoc?SRDoc.partiesOf(f||{}):{buyerArr:[{}],jointBoth:false};return {b:pt.buyerArr.length,fee:pt.jointBoth?2:1};}
+function relayFull(f){
+  if(demoOn()){var D=clone(S.relay);MULTI.forEach(function(k){D[k]=[D[k]||''];});return D;}
+  var legacy=rd(K.relay)||{},multi=rd(K.relayM)||{},R={siga:[''],tax:'',edu:'',rural:'',bond:[''],bondamt:[''],fee:['']},n=rows(f);
+  MULTI.forEach(function(k){
+    if(Array.isArray(multi[k])&&multi[k].some(has)){R[k]=multi[k].slice();if(has(legacy[k]))R[k][0]=String(legacy[k]);}
+    else if(has(legacy[k]))R[k]=[String(legacy[k])];
+    var want=k==='fee'?n.fee:n.b;R[k]=R[k].slice(0,want);while(R[k].length<want)R[k].push('');});
+  ['tax','edu','rural'].forEach(function(k){if(has(legacy[k]))R[k]=String(legacy[k]);});
+  return R;
+}
+function rsum(a){return (a||[]).reduce(function(s,v){return s+(Number(digits(v))||0);},0);}
+function courtName(){var p=prop(),c=window.SRCourt&&has(p.jibun)?SRCourt.find(p.jibun):null;return c&&!c.ambiguous?c.n:'';}
+
+/* 손으로 적어야 할 칸 — 서류 작성 화면 nfBlankItems·로드맵 rmBlankItems와 같은 항목 */
+function blanks(kind,f){
+  var it=[],pt=SRDoc.partiesOf(f);
+  function add(ok,t,h){if(!ok)it.push([t,h||'']);}
+  it.push(['등기의무자(매도인) 주민등록번호',kind==='wimi'?'잔금일에 매도인이 인감을 날인할 때 직접 적습니다':'잔금일에 매도인 서류를 보고 직접 적습니다']);
+  if(kind==='wimi')it.push(['작성일의 일(day)','잔금 당일 날짜를 적습니다']);
+  else it.push(['등기의무자의 등기필정보 — 일련번호·비밀번호','잔금일에 받은 등기필정보를 보고 적습니다']);
+  add(has(f.jibun),'부동산의 표시 — 소재지번');add(has(f.ho),'부동산의 표시 — 호');add(has(f.propArea),'부동산의 표시 — 전유면적');add(has(f.total)&&has(f.unit),'대지권의 비율');
+  pt.sellerArr.forEach(function(p,i){var w='등기의무자(매도인)'+(pt.sellerArr.length>1?' '+(i+1):'');add(has(p.name),w+' 성명');add(has(p.addr),w+' 주소','초본상 현재 주소');});
+  pt.buyerArr.forEach(function(p,i){var w='등기권리자(매수인)'+(pt.buyerArr.length>1?' '+(i+1):'');add(has(p.name),w+' 성명');add(has(p.addr),w+' 주소');
+    if(kind==='apply')add(has(p.rrn),w+' 주민등록번호','출력한 뒤 직접 적어도 됩니다');});
+  add(has(f.causeYr)&&has(f.causeMo)&&has(f.causeDy),'등기원인과 그 연월일(계약일)');
+  if(kind==='wimi')add(has(f.settleYear)&&has(f.settleMonth),'작성일의 연·월(잔금일)');
+  else{var R=relayFull(f);
+    add(has(f.dealPrice),'거래가액');add(has(f.dealReportNo),'거래신고관리번호');
+    add(rsum(R.siga)>0,'시가표준액');add(has(R.tax),'취득세');add(rsum(R.bondamt)>0,'국민주택채권 매입금액');add(R.bond.some(has),'국민주택채권 발행번호');
+    add(R.fee.every(has),'등기신청수수료 납부번호');add(has(courtName()),'관할 등기소');}
+  return it;
+}
+
+/* 다운로드 직전 확인 — 체크해야 「내려받기」가 켜진다 */
+var DG=document.getElementById('dg'),dgDone=null;
+function gate(kind,items){
+  return new Promise(function(res){
+    dgDone=res;var doc=kind==='wimi'?'위임장':'신청서';
+    document.getElementById('dgT').textContent=doc+' 내려받기 전 확인';
+    document.getElementById('dgB').innerHTML=
+      '<label class="ck dg-ck" for="dgC"><input type="checkbox" id="dgC"><span><b>가지고 계신 원본 서류와 미리보기 내용을 대조해, 다른 곳이 없음을 확인했습니다.</b>'
+      +'<small>'+(kind==='wimi'?'주소·면적·성명을 등기부·초본과 한 번 더 대조해 주세요.':'부동산 표시·성명·주소는 등기부·초본과, 세액·채권·납부번호는 영수증과 대조해 주세요.')+'</small></span></label>'
+      +(items.length?'<p class="ask-q">손으로 적어야 할 칸 '+items.length+'개</p><p class="ask-d">빈칸은 공란으로 인쇄됩니다. 출력한 뒤 직접 적어 제출하세요.</p><ul class="rs">'
+        +items.map(function(x){return '<li><i class="no">공란</i><span>'+esc(x[0])+(x[1]?'<small>'+esc(x[1])+'</small>':'')+'</span></li>';}).join('')+'</ul>':'')
+      +'<p class="sm">제출 전 등기기록·관련 서류와 일치하는지 확인할 책임은 이용자에게 있습니다(<a href="terms.html#a7" target="_blank" rel="noopener">이용약관 제7조</a>).</p>';
+    var ok=document.getElementById('dgOk'),c=document.getElementById('dgC');ok.disabled=true;ok.textContent=doc+' 내려받기';
+    c.onchange=function(){ok.disabled=!c.checked;c.closest('.ck').classList.toggle('on',c.checked);};
+    DG.hidden=false;document.body.style.overflow='hidden';document.getElementById('dgB').scrollTop=0;c.focus();
+    track('hub_gate',{doc:kind,key:String(items.length)});
+  });
+}
+function gateEnd(v){if(DG.hidden)return;DG.hidden=true;document.body.style.overflow='';var r=dgDone;dgDone=null;if(r)r(v);}
+document.getElementById('dgOk').onclick=function(){gateEnd(true);};
+document.getElementById('dgNo').onclick=function(){gateEnd(false);};
+document.getElementById('dgX').onclick=function(){gateEnd(false);};
+DG.addEventListener('click',function(e){if(e.target===DG)gateEnd(false);});
+document.addEventListener('keydown',function(e){if(!DG.hidden&&e.key==='Escape')gateEnd(false);});
+
+/* 위임장 파일에 심는 「이어서 하기」 데이터 — 서류 작성 화면 입력칸 id로 옮겨 담는다(그 화면에 올려도 복원되게).
+   주민등록번호는 SRResume.scrub이 뺀다 */
+function nfSnap(f){
+  var o={};function v(id,x){if(has(x))o[id]={v:String(x)};}
+  v('jibun-address',f.jibun);v('apt-name',f.aptName);v('dong',f.dong);v('floor',f.floor);v('ho',f.ho);v('prop-struct',f.propStruct);v('prop-area',f.propArea);
+  v('total-land',f.total);v('unit-land',f.unit);v('property-uid',f.propertyUid);v('prop-road-address',f.propRoadAddr);
+  v('deal-price',f.dealPrice);v('deal-report-no',f.dealReportNo);v('year',f.causeYr);v('month',f.causeMo);v('day',f.causeDy);v('settle-year',f.settleYear);v('settle-month',f.settleMonth);
+  v('owner-name',f.buyerName);v('owner-address',f.buyerAddr);v('s-name',f.sellerName);v('s-addr',f.sellerAddr);
+  var b=f.buyers||[],s=f.sellers||[];
+  if(f.buyerJoint&&b[1]){o['buyer-joint']={c:true};v('buyer1-share-denom',b[0].shareDenom);v('buyer1-share-num',b[0].shareNum);
+    v('buyer2-name',b[1].name);v('buyer2-address',b[1].addr);v('buyer2-share-denom',b[1].shareDenom);v('buyer2-share-num',b[1].shareNum);v('buyer-agent',String(+f.agentIdx||0));}
+  if(f.sellerJoint&&s[1]){o['seller-joint']={c:true};v('seller1-share-denom',s[0].shareDenom);v('seller1-share-num',s[0].shareNum);
+    v('seller2-name',s[1].name);v('seller2-addr',s[1].addr);v('seller2-share-denom',s[1].shareDenom);v('seller2-share-num',s[1].shareNum);}
+  var fr=f.transferMode==='part'?frac(f.transferShare):null;if(fr){v('transfer-denom',fr.d);v('transfer-num',fr.n);}
+  return o;
+}
+function resumePayload(f){return {f:nfSnap(f),t:f.transferMode==='part'?'part':'all',r:f};}
+/* 결제를 시작할 때 pay.js가 불러 재발급 링크(#r=)에 담는다 */
+window.SRResumeDraft=function(){try{var f=S.form||hubForm();return window.SRResume?SRResume.scrub(resumePayload(f)):null;}catch(e){return null;}};
+
+function blobDL(blob,name){var u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download=name;document.body.appendChild(a);a.click();
+  setTimeout(function(){document.body.removeChild(a);URL.revokeObjectURL(u);},200);}
+function wait(ms){return new Promise(function(r){setTimeout(r,ms);});}
+var dlBusy=false;
+async function dlDoc(kind){
+  if(demoOn())return toast('예시 상태에서는 내려받지 않습니다. 「이 기기 저장값」으로 바꿔 주세요.');
+  if(!window.SRPay||!window.SRDoc||!window.JSZip)return toast('서류 모듈을 불러오지 못했습니다. 새로고침 후 다시 시도해 주세요.',1);
+  if(!SRPay.requirePaid()||dlBusy)return;
+  if(S.form&&S.form.dealType==='gift')return toast('증여로 작성 중인 정보입니다. 증여 서류는 서류 작성 화면에서 받습니다.',1);
+  syncForm();var f=S.form;
+  if(!f)return toast('등기부를 먼저 올려 주세요.',1);
+  if(!(await gate(kind,blanks(kind,f))))return track('hub_gate_back',{doc:kind});
+  if(!(await SRPay.bind({uid:f.propertyUid,addr:f.jibun})))return;
+  dlBusy=true;
+  try{
+    var files,msg;
+    if(kind==='wimi'){
+      var out=await SRDoc.wimiFiles(SRDoc.formData(f),window.SRResume?function(zip){return SRResume.embed(zip,resumePayload(f),(SRPay.pass()||{}).token);}:null);
+      files=out.files;
+      msg=out.jointBoth?'위임장 '+out.filings+'장을 내려받았습니다. 신청서가 매수인별로 갈려 위임장도 건별로 냅니다.':'위임장을 내려받았습니다. 받은 파일은 보관해 두세요.';
+      if(out.overflow.length)msg='위임인이 4명 이상이라 앞 3명만 인쇄됩니다. 나머지('+out.overflow.join(', ')+')는 손으로 적어 주세요.';
+    }else{
+      var ap=await SRDoc.applyFiles(f,relayFull(f),{court:courtName()});
+      files=ap.files;var mk=await SRDoc.mokrokFile(f);if(mk)files.push(mk);
+      msg=ap.jointBoth?'신청서 2건'+(mk?'과 매매목록':'')+'을 내려받았습니다. 매수인별로 나눠 접수합니다(등기예규 제1363호).':'신청서를 내려받았습니다.';
+      if(ap.purposeGap)msg='지분이 비어 있어 「등기의 목적」을 공란으로 두었습니다. 지분을 채우고 다시 받거나 직접 적어 주세요.';
+    }
+    for(var i=0;i<files.length;i++){if(i)await wait(400);blobDL(files[i].blob,files[i].name);}
+    track('doc_download',{doc:kind==='wimi'?'wimijang':'sinchungseo',from:'hub'});
+    if(kind==='apply'){S.hub.apply=true;saveHub();}
+    toast(msg,0,1);render();
+  }catch(e){toast('서류를 만들지 못했습니다 — '+(e&&e.message||e),1);}
+  dlBusy=false;
+}
+window.showToast=function(m,bg){toast(m,/DC2626|B45309/i.test(bg||''),1);}; /* pay.js 안내가 이 화면 알림으로 나온다 */
+window.addEventListener('srpay:change',function(){if(demoOn())return;var was=S.pass;S.pass=!!(window.SRPay&&SRPay.has('sale'));
+  if(S.pass!==was){if(S.pass){OPEN.pass=true;toast('결제가 완료되었습니다. 위임장을 내려받으세요.',0,1);}render();if(S.pass)scrollToEl(document.getElementById('t-pass'));}});
+
 /* ---------- 동작 ---------- */
-function toast(m){var t=document.getElementById('toast');t.textContent=m;t.classList.add('on');clearTimeout(t._t);t._t=setTimeout(function(){t.classList.remove('on');},2200);}
+function toast(m,err,long){var t=document.getElementById('toast');t.textContent=m;t.classList.toggle('err',!!err);t.classList.add('on');clearTimeout(t._t);
+  t._t=setTimeout(function(){t.classList.remove('on');},long?Math.max(3000,String(m).length*70):2200);}
 function scrollToEl(el){if(el)window.scrollTo({top:el.getBoundingClientRect().top+window.pageYOffset-70,behavior:'smooth'});}
 function goTask(k){if(k==='reg'){scrollToEl(document.getElementById('reg'));return;}OPEN[k]=true;render();scrollToEl(document.getElementById('t-'+k));}
 function bind(){
@@ -866,6 +1009,8 @@ function bind(){
         p.querySelector('[data-edok]').onclick=function(){edSave('share');};document.getElementById('ed-share').focus();return;}edSave(k);};
     else i.onkeydown=function(e){if(e.key==='Enter'){e.preventDefault();edSave(k);}};});
   A.querySelectorAll('[data-siga]').forEach(function(x){x.onclick=sigaGo;});
+  A.querySelectorAll('[data-pay]').forEach(function(x){x.onclick=function(){if(demoOn())return toast('예시 상태에서는 결제하지 않습니다.');if(!window.SRPay)return toast('결제 모듈을 불러오지 못했습니다. 새로고침 후 다시 시도해 주세요.',1);track('hub_pay',{});syncForm();SRPay.start();};});
+  A.querySelectorAll('[data-dl]').forEach(function(x){x.onclick=function(){dlDoc(x.getAttribute('data-dl'));};});
   var cz=document.getElementById('cause');if(cz)cz.onchange=function(){if(!cz.value)return;S.hub.cause=cz.value;OPEN.cause=false;saveHub();track('hub_edit',{key:'cause'});render();};
   A.querySelectorAll('[data-cause]').forEach(function(x){x.onclick=function(){OPEN.cause=true;render();var c=document.getElementById('cause');if(c)c.focus();};});
   var rc=document.getElementById('rcpt');
