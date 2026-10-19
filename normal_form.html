@@ -2052,6 +2052,9 @@ function relayForm(d) {
     aptName: d.aptName, propKind: d.propKind, propStruct: d.propStruct,
     propArea: d.propArea, floor: d.floor, propRoadAddr: d.propRoadAddr,
     propertyUid: d.propertyUid, dealReportNo: d.dealReportNo, dealPrice: d.dealPrice,
+    // ↓ 2026-10-20 추가: 허브(my.html)가 위임장을 만들 때 읽는다. roadmap은 쓰지 않는다.
+    transferShare: d.transferShare, transferMode: d.transferMode,
+    settleYear: (d.settleYear || '').trim(), settleMonth: (d.settleMonth || '').trim(),
     dealType: d.dealType === 'gift' ? 'gift' : 'sale'   // 2026-10-11 증여 — roadmap 분기
   };
 }
