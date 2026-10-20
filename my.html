@@ -318,6 +318,17 @@ p.sm,.sm{font-size:12.5px;color:var(--muted);margin:10px 0 0}
 .pvp-note b{color:var(--sub)}
 @media (min-width:1081px){
   .wrap,.top-in,.demo-in{max-width:1200px}
+  /* 화면 가이드: PC는 가운데 큰 창(휴대폰은 아래 시트 그대로) — 그림을 크게, 설명은 오른쪽 */
+  .gm{align-items:center;padding:24px}
+  .gm-in{max-width:1120px;max-height:calc(100vh - 48px);border-radius:16px}
+  .gm-b{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:20px;align-items:start;padding:16px 20px}
+  .gm-b>*{grid-column:2}
+  .gm-b>.gm-img{grid-column:1;grid-row:1/span 4;min-height:420px}
+  .gm-b>.gm-dots{justify-content:flex-start}
+  .gm-img img{max-height:calc(100vh - 220px);width:auto;max-width:100%;margin:0 auto;object-fit:contain}
+  .gm-t{margin-top:0;font-size:17px}
+  .gm-d{font-size:14.5px;line-height:1.75}
+  .gm-f{grid-template-columns:140px 1fr;padding:12px 20px}
   .hgrid{display:grid;grid-template-columns:minmax(0,1fr) 400px;gap:20px;align-items:start;margin-top:18px}
   .stage>.ocr:first-child{margin-top:0}
   .pvp{position:sticky;top:70px;max-height:calc(100vh - 160px);overflow:auto;border-radius:var(--radius)}
