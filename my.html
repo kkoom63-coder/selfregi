@@ -268,23 +268,43 @@ p.sm,.sm{font-size:12.5px;color:var(--muted);margin:10px 0 0}
 .demo-s{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}
 .demo-s button{flex:none;font-size:12.5px;font-weight:700;padding:6px 10px;border-radius:999px;border:1px solid var(--border);background:var(--card);color:var(--sub2)}
 .demo-s button[aria-pressed="true"]{background:var(--navy);border-color:var(--navy);color:#fff}
-/* 3단 작업 화면 — 단계 레일 · 지금 단계 · 문서 반영 미리보기 (2026-10-21 시안 B) */
+/* 단계별 한 화면 — 남색 카드 7단계 줄 · 서류 올리기 고정 · 지금 단계 화면 · 문서 반영 미리보기 (2026-10-21) */
 .hgrid{margin-top:14px}
-.rail ol{list-style:none;margin:0;padding:0}
-.hr{display:flex;align-items:flex-start;gap:10px;width:100%;background:none;border:0;border-radius:10px;padding:8px 10px;text-align:left;color:inherit}
-.hr-n{flex:none;width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:800;background:var(--card);border:2px solid var(--border);color:var(--muted)}
-.hr.done .hr-n{background:var(--ok);border-color:var(--ok);color:#fff}
-.hr.cur .hr-n{background:var(--navy);border-color:var(--navy);color:#fff;animation:hrPulse 1.6s ease-in-out infinite}
-@keyframes hrPulse{0%,100%{box-shadow:0 0 0 0 rgba(3,105,161,.45)}50%{box-shadow:0 0 0 7px rgba(3,105,161,0)}}
-.hr-tx{min-width:0}
-.hr-tx b{display:block;font-size:14px;font-weight:700;color:var(--sub);line-height:1.4}
-.hr-tx small{display:block;font-size:12.5px;color:var(--muted)}
-.hr-tx i{display:inline-block;margin-top:3px;font-style:normal;font-size:11.5px;font-weight:700;color:var(--info-tx);background:var(--info-bg);border-radius:999px;padding:0 7px}
-.hr.sel{background:var(--card);box-shadow:var(--shadow);outline:1px solid var(--border)}
-.hr.sel .hr-tx b,.hr.cur .hr-tx b{color:var(--navy)}
-.stage>.ocr:first-child,.stage>.now:first-child{margin-top:0}
-.stage .ph:first-child{margin-top:4px}
-.st-next{margin-top:14px}
+.stp7{list-style:none;margin:16px 0 0;padding:12px 0 0;border-top:1px solid rgba(255,255,255,.14);display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
+.stp7::-webkit-scrollbar{display:none}
+.stp7 li{flex:1 0 auto}
+.s7{display:flex;align-items:center;gap:7px;width:100%;background:none;border:0;border-radius:999px;padding:5px 10px 5px 5px;color:var(--on-navy);font-size:13px;font-weight:600;white-space:nowrap}
+.s7-n{flex:none;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;border:1.5px solid rgba(255,255,255,.35);color:#fff}
+.s7.done .s7-n{background:var(--ok);border-color:var(--ok)}
+.s7.cur .s7-n{background:#fff;border-color:#fff;color:var(--navy);animation:s7Pulse 1.6s ease-in-out infinite}
+.s7.cur,.s7.sel{color:#fff}
+.s7.sel{background:rgba(255,255,255,.12)}
+@keyframes s7Pulse{0%,100%{box-shadow:0 0 0 0 rgba(125,211,252,.7)}50%{box-shadow:0 0 0 7px rgba(125,211,252,0)}}
+.s7:focus-visible{outline:2px solid var(--sky);outline-offset:1px}
+.ocr.mini{padding:10px 12px;background:var(--card)}
+.ocr.mini .drop{flex-direction:row;justify-content:flex-start;gap:12px;padding:10px 12px;text-align:left}
+.ocr.mini .dz-ic{width:24px;height:29px;margin:0;flex:none}
+.mini-tx{flex:1;min-width:0}
+.mini-tx b{display:block;font-size:14.5px;color:var(--navy)}
+.mini-tx span{display:block;font-size:12.5px;color:var(--muted)}
+.ocr.mini .fb{margin:0;height:36px;line-height:36px;padding:0 16px;flex:none}
+.wz{margin-top:16px}
+.wz-h{display:flex;align-items:center;gap:10px;margin:0 2px 10px}
+.wz-card{display:block;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;margin-bottom:10px;box-shadow:var(--shadow)}
+.wz-card.done{border-color:#A7F3D0}
+.wz-ct{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px}
+.wz-ct b{font-size:15px;font-weight:800;color:var(--navy)}
+.wz-card p{margin:0 0 10px;font-size:13.5px;color:var(--sub)}
+.wz-card .btn{font-size:14px;padding:11px 12px}
+.wz-card .btn+.btn{margin-top:8px}
+.wz-card .pe{border:0;padding:0;margin:0}
+.wz-card select{width:100%;font:inherit;font-size:16px;padding:10px 12px;border:1px solid var(--border);border-radius:8px;background:var(--card);color:var(--text)}
+.wz-docs summary{cursor:pointer;display:flex;align-items:center;justify-content:space-between;list-style:none}
+.wz-docs summary::-webkit-details-marker{display:none}
+.wz-docs summary b{font-size:15px;font-weight:800;color:var(--navy)}
+.wz-docs[open] summary{margin-bottom:10px}
+.wz-nav{display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px;margin-top:4px}
+.wz-nav .btn.line{width:auto;padding:13px 18px}
 .pvp-h{display:flex;align-items:center;justify-content:space-between;margin:0 0 10px}
 .pvp-h h2{margin:0;font-size:15px;font-weight:800;color:var(--navy)}
 .pvp-x,.pvp-bar{display:none}
@@ -298,27 +318,21 @@ p.sm,.sm{font-size:12.5px;color:var(--muted);margin:10px 0 0}
 .pvp-note b{color:var(--sub)}
 @media (min-width:1081px){
   .wrap,.top-in,.demo-in{max-width:1200px}
-  .hgrid{display:grid;grid-template-columns:200px minmax(0,1fr) 380px;gap:20px;align-items:start;margin-top:18px}
-  .rail{position:sticky;top:70px}
-  .rail li+li{margin-top:4px}
+  .hgrid{display:grid;grid-template-columns:minmax(0,1fr) 400px;gap:20px;align-items:start;margin-top:18px}
+  .stage>.ocr:first-child{margin-top:0}
+  .pvp{position:sticky;top:70px;max-height:calc(100vh - 160px);overflow:auto;border-radius:var(--radius)}
   /* 넓은 화면: 잔금일·D-day를 카드 오른쪽으로 — 카드 높이를 줄인다 */
-  .home{display:grid;grid-template-columns:minmax(0,1fr) 320px;column-gap:28px;padding:20px 24px 16px}
+  .home{display:grid;grid-template-columns:minmax(0,1fr) 320px;column-gap:28px;padding:20px 24px 14px}
   .home>*{grid-column:1}
   .home-date{grid-column:2;grid-row:1/3;margin-top:0;padding-top:0;border-top:0;justify-content:flex-end}
   .dday{grid-column:2;grid-row:3;margin-top:4px;text-align:right}
-  .home .bar,.home .bar-l{grid-column:1/-1}
-  .pvp{position:sticky;top:70px;max-height:calc(100vh - 160px);overflow:auto;border-radius:var(--radius)}
+  .home .stp7{grid-column:1/-1}
 }
 @media (max-width:1080px){
-  .rail{margin:0 -16px;padding:3px 16px;overflow-x:auto;scrollbar-width:none}
-  .rail::-webkit-scrollbar{display:none}
-  .rail ol{display:flex;gap:6px}
-  .hr{flex:none;width:auto;align-items:center;padding:6px 12px 6px 6px;border:1px solid var(--border);background:var(--card);border-radius:999px}
-  .hr-n{width:24px;height:24px}
-  .hr-tx small,.hr-tx i{display:none}
-  .hr-tx b{font-size:13.5px;white-space:nowrap}
-  .hr.sel{outline:2px solid var(--navy);box-shadow:none}
-  .stage{margin-top:12px}
+  .stp7{margin-left:-6px;margin-right:-6px}
+  .s7-t{font-size:12.5px}
+  .s7:not(.cur):not(.sel) .s7-t{display:none}
+  .s7:not(.cur):not(.sel){padding-right:5px}
   .pvp{position:fixed;left:0;right:0;bottom:calc(84px + env(safe-area-inset-bottom,0px));z-index:70;padding:0 12px}
   .pvp-bar{display:flex;align-items:center;gap:10px;max-width:560px;margin:0 auto 8px;padding:11px 14px;border-radius:12px;background:var(--navy);color:#fff;font-size:13px;box-shadow:0 6px 20px rgba(15,23,42,.25)}
   .pvp-bar b{font-weight:800;white-space:nowrap}.pvp-bar span{color:var(--on-navy);min-width:0}
@@ -329,7 +343,7 @@ p.sm,.sm{font-size:12.5px;color:var(--muted);margin:10px 0 0}
   .pvp-x{display:inline-block;border:0;border-radius:8px;background:var(--line);color:var(--sub);font-size:13px;font-weight:700;padding:4px 12px}
   .wrap{padding-bottom:190px}
 }
-@media (prefers-reduced-motion:reduce){*{transition:none!important}.hr.cur .hr-n{animation:none;box-shadow:0 0 0 4px rgba(3,105,161,.2)}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}.s7.cur .s7-n{animation:none;box-shadow:0 0 0 4px rgba(125,211,252,.35)}}
 </style>
 </head>
 <body>
@@ -630,6 +644,8 @@ function syncForm(atLoad){
 var PAY=['bond','stamp','efee','wetax'];
 function paid(k){return k==='stamp'?!!S.fin.stamp:f({bond:'bond',efee:'fee',wetax:'tax'}[k]);}
 function payLeft(){return PAY.filter(function(k){return !paid(k);}).length;}
+/* 취득세를 잔금 후에 내기로 했으면 신청서는 취득세 칸만 비우고 먼저 받을 수 있다 */
+function payLeftFor(){return PAY.filter(function(k){return !paid(k)&&!(k==='wetax'&&S.hub.taxWhen==='later');}).length;}
 
 var PHASES=[
   {k:'pre',n:1,t:'셀프등기 사전 준비',w:'잔금일 전에 끝내 둘 것',tasks:['docs','ask','bond','stamp','efee','wetax','req','pass']},
@@ -651,7 +667,7 @@ var T={
   wetax:{t:'취득세 납부',shot:'wetax',pay:1,done:function(){return f('tax');},
     note:function(d){return d?'취득세 '+won(S.relay.tax):(pre('wetax')?'납부완료 · 영수증 번호만 적기':'위택스 · 납부확인서');}},
   apply:{t:'소유권이전등기 신청서 받기',shot:'app',done:function(){return !!S.hub.apply;},
-    note:function(d){if(d)return '받음 · 납부 번호 반영';if(!S.pass)return '위임장 결제 후';var n=payLeft();return n?'납부 번호 '+n+'건 남음':'납부 번호가 자동으로 들어갑니다';}},
+    note:function(d){if(d)return '받음 · 납부 번호 반영';if(!S.pass)return '위임장 결제 후';var n=payLeftFor();return n?'납부 번호 '+n+'건 남음':(S.hub.taxWhen==='later'&&!f('tax')?'취득세 칸은 비워 둡니다 · 납부 후 다시 받기':'납부 번호가 자동으로 들어갑니다');}},
   rj:{t:'반려 사유 점검',done:function(){return !!S.hub.rjok;},
     note:function(d){if(d)return '확인함';var g=S.hub.reg;if(!g)return '등기부를 올리면 자동 점검';var n=(g.liens.length?1:0)+(g.blockers.length?1:0)+(g.isTrust?1:0)+(g.sepReg?1:0);return '등기부 자동 점검 · '+(n?'확인 필요 '+n+'건':'특이사항 없음');}},
   visit:{t:'등기소 접수',done:function(){return !!S.hub.visit;},note:function(d){return d?'접수 완료':'관할 등기소 한 번 · 제출 순서대로';}}
@@ -660,8 +676,9 @@ var T={
 var ORDER=['docs','bond','stamp','efee','wetax','req','pass','seller','apply','rj','visit'];
 function settled(k){return T[k].done()||(T[k].pay&&pre(k));}
 function blocked(k){
+  if(k==='wetax'&&S.hub.taxWhen==='later'&&when()==='before')return '잔금 후';
   if(k==='seller'&&when()==='before')return '잔금일 당일';
-  if(k==='apply'&&(!S.pass||payLeft()))return T.apply.note(false);
+  if(k==='apply'&&(!S.pass||payLeftFor()))return T.apply.note(false);
   if(k==='visit'&&!S.hub.apply)return '신청서를 받은 뒤';
   return '';
 }
@@ -676,33 +693,64 @@ function nowKey(){
 
 /* ---------- 그리기 ---------- */
 var A=document.getElementById('app'),OPEN={},OCR={busy:false,err:'',files:null,pct:0,say:''};
-/* 3단 작업 화면(2026-10-21, 시안 B): 왼쪽 단계 레일 · 가운데 지금 단계 하나 · 오른쪽 문서 반영 미리보기.
-   휴대폰은 레일이 가로 칩, 미리보기는 아래 접힘 막대 → 시트(서류 작성 화면과 같은 방식). */
-function phaseOf(k){if(!k||k==='reg')return 0;for(var i=0;i<PHASES.length;i++)if(PHASES[i].tasks.indexOf(k)>=0)return i+1;return 3;}
-function curPhase(nk){if(!addr())return 0;return nk?phaseOf(nk):3;}
-function phaseDone(i){if(i===0)return !!addr();return PHASES[i-1].tasks.filter(function(k){return k!=='ask';}).every(settled);}
-function railHtml(cur,view){
-  var items=[{t:'서류 올리기',w:addr()?'등기부 반영됨':'올리면 칸이 채워집니다',tag:'잔금 전'}].concat(PHASES.map(function(p){
-    var ts=p.tasks.filter(function(k){return k!=='ask';}),n=ts.filter(settled).length;
-    return {t:p.t,w:n+' / '+ts.length+' 마침',tag:{pre:'잔금 전',day:'잔금일',file:'납부 후'}[p.k]};}));
-  return '<nav class="rail" aria-label="진행 단계"><ol>'+items.map(function(it,i){
-    var done=phaseDone(i)&&i!==cur,c=(i===cur?' cur':'')+(done?' done':'')+(i===view?' sel':'');
-    return '<li><button type="button" class="hr'+c+'" data-ph="'+i+'"'+(i===view?' aria-current="step"':'')+'><span class="hr-n">'+(done?'✓':i)+'</span>'
-      +'<span class="hr-tx"><b>'+it.t+'</b><small>'+it.w+'</small><i>'+it.tag+'</i></span></button></li>';}).join('')+'</ol></nav>';
+/* 단계별 한 화면(2026-10-21 사용자 결정): 남색 카드의 7단계 줄 · 가운데 「서류 올리기」 상자 고정 + 지금 단계 화면 하나(이전·다음) ·
+   오른쪽 문서 반영 미리보기. 휴대폰은 단계 줄 가로 칩, 미리보기 아래 접힘 막대 → 시트(서류 작성 화면 방식). */
+var STEPS=[
+  {k:'deal',t:'매매정보',w:'계약·당사자 정보',tasks:['docs']},
+  {k:'pay1',t:'채권·인지',w:'잔금 전 가능',tasks:['bond','stamp']},
+  {k:'pay2',t:'수수료·취득세',w:'수수료는 잔금 전 가능',tasks:['efee','wetax']},
+  {k:'poa',t:'위임장',w:'잔금 전날까지',tasks:['req','pass']},
+  {k:'day',t:'잔금일',w:'매도인을 만나는 날',tasks:['seller']},
+  {k:'app',t:'신청서',w:'납부를 마친 뒤',tasks:['apply','rj']},
+  {k:'visit',t:'접수',w:'관할 등기소 한 번',tasks:['visit']}
+];
+function dealDone(){return has(causeIso())&&has(buyerName())&&has(sellerName());}
+function stepOf(k){if(!k||k==='reg')return 1;for(var i=0;i<STEPS.length;i++)if(STEPS[i].tasks.indexOf(k)>=0)return i+1;return STEPS.length;}
+function curStep(nk){if(!addr()||!dealDone())return 1;
+  /* 준비서류 체크는 참고 목록이라 지금 단계를 붙잡지 않는다 */
+  if(nk==='docs'){for(var i=0;i<ORDER.length;i++){var k=ORDER[i];if(k!=='docs'&&!settled(k)&&!blocked(k))return stepOf(k);}return STEPS.length;}
+  return nk?stepOf(nk):STEPS.length;}
+function stepDone(i){if(i===1)return dealDone();return STEPS[i-1].tasks.every(function(k){return settled(k)||(k==='wetax'&&S.hub.taxLater&&when()==='before');});}
+function stepperHtml(cur,view){
+  return '<ol class="stp7" aria-label="진행 단계">'+STEPS.map(function(s,j){var i=j+1,done=stepDone(i)&&i!==cur;
+    return '<li><button type="button" class="s7'+(i===cur?' cur':'')+(done?' done':'')+(i===view?' sel':'')+'" data-ph="'+i+'"'+(i===view?' aria-current="step"':'')+'>'
+      +'<span class="s7-n">'+(done?'✓':i)+'</span><span class="s7-t">'+s.t+'</span></button></li>';}).join('')+'</ol>';
 }
-function stageHtml(view,nk){
-  if(view===0)return regCard()+(addr()?'<button type="button" class="btn st-next" data-ph="1">다음: 셀프등기 사전 준비 →</button>':'');
-  var p=PHASES[view-1],h='';
-  if(addr()&&phaseOf(nk)===view)h+=nowCard(nk);
-  h+='<section class="ph" aria-labelledby="ph-'+p.k+'"><div class="ph-h"><span class="ph-n">'+p.n+'</span><h2 class="ph-t" id="ph-'+p.k+'">'+p.t+'<span class="ph-w">'+p.w+'</span></h2></div><div class="list">';
-  p.tasks.forEach(function(k){h+=k==='ask'?askRow():taskRow(k,nk);});
-  h+='</div></section>';
-  if(view<3)h+='<button type="button" class="btn line st-next" data-ph="'+(view+1)+'">다음 단계: '+PHASES[view].t+' →</button>';
+function wzCard(k){var t=T[k],d=t.done(),pd=!d&&t.pay&&pre(k);
+  var pill=d?'<span class="pill ok">완료</span>':(pd?'<span class="pill ok">납부완료</span>':'');
+  return '<div class="wz-card'+(d?' done':'')+'" id="p-'+k+'"><div class="wz-ct"><b>'+t.t+'</b>'+pill+'</div>'+(k==='wetax'?taxBody(d):panel(k,d))+'</div>';}
+/* 취득세 — 잔금 전(구청) / 잔금 후(위택스) 선택에 따라 안내가 달라진다 */
+function taxBody(d){
+  var w=S.hub.taxWhen||'';
+  var pick='<div class="tiles"><button type="button" class="tile" data-taxw="before" aria-pressed="'+(w==='before')+'">잔금 전에 구청에서 납부<small>구청 세무과 방문 · 미리 신고·납부</small></button>'
+    +'<button type="button" class="tile" data-taxw="later" aria-pressed="'+(w==='later')+'">잔금 후 위택스로 납부<small>잔금일 이후 온라인</small></button></div>';
+  if(d||w==='before')return pick+'<div style="margin-top:12px">'+panel('wetax',d)+'</div>';
+  if(w==='later')return pick+'<p class="tip" style="margin-top:12px">신청서는 <b>취득세 칸만 비워 두고</b> 나머지를 모두 채워 둡니다. 잔금 후 납부확인서를 올리면 완성됩니다. 취득세는 등기 접수 전까지 납부를 마쳐야 합니다.</p>';
+  return '<p>취득세를 언제 내실지 고르세요. 등기에는 <b>납부확인서</b>를 씁니다.</p>'+pick;
+}
+/* ① 매매정보 — 계약일·거래가액·관리번호·이전할 지분은 바꾸는 즉시 저장, 매도인·매수인은 편집기 */
+function dealScreen(){
+  var x=S.form||{},pr=ed('price')||digits(x.dealPrice),rp=ed('report')||x.dealReportNo||'',sh=shareTxt();
+  return '<div class="wz-card" id="p-deal"><div class="wz-ct"><b>계약 정보</b><span class="pill">매매계약서 · 신고필증</span></div>'
+    +'<div class="fld"><label for="dl-cause">계약일 <small>등기원인 — 잔금일이 아니라 계약서 작성일</small></label><input type="date" id="dl-cause" data-deal="cause" value="'+esc(causeIso())+'"></div>'
+    +'<div class="fld"><label for="dl-price">거래가액 <small>매매계약서·신고필증 금액</small></label><input id="dl-price" data-deal="price" data-num="1" inputmode="numeric" placeholder="숫자만" value="'+esc(pr?Number(pr).toLocaleString('ko-KR'):'')+'"></div>'
+    +'<div class="fld"><label for="dl-report">거래신고관리번호 <small>부동산거래계약 신고필증</small></label><input id="dl-report" data-deal="report" autocomplete="off" placeholder="예: 12345-2026-10-1234567" value="'+esc(rp)+'"></div>'
+    +'<div class="fld"><label for="dl-share">이전할 지분 <small>매도인 지분을 모두 사면 「전부」</small></label><select id="dl-share" data-deal="share">'+SHARE.map(function(o){return '<option'+(o===sh?' selected':'')+'>'+o+'</option>';}).join('')+'</select></div>'
+    +'</div>'
+    +'<div class="wz-card">'+partyEd()+'</div>'
+    +'<details class="wz-card wz-docs"><summary><b>준비서류 체크</b> <span class="pill'+(T.docs.done()?' ok':'')+'">'+cnt(DOC_ITEMS)+' / '+DOC_ITEMS.length+'</span></summary>'+panel('docs',T.docs.done())+'</details>';
+}
+function stageHtml(view){
+  var s=STEPS[view-1],h=regCard()+'<section class="wz" aria-labelledby="wz-t"><div class="wz-h"><span class="ph-n">'+view+'</span><div><h2 class="ph-t" id="wz-t">'+s.t+'</h2><span class="ph-w">'+s.w+'</span></div></div>';
+  h+=view===1?dealScreen():s.tasks.map(wzCard).join('');
+  h+='<div class="wz-nav">'+(view>1?'<button type="button" class="btn line" data-ph="'+(view-1)+'">← 이전</button>':'<span></span>')
+    +(view<STEPS.length?'<button type="button" class="btn" data-ph="'+(view+1)+'">다음: '+STEPS[view].t+' →</button>':'')+'</div></section>';
   return h;
 }
+var CUR=1,VIEW=1;
 function render(){
-  var nk=nowKey(),cur=curPhase(nk),view=OPEN.ph!=null?OPEN.ph:cur,pv=pvBody(reg());
-  var html=homeCard()+'<div class="hgrid">'+railHtml(cur,view)+'<div class="stage">'+stageHtml(view,nk)
+  var nk=nowKey(),pv=pvBody(reg());CUR=curStep(nk);VIEW=OPEN.ph||CUR;
+  var html=homeCard()+'<div class="hgrid"><div class="stage">'+stageHtml(VIEW)
     +'<p class="disc">세액·채권 금액은 각 기관 영수증 기준이며, 최종 확인은 관할 등기소에서 하세요.</p></div>'
     +'<aside class="pvp'+(OPEN.pvp?' open':'')+'" aria-label="문서 반영 미리보기">'
     +'<div class="pvp-bar"><b>문서 반영 미리보기</b><span>채운 칸 '+pv.ok+' · 남은 칸 '+pv.left+'</span><button type="button" data-pvp="1">보기</button></div>'
@@ -718,7 +766,6 @@ function homeCard(){
   if(w==='before')dd='잔금 D-'+n+'<small>'+(n===1?'내일 매도인을 만납니다 · 위임장을 오늘 출력하세요':'채권·인지·수수료는 지금 미리 낼 수 있습니다')+'</small>';
   else if(w==='day')dd='오늘 잔금일<small>매도인 날인·서류를 받고 취득세를 납부하세요</small>';
   else if(w==='after'){var left=60+n;dd='잔금 후 '+(-n)+'일째<small>등기 신청 기한 '+(left>=0?'D-'+left:(-left)+'일 지남')+' · 잔금일부터 60일, 넘기면 과태료</small>';}
-  var st=[!!a&&S.pass&&PAY.every(settled),T.seller.done(),!!S.hub.visit],cur=st.indexOf(false),labels=['사전 준비','잔금 당일','접수'];
   var sub=sellerName()?'매도인 '+sellerName():'';
   return '<section class="home" aria-label="내 집">'
     +'<div class="home-eb">내 셀프등기</div>'
@@ -726,15 +773,19 @@ function homeCard(){
        :'<div class="home-addr empty">아직 집 정보가 없어요</div><div class="home-sub">등기부를 올리면 주소와 매도인이 여기에 나옵니다</div>')
     +'<div class="home-date"><label for="bal">잔금일</label><input type="date" id="bal" value="'+esc(S.hub.balance||'')+'"></div>'
     +(dd?'<div class="dday">'+dd+'</div>':'')
-    +'<div class="bar" aria-hidden="true">'+labels.map(function(l,i){return '<span class="'+(st[i]?'done':(i===cur?'on':''))+'"></span>';}).join('')+'</div>'
-    +'<div class="bar-l">'+labels.map(function(l,i){return i===cur?'<b>'+l+'</b>':'<span>'+l+'</span>';}).join('')+'</div>'
+    +stepperHtml(CUR,VIEW)
     +'</section>';
 }
 
 /* 0 등기부 — 올리기 전: 강조 문구 + 업로드 상자 / 올린 뒤: 문서 반영 미리보기 */
 var DZ_IC='<svg class="dz-ic" viewBox="0 0 40 48" aria-hidden="true" focusable="false"><path d="M4 2h22l10 10v32a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z" fill="#fff" stroke="#0369A1" stroke-width="2"/><path d="M26 2v10h10" fill="none" stroke="#0369A1" stroke-width="2"/><path d="M9 22h20M9 28h20M9 34h13" stroke="#93C5FD" stroke-width="2.4" stroke-linecap="round"/></svg>';
+var FI_ACCEPT='application/pdf,image/*,.docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document';
 function regCard(){
   var g=reg();
+  /* 집 정보가 들어온 뒤에는 한 줄로 줄여 둔다 — 단계 화면이 한눈에 들어오게(사용자 10/21) */
+  if(addr()&&!OCR.busy&&!OCR.err)return '<section class="ocr mini" id="reg" aria-label="서류 올리기"><div class="drop" id="dz">'+DZ_IC
+    +'<div class="mini-tx"><b>서류 올리기</b><span>'+(g?'등기부 '+g.got+'칸 반영 · ':'')+'등기부 · 취득세 납부확인서 · 받아 둔 위임장(.docx)</span></div>'
+    +'<label class="fb" for="fi">파일 선택</label><input type="file" id="fi" accept="'+FI_ACCEPT+'" multiple hidden></div></section>';
   /* 올린 뒤에도 업로드 상자는 그대로 둔다(다른 서류·다시 올리기). 채운 결과는 오른쪽 미리보기에 */
   return '<section class="ocr" id="reg" aria-labelledby="ocr-t"><div class="ch"><div class="ci'+(g?' ok':'')+'">'+(g?'✓':'0')+'</div><div class="ct" id="ocr-t">등기부로 자동 채우기</div><span></span></div>'
     +(g?'<p class="sum"><span class="lv'+(g.got<6||g.ocr?' oc':'')+'">'+(g.got<6?'정확도 낮음':(g.ocr?'정확도 보통':'정확도 높음'))+'</span>등기부에서 <b>'+g.got+'칸</b>을 채웠습니다. 미리보기에서 고칠 수 있습니다.</p>'
@@ -791,12 +842,11 @@ function pvBody(g){
   var lowN=Object.keys(g.low||{}).filter(function(k){return !ed(k);}).length;
   var html=(lowN?'<p class="pv-warn"><b>확인 필요 '+lowN+'칸</b> — 등기부 원본과 대조하고, 다르면 「고치기」로 바로 고치세요.</p>':'')
     +'<div class="pv"><div class="pv-h">위임장 · 신청서 공통</div>'+common.map(function(r){return pvRow(r[0],r[1],r[2],r[3]);}).join('')+'</div>'
-    +(OPEN.ed_party?partyEd():'')
     +'<div class="pv"><div class="pv-h">위임장에만</div>'+poa.map(function(r){return pvRow(r[0],r[1]);}).join('')+'</div>'
     +'<div class="pv"><div class="pv-h">신청서에만</div>'+app.map(function(r){return pvRow(r[0],r[1],0,r[3]);}).join('')+'</div>'
     +(reg()?courtBox(g):'')
     +'<div class="pv-cnt"><span>입력을 마친 항목</span><b class="g">'+ok+'</b><span>아직 비어 있는 항목</span><b class="o">'+(all.length-ok)+'</b></div>'
-    +(OPEN.ed_party?'':'<div class="ocr-next"><button type="button" class="btn line" data-edit="party">매도인·매수인 주소 · 공동명의 입력</button></div>');
+    +'<div class="ocr-next"><button type="button" class="btn line" data-edit="party">매도인·매수인 주소 · 공동명의 입력</button></div>';
   return {html:html,ok:ok,left:all.length-ok};
 }
 
@@ -826,7 +876,7 @@ function peSave(){
   S.form=Object.assign({},S.form||{},{buyers:b.map(function(q,i){return {name:q.name,addr:q.addr,rrn:fr(r[i])};}),buyerRrn:fr(r[0])});
   OPEN.ed_party=false;OPEN.pdraft=OPEN.prrn=OPEN.pjs=OPEN.pjb=null;saveHub();track('hub_party',{key:s.length+':'+b.length});
   var bad=(js&&shareOk(s)===false)||(jb&&shareOk(b)===false);
-  toast(bad?'저장했습니다. 지분 합계가 1이 아닙니다 — 등기부와 대조해 주세요.':'저장했습니다',bad,bad);render();
+  toast(bad?'저장했습니다. 지분 합계가 1이 아닙니다 — 등기부와 대조해 주세요.':'저장했습니다',bad,bad);render();return true;
 }
 function partyEd(){
   var P=clone(OPEN.pdraft||party()),js=OPEN.pjs!=null?OPEN.pjs:P.s.length>1,jb=OPEN.pjb!=null?OPEN.pjb:P.b.length>1,h='';
@@ -966,7 +1016,7 @@ function panel(k,d){
     var w2=blocked('apply');
     var mk=window.SRDoc&&S.form&&SRDoc.mokrokNeeded(S.form);
     return '<p>위임장에 쓴 정보와 납부 번호가 들어간 신청서를 Word 파일로 받습니다.'+(mk?' 매도인·매수인이 모두 2인이라 신청서 2건과 매매목록을 함께 받습니다.':'')+'</p>'
-      +(w2?'<div class="warn">'+esc(w2)+' 받을 수 있습니다.</div>':'<button type="button" class="btn" data-dl="apply">신청서 Word 파일 다운로드</button>')
+      +(w2?'<div class="warn">'+(!S.pass?'위임장 결제 후 받을 수 있습니다.':'납부 번호를 모두 적으면 받을 수 있습니다 · '+payLeftFor()+'건 남음')+'</div>':'<button type="button" class="btn" data-dl="apply">신청서 Word 파일 다운로드</button>')
       +shotBtn('apply');
   case 'rj':
     return regScan()
@@ -1024,7 +1074,7 @@ function readReg(files){
     var E=S.hub.edit||{};['addr','jibun','apt','dong','floor','ho','struct','area','land','uid'].forEach(function(k){delete E[k];});
     if(S.hub.party&&g.owners.length){var old=S.hub.party.s;S.hub.party.s=g.owners.slice(0,2).map(function(o){
       var m=old.filter(function(q){return q.name===o.name;})[0];return {name:o.name,addr:m?m.addr:'',sd:g.owners.length>1?o.sd:'',sn:g.owners.length>1?o.sn:''};});}
-    S.hub.reg=g;saveHub();OPEN.ph=0;
+    S.hub.reg=g;saveHub();OPEN.ph=null;
     track('hub_ocr_ok',{step:S.hub.reg.got});
     setOcr({busy:false,pct:1,say:'',err:''});
     toast('등기부에서 '+S.hub.reg.got+'칸을 채웠습니다');
@@ -1237,7 +1287,7 @@ window.addEventListener('srpay:change',function(){if(demoOn())return;var was=S.p
 function toast(m,err,long){var t=document.getElementById('toast');t.textContent=m;t.classList.toggle('err',!!err);t.classList.add('on');clearTimeout(t._t);
   t._t=setTimeout(function(){t.classList.remove('on');},long?Math.max(3000,String(m).length*70):2200);}
 function scrollToEl(el){if(el)window.scrollTo({top:el.getBoundingClientRect().top+window.pageYOffset-70,behavior:'smooth'});}
-function goTask(k){OPEN.ph=phaseOf(k);if(k==='reg'){render();scrollToEl(document.getElementById('reg'));return;}OPEN[k]=true;render();scrollToEl(document.getElementById('t-'+k));}
+function goTask(k){OPEN.ph=stepOf(k);if(k==='reg'){render();scrollToEl(document.getElementById('reg'));return;}OPEN[k]=true;render();scrollToEl(document.getElementById('t-'+k));}
 function bind(){
   var b=document.getElementById('bal');
   if(b)b.addEventListener('change',function(){S.hub.balance=b.value||'';saveHub();track('hub_balance',{});render();});
@@ -1246,10 +1296,16 @@ function bind(){
   if(dz){['dragenter','dragover'].forEach(function(t){dz.addEventListener(t,function(e){e.preventDefault();dz.classList.add('over');});});
     ['dragleave','drop'].forEach(function(t){dz.addEventListener(t,function(e){e.preventDefault();dz.classList.remove('over');});});
     dz.addEventListener('drop',function(e){var fl=e.dataTransfer&&e.dataTransfer.files;if(fl&&fl.length)readReg(fl);});}
-  A.querySelectorAll('[data-ph]').forEach(function(x){x.onclick=function(){OPEN.ph=+x.getAttribute('data-ph');track('hub_step',{key:String(OPEN.ph)});render();
-    if(window.innerWidth<=1080){var r=A.querySelector('.rail');if(r)scrollToEl(r);}else window.scrollTo({top:0,behavior:'smooth'});};});
+  A.querySelectorAll('[data-ph]').forEach(function(x){x.onclick=function(){var to=+x.getAttribute('data-ph');
+    /* ① 매매정보에서 넘어갈 때 적던 당사자 정보를 저장한다(검증에 걸리면 머문다) */
+    if(VIEW===1&&to!==1&&document.getElementById('pe')&&!peSave())return;
+    OPEN.ph=to;track('hub_step',{key:String(to)});render();var w=A.querySelector('.wz');if(w)scrollToEl(w);};});
+  A.querySelectorAll('[data-deal]').forEach(function(i){i.onchange=function(){var k=i.getAttribute('data-deal'),v=i.value.trim(),E=S.hub.edit=S.hub.edit||{};
+    if(k==='cause'){if(v)S.hub.cause=v;}else{if(k==='price')v=digits(v);if(v)E[k]=v;else delete E[k];}
+    saveHub();track('hub_deal',{key:k});render();};});
+  A.querySelectorAll('[data-taxw]').forEach(function(x){x.onclick=function(){S.hub.taxWhen=x.getAttribute('data-taxw');saveHub();track('hub_tax',{key:S.hub.taxWhen});render();};});
   A.querySelectorAll('[data-pvp]').forEach(function(x){x.onclick=function(){OPEN.pvp=x.getAttribute('data-pvp')==='1';if(OPEN.pvp)track('hub_pv',{});render();};});
-  A.querySelectorAll('[data-all]').forEach(function(x){x.onclick=function(){track('hub_door',{key:'all'});OPEN.ph=1;render();scrollToEl(document.getElementById('ph-pre'));};});
+  A.querySelectorAll('[data-all]').forEach(function(x){x.onclick=function(){track('hub_door',{key:'all'});OPEN.ph=1;render();scrollToEl(A.querySelector('.wz'));};});
   A.querySelectorAll('[data-handoff]').forEach(function(x){x.addEventListener('click',function(e){e.preventDefault();track('hub_handoff',{});handoff(x.getAttribute('href'));});});
   A.querySelectorAll('[data-tg]').forEach(function(x){x.onclick=function(){var k=x.getAttribute('data-tg');if(k==='pass')return;OPEN[k]=!OPEN[k];if(OPEN[k])track('hub_task',{key:k});render();};});
   A.querySelectorAll('[data-go]').forEach(function(x){x.onclick=function(){var k=x.getAttribute('data-go');track('hub_now',{key:k});goTask(k);};});
@@ -1269,7 +1325,7 @@ function bind(){
     if(!n)return toast('하나 이상 적어 주세요');
     saveRelay(vals);track('hub_save',{key:k});OPEN[k]=false;toast('저장했습니다');var nk=nowKey();render();if(nk&&nk!=='reg'&&!blocked(nk))goTask(nk);};});
   A.querySelectorAll('[data-edit]').forEach(function(x){x.onclick=function(){var k=x.getAttribute('data-edit');OPEN['ed_'+k]=true;
-    if(k==='party'){OPEN.pdraft=OPEN.prrn=OPEN.pjs=OPEN.pjb=null;render();scrollToEl(document.getElementById('pe'));var n=document.getElementById('pe-s0-name');if(n)n.focus({preventScroll:true});return;}
+    if(k==='party'){OPEN.ed_party=false;OPEN.pdraft=OPEN.prrn=OPEN.pjs=OPEN.pjb=null;OPEN.ph=1;OPEN.pvp=false;render();scrollToEl(document.getElementById('pe'));var n=document.getElementById('pe-s0-name');if(n)n.focus({preventScroll:true});return;}
     render();var i=A.querySelector('[data-ed="'+k+'"]');if(i)i.focus();};});
   ['pe-sj','pe-bj'].forEach(function(id){var c=document.getElementById(id);if(c)c.onchange=function(){peRead();render();};});
   A.querySelectorAll('[data-pe]').forEach(function(x){x.onclick=peSave;});
