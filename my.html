@@ -268,7 +268,68 @@ p.sm,.sm{font-size:12.5px;color:var(--muted);margin:10px 0 0}
 .demo-s{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}
 .demo-s button{flex:none;font-size:12.5px;font-weight:700;padding:6px 10px;border-radius:999px;border:1px solid var(--border);background:var(--card);color:var(--sub2)}
 .demo-s button[aria-pressed="true"]{background:var(--navy);border-color:var(--navy);color:#fff}
-@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+/* 3단 작업 화면 — 단계 레일 · 지금 단계 · 문서 반영 미리보기 (2026-10-21 시안 B) */
+.hgrid{margin-top:14px}
+.rail ol{list-style:none;margin:0;padding:0}
+.hr{display:flex;align-items:flex-start;gap:10px;width:100%;background:none;border:0;border-radius:10px;padding:8px 10px;text-align:left;color:inherit}
+.hr-n{flex:none;width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:800;background:var(--card);border:2px solid var(--border);color:var(--muted)}
+.hr.done .hr-n{background:var(--ok);border-color:var(--ok);color:#fff}
+.hr.cur .hr-n{background:var(--navy);border-color:var(--navy);color:#fff;animation:hrPulse 1.6s ease-in-out infinite}
+@keyframes hrPulse{0%,100%{box-shadow:0 0 0 0 rgba(3,105,161,.45)}50%{box-shadow:0 0 0 7px rgba(3,105,161,0)}}
+.hr-tx{min-width:0}
+.hr-tx b{display:block;font-size:14px;font-weight:700;color:var(--sub);line-height:1.4}
+.hr-tx small{display:block;font-size:12.5px;color:var(--muted)}
+.hr-tx i{display:inline-block;margin-top:3px;font-style:normal;font-size:11.5px;font-weight:700;color:var(--info-tx);background:var(--info-bg);border-radius:999px;padding:0 7px}
+.hr.sel{background:var(--card);box-shadow:var(--shadow);outline:1px solid var(--border)}
+.hr.sel .hr-tx b,.hr.cur .hr-tx b{color:var(--navy)}
+.stage>.ocr:first-child,.stage>.now:first-child{margin-top:0}
+.stage .ph:first-child{margin-top:4px}
+.st-next{margin-top:14px}
+.pvp-h{display:flex;align-items:center;justify-content:space-between;margin:0 0 10px}
+.pvp-h h2{margin:0;font-size:15px;font-weight:800;color:var(--navy)}
+.pvp-x,.pvp-bar{display:none}
+.pvp-c{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:14px;box-shadow:var(--shadow)}
+.pvp .pv{margin-bottom:8px}
+.sample{display:flex;align-items:center;gap:12px;margin-top:12px;padding:12px 14px;border:1.5px solid var(--blue);border-radius:12px;background:var(--card);text-decoration:none}
+.sample-ic{flex:none;width:26px;height:32px}
+.sample b{display:block;font-size:14px;color:var(--navy)}
+.sample small{display:block;font-size:12.5px;color:var(--muted)}
+.pvp-note{margin:12px 2px 0;font-size:12.5px;line-height:1.75;color:var(--muted)}
+.pvp-note b{color:var(--sub)}
+@media (min-width:1081px){
+  .wrap,.top-in,.demo-in{max-width:1200px}
+  .hgrid{display:grid;grid-template-columns:200px minmax(0,1fr) 380px;gap:20px;align-items:start;margin-top:18px}
+  .rail{position:sticky;top:70px}
+  .rail li+li{margin-top:4px}
+  /* 넓은 화면: 잔금일·D-day를 카드 오른쪽으로 — 카드 높이를 줄인다 */
+  .home{display:grid;grid-template-columns:minmax(0,1fr) 320px;column-gap:28px;padding:20px 24px 16px}
+  .home>*{grid-column:1}
+  .home-date{grid-column:2;grid-row:1/3;margin-top:0;padding-top:0;border-top:0;justify-content:flex-end}
+  .dday{grid-column:2;grid-row:3;margin-top:4px;text-align:right}
+  .home .bar,.home .bar-l{grid-column:1/-1}
+  .pvp{position:sticky;top:70px;max-height:calc(100vh - 160px);overflow:auto;border-radius:var(--radius)}
+}
+@media (max-width:1080px){
+  .rail{margin:0 -16px;padding:3px 16px;overflow-x:auto;scrollbar-width:none}
+  .rail::-webkit-scrollbar{display:none}
+  .rail ol{display:flex;gap:6px}
+  .hr{flex:none;width:auto;align-items:center;padding:6px 12px 6px 6px;border:1px solid var(--border);background:var(--card);border-radius:999px}
+  .hr-n{width:24px;height:24px}
+  .hr-tx small,.hr-tx i{display:none}
+  .hr-tx b{font-size:13.5px;white-space:nowrap}
+  .hr.sel{outline:2px solid var(--navy);box-shadow:none}
+  .stage{margin-top:12px}
+  .pvp{position:fixed;left:0;right:0;bottom:calc(84px + env(safe-area-inset-bottom,0px));z-index:70;padding:0 12px}
+  .pvp-bar{display:flex;align-items:center;gap:10px;max-width:560px;margin:0 auto 8px;padding:11px 14px;border-radius:12px;background:var(--navy);color:#fff;font-size:13px;box-shadow:0 6px 20px rgba(15,23,42,.25)}
+  .pvp-bar b{font-weight:800;white-space:nowrap}.pvp-bar span{color:var(--on-navy);min-width:0}
+  .pvp-bar button{margin-left:auto;flex:none;border:0;border-radius:8px;background:#fff;color:var(--navy);font-size:13px;font-weight:700;padding:6px 14px}
+  .pvp-c{display:none;max-width:560px;margin:0 auto;max-height:70vh;overflow:auto;border-radius:16px 16px 0 0;box-shadow:0 -10px 30px rgba(15,23,42,.25)}
+  .pvp.open{bottom:0;padding:0;z-index:90}
+  .pvp.open .pvp-c{display:block}.pvp.open .pvp-bar{display:none}
+  .pvp-x{display:inline-block;border:0;border-radius:8px;background:var(--line);color:var(--sub);font-size:13px;font-weight:700;padding:4px 12px}
+  .wrap{padding-bottom:190px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}.hr.cur .hr-n{animation:none;box-shadow:0 0 0 4px rgba(3,105,161,.2)}}
 </style>
 </head>
 <body>
@@ -522,9 +583,11 @@ function partyInit(){
   if(S.hub.party)return S.hub.party;
   var x=S.form||{},g=reg();
   function cp(a){return (a||[]).map(function(p){return {name:p.name||'',addr:p.addr||'',sd:p.shareDenom||'',sn:p.shareNum||''};});}
-  var s=x.sellerJoint&&x.sellers&&x.sellers.length>1?cp(x.sellers):(has(x.sellerName)?[{name:x.sellerName,addr:x.sellerAddr||'',sd:'',sn:''}]:[]);
+  /* 단독 매도인: 서류 작성 화면(relayForm)은 sellerName에 신탁사명(개인 매매는 빈 값)을 넣고 실제 매도인은 sellers[0]에 둔다 → 배열을 먼저 본다 */
+  function one(a,nm,ad){var p=a&&a[0]&&has(a[0].name)?a[0]:null;return p?[{name:p.name,addr:p.addr||'',sd:'',sn:''}]:(has(nm)?[{name:nm,addr:ad||'',sd:'',sn:''}]:[]);}
+  var s=x.sellerJoint&&x.sellers&&x.sellers.length>1?cp(x.sellers):one(x.sellers,x.sellerName,x.sellerAddr);
   if(!s.some(function(p){return has(p.name);})&&g&&g.owners.length)s=g.owners.slice(0,2).map(function(o){return {name:o.name,addr:'',sd:g.owners.length>1?o.sd:'',sn:g.owners.length>1?o.sn:''};});
-  var b=x.buyerJoint&&x.buyers&&x.buyers.length>1?cp(x.buyers):(has(x.buyerName)?[{name:x.buyerName,addr:x.buyerAddr||'',sd:'',sn:''}]:[]);
+  var b=x.buyerJoint&&x.buyers&&x.buyers.length>1?cp(x.buyers):one(x.buyers,x.buyerName,x.buyerAddr);
   if(!s.length&&!b.length)return null;
   S.hub.party={s:s.length?s:[{name:'',addr:'',sd:'',sn:''}],b:b.length?b:[{name:'',addr:'',sd:'',sn:''}],agent:+x.agentIdx||0};
   return S.hub.party;
@@ -613,15 +676,40 @@ function nowKey(){
 
 /* ---------- 그리기 ---------- */
 var A=document.getElementById('app'),OPEN={},OCR={busy:false,err:'',files:null,pct:0,say:''};
+/* 3단 작업 화면(2026-10-21, 시안 B): 왼쪽 단계 레일 · 가운데 지금 단계 하나 · 오른쪽 문서 반영 미리보기.
+   휴대폰은 레일이 가로 칩, 미리보기는 아래 접힘 막대 → 시트(서류 작성 화면과 같은 방식). */
+function phaseOf(k){if(!k||k==='reg')return 0;for(var i=0;i<PHASES.length;i++)if(PHASES[i].tasks.indexOf(k)>=0)return i+1;return 3;}
+function curPhase(nk){if(!addr())return 0;return nk?phaseOf(nk):3;}
+function phaseDone(i){if(i===0)return !!addr();return PHASES[i-1].tasks.filter(function(k){return k!=='ask';}).every(settled);}
+function railHtml(cur,view){
+  var items=[{t:'서류 올리기',w:addr()?'등기부 반영됨':'올리면 칸이 채워집니다',tag:'잔금 전'}].concat(PHASES.map(function(p){
+    var ts=p.tasks.filter(function(k){return k!=='ask';}),n=ts.filter(settled).length;
+    return {t:p.t,w:n+' / '+ts.length+' 마침',tag:{pre:'잔금 전',day:'잔금일',file:'납부 후'}[p.k]};}));
+  return '<nav class="rail" aria-label="진행 단계"><ol>'+items.map(function(it,i){
+    var done=phaseDone(i)&&i!==cur,c=(i===cur?' cur':'')+(done?' done':'')+(i===view?' sel':'');
+    return '<li><button type="button" class="hr'+c+'" data-ph="'+i+'"'+(i===view?' aria-current="step"':'')+'><span class="hr-n">'+(done?'✓':i)+'</span>'
+      +'<span class="hr-tx"><b>'+it.t+'</b><small>'+it.w+'</small><i>'+it.tag+'</i></span></button></li>';}).join('')+'</ol></nav>';
+}
+function stageHtml(view,nk){
+  if(view===0)return regCard()+(addr()?'<button type="button" class="btn st-next" data-ph="1">다음: 셀프등기 사전 준비 →</button>':'');
+  var p=PHASES[view-1],h='';
+  if(addr()&&phaseOf(nk)===view)h+=nowCard(nk);
+  h+='<section class="ph" aria-labelledby="ph-'+p.k+'"><div class="ph-h"><span class="ph-n">'+p.n+'</span><h2 class="ph-t" id="ph-'+p.k+'">'+p.t+'<span class="ph-w">'+p.w+'</span></h2></div><div class="list">';
+  p.tasks.forEach(function(k){h+=k==='ask'?askRow():taskRow(k,nk);});
+  h+='</div></section>';
+  if(view<3)h+='<button type="button" class="btn line st-next" data-ph="'+(view+1)+'">다음 단계: '+PHASES[view].t+' →</button>';
+  return h;
+}
 function render(){
-  var nk=nowKey(),html=homeCard()+regCard();
-  if(addr())html+=nowCard(nk);
-  PHASES.forEach(function(p){
-    html+='<section class="ph" aria-labelledby="ph-'+p.k+'"><div class="ph-h"><span class="ph-n">'+p.n+'</span><h2 class="ph-t" id="ph-'+p.k+'">'+p.t+'<span class="ph-w">'+p.w+'</span></h2></div><div class="list">';
-    p.tasks.forEach(function(k){html+=k==='ask'?askRow():taskRow(k,nk);});
-    html+='</div></section>';
-  });
-  html+='<p class="disc">세액·채권 금액은 각 기관 영수증 기준이며, 최종 확인은 관할 등기소에서 하세요.</p>';
+  var nk=nowKey(),cur=curPhase(nk),view=OPEN.ph!=null?OPEN.ph:cur,pv=pvBody(reg());
+  var html=homeCard()+'<div class="hgrid">'+railHtml(cur,view)+'<div class="stage">'+stageHtml(view,nk)
+    +'<p class="disc">세액·채권 금액은 각 기관 영수증 기준이며, 최종 확인은 관할 등기소에서 하세요.</p></div>'
+    +'<aside class="pvp'+(OPEN.pvp?' open':'')+'" aria-label="문서 반영 미리보기">'
+    +'<div class="pvp-bar"><b>문서 반영 미리보기</b><span>채운 칸 '+pv.ok+' · 남은 칸 '+pv.left+'</span><button type="button" data-pvp="1">보기</button></div>'
+    +'<div class="pvp-c"><div class="pvp-h"><h2>문서 반영 미리보기</h2><button type="button" class="pvp-x" data-pvp="0">닫기</button></div>'+pv.html
+    +'<a class="sample" href="sample_wimi.png" target="_blank" rel="noopener">'+DZ_IC.replace('dz-ic','sample-ic')+'<span><b>결제 후 받는 위임장 견본</b><small>가상 인물로 채운 견본 · 눌러서 크게 보기</small></span></a>'
+    +'<p class="pvp-note">입력하신 내용은 <b>이 브라우저 안에서만</b> 처리되며 서버에 저장되지 않습니다. 주민등록번호는 비워 두고 출력 후 직접 적어도 됩니다. 최종 확인은 관할 등기소 안내를 따라 주세요.</p>'
+    +'</div></aside></div>';
   A.innerHTML=html;bind();
 }
 
@@ -647,10 +735,10 @@ function homeCard(){
 var DZ_IC='<svg class="dz-ic" viewBox="0 0 40 48" aria-hidden="true" focusable="false"><path d="M4 2h22l10 10v32a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z" fill="#fff" stroke="#0369A1" stroke-width="2"/><path d="M26 2v10h10" fill="none" stroke="#0369A1" stroke-width="2"/><path d="M9 22h20M9 28h20M9 34h13" stroke="#93C5FD" stroke-width="2.4" stroke-linecap="round"/></svg>';
 function regCard(){
   var g=reg();
-  if(g&&!OPEN.reup)return pvCard(g);
-  return '<section class="ocr" id="reg" aria-labelledby="ocr-t"><div class="ch"><div class="ci">0</div><div class="ct" id="ocr-t">등기부로 자동 채우기</div>'
-    +(g?'<button type="button" class="ch-a" data-reup="0">취소</button>':'<span></span>')+'</div>'
-    +'<p class="hero-note"><b>등기부 한 장이면 자동으로 채워집니다.</b> 민감정보는 출력 후 적어도 됩니다.</p>'
+  /* 올린 뒤에도 업로드 상자는 그대로 둔다(다른 서류·다시 올리기). 채운 결과는 오른쪽 미리보기에 */
+  return '<section class="ocr" id="reg" aria-labelledby="ocr-t"><div class="ch"><div class="ci'+(g?' ok':'')+'">'+(g?'✓':'0')+'</div><div class="ct" id="ocr-t">등기부로 자동 채우기</div><span></span></div>'
+    +(g?'<p class="sum"><span class="lv'+(g.got<6||g.ocr?' oc':'')+'">'+(g.got<6?'정확도 낮음':(g.ocr?'정확도 보통':'정확도 높음'))+'</span>등기부에서 <b>'+g.got+'칸</b>을 채웠습니다. 미리보기에서 고칠 수 있습니다.</p>'
+      :'<p class="hero-note"><b>등기부 한 장이면 자동으로 채워집니다.</b> 민감정보는 출력 후 적어도 됩니다.</p>')
     +'<div class="drop" id="dz">'+DZ_IC
     +'<div class="slot-t">등기사항전부증명서 올리기</div>'
     +'<div class="sub">인터넷등기소에서 받은 PDF는 글자를 그대로 가져옵니다.<br><b>사진이면 여러 장을 한꺼번에</b> 올려 주세요.</div>'
@@ -689,7 +777,8 @@ function pvRow(k,v,inp,key){
   return '<div class="pv-r"><span class="pv-k">'+k+'</span><span class="pv-v'+(has(v)?'':' miss')+'">'+(has(v)?esc(v):'아직 입력 전')+(inp==='cause'&&has(v)?' <button type="button" class="pv-x" data-cause="x">고치기</button>':'')+'</span></div>';}
 function causeIso(){if(S.hub.cause)return S.hub.cause;var x=S.form||{};if(!has(x.causeYr)||!has(x.causeMo)||!has(x.causeDy))return '';
   return x.causeYr+'-'+('0'+x.causeMo).slice(-2)+'-'+('0'+x.causeDy).slice(-2);}
-function pvCard(g){
+function pvBody(g){
+  g=g||{};
   var x=S.form||{},R=S.relay||{},cd=S.hub.cause||'',p=prop(),P=party();
   var cause=cd?cd.replace(/^(\d+)-0?(\d+)-0?(\d+)$/,'$1년 $2월 $3일 매매'):(has(x.causeYr)?(x.causeYr+'년 '+x.causeMo+'월 '+x.causeDy+'일 매매'):'');
   var price=ed('price')?won(ed('price')):(has(x.dealPrice)?won(x.dealPrice):''),buyer=buyerName(),agent=(P.b[Math.min(+P.agent||0,P.b.length-1)]||{}).name||'';
@@ -700,17 +789,15 @@ function pvCard(g){
   var app=[['매수인 주민등록번호',P.b.map(function(q,i){return mask(rrnOf(i));}).filter(has).join(', '),0,'party'],['거래가액',price,0,'price'],['거래신고관리번호',ed('report')||x.dealReportNo||'',0,'report'],['부동산 고유번호',p.uid,0,'uid'],['시가표준액',won(sg)],['취득세',won(R.tax)],['국민주택채권',[won(ba),bn].filter(Boolean).join(' · ')],['수수료 납부번호',fe]];
   var all=common.concat(poa,app).filter(function(r){return r[0]!=='매수인 주민등록번호';}),ok=all.filter(function(r){return has(r[1]);}).length; /* 주민등록번호는 비워도 되는 칸이라 세지 않는다 */
   var lowN=Object.keys(g.low||{}).filter(function(k){return !ed(k);}).length;
-  return '<section class="ocr" id="reg" aria-labelledby="ocr-t"><div class="ch"><div class="ci ok">✓</div><div class="ct" id="ocr-t">등기부로 자동 채우기</div>'
-    +'<button type="button" class="ch-a" data-reup="1">다시 올리기</button></div>'
-    +'<p class="sum"><span class="lv'+(g.got<6||g.ocr?' oc':'')+'">'+(g.got<6?'정확도 낮음':(g.ocr?'정확도 보통':'정확도 높음'))+'</span>등기부에서 <b>'+g.got+'칸</b>을 채웠습니다. 값이 서류에 이렇게 들어갑니다.</p>'
-    +(lowN?'<p class="pv-warn"><b>확인 필요 '+lowN+'칸</b> — 등기부 원본과 대조하고, 다르면 「고치기」로 바로 고치세요.</p>':'')
+  var html=(lowN?'<p class="pv-warn"><b>확인 필요 '+lowN+'칸</b> — 등기부 원본과 대조하고, 다르면 「고치기」로 바로 고치세요.</p>':'')
     +'<div class="pv"><div class="pv-h">위임장 · 신청서 공통</div>'+common.map(function(r){return pvRow(r[0],r[1],r[2],r[3]);}).join('')+'</div>'
     +(OPEN.ed_party?partyEd():'')
     +'<div class="pv"><div class="pv-h">위임장에만</div>'+poa.map(function(r){return pvRow(r[0],r[1]);}).join('')+'</div>'
     +'<div class="pv"><div class="pv-h">신청서에만</div>'+app.map(function(r){return pvRow(r[0],r[1],0,r[3]);}).join('')+'</div>'
-    +courtBox(g)
+    +(reg()?courtBox(g):'')
     +'<div class="pv-cnt"><span>입력을 마친 항목</span><b class="g">'+ok+'</b><span>아직 비어 있는 항목</span><b class="o">'+(all.length-ok)+'</b></div>'
-    +(OPEN.ed_party?'':'<div class="ocr-next"><button type="button" class="btn line" data-edit="party">매도인·매수인 주소 · 공동명의 입력</button></div>')+'</section>';
+    +(OPEN.ed_party?'':'<div class="ocr-next"><button type="button" class="btn line" data-edit="party">매도인·매수인 주소 · 공동명의 입력</button></div>');
+  return {html:html,ok:ok,left:all.length-ok};
 }
 
 /* 매도인·매수인 입력 — 서류 작성 화면의 당사자 칸(공동명의·지분·대리인)과 같은 값. 부수 규칙은 domain.md 공동명의 표 */
@@ -937,7 +1024,7 @@ function readReg(files){
     var E=S.hub.edit||{};['addr','jibun','apt','dong','floor','ho','struct','area','land','uid'].forEach(function(k){delete E[k];});
     if(S.hub.party&&g.owners.length){var old=S.hub.party.s;S.hub.party.s=g.owners.slice(0,2).map(function(o){
       var m=old.filter(function(q){return q.name===o.name;})[0];return {name:o.name,addr:m?m.addr:'',sd:g.owners.length>1?o.sd:'',sn:g.owners.length>1?o.sn:''};});}
-    S.hub.reg=g;saveHub();OPEN.reup=false;
+    S.hub.reg=g;saveHub();OPEN.ph=0;
     track('hub_ocr_ok',{step:S.hub.reg.got});
     setOcr({busy:false,pct:1,say:'',err:''});
     toast('등기부에서 '+S.hub.reg.got+'칸을 채웠습니다');
@@ -1150,7 +1237,7 @@ window.addEventListener('srpay:change',function(){if(demoOn())return;var was=S.p
 function toast(m,err,long){var t=document.getElementById('toast');t.textContent=m;t.classList.toggle('err',!!err);t.classList.add('on');clearTimeout(t._t);
   t._t=setTimeout(function(){t.classList.remove('on');},long?Math.max(3000,String(m).length*70):2200);}
 function scrollToEl(el){if(el)window.scrollTo({top:el.getBoundingClientRect().top+window.pageYOffset-70,behavior:'smooth'});}
-function goTask(k){if(k==='reg'){scrollToEl(document.getElementById('reg'));return;}OPEN[k]=true;render();scrollToEl(document.getElementById('t-'+k));}
+function goTask(k){OPEN.ph=phaseOf(k);if(k==='reg'){render();scrollToEl(document.getElementById('reg'));return;}OPEN[k]=true;render();scrollToEl(document.getElementById('t-'+k));}
 function bind(){
   var b=document.getElementById('bal');
   if(b)b.addEventListener('change',function(){S.hub.balance=b.value||'';saveHub();track('hub_balance',{});render();});
@@ -1159,8 +1246,10 @@ function bind(){
   if(dz){['dragenter','dragover'].forEach(function(t){dz.addEventListener(t,function(e){e.preventDefault();dz.classList.add('over');});});
     ['dragleave','drop'].forEach(function(t){dz.addEventListener(t,function(e){e.preventDefault();dz.classList.remove('over');});});
     dz.addEventListener('drop',function(e){var fl=e.dataTransfer&&e.dataTransfer.files;if(fl&&fl.length)readReg(fl);});}
-  A.querySelectorAll('[data-reup]').forEach(function(x){x.onclick=function(){OPEN.reup=x.getAttribute('data-reup')==='1';OCR.err='';render();};});
-  A.querySelectorAll('[data-all]').forEach(function(x){x.onclick=function(){track('hub_door',{key:'all'});scrollToEl(document.getElementById('ph-pre'));};});
+  A.querySelectorAll('[data-ph]').forEach(function(x){x.onclick=function(){OPEN.ph=+x.getAttribute('data-ph');track('hub_step',{key:String(OPEN.ph)});render();
+    if(window.innerWidth<=1080){var r=A.querySelector('.rail');if(r)scrollToEl(r);}else window.scrollTo({top:0,behavior:'smooth'});};});
+  A.querySelectorAll('[data-pvp]').forEach(function(x){x.onclick=function(){OPEN.pvp=x.getAttribute('data-pvp')==='1';if(OPEN.pvp)track('hub_pv',{});render();};});
+  A.querySelectorAll('[data-all]').forEach(function(x){x.onclick=function(){track('hub_door',{key:'all'});OPEN.ph=1;render();scrollToEl(document.getElementById('ph-pre'));};});
   A.querySelectorAll('[data-handoff]').forEach(function(x){x.addEventListener('click',function(e){e.preventDefault();track('hub_handoff',{});handoff(x.getAttribute('href'));});});
   A.querySelectorAll('[data-tg]').forEach(function(x){x.onclick=function(){var k=x.getAttribute('data-tg');if(k==='pass')return;OPEN[k]=!OPEN[k];if(OPEN[k])track('hub_task',{key:k});render();};});
   A.querySelectorAll('[data-go]').forEach(function(x){x.onclick=function(){var k=x.getAttribute('data-go');track('hub_now',{key:k});goTask(k);};});
