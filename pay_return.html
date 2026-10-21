@@ -203,6 +203,7 @@ p{font-size:14.5px;line-height:1.7;color:#334155;margin:0 0 12px}
         }
         if(!d||!d.ok){ fail((d&&d.msg)||'결제 승인에 실패했습니다.'); return; }
         var GIFT=d.product==='gift';
+        if(GIFT&&from==='/normal_form.html')from+='?type=gift'; /* 허브는 한 주소에서 ?type=gift로 증여 모드 — 돌아갈 때 모드를 잃지 않게 */
         set(GIFT?'selfregi_pass_gift_v1':PASS_KEY,{token:d.token,orderNo:d.orderNo,exp:d.exp}); /* 상품별 이용권(pay.js PRODUCTS와 같은 키) */
         try{localStorage.removeItem(PENDING_KEY);}catch(e){}
         try{ if(typeof gtag==='function') gtag('event','purchase',{transaction_id:d.orderNo,value:d.amount,currency:'KRW',items:[{item_name:GIFT?'증여 서류 자동완성':'서류 자동완성',price:d.amount,quantity:1}]}); }catch(e){}
