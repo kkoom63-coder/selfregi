@@ -2847,7 +2847,7 @@ window.SR=window.SR||(function(){
   function srIdb(){return new Promise(function(ok,no){var r=indexedDB.open('sr_handoff',1);r.onupgradeneeded=function(){r.result.createObjectStore('f');};r.onsuccess=function(){ok(r.result);};r.onerror=function(){no(r.error);};});}
   function toForm(regs){
     var gift = !!(document.getElementById('rg') && !document.getElementById('rg').hidden);
-    var go = function(){ location.href = 'normal_form.html?handoff=reg' + (gift ? '&type=gift' : ''); };
+    var go = function(){ location.href = 'form_classic.html?handoff=reg' + (gift ? '&type=gift' : ''); };
     try{ window.SR && SR.track('rm_reg_handoff', {}); }catch(e){}
     if(!window.indexedDB) return go();
     srIdb().then(function(db){ var tx = db.transaction('f','readwrite'); tx.objectStore('f').put(regs, 'reg'); tx.oncomplete = go; tx.onerror = go; }).catch(go);

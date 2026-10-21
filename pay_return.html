@@ -207,7 +207,7 @@ p{font-size:14.5px;line-height:1.7;color:#334155;margin:0 0 12px}
         try{localStorage.removeItem(PENDING_KEY);}catch(e){}
         try{ if(typeof gtag==='function') gtag('event','purchase',{transaction_id:d.orderNo,value:d.amount,currency:'KRW',items:[{item_name:GIFT?'증여 서류 자동완성':'서류 자동완성',price:d.amount,quantity:1}]}); }catch(e){}
         try{ if(hasOpener) window.opener.postMessage({type:'srpay:paid'},location.origin); }catch(e){}
-        var short=location.origin+'/normal_form.html?pass='+encodeURIComponent(d.token)+(GIFT?'&type=gift':'');
+        var short=location.origin+(GIFT?'/form_classic.html':'/normal_form.html')+'?pass='+encodeURIComponent(d.token)+(GIFT?'&type=gift':'');
         var until=new Date(d.exp); var ud=until.getFullYear()+'. '+(until.getMonth()+1)+'. '+until.getDate()+'.';
         withDraft(short, d.token).then(function(link){
         var full=link!==short;
