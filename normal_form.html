@@ -337,6 +337,8 @@ html.demo-on .demo{display:block}
 .sample small{display:block;font-size:12.5px;color:var(--muted)}
 .pvp-note{margin:12px 2px 0;font-size:12.5px;line-height:1.75;color:var(--muted)}
 .pvp-note b{color:var(--sub)}
+.pvp-reset{display:block;margin:10px 2px 0;padding:0;border:0;background:none;font:inherit;font-size:13px;font-weight:600;color:var(--sub2);text-decoration:underline;cursor:pointer}
+.pvp-reset:hover{color:var(--danger,#DC2626)}
 @media (min-width:1081px){
   .wrap,.top-in,.demo-in{max-width:1200px}
   /* 화면 가이드: PC는 가운데 큰 창(휴대폰은 아래 시트 그대로) — 그림을 크게, 설명은 오른쪽 */
@@ -1035,6 +1037,7 @@ function render(){
     +'<div class="pvp-bar"><b>문서 반영 미리보기</b><span>채운 칸 '+pv.ok+' · 남은 칸 '+pv.left+'</span><button type="button" data-pvp="1">보기</button></div>'
     +'<div class="pvp-c"><div class="pvp-h"><h2>문서 반영 미리보기</h2><button type="button" class="pvp-x" data-pvp="0">닫기</button></div>'+pv.html
     +(GIFT?'':'<a class="sample" href="sample_wimi.png" target="_blank" rel="noopener">'+DZ_IC.replace('dz-ic','sample-ic')+'<span><b>결제 후 받는 위임장 견본</b><small>가상 인물로 채운 견본 · 눌러서 크게 보기</small></span></a>')
+    +'<button type="button" class="pvp-reset" data-reset="1">입력 내용 모두 지우기</button>'
     +'<p class="pvp-note">입력하신 내용은 <b>이 브라우저 안에서만</b> 처리되며 서버에 저장되지 않습니다. 주민등록번호는 비워 두고 출력 후 직접 적어도 됩니다. 최종 확인은 관할 등기소 안내를 따라 주세요.</p>'
     +'</div></aside></div>';
   A.innerHTML=W(html);bind();
@@ -1696,6 +1699,12 @@ function bind(){
     });};
   A.querySelectorAll('[data-stamp="0"]').forEach(function(x){x.onclick=function(){S.fin.stamp=false;if(!demoOn()){var fl=rd(K.flow)||{};fl.fin=fl.fin||{};delete fl.fin.stamp;wr(K.flow,fl);}render();};});
   A.querySelectorAll('[data-stamp="1"]').forEach(function(x){x.onclick=function(){saveFin('stamp');OPEN.stamp=false;toast('저장했습니다');render();};});
+  /* 입력 내용 모두 지우기 — 이 기기 저장값(집·당사자·납부 번호·진행)만 지운다. 결제 이용권은 남긴다(재발급 30일) */
+  A.querySelectorAll('[data-reset]').forEach(function(x){x.onclick=function(){
+    if(demoOn())return toast('예시 상태에서는 지우지 않습니다.');
+    if(!window.confirm('이 기기에 저장된 입력 내용(부동산·당사자·납부 번호·진행 상황)을 모두 지울까요? 결제한 이용권은 그대로 남습니다.'))return;
+    [K.hub,K.form,K.relay,K.relayM,K.relayTs,K.flow,'sr_resume_draft'].forEach(function(k){try{localStorage.removeItem(k);}catch(e){}});
+    S=realState();OPEN={};OCR={busy:false,err:'',files:null,pct:0,say:''};track('hub_reset',{});render();window.scrollTo(0,0);toast('입력 내용을 모두 지웠습니다.');};});
   A.querySelectorAll('[data-unmark]').forEach(function(x){x.onclick=function(){S.hub[x.getAttribute('data-unmark')]=false;saveHub();render();};});
   A.querySelectorAll('[data-mark]').forEach(function(x){x.onclick=function(){var k=x.getAttribute('data-mark');S.hub[k]=true;saveHub();OPEN[k==='rjok'?'rj':k]=false;render();};});
 }
