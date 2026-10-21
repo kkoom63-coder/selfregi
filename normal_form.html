@@ -491,7 +491,7 @@ nav{z-index:100}
 .seo-q summary{cursor:pointer;font-size:14.5px;font-weight:700;color:var(--navy)}
 .seo-q p{margin:8px 0 0;font-size:13.5px;color:var(--sub);line-height:1.7}
 .seo-more{font-size:13px;margin:14px 0 0}
-.seo p,.disc,.rvl p,.reg-how,.ocr-docs{max-width:75ch}
+.seo p,.disc,.reg-how,.ocr-docs{max-width:75ch}
 .seo-more a{color:var(--blue)}
 /* 7단계는 2열 + 마지막 한 칸은 가로로 채워 빈 칸이 생기지 않게 */
 .seo-steps li:last-child:nth-child(odd){grid-column:1/-1}
@@ -1032,7 +1032,7 @@ var CUR=1,VIEW=1;
 function render(){
   var nk=nowKey(),pv=pvBody(reg());CUR=curStep(nk);VIEW=OPEN.ph||CUR;
   var html=homeCard()+'<div class="hgrid"><div class="stage">'+stageHtml(VIEW)
-    +'<p class="disc">세액·채권 금액은 각 기관 영수증 기준이며, 최종 확인은 관할 등기소에서 하세요.</p>'+reviewLine()+'</div>'
+    +'<p class="disc">세액·채권 금액은 각 기관 영수증 기준이며, 최종 확인은 관할 등기소에서 하세요.</p>'+(STEPS[VIEW-1].k==='poa'?reviewLine():'')+'</div>' /* 후기는 결제를 고민하는 위임장 단계에서만 */
     +'<aside class="pvp'+(OPEN.pvp?' open':'')+'" aria-label="문서 반영 미리보기">'
     +'<div class="pvp-bar"><b>문서 반영 미리보기</b><span>채운 칸 '+pv.ok+' · 남은 칸 '+pv.left+'</span><button type="button" data-pvp="1">보기</button></div>'
     +'<div class="pvp-c"><div class="pvp-h"><h2>문서 반영 미리보기</h2><button type="button" class="pvp-x" data-pvp="0">닫기</button></div>'+pv.html
