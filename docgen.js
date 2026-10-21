@@ -2,7 +2,7 @@
  *
  * 위임장 · 소유권이전등기신청서 · 매매목록(.docx)을 만든다.
  * 쓰는 곳: normal_form(위임장), roadmap(신청서·매매목록), my.html(허브 — 셋 다).
- * 템플릿: tpl_wimi.js(WIMI_B64), tpl_apply.js(SINCHUNGSEO_B64 · GIFT_APPLY_B64). 의존: JSZip(전역).
+ * 템플릿: tpl_wimi.js(WIMI_B64), tpl_apply.js(SINCHUNGSEO_B64 · GIFT_APPLY_B64), tpl_gift.js(GIFT_CONTRACT_B64 — 증여계약서). 의존: JSZip(전역).
  *
  * ⚠ 산출물이 바뀌면 안 된다. 분리 전 두 페이지의 코드를 그대로 옮겼고, 페이지 전역값(dealType·RELAY·
  *   SELFREGI_COURT_NAME)만 인자로 바꿨다. 같은 입력의 word/document.xml 해시를 분리 전후로 대조했다.
@@ -418,10 +418,44 @@
     return { blob: blob, name: '매매목록_' + (f.dong ? f.dong + '동' : '') + (f.ho || '') + '호.docx' };
   }
 
+  /* 증여계약서(2026-10-22, form_classic buildGiftContract 이식) — selfregi_form_v1(v3) 값으로 채운다.
+     증여인 1명 · 수증인 최대 2명(단순 증여만). 금액·주민번호(증여인)·연락처는 비워 둔다. 템플릿: tpl_gift.js */
+  function _m2(v) { v = String(v || '').trim(); return v && /^[\d.,]+$/.test(v) ? v + '㎡' : v; }
+  async function dropSecondDonee(zip) {
+    var xml = await zip.file('word/document.xml').async('string');
+    var re = /<w:p[ >][\s\S]*?<\/w:p>/g, paras = [], m;
+    while ((m = re.exec(xml))) paras.push({ s: m.index, e: m.index + m[0].length, x: m[0] });
+    function txt(p) { return (p.x.match(/<w:t[^>]*>([^<]*)<\/w:t>/g) || []).map(function (t) { return t.replace(/<[^>]+>/g, ''); }).join(''); }
+    var idx = paras.map(function (p, i) { return txt(p).indexOf('■ 수증인') === 0 ? i : -1; }).filter(function (i) { return i >= 0; });
+    if (idx.length < 2) return;
+    var cut = paras.slice(idx[1], idx[1] + 6);   // 같은 내용의 문단이 앞에도 있으므로 위치로 잘라 낸다
+    zip.file('word/document.xml', xml.slice(0, cut[0].s) + xml.slice(cut[cut.length - 1].e));
+  }
+  async function giftContract(f) {
+    var donor = (f.sellers || [])[0] || {};
+    var donees = (f.buyers || []).filter(function (p) { return p && p.name; });
+    var b1 = donees[0] || {}, b2 = donees[1] || {};
+    var reps = {
+      PROP_BLDG_TITLE: [f.jibun, f.aptName, f.dong ? '제' + f.dong + '동' : ''].filter(Boolean).join(' '),
+      PROP_EXCL_NO: [f.floor ? '제' + String(f.floor).replace(/층$/, '') + '층' : '', f.ho ? '제' + f.ho + '호' : ''].filter(Boolean).join(' '),
+      PROP_STRUCT: f.propStruct || '', PROP_AREA: _m2(f.propArea),
+      PROP_LAND_DESC: f.jibun ? '1. ' + f.jibun + (f.total ? '  ' + _m2(f.total) : '') : '',
+      LAND_RATIO: (f.total && f.unit) ? f.total + '분의 ' + f.unit : '',
+      GIFT_SHARE: f.transferMode === 'part' ? (f.transferShare || '') : '전부',
+      DONOR_NAME: donor.name || '', DONOR_RRN: '', DONOR_ADDR: donor.addr || '', DONOR_TEL: '',
+      DONEE_NAMES: donees.map(function (p) { return p.name; }).join(', '),
+      DONEE_NAME: b1.name || '', DONEE_RRN: b1.rrn || '', DONEE_ADDR: b1.addr || '', DONEE_TEL: '',
+      DONEE2_NAME: b2.name || '', DONEE2_RRN: b2.rrn || '', DONEE2_ADDR: b2.addr || '', DONEE2_TEL: '',
+      CONTRACT_Y: String(f.causeYr || '').trim() || '    ', CONTRACT_M: String(f.causeMo || '').trim() || '  ', CONTRACT_D: String(f.causeDy || '').trim() || '  '
+    };
+    var blob = await fill(GIFT_CONTRACT_B64, reps, donees.length < 2 ? dropSecondDonee : null);
+    return { blob: blob, name: '증여계약서_' + (donor.name || '') + '_' + (f.dong ? f.dong + '동' : '') + (f.ho || '') + '호.docx' };
+  }
+
   root.SRDoc = {
     NL: NL, joinLines: joinLines, xe: xe, fmtWon: fmtWon, b64ToBytes: b64ToBytes,
     fill: fill, wimiPlan: wimiPlan, wimiReps: wimiReps, wimiFiles: wimiFiles, formData: formData,
     partiesOf: partiesOf, applyFiles: applyFiles, buildMaemaeMokrok: buildMaemaeMokrok,
-    mokrokNeeded: mokrokNeeded, mokrokFile: mokrokFile, SLOT_MAX: SLOT_MAX
+    mokrokNeeded: mokrokNeeded, mokrokFile: mokrokFile, giftContract: giftContract, SLOT_MAX: SLOT_MAX
   };
 })(window);

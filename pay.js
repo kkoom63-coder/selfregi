@@ -47,7 +47,7 @@
 
   function reissueUrl(p) {
     p = p || pass();
-    return p ? location.origin + (cur === 'gift' ? '/form_classic.html' : '/normal_form.html') + '?pass=' + encodeURIComponent(p.token) + (cur === 'gift' ? '&type=gift' : '') : '';
+    return p ? location.origin + '/normal_form.html?pass=' + encodeURIComponent(p.token) + (cur === 'gift' ? '&type=gift' : '') : '';
   }
 
   function fire() {

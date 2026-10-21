@@ -463,6 +463,7 @@ window.SR=window.SR||(function(){
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script src="tpl_wimi.js"></script>
 <script src="tpl_apply.js"></script>
+<script src="tpl_gift.js"></script>
 <script src="docgen.js"></script>
 <script src="resume.js"></script>
 <script src="pay.js"></script>
@@ -475,13 +476,17 @@ window.SR=window.SR||(function(){
 <script>
 (function(){
 'use strict';
-/* 증여는 아직 서류 작성 화면에서만 — ?type=gift(홈·증여 계산기·재발급 링크)는 그 화면으로 넘긴다(이용권 ?pass=·#r= 그대로) */
-if(/[?&]type=gift(&|$)/.test(location.search)){location.replace('form_classic.html'+location.search+location.hash);return;}
+/* 증여 모드(2026-10-22) — 같은 화면을 ?type=gift로 연다. 단계·서류·요율·상품(14,900원)만 바꾸고 나머지는 매매와 같은 코드.
+   허브 저장값은 모드별로 따로(selfregi_hub_gift_v1), 서류 입력값(selfregi_form_v1)은 서류 작성 화면처럼 한 칸을 dealType으로 구분 */
+var GIFT=/[?&]type=gift(&|$)/.test(location.search);
+if(GIFT){try{window.SRPay&&SRPay.setProduct('gift');}catch(e){}document.title='증여 소유권이전등기 서류 자동완성 (증여계약서·위임장·신청서) | 셀프등기24';}
+/* 증여 화면의 낱말 — 당사자 이름만 바꾼다. 구조가 다른 부분(단계·서류·세금)은 아래 GIFT 분기에서 따로 쓴다 */
+function W(t){return GIFT?String(t).replace(/매도인/g,'증여인').replace(/매수인/g,'수증인').replace(/매매계약 체결일/g,'증여계약일'):t;}
 var PDF_WORKER=window.HUB_PDF_WORKER||'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 try{if(window.pdfjsLib)pdfjsLib.GlobalWorkerOptions.workerSrc=PDF_WORKER;}catch(e){}
 
 /* ---------- 저장값 ---------- */
-var K={form:'selfregi_form_v1',pass:'selfregi_pass_v1',passG:'selfregi_pass_gift_v1',relay:'selfregi_relay_v1',relayM:'selfregi_relay_multi_v1',relayTs:'selfregi_relay_ts_v1',flow:'selfregi_gflow_v1',hub:'selfregi_hub_v1'};
+var K={form:'selfregi_form_v1',pass:'selfregi_pass_v1',passG:'selfregi_pass_gift_v1',relay:'selfregi_relay_v1',relayM:'selfregi_relay_multi_v1',relayTs:'selfregi_relay_ts_v1',flow:'selfregi_gflow_v1',hub:GIFT?'selfregi_hub_gift_v1':'selfregi_hub_v1'};
 function rd(k){try{return JSON.parse(localStorage.getItem(k)||'null');}catch(e){return null;}}
 function wr(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
 function has(v){return v!=null&&String(v).trim()!=='';}
@@ -496,10 +501,11 @@ function clone(o){return JSON.parse(JSON.stringify(o));}
   if(!f.ts){f.ts=Date.now();wr(K.form,f);return;}
   if(Date.now()-Number(f.ts)>30*24*3600*1000){try{localStorage.removeItem(K.form);}catch(e){}}})();
 function realState(){
-  /* 허브는 매매만 — 증여 이용권으로는 매매 서류가 열리지 않는다(pay.js 상품별 이용권) */
-  var pass=[rd(K.pass)].some(function(p){return p&&p.token&&p.exp>Date.now();});
-  var flow=rd(K.flow)||{};
-  return {form:rd(K.form),pass:pass,relay:rd(K.relay)||{},fin:flow.fin||{},hub:rd(K.hub)||{}};
+  /* 이용권은 상품별(pay.js) — 증여 이용권으로 매매 서류, 매매 이용권으로 증여 서류는 열리지 않는다 */
+  var pass=[rd(GIFT?K.passG:K.pass)].some(function(p){return p&&p.token&&p.exp>Date.now();});
+  var flow=rd(K.flow)||{},form=rd(K.form),other=form&&(form.dealType==='gift')!==GIFT;
+  /* 다른 모드로 작성 중인 값은 이 화면에서 읽지 않는다(입력하면 그때 이 모드 값으로 바뀐다) */
+  return {form:other?null:form,pass:pass,relay:other?{}:(rd(K.relay)||{}),fin:other?{}:(flow.fin||{}),hub:rd(K.hub)||{}};
 }
 
 /* 시제품 예시 상태 — 화면 판단용. 저장소에는 쓰지 않는다. 값은 모두 지어낸 예시 */
@@ -584,6 +590,23 @@ var SELLER=[
   {id:'s2',t:'부동산 매도용 인감증명서 원본',s:'미리 전달한 매수인 인적사항과 같은지 확인'},
   {id:'s3',t:'위임장에 매도인 인감 날인',s:'인감증명서와 같은 도장 · 2장 이상이면 간인'}
 ];
+/* 증여 — gift_guide.html 「증여 등기 필요서류」와 같은 목록. 근거: domain.md Case G */
+if(GIFT){
+  DOCS=[
+    {g:'증여계약서 · 대장',items:[
+      {id:'d1',t:'증여계약서',s:'2단계에서 Word 파일로 받아 날인 → 구청 검인'},
+      {id:'d3',t:'등기사항전부증명서(등기부등본)',s:'최신본'},
+      {id:'d5',t:'토지대장(대지권등록부 포함) · 집합건축물대장(전유부)',s:'정부24 무료 발급 · 발행일부터 3개월 이내'}]},
+    {g:'수증인 준비서류',items:[
+      {id:'d4',t:'주민등록등본(또는 초본)',s:'주민번호 뒷자리 포함으로 발급(별표로 가리면 보정 요구가 많음)'},
+      {id:'d7',t:'신분증 · 도장',s:'등기소 가는 날'}]}];
+  DOC_ITEMS=DOCS[0].items.concat(DOCS[1].items);
+  SELLER=[
+    {id:'s1',t:'등기필정보(구 등기필증·등기권리증) 원본',s:'사본·사진은 안 됩니다'},
+    {id:'s2',t:'증여인 인감증명서(일반용) 원본',s:'주민센터 방문 발급 — 등기소 제출용은 전자 발급이 안 됩니다 · 본인서명사실확인서로 대신 가능'},
+    {id:'s4',t:'증여인 주민등록초본',s:'주소 변동 이력 전체'},
+    {id:'s3',t:'증여계약서·위임장에 증여인 인감 날인',s:'인감증명서와 같은 도장 · 2장 이상이면 간인'}];
+}
 function cnt(list){var c=S.hub.checks||{};return list.filter(function(x){return c[x.id];}).length;}
 
 /* ---------- 반려 최종 점검(reject.html 26개 중 단독 매매에 자주 걸리는 것) — 맨 아래 한 곳에만 ---------- */
@@ -593,13 +616,18 @@ var RJ=[
   {t:'거래가액이 계약서·신고필증·신청서에서 모두 같게',s:''},
   {t:'첨부서류는 발행일부터 3개월 이내',s:''}
 ];
+if(GIFT)RJ=[
+  {t:'등기원인일자는 증여계약서 작성일',s:''},
+  {t:'증여계약서는 구청 검인을 받은 원본',s:'부동산등기 특별조치법 제3조'},
+  {t:'증여인 인감증명서는 일반용(방문 발급)',s:'부동산 매도용이 아닙니다'},
+  {t:'첨부서류는 발행일부터 3개월 이내',s:''}];
 /* 올린 등기부를 읽어 나온 결과 — 문제 없음도 그대로 보여준다(점검했다는 사실이 정보다) */
 function regScan(){
   var g=S.hub.reg;
   if(!g)return '<div class="ck-g"><h4>등기부 점검</h4><p class="sm" style="margin:0">맨 위 0번에 등기부를 올리면 근저당·압류·신탁을 자동으로 점검합니다.</p></div>';
   var li=[];
   function row(ok,label,t,sub){li.push('<li><i class="'+(ok?'ok':'no')+'">'+label+'</i><span>'+t+(sub?'<small>'+esc(sub)+'</small>':'')+'</span></li>');}
-  row(!g.liens.length,g.liens.length?'확인 필요':'없음','근저당권'+(g.liens.length?' '+g.liens.length+'건 — 잔금일 상환·말소 서류를 받기로 했는지':''),g.liens.map(function(L){return (L.creditor||L.purpose)+(L.amount?' · 채권최고액 '+L.amount+'원':'');}).join(' / '));
+  row(!g.liens.length,g.liens.length?'확인 필요':'없음','근저당권'+(g.liens.length?' '+g.liens.length+'건 — '+(GIFT?'증여 후에도 등기부에 남습니다 · 채무를 넘겨받으면 부담부증여(이 서비스 대상 아님)':'잔금일 상환·말소 서류를 받기로 했는지'):''),g.liens.map(function(L){return (L.creditor||L.purpose)+(L.amount?' · 채권최고액 '+L.amount+'원':'');}).join(' / '));
   row(!g.blockers.length,g.blockers.length?'확인 필요':'없음','압류·가압류·가처분'+(g.blockers.length?' — '+esc(g.blockers.join('·')):''),'');
   row(!g.isTrust,g.isTrust?'확인 필요':'아님','신탁(현재 소유자가 수탁자)','');
   if(g.sepReg)row(false,'확인 필요','표제부 「별도등기 있음」','');
@@ -653,7 +681,7 @@ function hubForm(){
   if(b.length<2)b=b.slice(0,1).map(function(o){delete o.shareDenom;delete o.shareNum;return o;});
   if(s.length<2)s=s.slice(0,1).map(function(o){delete o.shareDenom;delete o.shareNum;return o;});
   var cd=(S.hub.cause||'').split('-'),bd=(S.hub.balance||'').split('-'),sh=shareTxt(),fr=frac(sh);
-  var o=Object.assign(clone(x),{v:3,ts:Date.now(),dealType:'sale',
+  var o=Object.assign(clone(x),{v:3,ts:Date.now(),dealType:GIFT?'gift':'sale',
     buyerName:b[0]?b[0].name:'',buyerAddr:b[0]?b[0].addr:'',buyerRrn:rrnOf(0),
     sellerName:s[0]?s[0].name:'',sellerAddr:s[0]?s[0].addr:'',sellerCeo:'',sellerCorpReg:'',
     buyerJoint:b.length>1,sellerJoint:s.length>1,buyers:b,sellers:s,agentIdx:Math.min(Math.max(+P.agent||0,0),Math.max(b.length-1,0)),
@@ -662,18 +690,21 @@ function hubForm(){
     transferShare:fr?fr.d+'분의 '+fr.n:'전부',transferMode:fr?'part':'all'});
   if(cd.length===3){o.causeYr=cd[0];o.causeMo=String(+cd[1]);o.causeDy=String(+cd[2]);}
   if(bd.length===3){o.settleYear=bd[0];o.settleMonth=String(+bd[1]);}
+  /* 증여 — 거래가액·관리번호가 없고, 위임장 작성일(연·월)은 증여계약일로 */
+  if(GIFT){o.dealPrice='';o.dealReportNo='';if(cd.length===3){o.settleYear=cd[0];o.settleMonth=String(+cd[1]);}}
   return o;
 }
-/* 저장 — 증여로 작성 중인 값은 건드리지 않는다(허브는 매매만). 아무것도 입력하지 않았으면 쓰지 않는다 */
+/* 저장 — 아무것도 입력하지 않았으면 쓰지 않는다. 화면을 열기만 했을 때는 다른 모드(매매·증여)로 작성 중인 값을 덮지 않는다 */
 function syncForm(atLoad){
-  if(demoOn()||(S.form&&S.form.dealType==='gift'))return;
+  if(demoOn())return;
+  if(atLoad){var cur=rd(K.form);if(cur&&(cur.dealType==='gift')!==GIFT)return;}
   if(!addr()&&!sellerName()&&!buyerName())return;
   var o=hubForm();
   /* 화면을 열기만 했을 때는 만료 기준 시각(ts)을 늘리지 않는다 — 주민등록번호 30일 보관 약속(개인정보처리방침 제4조) */
   if(atLoad&&S.form&&S.form.ts)o.ts=S.form.ts;
   S.form=o;wr(K.form,o);
 }
-var PAY=['bond','stamp','efee','wetax'];
+var PAY=GIFT?['bond','efee','wetax']:['bond','stamp','efee','wetax']; /* 순수 증여는 인지세가 없다(domain.md Case G) */
 function paid(k){return k==='stamp'?!!S.fin.stamp:f({bond:'bond',efee:'fee',wetax:'tax'}[k]);}
 function payLeft(){return PAY.filter(function(k){return !paid(k);}).length;}
 /* 취득세를 잔금 후에 내기로 했으면 신청서는 취득세 칸만 비우고 먼저 받을 수 있다 */
@@ -706,8 +737,25 @@ var T={
 };
 /* 진행 순서. 이미 냈다고 고른 납부는 번호가 없어도 다음으로 넘어간다(가이드를 보고 온 사람) */
 var ORDER=['docs','bond','stamp','efee','wetax','req','pass','seller','apply','rj','visit'];
+/* 증여: 잔금이 없다 — 서류 결제·날인 → 구청 검인 → 취득세(검인받은 계약서로 신고) → 채권·수수료 → 신청서 */
+if(GIFT){
+  ORDER=['docs','pass','seller','kum','wetax','bond','efee','apply','rj','visit'];
+  T.pass=Object.assign({},T.pass,{t:'증여계약서·위임장 Word 파일 다운로드',shot:'',note:function(d){return d?'결제 완료 · 다시 받기 가능':'14,900원 · 증여인 인감 날인용';}});
+  T.seller=Object.assign({},T.seller,{t:'증여인 서류·날인 받기',note:function(){return cnt(SELLER)+' / '+SELLER.length+' 받음';}});
+  T.kum={t:'증여계약서 구청 검인',done:function(){return !!S.hub.kum;},note:function(d){return d?'검인 받음':'부동산 소재지 시·군·구청 · 계약서 원본';}};
+  T.wetax=Object.assign({},T.wetax,{shot:'',note:function(d){return d?'취득세 '+won(S.relay.tax):(pre('wetax')?'납부완료 · 영수증 번호만 적기':'위택스 · 무상취득 신고 · 납부확인서');}});
+  T.bond=Object.assign({},T.bond,{note:function(d){return d?'발행번호 '+S.relay.bond:(pre('bond')?'납부완료 · 영수증 번호만 적기':'시가표준액 기준 · 증여 요율');}});
+  T.apply=Object.assign({},T.apply,{t:'소유권이전등기 신청서(증여) 받기',note:function(d){if(d)return '받음 · 납부 번호 반영';if(!S.pass)return '서류 결제 후';var n=payLeftFor();return n?'납부 번호 '+n+'건 남음':'납부 번호가 자동으로 들어갑니다';}});
+}
 function settled(k){return T[k].done()||(T[k].pay&&pre(k));}
 function blocked(k){
+  if(GIFT){
+    if(k==='kum'&&!S.pass)return '증여계약서를 받은 뒤';
+    if(k==='wetax'&&!S.hub.kum&&!f('tax'))return '검인 후';
+    if(k==='apply'&&(!S.pass||payLeftFor()))return T.apply.note(false);
+    if(k==='visit'&&!S.hub.apply)return '신청서를 받은 뒤';
+    return '';
+  }
   if(k==='wetax'&&S.hub.taxWhen==='later'&&when()==='before')return '잔금 후';
   if(k==='seller'&&when()==='before')return '잔금일 당일';
   if(k==='apply'&&(!S.pass||payLeftFor()))return T.apply.note(false);
@@ -736,6 +784,15 @@ var STEPS=[
   {k:'app',t:'신청서',w:'납부를 마친 뒤',tasks:['apply','rj']},
   {k:'visit',t:'접수',w:'관할 등기소 한 번',tasks:['visit']}
 ];
+if(GIFT)STEPS=[
+  {k:'deal',t:'증여정보',w:'계약·당사자 정보',tasks:['docs']},
+  {k:'poa',t:'증여계약서·위임장',w:'14,900원 결제 · 증여인 인감 날인',tasks:['pass','seller']},
+  {k:'kum',t:'구청 검인',w:'날인한 계약서 원본 제출',tasks:['kum']},
+  {k:'tax',t:'취득세',w:'검인받은 계약서로 신고',tasks:['wetax']},
+  {k:'pay',t:'채권·수수료',w:'시가표준액 기준',tasks:['bond','efee']},
+  {k:'app',t:'신청서',w:'납부를 마친 뒤',tasks:['apply','rj']},
+  {k:'visit',t:'접수',w:'관할 등기소 한 번',tasks:['visit']}
+];
 function dealDone(){return has(causeIso())&&has(buyerName())&&has(sellerName());}
 function stepOf(k){if(!k||k==='reg')return 1;for(var i=0;i<STEPS.length;i++)if(STEPS[i].tasks.indexOf(k)>=0)return i+1;return STEPS.length;}
 function curStep(nk){if(!addr()||!dealDone())return 1;
@@ -750,7 +807,7 @@ function stepperHtml(cur,view){
 }
 function wzCard(k){var t=T[k],d=t.done(),pd=!d&&t.pay&&pre(k);
   var pill=d?'<span class="pill ok">완료</span>':(pd?'<span class="pill ok">납부완료</span>':'');
-  return '<div class="wz-card'+(d?' done':'')+'" id="p-'+k+'"><div class="wz-ct"><b>'+t.t+'</b>'+pill+'</div>'+(k==='wetax'?taxBody(d):panel(k,d))+'</div>';}
+  return '<div class="wz-card'+(d?' done':'')+'" id="p-'+k+'"><div class="wz-ct"><b>'+t.t+'</b>'+pill+'</div>'+(k==='wetax'&&!GIFT?taxBody(d):panel(k,d))+'</div>';}
 /* 취득세 — 잔금 전(구청) / 잔금 후(위택스) 선택에 따라 안내가 달라진다 */
 function taxBody(d){
   var w=S.hub.taxWhen||'';
@@ -762,6 +819,7 @@ function taxBody(d){
 }
 /* ① 매매정보 — 계약일·거래가액·관리번호·이전할 지분은 바꾸는 즉시 저장, 매도인·매수인은 편집기 */
 function dealScreen(){
+  if(GIFT)return giftScreen();
   var x=S.form||{},pr=ed('price')||digits(x.dealPrice),rp=ed('report')||x.dealReportNo||'',sh=shareTxt();
   return '<div class="wz-card" id="p-deal"><div class="wz-ct"><b>계약 정보</b><span class="pill">매매계약서 · 신고필증</span></div>'
     +'<div class="fld"><label for="dl-cause">계약일 <small>등기원인 — 잔금일이 아니라 계약서 작성일</small></label><input type="date" id="dl-cause" data-deal="cause" value="'+esc(causeIso())+'"></div>'
@@ -771,6 +829,18 @@ function dealScreen(){
     +'</div>'
     +'<div class="wz-card">'+partyEd()+'</div>'
     +'<p class="hero-note">입력과 단계 안내는 무료입니다. <b>위임장·신청서 Word 파일은 4단계에서 9,900원 결제 후</b> 받습니다.</p>'
+    +'<details class="wz-card wz-docs"><summary><b>준비서류 체크</b> <span class="pill'+(T.docs.done()?' ok':'')+'">'+cnt(DOC_ITEMS)+' / '+DOC_ITEMS.length+'</span></summary>'+panel('docs',T.docs.done())+'</details>';
+}
+/* ① 증여정보 — 증여계약일(등기원인)·이전할 지분 · 증여인 1명 · 수증인 최대 2명 */
+function giftScreen(){
+  var sh=shareTxt();
+  return '<p class="hero-note">대가 없는 단순 증여만 작성합니다 (부담부증여·미성년 수증인 제외)</p>'
+    +'<div class="wz-card" id="p-deal"><div class="wz-ct"><b>증여 정보</b><span class="pill">증여계약서</span></div>'
+    +'<div class="fld"><label for="dl-cause">증여계약일 <small>등기원인 — 증여계약서 작성일</small></label><input type="date" id="dl-cause" data-deal="cause" value="'+esc(causeIso())+'"></div>'
+    +'<div class="fld"><label for="dl-share">이전할 지분 <small>증여인 지분을 모두 주면 「전부」</small></label><select id="dl-share" data-deal="share">'+SHARE.map(function(o){return '<option'+(o===sh?' selected':'')+'>'+o+'</option>';}).join('')+'</select></div>'
+    +'</div>'
+    +'<div class="wz-card">'+partyEd()+'</div>'
+    +'<p class="hero-note">입력과 단계 안내는 무료입니다. <b>증여계약서·위임장·신청서 Word 파일은 2단계에서 14,900원 결제 후</b> 받습니다.</p>'
     +'<details class="wz-card wz-docs"><summary><b>준비서류 체크</b> <span class="pill'+(T.docs.done()?' ok':'')+'">'+cnt(DOC_ITEMS)+' / '+DOC_ITEMS.length+'</span></summary>'+panel('docs',T.docs.done())+'</details>';
 }
 function stageHtml(view){
@@ -788,10 +858,10 @@ function render(){
     +'<aside class="pvp'+(OPEN.pvp?' open':'')+'" aria-label="문서 반영 미리보기">'
     +'<div class="pvp-bar"><b>문서 반영 미리보기</b><span>채운 칸 '+pv.ok+' · 남은 칸 '+pv.left+'</span><button type="button" data-pvp="1">보기</button></div>'
     +'<div class="pvp-c"><div class="pvp-h"><h2>문서 반영 미리보기</h2><button type="button" class="pvp-x" data-pvp="0">닫기</button></div>'+pv.html
-    +'<a class="sample" href="sample_wimi.png" target="_blank" rel="noopener">'+DZ_IC.replace('dz-ic','sample-ic')+'<span><b>결제 후 받는 위임장 견본</b><small>가상 인물로 채운 견본 · 눌러서 크게 보기</small></span></a>'
+    +(GIFT?'':'<a class="sample" href="sample_wimi.png" target="_blank" rel="noopener">'+DZ_IC.replace('dz-ic','sample-ic')+'<span><b>결제 후 받는 위임장 견본</b><small>가상 인물로 채운 견본 · 눌러서 크게 보기</small></span></a>')
     +'<p class="pvp-note">입력하신 내용은 <b>이 브라우저 안에서만</b> 처리되며 서버에 저장되지 않습니다. 주민등록번호는 비워 두고 출력 후 직접 적어도 됩니다. 최종 확인은 관할 등기소 안내를 따라 주세요.</p>'
     +'</div></aside></div>';
-  A.innerHTML=html;bind();
+  A.innerHTML=W(html);bind();
 }
 
 function homeCard(){
@@ -799,16 +869,20 @@ function homeCard(){
   if(w==='before')dd='잔금 D-'+n+'<small>'+(n===1?'내일 매도인을 만납니다 · 위임장을 오늘 출력하세요':'채권·인지·수수료는 지금 미리 낼 수 있습니다')+'</small>';
   else if(w==='day')dd='오늘 잔금일<small>매도인 날인·서류를 받고 취득세를 납부하세요</small>';
   else if(w==='after'){var left=60+n;dd='잔금 후 '+(-n)+'일째<small>등기 신청 기한 '+(left>=0?'D-'+left:(-left)+'일 지남')+' · 잔금일부터 60일, 넘기면 과태료</small>';}
+  if(GIFT)dd=giftDue();
   var sub=sellerName()?'매도인 '+sellerName():'';
   return '<section class="home" aria-label="내 집">'
-    +'<div class="home-eb">내 셀프등기</div>'
+    +'<div class="home-eb">내 셀프등기'+(GIFT?' · 증여':'')+'</div>'
     +(a?'<div class="home-addr">'+esc(a)+'</div>'+(sub?'<div class="home-sub">'+esc(sub)+'</div>':'')
        :'<div class="home-addr empty">아직 집 정보가 없어요</div><div class="home-sub">등기부를 올리면 주소와 매도인이 여기에 나옵니다</div>')
-    +'<div class="home-date"><label for="bal">잔금일</label><input type="date" id="bal" value="'+esc(S.hub.balance||'')+'"></div>'
+    +(GIFT?'':'<div class="home-date"><label for="bal">잔금일</label><input type="date" id="bal" value="'+esc(S.hub.balance||'')+'"></div>')
     +(dd?'<div class="dday">'+dd+'</div>':'')
     +stepperHtml(CUR,VIEW)
     +'</section>';
 }
+/* 증여 취득세 신고기한 — 취득일(증여계약일)이 속한 달 말일부터 3개월(지방세법 제20조①), 등기 전이면 접수일까지 */
+function giftDue(){var c=causeIso();if(!c)return '';var p=c.split('-'),d=new Date(+p[0],+p[1]+3,0),n=Math.round((d-today())/864e5);
+  return '취득세 신고기한 '+d.getFullYear()+'. '+(d.getMonth()+1)+'. '+d.getDate()+'. ('+(n>=0?'D-'+n:(-n)+'일 지남')+')<small>증여계약일이 속한 달 말일부터 3개월 · 등기 접수 전에 납부를 마쳐야 합니다</small>';}
 
 /* 0 등기부 — 올리기 전: 강조 문구 + 업로드 상자 / 올린 뒤: 문서 반영 미리보기 */
 var DZ_IC='<svg class="dz-ic" viewBox="0 0 40 48" aria-hidden="true" focusable="false"><path d="M4 2h22l10 10v32a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z" fill="#fff" stroke="#0369A1" stroke-width="2"/><path d="M26 2v10h10" fill="none" stroke="#0369A1" stroke-width="2"/><path d="M9 22h20M9 28h20M9 34h13" stroke="#93C5FD" stroke-width="2.4" stroke-linecap="round"/></svg>';
@@ -864,13 +938,14 @@ function causeIso(){if(S.hub.cause)return S.hub.cause;var x=S.form||{};if(!has(x
 function pvBody(g){
   g=g||{};
   var x=S.form||{},R=S.relay||{},cd=S.hub.cause||'',p=prop(),P=party();
-  var cause=cd?cd.replace(/^(\d+)-0?(\d+)-0?(\d+)$/,'$1년 $2월 $3일 매매'):(has(x.causeYr)?(x.causeYr+'년 '+x.causeMo+'월 '+x.causeDy+'일 매매'):'');
+  var cw=GIFT?'증여':'매매',cause=cd?cd.replace(/^(\d+)-0?(\d+)-0?(\d+)$/,'$1년 $2월 $3일 '+cw):(has(x.causeYr)?(x.causeYr+'년 '+x.causeMo+'월 '+x.causeDy+'일 '+cw):'');
   var price=ed('price')?won(ed('price')):(has(x.dealPrice)?won(x.dealPrice):''),buyer=buyerName(),agent=(P.b[Math.min(+P.agent||0,P.b.length-1)]||{}).name||'';
   var common=[['부동산의 표시',addr(),0,'addr'],['구조',p.struct,0,'struct'],['전유면적',has(p.area)?p.area+'㎡':'',0,'area'],['대지권 비율',has(p.total)&&has(p.unit)?p.total+'분의 '+p.unit:'',0,'land'],['이전할 지분',shareTxt(),0,'share'],['등기원인',cause,'cause'],
     ['매도인',pnames(P.s),0,'party'],['매도인 주소',paddrs(P.s),0,'party'],['매수인',pnames(P.b),0,'party'],['매수인 주소',paddrs(P.b),0,'party']];
   var poa=[['대리인',agent]];
   var RF=demoOn()?null:relayFull(S.form||{}),sg=RF?rsum(RF.siga):Number(digits(R.siga)),ba=RF?rsum(RF.bondamt):Number(digits(R.bondamt)),bn=RF?RF.bond.filter(has).join(' / '):(R.bond||''),fe=RF?RF.fee.filter(has).join(' / '):(R.fee||'');
   var app=[['매수인 주민등록번호',P.b.map(function(q,i){return mask(rrnOf(i));}).filter(has).join(', '),0,'party'],['거래가액',price,0,'price'],['거래신고관리번호',ed('report')||x.dealReportNo||'',0,'report'],['부동산 고유번호',p.uid,0,'uid'],['시가표준액',won(sg)],['취득세',won(R.tax)],['국민주택채권',[won(ba),bn].filter(Boolean).join(' · ')],['수수료 납부번호',fe]];
+  if(GIFT)app=app.filter(function(r){return r[3]!=='price'&&r[3]!=='report';});
   var all=common.concat(poa,app).filter(function(r){return r[0]!=='매수인 주민등록번호';}),ok=all.filter(function(r){return has(r[1]);}).length; /* 주민등록번호는 비워도 되는 칸이라 세지 않는다 */
   var lowN=Object.keys(g.low||{}).filter(function(k){return !ed(k);}).length;
   var html=(lowN?'<p class="pv-warn"><b>확인 필요 '+lowN+'칸</b> — 등기부 원본과 대조하고, 다르면 「고치기」로 바로 고치세요.</p>':'')
@@ -922,8 +997,8 @@ function partyEd(){
       +(joint?pShare(w,i,q):'')+'</div>';}
   h+='<div class="pv pe" id="pe"><div class="pv-h">매도인 · 매수인</div>'
     +one('s',0,P.s[0],js)
-    +'<label class="ck pe-ck'+(js?' on':'')+'"><input type="checkbox" id="pe-sj"'+(js?' checked':'')+'><span>매도인이 2명(공동명의)</span></label>'
-    +(js?one('s',1,P.s[1],true):'')
+    +(GIFT?'':'<label class="ck pe-ck'+(js?' on':'')+'"><input type="checkbox" id="pe-sj"'+(js?' checked':'')+'><span>매도인이 2명(공동명의)</span></label>'
+    +(js?one('s',1,P.s[1],true):''))
     +one('b',0,P.b[0],jb)
     +'<label class="ck pe-ck'+(jb?' on':'')+'"><input type="checkbox" id="pe-bj"'+(jb?' checked':'')+'><span>매수인이 2명(공동명의)</span></label>'
     +(jb?one('b',1,P.b[1],true):'')
@@ -933,7 +1008,7 @@ function partyEd(){
   return h;
 }
 /* 신청서·위임장 부수(등기예규 제1363호 — 양쪽이 모두 2인일 때만 2부) */
-function partySum(js,jb){return js&&jb?'매도인·매수인이 모두 2명이라 신청서·위임장을 매수인별로 2부 만들고, 매매목록을 함께 냅니다.':'신청서·위임장은 1부입니다.'+(jb?' 등기소에 가지 않는 매수인은 위임인으로 위임장에 들어갑니다.':'');}
+function partySum(js,jb){if(GIFT)return '증여계약서·위임장·신청서는 1부입니다.'+(jb?' 등기소에 가지 않는 수증인은 위임인으로 위임장에 들어갑니다.':'');return js&&jb?'매도인·매수인이 모두 2명이라 신청서·위임장을 매수인별로 2부 만들고, 매매목록을 함께 냅니다.':'신청서·위임장은 1부입니다.'+(jb?' 등기소에 가지 않는 매수인은 위임인으로 위임장에 들어갑니다.':'');}
 
 /* 관할 등기소 — 부동산 소재지 기준(court.js, 로드맵과 같은 표) */
 function courtBox(g){
@@ -995,6 +1070,11 @@ var PAYTX={
   wetax:'잔금일 당일 위택스로 내거나, 잔금 전 구청 세무과를 방문해 미리 신고·납부할 수 있습니다. 등기에는 <b>납부확인서</b>를 씁니다.'
 };
 /* 결제 확인 후기 중 「공개 동의」한 것만 원문 그대로 적는다(Firestore reviews, status:test 제외). 가짜·각색 금지 — copy.md */
+if(GIFT)PAYTX={
+  bond:'공시가격(시가표준액)으로 금액이 정해집니다. 증여는 매입 요율이 매매와 달라 은행 화면에서 취득 원인을 <b>증여</b>로 고릅니다.',
+  efee:'인터넷등기소에서 납부합니다 · 서면 신청 18,000원.',
+  wetax:'검인받은 증여계약서로 위택스에서 취득세(무상취득)를 신고·납부합니다. 등기에는 <b>납부확인서</b>를 씁니다.'
+};
 var PUB_REVIEWS=[
   {r:5,t:'셀프등기 처음 해보는데 자동으로 작성해주고, 설명도 자세히 되어 있어서 서류 작성이 어렵지 않았습니다. 덕분에 법무사 비용 많이 절감했고, 주위에도 알려줄 생각입니다.'} /* SR20261010095839-LBZ2PD · 2026.10 · publish:true */
 ];
@@ -1028,6 +1108,7 @@ function panel(k,d){
       +'<p>'+PAYTX[k]+'</p>'
       +(k==='bond'&&reg()?'<button type="button" class="btn line" data-siga="1">공시가격 자동조회 및 채권 금액 계산하기</button>'+sigaHtml():'')
       +(p?'':shotBtn(k,true))
+      +(k==='wetax'&&GIFT?'<p class="sm">증여세는 홈택스(세무서)에 따로 신고합니다. 등기 서류에는 들어가지 않습니다.</p>':'')
       +(k==='wetax'?'<label class="btn line" style="margin-top:8px" for="rcpt">납부확인서 PDF 올리기 — 자동으로 채우기</label><input type="file" id="rcpt" accept="application/pdf,.pdf" hidden><p class="sm" id="rcptMsg"></p>':'')
       +'<div style="margin-top:12px">'+fieldsHtml(k)+'</div><button type="button" class="btn'+(p?'':' line')+'" data-save="'+k+'">저장</button>'
       +(p?shotBtn(k):'');
@@ -1035,6 +1116,7 @@ function panel(k,d){
     return '<p>종이 신청서에는 전자수입인지를 출력해 붙입니다. 매매가 1억원 이하 주택은 인지세가 없습니다.</p>'
       +(d?'<button type="button" class="link" data-stamp="0">출력 전으로 되돌리기</button>':'<button type="button" class="btn" data-stamp="1">출력했어요</button>')+shotBtn('stamp',false);
   case 'pass':
+    if(GIFT)return giftPass(d);
     if(d){var ru=window.SRPay&&!demoOn()?SRPay.reissueUrl():'';
       return '<p>위임장을 인쇄해 매도인 인감도장으로 날인받고, 2장 이상이면 간인합니다.</p><button type="button" class="btn" data-dl="wimi">위임장 Word 파일 다운로드</button>'
         +(ru?'<p class="sm">재발급 링크: <a href="'+esc(ru)+'" style="word-break:break-all">'+esc(ru.replace(/^https?:\/\//,'').slice(0,40))+'…</a> — 다른 기기에서도 다시 받을 수 있습니다.</p>':'')+shotBtn('pass');}
@@ -1050,6 +1132,10 @@ function panel(k,d){
       +'</dl><p class="sm">자세한 내용은 <a href="terms.html">이용약관 제5·6조</a>를 확인해 주세요.</p></details>'
       +'<p class="sm">본 서비스는 법률 자문을 제공하지 않습니다. 입력하지 않은 칸은 공란으로 인쇄되니 직접 적어 제출하세요. 제출 전 등기기록·관련 서류와 일치하는지 확인할 책임은 이용자에게 있습니다(<a href="terms.html#a7">이용약관 제7조</a>).</p>'
       +shotBtn('pass');
+  case 'kum':
+    return '<p>증여인·수증인이 날인한 증여계약서 원본을 부동산 소재지 시·군·구청에 내면 검인 도장을 찍어 돌려줍니다. 구청은 계약서를 대신 써 주지 않고 형식만 확인합니다.</p>'
+      +'<p class="sm">취득세 신고 때 검인받은 계약서를 냅니다. 근거: 부동산등기 특별조치법 제3조</p>'
+      +(!d?'<button type="button" class="btn" data-mark="kum">검인 받았어요</button>':'<button type="button" class="link" data-unmark="kum">검인 전으로 되돌리기</button>');
   case 'req':
     return '<div class="ck-g">'+ckList(REQ,'checks')+'</div>';
   case 'seller':
@@ -1067,7 +1153,8 @@ function panel(k,d){
       +(!d?'<button type="button" class="btn" style="margin-top:8px" data-mark="rjok">확인했어요</button>':'');
   case 'visit':
     return '<div class="ck-g"><h4>방문 전, 가방에 넣으면서 확인해 보세요</h4>'
-      +['신분증 · 매수인 도장','신청서 · 위임장(날인·간인)','취득세 납부확인서 · 채권 영수증 · 인지 · 수수료 영수필확인서','매도인 서류(등기필정보 · 인감증명서) · 내 서류 원본']
+      +(GIFT?['신분증 · 수증인 도장','신청서 · 위임장(날인·간인) · 검인받은 증여계약서 원본','취득세 납부확인서 · 채권 영수증 · 수수료 영수필확인서','증여인 서류(등기필정보 · 인감증명서 · 초본) · 내 서류 원본']
+        :['신분증 · 매수인 도장','신청서 · 위임장(날인·간인)','취득세 납부확인서 · 채권 영수증 · 인지 · 수수료 영수필확인서','매도인 서류(등기필정보 · 인감증명서) · 내 서류 원본'])
         .map(function(t,i){return '<label class="ck"><input type="checkbox" id="bag-'+i+'"><span>'+t+'</span></label>';}).join('')+'</div>'
       +'<a class="link" href="roadmap.html#r4">관할 등기소 · 제출 순서 보기 ›</a>'
       +(!d&&S.hub.apply?'<button type="button" class="btn" style="margin-top:12px" data-mark="visit">접수했어요</button>':'');
@@ -1075,8 +1162,28 @@ function panel(k,d){
   return '';
 }
 
+/* 증여 결제 카드 — 상품 gift(14,900원): 증여계약서 · 위임장 · 신청서(증여) */
+function giftPass(d){
+  if(d){var ru=window.SRPay&&!demoOn()?SRPay.reissueUrl():'';
+    return '<p>증여계약서·위임장을 인쇄해 증여인 인감도장으로 날인받고, 2장 이상이면 간인합니다. 증여계약서에는 수증인도 날인합니다.</p><button type="button" class="btn" data-dl="wimi">증여계약서·위임장 Word 파일 다운로드</button>'
+      +(ru?'<p class="sm">재발급 링크: <a href="'+esc(ru)+'" style="word-break:break-all">'+esc(ru.replace(/^https?:\/\//,'').slice(0,40))+'…</a> — 다른 기기에서도 다시 받을 수 있습니다.</p>':'');}
+  return '<div class="pay-p"><b>14,900원</b><span>부동산 1건 · 부가세 포함</span></div>'
+    +'<p class="pay-d">증여계약서 · 위임장 · 소유권이전등기신청서(증여)</p>'
+    +'<button type="button" class="btn" data-pay="1">14,900원 결제하고 서류 받기</button>'
+    +'<p class="sm">토스페이 · 네이버페이 · 받은 증여계약서·위임장에 증여인 인감 날인을 받으세요.</p>'
+    +'<details class="svc"><summary>서비스 제공 방식과 시점</summary><dl>'
+    +'<dt>제공 방식</dt><dd>브라우저에서 Word(.docx) 파일로 내려받습니다. 별도 배송이나 승인 대기가 없습니다.</dd>'
+    +'<dt>제공 시점</dt><dd>증여계약서·위임장은 결제 승인 직후, 신청서는 제세공과금 납부 후 번호를 입력하는 즉시 내려받습니다.</dd>'
+    +'<dt>재발급</dt><dd>결제일부터 30일 이내, 동일 부동산·동일 수증인에 한해 횟수 제한 없이 무상입니다.</dd>'
+    +'<dt>환불</dt><dd>회사 귀책(문서 오류·미제공 등) 사유를 안 날부터 7일 이내 요청하시면 3영업일 이내 전액 환불합니다. 디지털 콘텐츠 특성상 단순 변심에 따른 환불은 제한됩니다.</dd>'
+    +'</dl><p class="sm">자세한 내용은 <a href="terms.html">이용약관 제5·6조</a>를 확인해 주세요.</p></details>'
+    +'<p class="sm">본 서비스는 법률 자문을 제공하지 않습니다. 입력하지 않은 칸은 공란으로 인쇄되니 직접 적어 제출하세요. 제출 전 등기기록·관련 서류와 일치하는지 확인할 책임은 이용자에게 있습니다(<a href="terms.html#a7">이용약관 제7조</a>).</p>';
+}
+
 /* ---------- 공시가격 → 채권 매입액(계산기와 같은 요율·반올림) ---------- */
 var BT=[[2e7,13,13],[5e7,19,14],[1e8,21,16],[1.6e8,23,18],[2.6e8,26,21],[6e8,31,26]];
+/* 증여 — 주택도시기금법 시행령 별표 부표 15.나 「상속(증여 그 밖의 무상취득 포함)」(domain.md Case G). 1천만원 미만은 표에 없어 계산하지 않는다 */
+if(GIFT)BT=[[1e7,18,14],[5e7,28,25],[1.5e8,42,39]];
 function bondOf(v,parcel){var metro=/특별시|광역시/.test(parcel)&&!/특별자치/.test(parcel),r=0;BT.forEach(function(t){if(v>=t[0])r=metro?t[1]:t[2];});
   if(!r)return {r:0,amt:0};var x=v*r/1000,m=Math.floor(x/10000);return {r:r,amt:Math.max((m+(x-m*10000>=5000?1:0))*10000,10000)};}
 function sigaHtml(){var o=OCR.sigaRes;
@@ -1098,7 +1205,7 @@ function sigaGo(){OCR.sigaRes=null;
 function readBuf(fl){return new Promise(function(ok,no){var r=new FileReader();r.onload=function(){ok(r.result);};r.onerror=function(){no(new Error('파일을 읽지 못했습니다.'));};r.readAsArrayBuffer(fl);});}
 function setOcr(o){Object.keys(o).forEach(function(k){OCR[k]=o[k];});render();}
 function isPdf(fl){return /pdf/i.test(fl.type)||/\.pdf$/i.test(fl.name);}
-var PHOTO_MSG='<b>사진·스캔 PDF는 서류 작성 화면에서 읽습니다.</b> 이 시제품은 인터넷등기소 PDF 원본만 바로 읽습니다.<a class="btn line" href="form_classic.html" data-handoff="1">서류 작성 화면에서 읽기</a>';
+var PHOTO_MSG='<b>사진·스캔 PDF는 서류 작성 화면에서 읽습니다.</b> 이 시제품은 인터넷등기소 PDF 원본만 바로 읽습니다.<a class="btn line" href="form_classic.html'+(GIFT?'?type=gift':'')+'" data-handoff="1">서류 작성 화면에서 읽기</a>';
 function readReg(files){
   var list=[].slice.call(files||[]);if(!list.length)return;
   var dx=list.filter(function(fl){return /\.docx$/i.test(fl.name||'')||/wordprocessingml/.test(fl.type||'');})[0];
@@ -1192,17 +1299,17 @@ function courtName(){var p=prop(),c=window.SRCourt&&has(p.jibun)?SRCourt.find(p.
 function blanks(kind,f){
   var it=[],pt=SRDoc.partiesOf(f);
   function add(ok,t,h){if(!ok)it.push([t,h||'']);}
-  it.push(['등기의무자(매도인) 주민등록번호',kind==='wimi'?'잔금일에 매도인이 인감을 날인할 때 직접 적습니다':'잔금일에 매도인 서류를 보고 직접 적습니다']);
-  if(kind==='wimi')it.push(['작성일의 일(day)','잔금 당일 날짜를 적습니다']);
-  else it.push(['등기의무자의 등기필정보 — 일련번호·비밀번호','잔금일에 받은 등기필정보를 보고 적습니다']);
+  it.push(['등기의무자(매도인) 주민등록번호',GIFT?'증여인이 인감을 날인할 때 직접 적습니다':(kind==='wimi'?'잔금일에 매도인이 인감을 날인할 때 직접 적습니다':'잔금일에 매도인 서류를 보고 직접 적습니다')]);
+  if(kind==='wimi')it.push(['작성일의 일(day)',GIFT?'날인하는 날짜를 적습니다':'잔금 당일 날짜를 적습니다']);
+  else it.push(['등기의무자의 등기필정보 — 일련번호·비밀번호',GIFT?'증여인의 등기필정보를 보고 적습니다':'잔금일에 받은 등기필정보를 보고 적습니다']);
   add(has(f.jibun),'부동산의 표시 — 소재지번');add(has(f.ho),'부동산의 표시 — 호');add(has(f.propArea),'부동산의 표시 — 전유면적');add(has(f.total)&&has(f.unit),'대지권의 비율');
   pt.sellerArr.forEach(function(p,i){var w='등기의무자(매도인)'+(pt.sellerArr.length>1?' '+(i+1):'');add(has(p.name),w+' 성명');add(has(p.addr),w+' 주소','초본상 현재 주소');});
   pt.buyerArr.forEach(function(p,i){var w='등기권리자(매수인)'+(pt.buyerArr.length>1?' '+(i+1):'');add(has(p.name),w+' 성명');add(has(p.addr),w+' 주소');
     if(kind==='apply')add(has(p.rrn),w+' 주민등록번호','출력한 뒤 직접 적어도 됩니다');});
   add(has(f.causeYr)&&has(f.causeMo)&&has(f.causeDy),'등기원인과 그 연월일(계약일)');
-  if(kind==='wimi')add(has(f.settleYear)&&has(f.settleMonth),'작성일의 연·월(잔금일)');
+  if(kind==='wimi')add(has(f.settleYear)&&has(f.settleMonth),GIFT?'작성일의 연·월':'작성일의 연·월(잔금일)');
   else{var R=relayFull(f);
-    add(has(f.dealPrice),'거래가액');add(has(f.dealReportNo),'거래신고관리번호');
+    if(!GIFT){add(has(f.dealPrice),'거래가액');add(has(f.dealReportNo),'거래신고관리번호');}
     add(rsum(R.siga)>0,'시가표준액');add(has(R.tax),'취득세');add(rsum(R.bondamt)>0,'국민주택채권 매입금액');add(R.bond.some(has),'국민주택채권 발행번호');
     add(R.fee.every(has),'등기신청수수료 납부번호');add(has(courtName()),'관할 등기소');}
   return it;
@@ -1212,14 +1319,14 @@ function blanks(kind,f){
 var DG=document.getElementById('dg'),dgDone=null;
 function gate(kind,items){
   return new Promise(function(res){
-    dgDone=res;var doc=kind==='wimi'?'위임장':'신청서';
+    dgDone=res;var doc=kind==='wimi'?(GIFT?'증여계약서·위임장':'위임장'):'신청서';
     document.getElementById('dgT').textContent=doc+' 내려받기 전 확인';
-    document.getElementById('dgB').innerHTML=
+    document.getElementById('dgB').innerHTML=W(
       '<label class="ck dg-ck" for="dgC"><input type="checkbox" id="dgC"><span><b>가지고 계신 원본 서류와 미리보기 내용을 대조해, 다른 곳이 없음을 확인했습니다.</b>'
       +'<small>'+(kind==='wimi'?'주소·면적·성명을 등기부·초본과 한 번 더 대조해 주세요.':'부동산 표시·성명·주소는 등기부·초본과, 세액·채권·납부번호는 영수증과 대조해 주세요.')+'</small></span></label>'
       +(items.length?'<p class="ask-q">손으로 적어야 할 칸 '+items.length+'개</p><p class="ask-d">빈칸은 공란으로 인쇄됩니다. 출력한 뒤 직접 적어 제출하세요.</p><ul class="rs">'
         +items.map(function(x){return '<li><i class="no">공란</i><span>'+esc(x[0])+(x[1]?'<small>'+esc(x[1])+'</small>':'')+'</span></li>';}).join('')+'</ul>':'')
-      +'<p class="sm">제출 전 등기기록·관련 서류와 일치하는지 확인할 책임은 이용자에게 있습니다(<a href="terms.html#a7" target="_blank" rel="noopener">이용약관 제7조</a>).</p>';
+      +'<p class="sm">제출 전 등기기록·관련 서류와 일치하는지 확인할 책임은 이용자에게 있습니다(<a href="terms.html#a7" target="_blank" rel="noopener">이용약관 제7조</a>).</p>');
     var ok=document.getElementById('dgOk'),c=document.getElementById('dgC');ok.disabled=true;ok.textContent=doc+' 내려받기';
     c.onchange=function(){ok.disabled=!c.checked;c.closest('.ck').classList.toggle('on',c.checked);};
     DG.hidden=false;document.body.style.overflow='hidden';document.getElementById('dgB').scrollTop=0;c.focus();
@@ -1261,7 +1368,6 @@ async function dlDoc(kind){
   if(demoOn())return toast('예시 상태에서는 내려받지 않습니다. 「이 기기 저장값」으로 바꿔 주세요.');
   if(!window.SRPay||!window.SRDoc||!window.JSZip)return toast('서류 모듈을 불러오지 못했습니다. 새로고침 후 다시 시도해 주세요.',1);
   if(!SRPay.requirePaid()||dlBusy)return;
-  if(S.form&&S.form.dealType==='gift')return toast('증여로 작성 중인 정보입니다. 증여 서류는 서류 작성 화면에서 받습니다.',1);
   syncForm();var f=S.form;
   if(!f)return toast('등기부를 먼저 올려 주세요.',1);
   if(!(await gate(kind,blanks(kind,f))))return track('hub_gate_back',{doc:kind});
@@ -1272,16 +1378,17 @@ async function dlDoc(kind){
     if(kind==='wimi'){
       var out=await SRDoc.wimiFiles(SRDoc.formData(f),window.SRResume?function(zip){return SRResume.embed(zip,resumePayload(f),(SRPay.pass()||{}).token);}:null);
       files=out.files;
-      msg=out.jointBoth?'위임장 '+out.filings+'장을 내려받았습니다. 신청서가 매수인별로 갈려 위임장도 건별로 냅니다.':'위임장을 내려받았습니다. 받은 파일은 보관해 두세요.';
+      if(GIFT){files=[await SRDoc.giftContract(f)].concat(files);msg='증여계약서와 위임장을 내려받았습니다. 받은 파일은 보관해 두세요.';}
+      else msg=out.jointBoth?'위임장 '+out.filings+'장을 내려받았습니다. 신청서가 매수인별로 갈려 위임장도 건별로 냅니다.':'위임장을 내려받았습니다. 받은 파일은 보관해 두세요.';
       if(out.overflow.length)msg='위임인이 4명 이상이라 앞 3명만 인쇄됩니다. 나머지('+out.overflow.join(', ')+')는 손으로 적어 주세요.';
     }else{
-      var ap=await SRDoc.applyFiles(f,relayFull(f),{court:courtName()});
-      files=ap.files;var mk=await SRDoc.mokrokFile(f);if(mk)files.push(mk);
+      var ap=await SRDoc.applyFiles(f,relayFull(f),{gift:GIFT,court:courtName()});
+      files=ap.files;var mk=GIFT?null:await SRDoc.mokrokFile(f);if(mk)files.push(mk);
       msg=ap.jointBoth?'신청서 2건'+(mk?'과 매매목록':'')+'을 내려받았습니다. 매수인별로 나눠 접수합니다(등기예규 제1363호).':'신청서를 내려받았습니다.';
       if(ap.purposeGap)msg='지분이 비어 있어 「등기의 목적」을 공란으로 두었습니다. 지분을 채우고 다시 받거나 직접 적어 주세요.';
     }
     for(var i=0;i<files.length;i++){if(i)await wait(400);blobDL(files[i].blob,files[i].name);}
-    track('doc_download',{doc:kind==='wimi'?'wimijang':'sinchungseo',from:'hub'});
+    track('doc_download',{doc:kind==='wimi'?'wimijang':'sinchungseo',from:'hub',product:GIFT?'gift':'sale'});
     if(kind==='apply'){S.hub.apply=true;saveHub();}
     toast(msg,0,1);render();
     if(kind==='apply'&&window.SRReview&&!demoOn())SRReview.afterDownload(); /* 신청서까지 받은 결제 고객에게만 후기 팝업(로드맵과 같은 review.js) */
@@ -1289,10 +1396,10 @@ async function dlDoc(kind){
   dlBusy=false;
 }
 /* ---------- 이어서 하기 — 재발급 링크 #r= · 받아 둔 위임장(.docx). 서류 작성 화면(nf_resume.js)과 같은 데이터 ---------- */
-var GIFT_URL='form_classic.html?type=gift';
+var GIFT_URL='normal_form.html?type=gift',SALE_URL='normal_form.html',HASH_R='';
 function importPayload(d){
   var r=(d&&d.r)||{},sf=(d&&d.f)||{};
-  if(r.dealType==='gift')return 'gift';
+  if((r.dealType==='gift')!==GIFT)return r.dealType==='gift'?'gift':'sale';
   function fv(id){return sf[id]&&sf[id].v?String(sf[id].v):'';}
   var E=S.hub.edit=S.hub.edit||{};
   [['jibun','jibun'],['apt','aptName'],['dong','dong'],['floor','floor'],['ho','ho'],['struct','propStruct'],['area','propArea'],['uid','propertyUid'],['report','dealReportNo']].forEach(function(p){if(has(r[p[1]]))E[p[0]]=String(r[p[1]]);});
@@ -1302,36 +1409,39 @@ function importPayload(d){
   if(has(r.causeYr)&&has(r.causeMo)&&has(r.causeDy))S.hub.cause=r.causeYr+'-'+('0'+r.causeMo).slice(-2)+'-'+('0'+r.causeDy).slice(-2);
   /* 다른 집의 등기부 판독 결과가 남아 있으면 점검 결과가 섞이지 않게 비운다 */
   if(S.hub.reg&&has(r.jibun)&&S.hub.reg.addr!==r.jibun)S.hub.reg=null;
-  var ex={dealType:'sale'};if(!has(r.settleYear)&&has(fv('settle-year'))){ex.settleYear=fv('settle-year');ex.settleMonth=fv('settle-month');} /* 10/20 이전 파일은 r에 잔금 연·월이 없다 */
+  var ex={dealType:GIFT?'gift':'sale'};if(!has(r.settleYear)&&has(fv('settle-year'))){ex.settleYear=fv('settle-year');ex.settleMonth=fv('settle-month');} /* 10/20 이전 파일은 r에 잔금 연·월이 없다 */
   S.form=Object.assign({},S.form||{},r,ex);S.hub.party=null;partyInit();
   saveHub();return 'ok';
 }
 async function resumeFrom(got,how){
   if(typeof got==='string'){toast(SRResume.MSG[got]||'입력 내용을 읽지 못했습니다.',1,1);track('resume_'+how,{mode:got.toLowerCase(),from:'hub'});return;}
-  if(importPayload(got.d)==='gift'){location.href=GIFT_URL;return;}
+  var im=importPayload(got.d);
+  if(im!=='ok'){if(HASH_R){location.href=(im==='gift'?GIFT_URL:SALE_URL)+'#r='+HASH_R;return;}
+    return toast(im==='gift'?'증여 서류 파일입니다. 증여 화면에서 다시 올려 주세요.':'매매 서류 파일입니다. 매매 화면에서 다시 올려 주세요.',1,1);}
   var paid='';
-  if(got.k&&window.SRPay&&SRPay.redeemToken&&!SRPay.has('sale'))paid=(await SRPay.redeemToken(got.k))?' 결제도 확인되었습니다.':' 결제는 기한(30일)이 지났거나 취소되어 이어받지 못했습니다.';
-  S.pass=!!(window.SRPay&&SRPay.has('sale'));
+  if(got.k&&window.SRPay&&SRPay.redeemToken&&!SRPay.has(GIFT?'gift':'sale'))paid=(await SRPay.redeemToken(got.k))?' 결제도 확인되었습니다.':' 결제는 기한(30일)이 지났거나 취소되어 이어받지 못했습니다.';
+  S.pass=!!(window.SRPay&&SRPay.has(GIFT?'gift':'sale'));
   toast('입력 내용을 불러왔습니다.'+paid+' 주민등록번호는 담기지 않으니 필요하면 다시 입력해 주세요.',0,1);
   track('resume_'+how,{mode:'ok',from:'hub'});render();
 }
 async function resumeDocx(fl){if(!window.SRResume)return toast('파일을 읽을 준비가 되지 않았습니다. 새로고침 후 다시 시도해 주세요.',1);resumeFrom(await SRResume.read(fl),'docx');}
 (function(){var m=location.hash.match(/[#&]r=([A-Za-z0-9_-]+)/);if(!m||!window.SRResume||!SRResume.fromHash)return;
-  try{history.replaceState(null,'',location.pathname+location.search);}catch(e){}
+  HASH_R=m[1];try{history.replaceState(null,'',location.pathname+location.search);}catch(e){}
   SRResume.fromHash(m[1]).then(function(got){resumeFrom(got,'link');});})();
 /* 재발급 링크(?pass=) 안내 — pay.js가 부른다. 증여 이용권이면 증여 서류 화면으로 */
 window.SRRedeemMsg=function(){
   if(addr()||sellerName()||buyerName())return '재발급 링크가 확인되었습니다. 다시 결제하지 않고 서류를 받으실 수 있습니다.';
   return '결제가 확인되었습니다. 이 기기에는 입력 내용이 없습니다. 받아 두신 위임장 파일을 맨 위 등기부 칸에 올리면 입력 내용이 복원됩니다.';
 };
-window.SRSetDeal=function(p){if(p==='gift')location.href=GIFT_URL;};
+window.SRSetDeal=function(p){if((p==='gift')===GIFT)return;var q=location.search.replace(/[?&]type=gift(?=&|$)/,'').replace(/^&/,'?');
+  location.href=p==='gift'?'normal_form.html'+(q?q+'&':'?')+'type=gift':SALE_URL+q;};
 
 window.showToast=function(m,bg){toast(m,/DC2626|B45309/i.test(bg||''),1);}; /* pay.js 안내가 이 화면 알림으로 나온다 */
-window.addEventListener('srpay:change',function(){if(demoOn())return;var was=S.pass;S.pass=!!(window.SRPay&&SRPay.has('sale'));
+window.addEventListener('srpay:change',function(){if(demoOn())return;var was=S.pass;S.pass=!!(window.SRPay&&SRPay.has(GIFT?'gift':'sale'));
   if(S.pass!==was){if(S.pass){OPEN.pass=true;toast('결제가 완료되었습니다. 위임장을 내려받으세요.',0,1);}render();if(S.pass)scrollToEl(document.getElementById('t-pass'));}});
 
 /* ---------- 동작 ---------- */
-function toast(m,err,long){var t=document.getElementById('toast');t.textContent=m;t.classList.toggle('err',!!err);t.classList.add('on');clearTimeout(t._t);
+function toast(m,err,long){var t=document.getElementById('toast');t.textContent=W(m);t.classList.toggle('err',!!err);t.classList.add('on');clearTimeout(t._t);
   t._t=setTimeout(function(){t.classList.remove('on');},long?Math.max(3000,String(m).length*70):2200);}
 function scrollToEl(el){if(el)window.scrollTo({top:el.getBoundingClientRect().top+window.pageYOffset-70,behavior:'smooth'});}
 function goTask(k){OPEN.ph=stepOf(k);if(k==='reg'){render();scrollToEl(document.getElementById('reg'));return;}OPEN[k]=true;render();scrollToEl(document.getElementById('t-'+k));}
@@ -1410,6 +1520,7 @@ function bind(){
     });};
   A.querySelectorAll('[data-stamp="0"]').forEach(function(x){x.onclick=function(){S.fin.stamp=false;if(!demoOn()){var fl=rd(K.flow)||{};fl.fin=fl.fin||{};delete fl.fin.stamp;wr(K.flow,fl);}render();};});
   A.querySelectorAll('[data-stamp="1"]').forEach(function(x){x.onclick=function(){saveFin('stamp');OPEN.stamp=false;toast('저장했습니다');render();};});
+  A.querySelectorAll('[data-unmark]').forEach(function(x){x.onclick=function(){S.hub[x.getAttribute('data-unmark')]=false;saveHub();render();};});
   A.querySelectorAll('[data-mark]').forEach(function(x){x.onclick=function(){var k=x.getAttribute('data-mark');S.hub[k]=true;saveHub();OPEN[k==='rjok'?'rj':k]=false;render();};});
 }
 
