@@ -689,6 +689,42 @@ details.all>.all-b{padding:0 12px 12px}
 @media(max-width:560px){.pl-sit{margin-left:0}.pl-list li{grid-template-columns:1fr;gap:2px}.pl-act .pl-b{flex:1 1 100%}}
 @media print{body *{visibility:hidden}#plan,#plan *{visibility:visible}#plan{position:absolute;left:0;top:0;width:100%}.pl-act,.pl-sit,.pl-f{display:none}}
 </style>
+<style>/* ===== 2026-10-22 taste 크리틱 반영(사용자 선택): 선 상자 → 면, 번호·라벨 배지 없음, 본문 16px, 히어로 사진(아래로 잦아드는 남색 막), 카드별 실제 화면, 등장 움직임 ===== */
+.tm-in{opacity:0;transform:translateY(16px);transition:opacity .5s cubic-bezier(.2,.7,.2,1),transform .5s cubic-bezier(.2,.7,.2,1)}
+.tm-in.tm-on{opacity:1;transform:none}
+button,.btn,a.btn,.sgo,.pl-b{transition:transform .12s ease,background-color .15s ease}
+button:active,.btn:active,.sgo:active,.pl-b:active{transform:scale(.98)}
+@media (prefers-reduced-motion:reduce){.tm-in{opacity:1;transform:none;transition:none}}
+.tb-photo{position:relative;margin:0;overflow:hidden;background:#0F172A}
+.tb-photo img{display:block;width:100%;height:100%;object-fit:cover;animation:tbDrift 24s ease-in-out infinite alternate}
+@keyframes tbDrift{from{transform:scale(1.04)}to{transform:scale(1.12) translateX(-2%)}}
+@media (prefers-reduced-motion:reduce){.tb-photo img{animation:none}}
+.tb-credit{font-size:12px;color:#64748B;margin:6px auto 0}
+
+body{background:#fff;font-size:16px}
+.sec-tag,.sec-label,.sc-n,.mm-n{display:none!important}
+.sc,.pl,.pl-list li,.finish,.vault,details.all{border:0!important;box-shadow:none!important}
+.sc,.pl,details.all{background:#F3F5F8!important;border-radius:16px!important}
+.pl-list li{background:#fff!important;border-radius:12px}
+.chips li{background:#fff!important}
+.sec-title{font-size:clamp(24px,3vw,36px)!important;letter-spacing:-.02em}
+p,.sc-l,.qlead,.sec-sub,.pl-list span:not(.pl-d),.chips li{font-size:16px!important;line-height:1.6}
+.sc-f,.pl-f,.basis{font-size:14px!important}
+html{overflow-x:clip}
+.hero{position:static}
+p.tb-credit{font-size:12px!important;color:#64748B!important}
+#content{position:relative;overflow:hidden}
+.hero .tb-photo{position:absolute;inset:0;z-index:0;opacity:.24;animation:tbIn 1.8s ease-out both}
+.hero .tb-photo::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(15,23,42,.35),rgba(15,23,42,.85))}
+@keyframes tbIn{from{opacity:0}to{opacity:.24}}
+@media (prefers-reduced-motion:reduce){.hero .tb-photo{animation:none}}
+.hero>*:not(.tb-photo){position:relative;z-index:1}
+.hero h1{font-size:clamp(34px,5.4vw,72px)!important;line-height:1.06;letter-spacing:-.03em}
+.sc{display:grid;gap:0 24px}
+.sc .tb-shot{margin:14px 0 0;border-radius:12px;overflow:hidden;background:#fff}
+.sc .tb-shot img{display:block;width:100%;height:220px;object-fit:cover;object-position:top}
+@media(min-width:900px){.sc{grid-template-columns:1fr 340px}.sc>*{grid-column:1}.sc .tb-shot{grid-column:2;grid-row:1/span 8;margin:0}.sc .tb-shot img{height:100%;min-height:240px}}
+</style>
 </head>
 <body>
 
@@ -718,6 +754,7 @@ details.all>.all-b{padding:0 12px 12px}
 <main>
 <header id="content">
   <div class="hero">
+    <figure class="tb-photo" aria-hidden="true"><img src="assets/wide-view-of-nowon-gu-apartment-buildings.jpg" alt=""></figure>
     <h1>셀프등기는 <em>네 단계</em>,<br>등기소 방문은 한&nbsp;번입니다</h1>
     <p class="hero-sub">01~02는 잔금 전에 온라인으로 끝내고, 03은 잔금일, 04만 등기소에 갑니다.</p>
     <ol class="map-mini" aria-label="셀프등기 네 단계">
@@ -743,6 +780,7 @@ details.all>.all-b{padding:0 12px 12px}
 
   <div class="cards">
     <section class="sc" id="card-1" aria-labelledby="card-1-t">
+      <figure class="tb-shot"><img src="gover24_1.webp" alt="정부24 증명서 발급 화면" loading="lazy"></figure>
       <div class="sc-h"><span class="sc-n">1</span><h3 class="sc-t" id="card-1-t">서류 준비</h3><span class="sc-w">잔금 전</span></div>
       <p class="sc-l">매수인 증명서 4가지를 정부24에서 무료로 발급합니다.</p>
       <ul class="chips"><li class="w">주민등록등본 · 주민번호 뒷자리 포함</li><li>토지대장</li><li>건축물대장(집합·전유부)</li><li>가족관계증명서</li></ul>
@@ -750,6 +788,7 @@ details.all>.all-b{padding:0 12px 12px}
       <a class="sc-a" href="normal_form.html#s=1">등기부 올리고 시작하기 →</a>
     </section>
     <section class="sc" id="card-2" aria-labelledby="card-2-t">
+      <figure class="tb-shot"><img src="gigum_1.webp" alt="국민주택채권 매입 화면" loading="lazy"></figure>
       <div class="sc-h"><span class="sc-n">2</span><h3 class="sc-t" id="card-2-t">세금·채권 납부</h3><span class="sc-w">잔금 전</span></div>
       <p class="sc-l">네 가지를 온라인으로 내고, 받은 번호를 적어 둡니다.</p>
       <p class="sc-warn"><b>취득세는 등기 접수 전까지</b> 납부를 마쳐야 합니다(납부확인서를 신청서에 첨부).</p>
@@ -762,6 +801,7 @@ details.all>.all-b{padding:0 12px 12px}
       <p class="sc-f">받은 번호는 아래 번호 보관함이나 <a href="normal_form.html#s=2">내 셀프등기</a>에 적으면 신청서에 자동으로 채워집니다.</p>
     </section>
     <section class="sc" id="card-3" aria-labelledby="card-3-t">
+      <figure class="tb-shot"><img src="sample_wimi.png" alt="위임장 견본(가상 인물)" loading="lazy"></figure>
       <div class="sc-h"><span class="sc-n">3</span><h3 class="sc-t" id="card-3-t">잔금일 위임장 날인·서류 받기</h3><span class="sc-w">잔금일</span></div>
       <p class="sc-l">미리 출력한 위임장에 매도인 인감을 받고, 세 가지 서류를 받습니다.</p>
       <ul class="chips"><li>매도용 인감증명서</li><li class="w">주민등록초본 · 주소 이력 전체</li><li>등기필정보 원본</li></ul>
@@ -769,6 +809,7 @@ details.all>.all-b{padding:0 12px 12px}
       <a class="sc-a" href="normal_form.html#s=4">위임장 받으러 가기 →</a>
     </section>
     <section class="sc" id="card-4" aria-labelledby="card-4-t">
+      <figure class="tb-shot"><img src="app_form_p1.webp" alt="소유권이전등기 신청서 1면" loading="lazy"></figure>
       <div class="sc-h"><span class="sc-n">4</span><h3 class="sc-t" id="card-4-t">신청서·등기소 접수</h3><span class="sc-w">등기소</span></div>
       <p class="sc-l">신청서를 자동완성해 출력하고, 관할 등기소에 한 번 제출합니다.</p>
       <button type="button" class="sgo" onclick="openShot('app',0)">신청서 견본 보기<small>2장</small></button>
@@ -1018,6 +1059,7 @@ details.all>.all-b{padding:0 12px 12px}
     </div>
   </div>
 </div>
+<p class="section tb-credit" style="padding-top:24px">사진: 「Wide view of Nowon-gu Apartment buildings」, Wikimedia Commons, CC BY-SA 4.0 · 화면 캡처: 정부24·주택도시기금, 견본은 가상 인물</p>
 </main>
 
 <footer>
@@ -1620,6 +1662,17 @@ window.SR=window.SR||(function(){
     var a=document.createElement('a');a.href=URL.createObjectURL(new Blob([L.join('\r\n')],{type:'text/calendar'}));a.download='셀프등기_일정.ics';document.body.appendChild(a);a.click();
     setTimeout(function(){URL.revokeObjectURL(a.href);a.remove();},300);
     try{window.SR&&SR.track('guide_plan',{key:'ics'});}catch(e){}});
+})();
+</script>
+<script>window.TM_TARGETS=".sc,.pl-list li,.sec-title,.qlead,.rin,details.all";</script>
+<script>
+/* 시안 움직임: 화면에 들어오는 블록이 16px 떠오르며 나타난다(한 번). 줄인 움직임 설정이면 움직이지 않는다 */
+(function(){
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('tm-on');io.unobserve(e.target);}});},{rootMargin:'0px 0px -8% 0px'});
+  function scan(root){(root||document).querySelectorAll(window.TM_TARGETS).forEach(function(el,i){if(el.classList.contains('tm-in'))return;el.classList.add('tm-in');el.style.transitionDelay=(i%4)*70+'ms';io.observe(el);});}
+  scan();
+  var app=document.getElementById('app');if(app)new MutationObserver(function(){scan(app);}).observe(app,{childList:true,subtree:true});
 })();
 </script>
 </body>
