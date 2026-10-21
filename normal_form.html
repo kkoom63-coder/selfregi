@@ -295,6 +295,8 @@ p.sm,.sm{font-size:12.5px;color:var(--muted);margin:10px 0 0}
 .ocr.mini .dz-ic{width:28px;height:34px;margin-bottom:6px}
 .ocr.mini .slot-t{font-size:15px;margin-bottom:2px}
 .ocr.mini .sub{margin-bottom:10px}
+.rv-pub{margin:10px 0 0;font-size:13px;color:var(--sub)}
+.rv-st{color:#B45309;font-weight:700}
 .sg-box{background:var(--info-bg);border:1px solid var(--info-bd);color:var(--info-tx);border-radius:10px;padding:10px 12px;margin:8px 0 0}
 .sg-box p{margin:0;font-size:14.5px}
 .sg-box b{font-weight:700}
@@ -456,6 +458,7 @@ window.SR=window.SR||(function(){
 <script src="docgen.js"></script>
 <script src="resume.js"></script>
 <script src="pay.js"></script>
+<script src="review.js"></script>
 <script src="regparse.js"></script>
 <script src="guide_shots.js"></script>
 <script src="court.js"></script>
@@ -983,6 +986,11 @@ var PAYTX={
   efee:'잔금 1~2주 전에 미리 내 두면 당일이 가벼워집니다.',
   wetax:'잔금일 당일 위택스로 내거나, 잔금 전 구청 세무과를 방문해 미리 신고·납부할 수 있습니다. 등기에는 <b>납부확인서</b>를 씁니다.'
 };
+/* 결제 확인 후기 중 「공개 동의」한 것만 원문 그대로 적는다(Firestore reviews, status:test 제외). 가짜·각색 금지 — copy.md */
+var PUB_REVIEWS=[];
+function reviewLine(){var n=PUB_REVIEWS.length;if(!n)return '';
+  var avg=PUB_REVIEWS.reduce(function(a,r){return a+r.r;},0)/n,r=PUB_REVIEWS[0];
+  return '<p class="rv-pub"><span class="rv-st">★ '+avg.toFixed(1)+'</span> 결제 이용자 후기 '+n+'건 — “'+esc(r.t)+'”</p>';}
 function shotN(key){var s=shotOf(key);return s?s.steps.length:0;}
 function shotBtn(k,primary){var key=T[k].shot;if(!shotN(key))return '';
   return '<button type="button" class="btn'+(primary?'':' line')+'" data-shot="'+key+'">'+(SHOT_LB[k]||'화면 가이드 보기')+'</button>';}
@@ -1021,7 +1029,7 @@ function panel(k,d){
         +(ru?'<p class="sm">재발급 링크: <a href="'+esc(ru)+'" style="word-break:break-all">'+esc(ru.replace(/^https?:\/\//,'').slice(0,40))+'…</a> — 다른 기기에서도 다시 받을 수 있습니다.</p>':'')+shotBtn('pass');}
     return '<div class="pay-p"><b>9,900원</b><span>부동산 1건 · 부가세 포함</span></div>'
       +'<p class="pay-d">위임장 · 소유권이전등기신청서 · 매매목록(해당 시)</p>'
-      +'<button type="button" class="btn" data-pay="1">9,900원 결제하고 서류 받기</button>'
+      +'<button type="button" class="btn" data-pay="1">9,900원 결제하고 서류 받기</button>'+reviewLine()
       +'<p class="sm">토스페이 · 네이버페이 · 잔금 전날까지 출력해 잔금일에 매도인 인감 날인을 받으세요.</p>'
       +'<details class="svc"><summary>서비스 제공 방식과 시점</summary><dl>'
       +'<dt>제공 방식</dt><dd>브라우저에서 Word(.docx) 파일로 내려받습니다. 별도 배송이나 승인 대기가 없습니다.</dd>'
@@ -1039,7 +1047,7 @@ function panel(k,d){
     var w2=blocked('apply');
     var mk=window.SRDoc&&S.form&&SRDoc.mokrokNeeded(S.form);
     return '<p>위임장에 쓴 정보와 납부 번호가 들어간 신청서를 Word 파일로 받습니다.'+(mk?' 매도인·매수인이 모두 2인이라 신청서 2건과 매매목록을 함께 받습니다.':'')+'</p>'
-      +(w2?'<div class="warn">'+(!S.pass?'위임장 결제 후 받을 수 있습니다.':'납부 번호를 모두 적으면 받을 수 있습니다 · '+payLeftFor()+'건 남음')+'</div>':'<button type="button" class="btn" data-dl="apply">신청서 Word 파일 다운로드</button>')
+      +(w2?'<div class="warn">'+(!S.pass?'위임장 결제 후 받을 수 있습니다.':'납부 번호를 모두 적으면 받을 수 있습니다 · '+payLeftFor()+'건 남음')+'</div>':'<button type="button" class="btn" data-dl="apply">신청서 Word 파일 다운로드</button><div class="rv-slot" hidden></div>')
       +shotBtn('apply');
   case 'rj':
     return regScan()
@@ -1265,6 +1273,7 @@ async function dlDoc(kind){
     track('doc_download',{doc:kind==='wimi'?'wimijang':'sinchungseo',from:'hub'});
     if(kind==='apply'){S.hub.apply=true;saveHub();}
     toast(msg,0,1);render();
+    if(kind==='apply'&&window.SRReview&&!demoOn())SRReview.afterDownload(); /* 신청서까지 받은 결제 고객에게만 후기 팝업(로드맵과 같은 review.js) */
   }catch(e){toast('서류를 만들지 못했습니다 — '+(e&&e.message||e),1);}
   dlBusy=false;
 }
