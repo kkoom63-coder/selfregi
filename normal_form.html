@@ -295,8 +295,11 @@ p.sm,.sm{font-size:12.5px;color:var(--muted);margin:10px 0 0}
 .ocr.mini .dz-ic{width:28px;height:34px;margin-bottom:6px}
 .ocr.mini .slot-t{font-size:15px;margin-bottom:2px}
 .ocr.mini .sub{margin-bottom:10px}
-.rvl{display:block;margin:10px 0 0;padding:10px 12px;border:1px solid var(--border);border-radius:10px;background:var(--bg);font-size:13px;color:var(--sub)}
-.rvl q{display:block;margin-top:4px;color:var(--text);quotes:"“" "”"}
+.rvl{margin:12px 0 0;padding:14px 16px;border:1px solid var(--border);border-radius:var(--radius);background:var(--card)}
+.rvl h3{margin:0 0 8px;font-size:14.5px;font-weight:700;color:var(--navy)}
+.rvl h3 small{font-size:12.5px;font-weight:400;color:var(--muted)}
+.rvl p{margin:0;font-size:13.5px;color:var(--sub)}
+.rvl q{color:var(--text);quotes:"“" "”"}
 .rvl-st{color:#B45309;font-weight:700}
 .sg-box{background:var(--info-bg);border:1px solid var(--info-bd);color:var(--info-tx);border-radius:10px;padding:10px 12px;margin:8px 0 0}
 .sg-box p{margin:0;font-size:14.5px}
@@ -777,7 +780,7 @@ var CUR=1,VIEW=1;
 function render(){
   var nk=nowKey(),pv=pvBody(reg());CUR=curStep(nk);VIEW=OPEN.ph||CUR;
   var html=homeCard()+'<div class="hgrid"><div class="stage">'+stageHtml(VIEW)
-    +'<p class="disc">세액·채권 금액은 각 기관 영수증 기준이며, 최종 확인은 관할 등기소에서 하세요.</p></div>'
+    +'<p class="disc">세액·채권 금액은 각 기관 영수증 기준이며, 최종 확인은 관할 등기소에서 하세요.</p>'+reviewLine()+'</div>'
     +'<aside class="pvp'+(OPEN.pvp?' open':'')+'" aria-label="문서 반영 미리보기">'
     +'<div class="pvp-bar"><b>문서 반영 미리보기</b><span>채운 칸 '+pv.ok+' · 남은 칸 '+pv.left+'</span><button type="button" data-pvp="1">보기</button></div>'
     +'<div class="pvp-c"><div class="pvp-h"><h2>문서 반영 미리보기</h2><button type="button" class="pvp-x" data-pvp="0">닫기</button></div>'+pv.html
@@ -993,7 +996,8 @@ var PUB_REVIEWS=[
 ];
 function reviewLine(){var n=PUB_REVIEWS.length;if(!n)return '';
   var avg=PUB_REVIEWS.reduce(function(a,r){return a+r.r;},0)/n,r=PUB_REVIEWS[0];
-  return '<p class="rvl"><span class="rvl-st">★ '+avg.toFixed(1)+'</span> · 결제 이용자 후기 '+n+'건<q>'+esc(r.t)+'</q></p>';}
+  return '<section class="rvl" aria-label="실사용자 후기"><h3>실사용자 후기 <span class="rvl-st">★ '+avg.toFixed(1)+'</span> <small>결제 이용자 '+n+'건</small></h3>'
+    +PUB_REVIEWS.map(function(x){return '<p>익명 — <q>'+esc(x.t)+'</q></p>';}).join('')+'</section>';}
 function shotN(key){var s=shotOf(key);return s?s.steps.length:0;}
 function shotBtn(k,primary){var key=T[k].shot;if(!shotN(key))return '';
   return '<button type="button" class="btn'+(primary?'':' line')+'" data-shot="'+key+'">'+(SHOT_LB[k]||'화면 가이드 보기')+'</button>';}
@@ -1032,7 +1036,7 @@ function panel(k,d){
         +(ru?'<p class="sm">재발급 링크: <a href="'+esc(ru)+'" style="word-break:break-all">'+esc(ru.replace(/^https?:\/\//,'').slice(0,40))+'…</a> — 다른 기기에서도 다시 받을 수 있습니다.</p>':'')+shotBtn('pass');}
     return '<div class="pay-p"><b>9,900원</b><span>부동산 1건 · 부가세 포함</span></div>'
       +'<p class="pay-d">위임장 · 소유권이전등기신청서 · 매매목록(해당 시)</p>'
-      +'<button type="button" class="btn" data-pay="1">9,900원 결제하고 서류 받기</button>'+reviewLine()
+      +'<button type="button" class="btn" data-pay="1">9,900원 결제하고 서류 받기</button>'
       +'<p class="sm">토스페이 · 네이버페이 · 잔금 전날까지 출력해 잔금일에 매도인 인감 날인을 받으세요.</p>'
       +'<details class="svc"><summary>서비스 제공 방식과 시점</summary><dl>'
       +'<dt>제공 방식</dt><dd>브라우저에서 Word(.docx) 파일로 내려받습니다. 별도 배송이나 승인 대기가 없습니다.</dd>'
