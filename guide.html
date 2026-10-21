@@ -636,6 +636,58 @@ details.txt li .tip em{font-style:normal;font-weight:800;margin-right:6px}
 #what{max-width:1160px;margin-left:auto;margin-right:auto}
 .qlead{max-width:none}
 </style>
+<style>
+.cards{display:flex;flex-direction:column;gap:14px;margin-top:18px}
+.sc{background:#fff;border:1px solid var(--border);border-radius:12px;padding:18px 18px 16px;scroll-margin-top:110px}
+.sc-h{display:flex;align-items:center;gap:10px}
+.sc-n{flex:none;width:32px;height:32px;border-radius:8px;background:var(--navy);color:#fff;display:grid;place-items:center;font-size:15px;font-weight:800}
+.sc-t{margin:0;font-size:17px;font-weight:700;color:var(--navy);line-height:1.35}
+.sc-w{margin-left:auto;flex:none;font-size:12px;font-weight:700;color:var(--blue);background:#E0F2FE;border-radius:999px;padding:3px 9px}
+.sc-l{margin:10px 0 0;font-size:14.5px;line-height:1.6;color:#334155}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 0;padding:0;list-style:none}
+.chips li{font-size:13.5px;font-weight:600;color:var(--navy);background:#F1F5F9;border-radius:6px;padding:5px 9px}
+.chips li.w{background:#FFF7ED;color:#9A3412;border:1px solid #FED7AA}
+.sc-warn{margin:10px 0 0;padding:9px 12px;border-radius:8px;background:#FFF7ED;border:1px solid #FED7AA;font-size:13.5px;line-height:1.55;color:#7C2D12}
+.sgo{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;margin-top:12px;padding:13px 14px;border:0;border-radius:10px;background:var(--navy);color:#fff;font-family:inherit;font-size:15px;font-weight:700;text-align:left;cursor:pointer}
+.sgo small{font-size:12.5px;font-weight:600;color:#BAE6FD;white-space:nowrap}
+.sgo:focus-visible{outline:3px solid #7DD3FC;outline-offset:2px}
+.golist{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+.golist .sgo{margin-top:0;background:#fff;color:var(--navy);border:1px solid var(--border)}
+.golist .sgo small{color:var(--blue)}
+.sc-a{display:inline-block;margin-top:10px;font-size:14px;font-weight:700;color:var(--blue)}
+.sc-f{margin:10px 0 0;font-size:12.5px;color:var(--muted)}
+details.all{margin-top:22px;border:1px solid var(--border);border-radius:12px;background:#fff}
+details.all>summary{cursor:pointer;padding:14px 18px;font-size:14.5px;font-weight:700;color:var(--blue);list-style:none}
+details.all>summary::after{content:" ▾"}
+details.all[open]>summary::after{content:" ▴"}
+details.all>.all-b{padding:0 12px 12px}
+</style>
+<style>
+/* 내 일정 */
+.pl{background:#fff;border:1px solid var(--border);border-radius:12px;padding:18px}
+.pl-top{display:flex;flex-wrap:wrap;align-items:center;gap:10px 12px}
+.pl-lab{font-size:14px;font-weight:700;color:var(--navy)}
+#pl-in{height:44px;padding:0 12px;border:1px solid var(--border);border-radius:10px;font:inherit;font-size:15px;color:var(--navy);background:#fff}
+.pl-sit{display:flex;flex-wrap:wrap;gap:6px;margin-left:auto}
+.pl-c{height:36px;padding:0 12px;border:1px solid var(--border);border-radius:999px;background:#fff;font:inherit;font-size:13.5px;font-weight:600;color:#334155;cursor:pointer}
+.pl-c[aria-pressed="true"]{background:var(--navy);border-color:var(--navy);color:#fff}
+.pl-w{margin:12px 0 0;padding:10px 12px;border-radius:8px;background:#FFF7ED;border:1px solid #FED7AA;font-size:13.5px;line-height:1.6;color:#7C2D12}
+.pl-w a{color:#9A3412;font-weight:700}
+.pl-list{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:8px}
+.pl-list li{display:grid;grid-template-columns:112px 1fr;gap:12px;align-items:start;padding:10px 12px;border:1px solid var(--border);border-radius:10px}
+.pl-list li[data-off="0"]{border-color:var(--blue);background:#F0F9FF}
+.pl-list li[data-off="60"]{background:#F8FAFC}
+.pl-d{font-size:13px;font-weight:800;color:var(--blue);line-height:1.5}
+.pl-list b{display:block;font-size:14.5px;color:var(--navy)}
+.pl-list span:not(.pl-d){display:block;font-size:13.5px;color:#475569;line-height:1.6}
+.pl-list li.past{opacity:.55}
+.pl-act{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.pl-b{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 16px;border:1px solid var(--border);border-radius:10px;background:#fff;font:inherit;font-size:14px;font-weight:700;color:var(--navy);text-decoration:none;cursor:pointer}
+.pl-b.pri{background:var(--blue);border-color:var(--blue);color:#fff}
+.pl-f{margin:10px 0 0;font-size:12.5px;color:var(--muted)}
+@media(max-width:560px){.pl-sit{margin-left:0}.pl-list li{grid-template-columns:1fr;gap:2px}.pl-act .pl-b{flex:1 1 100%}}
+@media print{body *{visibility:hidden}#plan,#plan *{visibility:visible}#plan{position:absolute;left:0;top:0;width:100%}.pl-act,.pl-sit,.pl-f{display:none}}
+</style>
 </head>
 <body>
 
@@ -653,10 +705,11 @@ details.txt li .tip em{font-style:normal;font-weight:800;margin-right:6px}
   </div>
 </nav>
 <div class="secbar" id="secbar" role="navigation" aria-label="가이드 단계 바로가기" aria-hidden="true"><div class="secbar-inner">
-  <a href="#step-1" class="secbar-a"><span class="n">1</span>서류 준비</a>
-  <a href="#step-2" class="secbar-a"><span class="n">2</span>세금·채권</a>
-  <a href="#step-3" class="secbar-a"><span class="n">3</span>서류 작성</a>
-  <a href="#step-4" class="secbar-a"><span class="n">4</span>등기소 접수</a>
+  <a href="#card-1" class="secbar-a"><span class="n">1</span>서류 준비</a>
+  <a href="#card-2" class="secbar-a"><span class="n">2</span>세금·채권</a>
+  <a href="#card-3" class="secbar-a"><span class="n">3</span>잔금일</a>
+  <a href="#card-4" class="secbar-a"><span class="n">4</span>신청서·접수</a>
+  <a href="#plan" class="secbar-a">내 일정</a>
   <span class="secbar-gap"></span>
   <a href="#vault-sec" class="secbar-a aux">번호 보관함</a>
 </div></div>
@@ -665,12 +718,12 @@ details.txt li .tip em{font-style:normal;font-weight:800;margin-right:6px}
 <header id="content">
   <div class="hero">
     <h1>셀프등기는 <em>네 단계</em>,<br>등기소 방문은 한&nbsp;번입니다</h1>
-    <p class="hero-sub">01~03은 집에서 온라인으로 끝내고, 04만 등기소에 갑니다.</p>
+    <p class="hero-sub">01~02는 잔금 전에 온라인으로 끝내고, 03은 잔금일, 04만 등기소에 갑니다.</p>
     <ol class="map-mini" aria-label="셀프등기 네 단계">
-      <li><a href="#step-1"><span class="mm-n">01</span><b class="mm-t">서류 준비</b><small class="mm-c">정부24 · 인터넷등기소</small></a></li>
-      <li><a href="#step-2"><span class="mm-n">02</span><b class="mm-t">세금·채권 납부</b><small class="mm-c">위택스 · 은행</small></a></li>
-      <li><a href="#step-3"><span class="mm-n">03</span><b class="mm-t">서류 작성</b><small class="mm-c">셀프등기24 자동완성</small></a></li>
-      <li><a href="#step-4"><span class="mm-n">04</span><b class="mm-t">등기소 접수</b><small class="mm-c">관할 등기소 방문</small></a></li>
+      <li><a href="#card-1"><span class="mm-n">01</span><b class="mm-t">서류 준비</b><small class="mm-c">잔금 전 · 정부24</small></a></li>
+      <li><a href="#card-2"><span class="mm-n">02</span><b class="mm-t">세금·채권 납부</b><small class="mm-c">잔금 전 · 위택스 · 은행</small></a></li>
+      <li><a href="#card-3"><span class="mm-n">03</span><b class="mm-t">잔금일 위임장 날인</b><small class="mm-c">매도인 서류 받기</small></a></li>
+      <li><a href="#card-4"><span class="mm-n">04</span><b class="mm-t">신청서·등기소 접수</b><small class="mm-c">관할 등기소 방문</small></a></li>
     </ol>
   </div>
 </header>
@@ -685,9 +738,46 @@ details.txt li .tip em{font-style:normal;font-weight:800;margin-right:6px}
 <div class="section" id="flow">
   <span class="sec-tag">진행 순서</span>
   <h2 class="sec-title">무엇부터 하나요? 네 단계를 순서대로 하면 됩니다</h2>
-  <p class="qlead">서류는 단계마다 필요한 것만 준비합니다. 매수인 서류는 1단계에서 발급받고, 매도인 서류는 3단계 잔금일에 받습니다.</p>
+  <p class="qlead">서류는 단계마다 필요한 것만 준비합니다. 1·2단계는 잔금 전에 미리 하고, 매도인 서류는 3단계 잔금일에 받습니다.</p>
 
-  <section class="stp" id="step-1" aria-labelledby="step-1-t">
+  <div class="cards">
+    <section class="sc" id="card-1" aria-labelledby="card-1-t">
+      <div class="sc-h"><span class="sc-n">1</span><h3 class="sc-t" id="card-1-t">서류 준비</h3><span class="sc-w">잔금 전</span></div>
+      <p class="sc-l">매수인 증명서 4가지를 정부24에서 무료로 발급합니다.</p>
+      <ul class="chips"><li class="w">주민등록등본 · 주민번호 뒷자리 포함</li><li>토지대장</li><li>건축물대장(집합·전유부)</li><li>가족관계증명서</li></ul>
+      <button type="button" class="sgo" onclick="openShot('gov24',0)">화면 보며 따라 하기<small>정부24 · 8장</small></button>
+      <a class="sc-a" href="normal_form.html#s=1">등기부 올리고 시작하기 →</a>
+    </section>
+    <section class="sc" id="card-2" aria-labelledby="card-2-t">
+      <div class="sc-h"><span class="sc-n">2</span><h3 class="sc-t" id="card-2-t">세금·채권 납부</h3><span class="sc-w">잔금 전</span></div>
+      <p class="sc-l">네 가지를 온라인으로 내고, 받은 번호를 적어 둡니다.</p>
+      <p class="sc-warn"><b>취득세는 등기 접수 전까지</b> 납부를 마쳐야 합니다(납부확인서를 신청서에 첨부).</p>
+      <div class="golist">
+        <button type="button" class="sgo" onclick="openShot('wetax',0)">취득세 신고·납부<small>위택스 · 14장</small></button>
+        <button type="button" class="sgo" onclick="openShot('bondonline',0)">국민주택채권 매입<small>은행 · 10장</small></button>
+        <button type="button" class="sgo" onclick="openShot('stamp',0)">전자수입인지 구매<small>8장</small></button>
+        <button type="button" class="sgo" onclick="openShot('efee',0)">등기신청수수료 납부<small>인터넷등기소 · 8장</small></button>
+      </div>
+      <p class="sc-f">받은 번호는 아래 번호 보관함이나 <a href="normal_form.html#s=2">내 셀프등기</a>에 적으면 신청서에 자동으로 채워집니다.</p>
+    </section>
+    <section class="sc" id="card-3" aria-labelledby="card-3-t">
+      <div class="sc-h"><span class="sc-n">3</span><h3 class="sc-t" id="card-3-t">잔금일 위임장 날인·서류 받기</h3><span class="sc-w">잔금일</span></div>
+      <p class="sc-l">미리 출력한 위임장에 매도인 인감을 받고, 세 가지 서류를 받습니다.</p>
+      <ul class="chips"><li>매도용 인감증명서</li><li class="w">주민등록초본 · 주소 이력 전체</li><li>등기필정보 원본</li></ul>
+      <button type="button" class="sgo" onclick="openShot('seal',0)">날인 위치 보기<small>1장</small></button>
+      <a class="sc-a" href="normal_form.html#s=4">위임장 받으러 가기 →</a>
+    </section>
+    <section class="sc" id="card-4" aria-labelledby="card-4-t">
+      <div class="sc-h"><span class="sc-n">4</span><h3 class="sc-t" id="card-4-t">신청서·등기소 접수</h3><span class="sc-w">등기소</span></div>
+      <p class="sc-l">신청서를 자동완성해 출력하고, 관할 등기소에 한 번 제출합니다.</p>
+      <button type="button" class="sgo" onclick="openShot('app',0)">신청서 견본 보기<small>2장</small></button>
+      <a class="sc-a" href="normal_form.html#s=6">신청서 받으러 가기 →</a>
+    </section>
+  </div>
+  <details class="all">
+    <summary>단계별 설명 전체를 글로 읽기</summary>
+    <div class="all-b">
+<section class="stp" id="step-1" aria-labelledby="step-1-t">
     <div class="stp-n">1</div>
     <div class="stp-head"><h3 class="stp-t" id="step-1-t">서류 준비하기</h3></div><div class="stp-where"><span>정부24</span><span>인터넷등기소</span><span>계약 서류</span><span>무료</span></div>
     <div class="stp-b">
@@ -726,7 +816,7 @@ details.txt li .tip em{font-style:normal;font-weight:800;margin-right:6px}
     <div class="stp-n">2</div>
     <div class="stp-head"><h3 class="stp-t" id="step-2-t">세금·채권 납부하기</h3></div><div class="stp-where"><span>위택스</span><span>은행</span><span>전자수입인지</span><span>인터넷등기소</span></div>
     <div class="stp-b">
-    <p class="stp-lead">취득세, 국민주택채권, 인지세, 등기신청수수료를 온라인으로 냅니다. 받은 번호는 아래 <a href="#vault-sec">번호 보관함</a>에 저장하면 신청서에 자동으로 채워집니다. 예상 취득세는 <a href="calculator.html">취득세 계산기</a>에서 확인하세요.</p>
+    <p class="stp-lead">취득세, 국민주택채권, 인지세, 등기신청수수료를 온라인으로 냅니다. 채권·인지·수수료는 잔금 전에 미리 낼 수 있습니다. 받은 번호는 아래 <a href="#vault-sec">번호 보관함</a>에 저장하면 신청서에 자동으로 채워집니다. 예상 취득세는 <a href="calculator.html">취득세 계산기</a>에서 확인하세요.</p>
     <p class="stp-flow" style="margin:10px 0 0"><a href="guide_flow.html" style="font-weight:700">한 화면씩 따라 하기 →</a> <span style="color:#64748B;font-size:13.5px">이미 낸 것은 건너뛰고 번호만 적습니다</span></p>
     <div class="dl-note">
       <b>취득세는 등기 접수 전에 납부가 끝나 있어야 합니다</b>
@@ -801,9 +891,9 @@ details.txt li .tip em{font-style:normal;font-weight:800;margin-right:6px}
 
   <section class="stp us" id="step-3" aria-labelledby="step-3-t">
     <div class="stp-n">3</div>
-    <div class="stp-head"><h3 class="stp-t" id="step-3-t">위임장·신청서 작성하기</h3></div><div class="stp-where"><span>셀프등기24</span><span>잔금일 매도인 서류 확인</span></div>
+    <div class="stp-head"><h3 class="stp-t" id="step-3-t">잔금일에 위임장 날인·서류 받기</h3></div><div class="stp-where"><span>셀프등기24 위임장</span><span>잔금일 매도인 서류 확인</span></div>
     <div class="stp-b">
-    <p class="stp-lead">등기부와 저장한 번호로 위임장·신청서를 자동완성합니다. 위임장은 잔금일 전에 출력해 두고, <b>잔금일에 매도인에게 받을 서류</b>를 그 자리에서 확인하세요.</p>
+    <p class="stp-lead">위임장은 잔금 전에 셀프등기24에서 출력해 두고, 잔금일에 매도인 인감을 받습니다. <b>매도인에게 받을 서류</b>는 그 자리에서 확인하세요.</p>
     <div class="stp-box">
       <h4>잔금일에 매도인에게 받는 것</h4>
       <div class="pitem"><div><b>매도용 인감증명서</b><small>매수인 성명·주민번호·주소가 기재된 '매도용'인지, 인감도장과 일치하는지 확인</small></div></div>
@@ -814,32 +904,73 @@ details.txt li .tip em{font-style:normal;font-weight:800;margin-right:6px}
     <div class="dl-note info"><b>등본과 초본, 왜 다를까요?</b><p>매수인은 현재 주소만 증명하면 되어 <b>등본(주민번호 뒷자리 포함)</b>이면 충분하고, 매도인은 등기부의 옛 주소와 현재 주소가 이어짐을 보여야 해서 <b>초본(주소 변동 이력 전체)</b>이 필요합니다.</p></div>
     <div class="shots" id="shots-3"></div>
     <details class="txt">
-      <summary>화면 설명을 글로 보기 · 3단계</summary>
+      <summary>화면 설명을 글로 보기 · 1단계</summary>
       <h4>위임장 도장 날인 위치</h4>
       <ol>
         <li><b class="tt">날인 위치 확인</b><span class="tb">빨간 박스 위치(매도인·매수인 각 칸)에 인감 도장을 선명하게 찍으세요. 도장이 깨지거나 인감증명서 도장과 다르면 반려될 수 있습니다.</span></li>
       </ol>
+    </details>
+    <a href="normal_form.html" class="stp-cta">위임장 작성하기 →</a>
+    </div>
+  </section>
+
+  <section class="stp" id="step-4" aria-labelledby="step-4-t">
+    <div class="stp-n">4</div>
+    <div class="stp-head"><h3 class="stp-t" id="step-4-t">신청서 작성·등기소 접수하기</h3></div><div class="stp-where"><span>셀프등기24 신청서</span><span>관할 등기소 방문</span></div>
+    <div class="stp-b">
+    <p class="stp-lead">납부한 번호로 신청서를 자동완성해 출력하고, 준비한 서류를 관할 등기소에 한 번에 제출하면 마무리됩니다. 신분증과 도장을 챙기세요.</p>
+    <div class="shots" id="shots-4"></div>
+    <details class="txt">
+      <summary>화면 설명을 글로 보기 · 2단계</summary>
       <h4>소유권이전등기 신청서 — 이렇게 생겼습니다</h4>
       <ol>
         <li><b class="tt">신청서 1면 — 부동산 표시·당사자·세액</b><span class="tb">맨 위 '부동산의 표시'는 등기부 표제부와 글자·숫자까지 같아야 하고, 이어서 등기원인(매매·계약일)·등기목적(소유권이전)·이전할 지분, 등기의무자(매도인)/등기권리자(매수인)의 성명·주민등록번호·주소, 그리고 부동산별 시가표준액·국민주택채권 매입금액을 차례로 적습니다. 칸이 많고 하나만 어긋나도 보정 대상이 됩니다.</span></li>
         <li><b class="tt">신청서 2면 — 세액·수수료·첨부·위임</b><span class="tb">취득세·지방교육세·농어촌특별세와 세액합계, 등기신청수수료(납부번호), 등기의무자의 등기필정보, 첨부서면 통수, 신청인·관할 지방법원까지 이어지고, 아래쪽 위임 부분은 잔금일에 매도인 인감 날인이 필요한 자리입니다. ▶ 이 칸들은 셀프등기24에 입력한 정보와 아래 '번호 보관함'에 저장한 값으로 자동완성됩니다.</span></li>
       </ol>
     </details>
-    <a href="normal_form.html" class="stp-cta">위임장·신청서 작성하기 →</a>
+    <a href="normal_form.html#s=6" class="stp-cta">신청서 받으러 가기 →</a>
     </div>
   </section>
-
-  <section class="stp" id="step-4" aria-labelledby="step-4-t">
-    <div class="stp-n">4</div>
-    <div class="stp-head"><h3 class="stp-t" id="step-4-t">등기소에 한 번 접수하기</h3></div><div class="stp-where"><span>관할 등기소 방문</span></div>
-    <div class="stp-b">
-    <p class="stp-lead">준비한 서류를 관할 등기소에 한 번에 제출하면 마무리됩니다. 신분증과 도장을 챙기세요. 온라인이 익숙하지 않다면 구청·은행 방문으로도 ①~②를 마칠 수 있습니다.</p>
     </div>
-  </section>
+  </details>
   <p class="prep-note">※ 필요 서류는 개별 사안에 따라 달라질 수 있습니다. 최종 확인은 관할 등기소 안내를 따라 주세요. <button type="button" class="prog-reset" onclick="clearGpos()">화면 가이드 진행 기록 지우기</button></p>
 </div>
 
 <!-- 번호 보관함 -->
+
+<!-- 내 일정(2026-10-22) — 잔금일을 넣으면 할 일 날짜가 정해진다. 캘린더(.ics)·한 장 인쇄·내 셀프등기로 잔금일 넘기기 -->
+<div class="section" id="plan">
+  <span class="sec-tag">내 일정</span>
+  <h2 class="sec-title">잔금일만 넣으면 할 일 날짜가 정해집니다</h2>
+  <p class="qlead">일반적인 순서로 잡은 권장 일정입니다. 캘린더에 넣어 두면 잔금 전에 놓치는 일이 줄어듭니다.</p>
+  <div class="pl">
+    <div class="pl-top">
+      <label class="pl-lab" for="pl-in">잔금일</label><input type="date" id="pl-in">
+      <div class="pl-sit" role="group" aria-label="내 상황">
+        <button type="button" class="pl-c" data-sit="loan" aria-pressed="false">잔금대출을 받아요</button>
+        <button type="button" class="pl-c" data-sit="joint" aria-pressed="false">공동명의예요</button>
+      </div>
+    </div>
+    <p class="pl-w" id="pl-loan" hidden><b>잔금대출이 있으면 은행이 셀프등기를 허용해야 합니다.</b> 대출을 신청할 때 은행에 먼저 문의하세요.</p>
+    <p class="pl-w" id="pl-joint" hidden><b>공동명의는 매도용 인감증명서에 매수인 전원의 인적사항이 들어가야 합니다.</b> 양쪽이 모두 2명이면 신청서가 2부입니다 — <a href="joint.html">공동명의 셀프등기</a></p>
+    <ol class="pl-list" id="pl-list">
+      <li data-off="-14"><span class="pl-d">잔금 14일 전</span><div><b>매수인 서류 발급</b><span>주민등록등본(뒷자리 포함) · 토지대장 · 건축물대장 — 정부24. 발행일부터 3개월 이내 서류만 쓸 수 있어 너무 일찍 받지 않습니다.</span></div></li>
+      <li data-off="-10"><span class="pl-d">잔금 10일 전</span><div><b>채권 · 인지 · 수수료 납부</b><span>국민주택채권 매입 · 전자수입인지 · 등기신청수수료(서면 18,000원). 잔금 전에 미리 낼 수 있습니다.</span></div></li>
+      <li data-off="-3"><span class="pl-d">잔금 3일 전</span><div><b>매도인에게 매수인 인적사항 전달</b><span>매도용 인감증명서에 적힐 이름·주소·주민등록번호. 틀리면 각하됩니다.</span></div></li>
+      <li data-off="-1"><span class="pl-d">잔금 전날</span><div><b>위임장 출력</b><span>결제 후 Word 파일로 받아 출력해 둡니다. 잔금일에 매도인 인감을 받습니다.</span></div></li>
+      <li data-off="0"><span class="pl-d">잔금일</span><div><b>잔금일 — 날인 · 매도인 서류 · 취득세</b><span>위임장 인감 날인 · 등기필정보 · 매도용 인감증명서 · 초본을 받고, 위택스에서 취득세를 신고·납부합니다.</span></div></li>
+      <li data-off="1"><span class="pl-d">잔금 다음 평일</span><div><b>신청서 출력 · 등기소 접수</b><span>납부 번호가 들어간 신청서를 받아 관할 등기소에 한 번 제출합니다. 빠를수록 좋습니다.</span></div></li>
+      <li data-off="60"><span class="pl-d">잔금일 + 60일</span><div><b>등기 신청 기한</b><span>잔금일부터 60일 안에 신청해야 하며, 넘기면 과태료가 부과될 수 있습니다(부동산등기 특별조치법).</span></div></li>
+    </ol>
+    <div class="pl-act">
+      <a class="pl-b pri" id="pl-go" href="normal_form.html">이 잔금일로 서류 작성 시작 →</a>
+      <button type="button" class="pl-b" id="pl-ics">캘린더에 넣기</button>
+      <button type="button" class="pl-b" id="pl-pr">한 장으로 인쇄</button>
+    </div>
+    <p class="pl-f">날짜는 권장 일정이며 은행·기관 사정에 따라 달라질 수 있습니다. 최종 확인은 관할 등기소에서 하세요.</p>
+  </div>
+</div>
+
 <div class="section" id="vault-sec">
     <h2 class="sec-title">받은 번호는 어디에 두나요?</h2>
   <p class="sec-sub">각 단계에서 받은 취득세액·시가표준액·채권번호·수수료 납부번호를 저장해 두면 신청서에 자동으로 채워집니다. 입력값은 이 기기에만 저장되고 서버로 전송되지 않으며, 60일이 지나면 자동으로 사라집니다.</p>
@@ -875,7 +1006,7 @@ details.txt li .tip em{font-style:normal;font-weight:800;margin-right:6px}
     <div>
       <span class="finish-tag">준비가 끝났다면</span>
       <h3>순서대로 진행하면 <em>등기소는 한 번만</em> 갑니다</h3>
-      <p class="fp">실제 진행은 단계별 로드맵에서 안내합니다. 서류 작성 화면에 입력한 정보가 로드맵으로 이어집니다.</p>
+      <p class="fp">실제 진행은 「내 셀프등기」 화면에서 한 단계씩 안내합니다. 등기부 한 장으로 시작하고, 납부한 번호를 적으면 신청서에 들어갑니다.</p>
     </div>
     <div>
       <div class="finish-li">위임장 · 소유권이전등기 신청서 자동 완성</div>
@@ -1058,7 +1189,7 @@ function clearGpos(){
   GPOS={};try{localStorage.removeItem(GPOS_KEY);}catch(e){}
   renderShots();toast('가이드 진행 기록을 지웠습니다');
 }
-var FLOW_NAMES={1:'절차 1단계 · 서류 발급',2:'절차 2단계 · 제세공과금',3:'절차 3단계 · 서류 작성'};
+var FLOW_NAMES={1:'절차 1단계 · 서류 발급',2:'절차 2단계 · 제세공과금',3:'절차 3단계 · 잔금일',4:'절차 4단계 · 신청서·접수'};SHOTS.forEach(function(x){if(x.key==='app')x.flowStep=4;});
 
 function renderShots(){
   var H={};
@@ -1445,6 +1576,49 @@ window.SR=window.SR||(function(){
   }
   new MutationObserver(upd).observe(cap,{childList:true,characterData:true,subtree:true});
   window.addEventListener('hashchange',upd); upd();
+})();
+</script>
+<script>
+/* 내 일정 — 잔금일 기준 권장 날짜. 잔금일은 이 기기의 내 셀프등기(selfregi_hub_v1.balance)와 같은 값을 쓴다 */
+(function(){
+  var inp=document.getElementById('pl-in'),list=document.getElementById('pl-list');if(!inp||!list)return;
+  function rd(){try{return JSON.parse(localStorage.getItem('selfregi_hub_v1')||'null')||{};}catch(e){return {};}}
+  function pad(n){return ('0'+n).slice(-2);}
+  function add(iso,n){var p=iso.split('-');return new Date(+p[0],+p[1]-1,+p[2]+n);}
+  /* 등기소 접수(잔금 다음 날)는 주말이면 월요일로 — 등기소는 평일만 연다 */
+  function at(iso,o){var d=add(iso,o);if(o===1)while(d.getDay()===0||d.getDay()===6)d.setDate(d.getDate()+1);return d;}
+  var W='일월화수목금토';
+  function fmt(d){return (d.getMonth()+1)+'월 '+d.getDate()+'일('+W[d.getDay()]+')';}
+  function draw(){
+    var v=inp.value,today=new Date();today.setHours(0,0,0,0);
+    [].forEach.call(list.children,function(li){var o=+li.getAttribute('data-off'),el=li.querySelector('.pl-d');
+      if(!el._t)el._t=el.textContent;
+      if(!v){el.textContent=el._t;li.classList.remove('past');return;}
+      var d=at(v,o);el.textContent=fmt(d);li.classList.toggle('past',d<today&&o!==60);});
+    document.getElementById('pl-go').textContent=v?'이 잔금일로 서류 작성 시작 →':'서류 작성 시작 →';
+  }
+  var h=rd();if(h.balance)inp.value=h.balance;draw();
+  inp.addEventListener('change',function(){draw();try{window.SR&&SR.track('guide_plan',{key:'date'});}catch(e){}});
+  [].forEach.call(document.querySelectorAll('.pl-c'),function(b){b.addEventListener('click',function(){
+    var on=b.getAttribute('aria-pressed')!=='true';b.setAttribute('aria-pressed',String(on));
+    var w=document.getElementById('pl-'+b.getAttribute('data-sit'));if(w)w.hidden=!on;
+    try{window.SR&&SR.track('guide_plan',{key:b.getAttribute('data-sit')});}catch(e){}});});
+  /* 내 셀프등기로 잔금일을 넘긴다 — 같은 기기 저장값(selfregi_hub_v1)에 잔금일만 더한다 */
+  document.getElementById('pl-go').addEventListener('click',function(){
+    if(!inp.value)return;try{var o=rd();o.balance=inp.value;localStorage.setItem('selfregi_hub_v1',JSON.stringify(o));}catch(e){}
+    try{window.SR&&SR.track('guide_plan',{key:'go'});}catch(e){}});
+  document.getElementById('pl-pr').addEventListener('click',function(){window.print();});
+  document.getElementById('pl-ics').addEventListener('click',function(){
+    if(!inp.value){inp.focus();if(typeof toast==='function')toast('잔금일을 먼저 넣어 주세요.');return;}
+    var L=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//selfregi24//plan//KO','CALSCALE:GREGORIAN'],st=new Date().toISOString().replace(/[-:]/g,'').slice(0,15)+'Z';
+    function ymd(x){return x.getFullYear()+pad(x.getMonth()+1)+pad(x.getDate());}
+    [].forEach.call(list.children,function(li,i){var o=+li.getAttribute('data-off'),d=at(inp.value,o),e=new Date(d.getFullYear(),d.getMonth(),d.getDate()+1);
+      var t=li.querySelector('b').textContent,ds=li.querySelector('div span').textContent.replace(/[,;\\]/g,function(c){return '\\'+c;});
+      L.push('BEGIN:VEVENT','UID:sr-plan-'+ymd(d)+'-'+i+'@selfregi24.com','DTSTAMP:'+st,'DTSTART;VALUE=DATE:'+ymd(d),'DTEND;VALUE=DATE:'+ymd(e),'SUMMARY:셀프등기 · '+t,'DESCRIPTION:'+ds+'\\nhttps://www.selfregi24.com/guide.html#plan','END:VEVENT');});
+    L.push('END:VCALENDAR');
+    var a=document.createElement('a');a.href=URL.createObjectURL(new Blob([L.join('\r\n')],{type:'text/calendar'}));a.download='셀프등기_일정.ics';document.body.appendChild(a);a.click();
+    setTimeout(function(){URL.revokeObjectURL(a.href);a.remove();},300);
+    try{window.SR&&SR.track('guide_plan',{key:'ics'});}catch(e){}});
 })();
 </script>
 </body>

@@ -944,6 +944,8 @@ function nowKey(){
 
 /* ---------- 그리기 ---------- */
 var A=document.getElementById('app'),OPEN={},OCR={busy:false,err:'',files:null,pct:0,say:''};
+/* 가이드 등 다른 페이지에서 단계로 바로 열기 — normal_form.html#s=4 */
+(function(){var m=location.hash.match(/[#&]s=([1-7])(?!\d)/);if(m)OPEN.ph=+m[1];})();
 /* 단계별 한 화면(2026-10-21 사용자 결정): 남색 카드의 7단계 줄 · 가운데 「서류 올리기」 상자 고정 + 지금 단계 화면 하나(이전·다음) ·
    오른쪽 문서 반영 미리보기. 휴대폰은 단계 줄 가로 칩, 미리보기 아래 접힘 막대 → 시트(서류 작성 화면 방식). */
 var STEPS=[
