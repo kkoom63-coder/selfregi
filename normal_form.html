@@ -295,8 +295,9 @@ p.sm,.sm{font-size:12.5px;color:var(--muted);margin:10px 0 0}
 .ocr.mini .dz-ic{width:28px;height:34px;margin-bottom:6px}
 .ocr.mini .slot-t{font-size:15px;margin-bottom:2px}
 .ocr.mini .sub{margin-bottom:10px}
-.rv-pub{margin:10px 0 0;font-size:13px;color:var(--sub)}
-.rv-st{color:#B45309;font-weight:700}
+.rvl{display:block;margin:10px 0 0;padding:10px 12px;border:1px solid var(--border);border-radius:10px;background:var(--bg);font-size:13px;color:var(--sub)}
+.rvl q{display:block;margin-top:4px;color:var(--text);quotes:"“" "”"}
+.rvl-st{color:#B45309;font-weight:700}
 .sg-box{background:var(--info-bg);border:1px solid var(--info-bd);color:var(--info-tx);border-radius:10px;padding:10px 12px;margin:8px 0 0}
 .sg-box p{margin:0;font-size:14.5px}
 .sg-box b{font-weight:700}
@@ -987,10 +988,12 @@ var PAYTX={
   wetax:'잔금일 당일 위택스로 내거나, 잔금 전 구청 세무과를 방문해 미리 신고·납부할 수 있습니다. 등기에는 <b>납부확인서</b>를 씁니다.'
 };
 /* 결제 확인 후기 중 「공개 동의」한 것만 원문 그대로 적는다(Firestore reviews, status:test 제외). 가짜·각색 금지 — copy.md */
-var PUB_REVIEWS=[];
+var PUB_REVIEWS=[
+  {r:5,t:'셀프등기 처음 해보는데 자동으로 작성해주고, 설명도 자세히 되어 있어서 서류 작성이 어렵지 않았습니다. 덕분에 법무사 비용 많이 절감했고, 주위에도 알려줄 생각입니다.'} /* SR20261010095839-LBZ2PD · 2026.10 · publish:true */
+];
 function reviewLine(){var n=PUB_REVIEWS.length;if(!n)return '';
   var avg=PUB_REVIEWS.reduce(function(a,r){return a+r.r;},0)/n,r=PUB_REVIEWS[0];
-  return '<p class="rv-pub"><span class="rv-st">★ '+avg.toFixed(1)+'</span> 결제 이용자 후기 '+n+'건 — “'+esc(r.t)+'”</p>';}
+  return '<p class="rvl"><span class="rvl-st">★ '+avg.toFixed(1)+'</span> · 결제 이용자 후기 '+n+'건<q>'+esc(r.t)+'</q></p>';}
 function shotN(key){var s=shotOf(key);return s?s.steps.length:0;}
 function shotBtn(k,primary){var key=T[k].shot;if(!shotN(key))return '';
   return '<button type="button" class="btn'+(primary?'':' line')+'" data-shot="'+key+'">'+(SHOT_LB[k]||'화면 가이드 보기')+'</button>';}
