@@ -262,7 +262,8 @@ header{background:var(--bg)}
 .pay-seq li b{color:#0F172A}
 .pay-seq p{margin:8px 0 0;font-size:12px;color:#475569}
 .svc-terms{background:#fff;border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin:16px 0 0;text-align:left}
-.svc-terms-h{font-size:12px;font-weight:800;letter-spacing:.06em;color:var(--blue);margin-bottom:12px}
+.svc-terms-h{font-size:14px;font-weight:700;color:var(--blue);cursor:pointer}
+.svc-terms[open] .svc-terms-h{margin-bottom:12px}
 .svc-terms-l{display:grid;gap:11px;margin:0}
 .svc-terms-l>div{display:grid;grid-template-columns:72px 1fr;gap:12px;align-items:start}
 .svc-terms-l dt{font-size:12px;font-weight:700;color:var(--navy);line-height:1.6}
@@ -1079,8 +1080,8 @@ html.mnav-open,html.mnav-open body{overflow:hidden}
       </ol>
       <p>등기소 접수 전에 제세공과금 납부를 모두 마쳐야 합니다. 모든 서류가 한 번 결제에 포함됩니다.</p>
     </div>
-    <div class="svc-terms">
-      <div class="svc-terms-h">서비스 제공 방식과 시점</div>
+    <details class="svc-terms">
+      <summary class="svc-terms-h">서비스 제공 방식과 시점 · 재발급 · 환불</summary>
       <dl class="svc-terms-l">
         <div><dt>제공 방식</dt><dd>브라우저에서 Word(.docx) 파일로 내려받습니다. 별도 배송이나 승인 대기가 없습니다.</dd></div>
         <div><dt>제공 시점</dt><dd>위임장(증여는 증여계약서 포함)은 결제 승인 직후, 신청서는 제세공과금 납부 후 번호를 입력하는 즉시 내려받습니다.</dd></div>
@@ -1088,7 +1089,7 @@ html.mnav-open,html.mnav-open body{overflow:hidden}
         <div><dt>환불</dt><dd>회사 귀책(문서 오류·미제공 등)은 사유를 안 날부터 7일 이내 요청하시면 3영업일 이내 전액 환불합니다. 디지털 콘텐츠 특성상 단순 변심에 따른 환불은 제한됩니다.</dd></div>
       </dl>
       <p class="svc-terms-n">자세한 내용은 <a href="terms.html#a5">이용약관 제5·6조</a>를 확인해 주세요.</p>
-    </div>
+    </details>
   </div>
 </div>
 <script>

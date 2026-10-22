@@ -177,6 +177,7 @@ button{font-family:inherit;cursor:pointer}
 .now-d{font-size:14px;color:var(--sub2);margin:4px 0 0}
 .now .btn{margin-top:12px}
 .now.wait{border-color:var(--border)}.now.wait .now-eb{color:var(--muted)}
+.btn[data-pay]{min-height:56px;font-size:18px}
 .btn{display:block;width:100%;border:0;border-radius:10px;padding:13px 14px;font-size:16px;font-weight:700;text-align:center;text-decoration:none;background:var(--blue);color:#fff}
 .btn:hover{background:var(--blue-h)}
 .btn.line{background:var(--card);color:var(--sub);border:1px solid var(--border)}
@@ -1007,7 +1008,7 @@ var STEPS=[
   {k:'deal',t:'매매정보',w:'계약·당사자 정보',tasks:['docs']},
   {k:'pay1',t:'채권·인지',w:'잔금 전 가능',tasks:['bond','stamp']},
   {k:'pay2',t:'수수료·취득세',w:'수수료는 잔금 전 가능',tasks:['efee','wetax']},
-  {k:'poa',t:'위임장',w:'9,900원 결제 · 잔금 전날까지',tasks:['req','pass']},
+  {k:'poa',t:'위임장',w:'9,900원 결제 · 잔금 전날까지',tasks:['pass','req']}, /* 결제 카드가 먼저(힉의 법칙 — 2026-10-23 크리틱) */
   {k:'day',t:'잔금일',w:'매도인을 만나는 날',tasks:['seller']},
   {k:'app',t:'신청서',w:'납부를 마친 뒤',tasks:['apply','rj']},
   {k:'visit',t:'접수',w:'관할 등기소 한 번',tasks:['visit']}
@@ -1075,7 +1076,7 @@ function stageHtml(view){
   var s=STEPS[view-1],h=regCard()+'<section class="wz" aria-labelledby="wz-t"><div class="wz-h"><span class="ph-n">'+view+'</span><div><h2 class="ph-t" id="wz-t">'+s.t+'</h2><span class="ph-w">'+s.w+'</span></div></div>';
   h+=view===1?dealScreen():s.tasks.map(wzCard).join('');
   h+='<div class="wz-nav">'+(view>1?'<button type="button" class="btn line" data-ph="'+(view-1)+'">← 이전</button>':'<span></span>')
-    +(view<STEPS.length?'<button type="button" class="btn" data-ph="'+(view+1)+'">다음: '+STEPS[view].t+' →</button>':'')+'</div></section>';
+    +(view<STEPS.length?'<button type="button" class="btn'+(s.k==='poa'&&!S.pass?' line':'')+'" data-ph="'+(view+1)+'">다음: '+STEPS[view].t+' →</button>':'')+'</div></section>'; /* 결제 전에는 결제 버튼만 주인공(폰 레스토프) */
   return h;
 }
 var CUR=1,VIEW=1;
