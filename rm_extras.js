@@ -5,7 +5,8 @@
  *   편철표      내 케이스(매도인·매수인 수, 신청서 건수)에 맞춘 제출 서류 순서·통수·날인 안내를 한 장으로.
  *               순서의 근거는 소유권이전등기신청서(매매) 양식의 「첨부서면」 기재 순서다.
  *
- * 의존(roadmap.html 전역): PARTIES, SELLERS, FILING_COUNT, loadParties, restoreRelay,
+ * 쓰는 곳: normal_form(허브 ⑦ 접수 — 2026-10-22 로드맵 흡수), roadmap(중계만).
+ * 의존(roadmap.html 전역, 없으면 건너뜀): PARTIES, SELLERS, FILING_COUNT, loadParties, restoreRelay,
  *                         applyDynamicRouting, showToast, SRResume, SR(선택)
  */
 (function () {
@@ -63,7 +64,7 @@
     var sN = f.sellerJoint ? Math.min(sellers.length, 2) : 1;
     var filings = (bN > 1 && sN > 1) ? bN : 1;
     var prop = [f.jibun, f.aptName, f.dong ? '제' + f.dong + '동' : '', f.ho ? '제' + f.ho + '호' : ''].filter(Boolean).join(' ');
-    var court = ($('ui-deunggi') && $('ui-deunggi').textContent.trim()) || '';
+    var court = (window.SRCourtNameFn && window.SRCourtNameFn()) || ($('ui-deunggi') && $('ui-deunggi').textContent.trim()) || ''; /* 허브(normal_form)는 고른 관할 등기소를 넘긴다 */
     if (/관할 등기소|미확인/.test(court)) court = '';
     return { f: f, buyers: buyers.slice(0, bN), sellers: sellers.slice(0, sN), bN: bN, sN: sN, filings: filings, prop: prop, court: court, has: !!(f.buyerName || f.sellerName || f.jibun) }; /* 매수인 이름을 비운 이용자도 내 케이스로 */
   }
@@ -115,7 +116,7 @@
     var h = '<div class="bd-sheet">' +
       '<div class="bd-top"><div class="bd-t">최종 서류 체크리스트</div>' +
       '<div class="bd-m">' + (P.prop ? esc(P.prop) + '<br>' : '') +
-      '매도인 ' + P.sN + '명 · 매수인 ' + P.bN + '명 · <b>신청서 ' + P.filings + '건</b>' + (P.court ? ' · 제출: ' + esc(P.court) : '') + '</div></div>';
+      (P.f.dealType === 'gift' ? '증여인 ' : '매도인 ') + P.sN + '명 · ' + (P.f.dealType === 'gift' ? '수증인 ' : '매수인 ') + P.bN + '명 · <b>신청서 ' + P.filings + '건</b>' + (P.court ? ' · 제출: ' + esc(P.court) : '') + '</div></div>';
     if (!P.has) h += '<p class="bd-warn">이 기기에 당사자 정보가 없어 1:1 매매 기준으로 만들었습니다. 서류 작성 화면을 거치거나 위임장 파일을 올리면 내 케이스에 맞춰집니다.</p>';
     for (var k = 0; k < P.filings; k++) {
       var b = P.buyers[k] || {};

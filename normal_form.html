@@ -500,6 +500,39 @@ nav{z-index:100}
 .seo-steps li:last-child:nth-child(odd){grid-column:1/-1}
 @media(min-width:1081px){.pg-h h1{font-size:24px}.seo-steps{grid-template-columns:1fr 1fr}.seo-docs{grid-template-columns:repeat(3,1fr)}}
 html.gift-mode .seo{display:none}
+/* 최종 서류 체크리스트(편철 순서·통수) — roadmap.html에서 옮김(2026-10-22, rm_extras.js SRBundle) */
+.bd-modal{position:fixed;inset:0;z-index:9990;display:none}
+.bd-modal.open{display:block}
+html.bd-lock{overflow:hidden}
+.bd-bg{position:absolute;inset:0;background:rgba(15,23,42,.5)}
+.bd-c{position:absolute;inset:12px;max-width:820px;margin:0 auto;background:#fff;border-radius:14px;display:flex;flex-direction:column;overflow:hidden}
+@media(max-width:600px){.bd-c{inset:0;border-radius:0}}
+.bd-bar{display:flex;gap:8px;justify-content:flex-end;padding:10px 14px;border-bottom:1px solid var(--border)}
+.bd-print{min-height:38px;padding:0 16px;border-radius:9px;border:0;background:var(--navy);color:#fff;font-weight:800;font-size:14px;cursor:pointer;font-family:inherit}
+.bd-x{min-height:38px;padding:0 14px;border-radius:9px;border:1px solid var(--border);background:#fff;color:var(--navy);font-size:14px;cursor:pointer;font-family:inherit}
+.bd-body{flex:1;overflow:auto;padding:16px}
+.bd-sheet{max-width:760px;margin:0 auto;color:#0F172A}
+.bd-t{font-size:20px;font-weight:800}
+.bd-m{font-size:12px;color:#334155;margin-top:4px;line-height:1.6}
+.bd-warn{font-size:12px;color:#92400E;background:#FFFBEB;border:1px solid #FDE68A;border-radius:8px;padding:8px 10px;margin:10px 0 0}
+.bd-f{margin-top:14px}
+.bd-fh{font-size:14px;font-weight:800;margin-bottom:6px;color:#0F172A}
+.bd-tb{width:100%;border-collapse:collapse;font-size:12px}
+.bd-tb th{background:#F1F5F9;text-align:left;padding:6px 8px;border:1px solid #CBD5E1;font-weight:700}
+.bd-tb td{padding:6px 8px;border:1px solid #CBD5E1;vertical-align:top;line-height:1.5}
+.bd-tb td.c,.bd-tb th:nth-child(1),.bd-tb th:nth-child(3),.bd-tb th:nth-child(4){text-align:center;white-space:nowrap}
+.bd-tb tr.cite td{color:#64748B}
+.bd-n{font-size:12px;color:#475569;margin-top:2px;word-break:keep-all}
+.bd-l{margin:0;padding-left:18px;font-size:12px;line-height:1.7}
+.bd-foot{font-size:12px;color:#64748B;margin-top:14px;line-height:1.6}
+@media print{
+  html.bd-lock body > *:not(#bd-modal){display:none!important}
+  html.bd-lock{overflow:visible}
+  .bd-modal{position:static}.bd-bg,.bd-bar{display:none!important}
+  .bd-c{position:static;inset:auto;max-width:none;border-radius:0;overflow:visible}
+  .bd-body{overflow:visible;padding:0}
+  .bd-tb tr{break-inside:avoid}
+}
 /* 글씨·번호 배지 정리(2026-10-22, taste 크리틱 시안에서 사용자 선택) — 본문 16px·보조 14px, 네모 번호 배지(0·1…) 없음.
    단계 줄 번호는 PC에서는 점으로, 휴대폰에서는 이름 없이 번호만 보이는 칩이라 숫자를 남긴다 */
 body{font-size:16px}
@@ -655,6 +688,7 @@ window.SR=window.SR||(function(){
 <script src="tpl_gift.js"></script>
 <script src="docgen.js"></script>
 <script src="resume.js"></script>
+<script src="rm_extras.js"></script>
 <script src="pay.js"></script>
 <script src="review.js"></script>
 <script src="regparse.js"></script>
@@ -1356,7 +1390,7 @@ function panel(k,d){
       +(GIFT?['신분증 · 수증인 도장','신청서 · 위임장(날인·간인) · 검인받은 증여계약서 원본','취득세 납부확인서 · 채권 영수증 · 수수료 영수필확인서','증여인 서류(등기필정보 · 인감증명서 · 초본) · 내 서류 원본']
         :['신분증 · 매수인 도장','신청서 · 위임장(날인·간인)','취득세 납부확인서 · 채권 영수증 · 인지 · 수수료 영수필확인서','매도인 서류(등기필정보 · 인감증명서) · 내 서류 원본'])
         .map(function(t,i){return '<label class="ck"><input type="checkbox" id="bag-'+i+'"><span>'+t+'</span></label>';}).join('')+'</div>'
-      +'<a class="link" href="roadmap.html#r4">관할 등기소 · 제출 순서 보기 ›</a>'
+      +'<button type="button" class="btn line" data-bundle="1">최종 서류 체크리스트(제출 순서·통수) 보기 · 인쇄</button>'
       +(!d&&S.hub.apply?'<button type="button" class="btn" style="margin-top:12px" data-mark="visit">접수했어요</button>':'');
   }
   return '';
@@ -1615,6 +1649,7 @@ function relayFull(f){
   return R;
 }
 function rsum(a){return (a||[]).reduce(function(s,v){return s+(Number(digits(v))||0);},0);}
+window.SRCourtNameFn=function(){return courtName();}; /* rm_extras.js 체크리스트의 「제출:」 칸 */
 function courtName(){if(has(S.hub.court))return S.hub.court;var p=prop(),c=window.SRCourt&&has(p.jibun)?SRCourt.find(p.jibun):null;return c&&!c.ambiguous?c.n:'';}
 
 /* 손으로 적어야 할 칸 — 서류 작성 화면 nfBlankItems·로드맵 rmBlankItems와 같은 항목 */
@@ -1852,6 +1887,7 @@ function bind(){
   A.querySelectorAll('[data-court]').forEach(function(x){x.onclick=function(){S.hub.court=x.getAttribute('data-court');saveHub();track('hub_court',{key:'pick'});render();};});
   A.querySelectorAll('[data-court-save]').forEach(function(x){x.onclick=function(){var v=(document.getElementById('court-in')||{}).value||'';v=v.trim();if(!v)return toast('등기소 이름을 적어 주세요.',1);S.hub.court=v;saveHub();track('hub_court',{key:'type'});render();};});
   A.querySelectorAll('[data-court-reset]').forEach(function(x){x.onclick=function(){S.hub.court='';saveHub();render();};});
+  A.querySelectorAll('[data-bundle]').forEach(function(x){x.onclick=function(){if(demoOn())return toast('예시 상태에서는 열지 않습니다.');syncForm();if(window.SRBundle)SRBundle.open();};});
   A.querySelectorAll('[data-unmark]').forEach(function(x){x.onclick=function(){S.hub[x.getAttribute('data-unmark')]=false;saveHub();render();};});
   A.querySelectorAll('[data-mark]').forEach(function(x){x.onclick=function(){var k=x.getAttribute('data-mark');S.hub[k]=true;saveHub();OPEN[k==='rjok'?'rj':k]=false;render();};});
 }
