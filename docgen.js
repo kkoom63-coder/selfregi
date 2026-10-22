@@ -243,8 +243,13 @@
       }
       return parts.join(' 및 ') + ' 이전';
     }
+    /* 일부 이전(1건짜리) — 인터넷등기소 신청서 양식 「작성방법」 ③④(docs/ops/research/forms/gift_apply_gubun_iros.docx):
+       단독소유자 지분 일부 → 등기의 목적 「소유권 일부이전」, 이전할 지분은 부동산 전체 기준 「공유자 지분 ○분의 ○」.
+       공유자 지분 이전(「갑구 ○번 □□□지분 …이전」)은 갑구 순위번호가 필요해 자동으로 쓰지 않는다. */
+    var partShare = (f.transferMode === 'part' && /분의/.test(f.transferShare || '')) ? f.transferShare : '';
     var purposeGap = false;
     function regPurposeFor(bi) {
+      if (!jointBoth && partShare && sellerArr.length === 1) return '소유권 일부이전';
       if (!jointBoth) return (sellerArr.length > 1) ? '공유자전원지분전부이전' : '소유권이전';
       var s = purposeForBuyer(bi);
       if (!s) purposeGap = true;
@@ -288,7 +293,7 @@
         BUYER_NAME: buyerArr[k].name || '', BUYER_RRN: buyerArr[k].rrn || '',
         BUYER_ADDR: buyerArr[k].addr || '', BUYER_SHARE: _shareOf(buyerArr[k]),
         REG_PURPOSE: regPurposeFor(k),
-        TRANSFER_SHARE: _shareOf(buyerArr[k]),
+        TRANSFER_SHARE: _shareOf(buyerArr[k]) ? '공유자 지분 ' + _shareOf(buyerArr[k]) : '',
         SIGA: fmtWon(sigaArr[k]), BOND_AMT: fmtWon(bondAmtArr[k]),
         BOND_TOTAL: fmtWon(bondAmtArr[k]), BOND_NO: bondNoArr[k] || '',
         FEE_NO: feeArr[k] || ''   // 수수료도 신청서 단위(등기예규 제1861호 2.나)
@@ -299,7 +304,7 @@
         BUYER_ADDR: joinLines(buyerArr.map(function (p) { return p.addr; })),
         BUYER_SHARE: joinLines(buyerArr.map(function (p) { return _shareOf(p); })),
         REG_PURPOSE: regPurposeFor(0),
-        TRANSFER_SHARE: '전 부',
+        TRANSFER_SHARE: partShare ? '공유자 지분 ' + partShare : '전 부',
         /* 신청서가 1건이면 이 부동산 전체가 대상 — 지분별로 나눠 적은 시가표준액·채권은 합계가 된다. */
         SIGA: fmtWon(relaySum('siga')), BOND_AMT: fmtWon(relaySum('bondamt')),
         BOND_TOTAL: fmtWon(relaySum('bondamt')),
