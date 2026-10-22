@@ -665,35 +665,29 @@ details.all>.all-b{padding:0 12px 12px}
 </style>
 <style>
 /* 내 일정 */
-.pl{background:#fff;border:1px solid var(--border);border-radius:12px;padding:18px}
-.pl-top{display:flex;flex-wrap:wrap;align-items:center;gap:10px 12px}
-.pl-lab{font-size:14px;font-weight:700;color:var(--navy)}
-#pl-in{height:44px;padding:0 12px;border:1px solid var(--border);border-radius:10px;font:inherit;font-size:16px;color:var(--navy);background:#fff}
-.pl-sit{display:flex;flex-wrap:wrap;gap:6px;margin-left:auto}
-.pl-c{height:36px;padding:0 12px;border:1px solid var(--border);border-radius:999px;background:#fff;font:inherit;font-size:14px;font-weight:600;color:#334155;cursor:pointer}
-.pl-c[aria-pressed="true"]{background:var(--navy);border-color:var(--navy);color:#fff}
-.pl-w{margin:12px 0 0;padding:10px 12px;border-radius:8px;background:#FFF7ED;border:1px solid #FED7AA;font-size:14px;line-height:1.6;color:#7C2D12}
-.pl-w a{color:#9A3412;font-weight:700}
-.pl-list{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:8px}
-.pl-list li{display:grid;grid-template-columns:112px 1fr;gap:12px;align-items:start;padding:10px 12px;border:1px solid var(--border);border-radius:10px}
-.pl-list li[data-off="0"]{border-color:var(--blue);background:#F0F9FF}
-.pl-list li[data-off="60"]{background:#F8FAFC}
-.pl-d{font-size:14px;font-weight:800;color:var(--blue);line-height:1.5}
-.pl-list b{display:block;font-size:14px;color:var(--navy)}
-.pl-list span:not(.pl-d){display:block;font-size:14px;color:#475569;line-height:1.6}
-.pl-list li.past{opacity:.55}
-.pl-act{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
-.pl-b{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 16px;border:1px solid var(--border);border-radius:10px;background:#fff;font:inherit;font-size:14px;font-weight:700;color:var(--navy);text-decoration:none;cursor:pointer}
-.pl-b.pri{background:var(--blue);border-color:var(--blue);color:#fff}
-.pl-f{margin:10px 0 0;font-size:12px;color:var(--muted)}
-@media(max-width:560px){.pl-sit{margin-left:0}.pl-list li{grid-template-columns:1fr;gap:2px}.pl-act .pl-b{flex:1 1 100%}}
-@media print{body *{visibility:hidden}#plan,#plan *{visibility:visible}#plan{position:absolute;left:0;top:0;width:100%}.pl-act,.pl-sit,.pl-f{display:none}}
+/* 서류 체크리스트(2026-10-23) — 단계별 4묶음, 체크는 이 기기에만. 인쇄는 체크리스트만 한 장(나머지는 display:none — visibility로 숨기면 빈 쪽이 여러 장 나온다) */
+.ckl{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px;margin-top:16px}
+.ckl-g{background:#F3F5F8;border-radius:16px;padding:16px 18px}
+.ckl-g h3{margin:0 0 8px;font-size:16px;font-weight:700;color:var(--navy);display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.ckl-g h3 small{font-size:12px;font-weight:600;color:var(--muted)}
+.ckl-g label{display:flex;gap:10px;align-items:flex-start;padding:7px 0;font-size:14px;line-height:1.5;color:var(--text);cursor:pointer;border-top:1px solid #E2E8F0}
+.ckl-g label:first-of-type{border-top:0}
+.ckl-g input{flex:none;width:20px!important;height:20px!important;margin:1px 0 0;accent-color:var(--blue)}
+.ckl-g label small{display:block;font-size:12px;color:var(--muted)}
+.ckl-g label.on span{color:#047857}
+.ckl-act{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:14px}
+.ckl-b{display:inline-flex;align-items:center;min-height:44px;padding:0 16px;border:1px solid var(--border);border-radius:10px;background:#fff;font:inherit;font-size:14px;font-weight:700;color:var(--navy);cursor:pointer}
+.ckl-b.pri{background:var(--blue);border-color:var(--blue);color:#fff}
+.ckl-n{margin-left:auto;font-size:14px;font-weight:700;color:var(--muted)}
+@media print{.tm-in{opacity:1!important;transform:none!important;transition:none!important}body.pr-ck>*:not(main),body.pr-ck main>*:not(#check),body.pr-ck .ckl-act,body.pr-ck #check .qlead{display:none!important}
+  body.pr-ck #check{padding:0;margin:0}body.pr-ck .ckl{grid-template-columns:1fr 1fr;gap:8px}body.pr-ck .ckl-g{background:#fff;border:1px solid #CBD5E1;padding:10px 12px;break-inside:avoid}
+  body.pr-ck .ckl-g label{padding:4px 0;font-size:12px}body.pr-ck .sec-title{font-size:20px!important}@page{margin:12mm}}
 </style>
 <style>/* ===== 2026-10-22 taste 크리틱 반영(사용자 선택): 선 상자 → 면, 번호·라벨 배지 없음, 본문 16px, 히어로 사진(아래로 잦아드는 남색 막), 카드별 실제 화면, 등장 움직임 ===== */
 .tm-in{opacity:0;transform:translateY(16px);transition:opacity .5s cubic-bezier(.2,.7,.2,1),transform .5s cubic-bezier(.2,.7,.2,1)}
 .tm-in.tm-on{opacity:1;transform:none}
-button,.btn,a.btn,.sgo,.pl-b{transition:transform .12s ease,background-color .15s ease}
-button:active,.btn:active,.sgo:active,.pl-b:active{transform:scale(.98)}
+button,.btn,a.btn,.sgo,.ckl-b{transition:transform .12s ease,background-color .15s ease}
+button:active,.btn:active,.sgo:active,.ckl-b:active{transform:scale(.98)}
 @media (prefers-reduced-motion:reduce){.tm-in{opacity:1;transform:none;transition:none}}
 .tb-photo{position:relative;margin:0;overflow:hidden;background:#0F172A}
 .tb-photo img{display:block;width:100%;height:100%;object-fit:cover;animation:tbDrift 24s ease-in-out infinite alternate}
@@ -701,15 +695,15 @@ button:active,.btn:active,.sgo:active,.pl-b:active{transform:scale(.98)}
 @media (prefers-reduced-motion:reduce){.tb-photo img{animation:none}}
 .tb-credit{font-size:12px;color:#64748B;margin:6px auto 0}
 
-body{background:#fff;font-size:16px}
+body{background:#fff;font-size:14px}
 .sec-tag,.sec-label,.sc-n,.mm-n{display:none!important}
-.sc,.pl,.pl-list li,.finish,.vault,details.all{border:0!important;box-shadow:none!important}
-.sc,.pl,details.all{background:#F3F5F8!important;border-radius:16px!important}
-.pl-list li{background:#fff!important;border-radius:12px}
+.sc,.finish,.vault,details.all{border:0!important;box-shadow:none!important}
+.sc,details.all{background:#F3F5F8!important;border-radius:16px!important}
 .chips li{background:#fff!important}
 .sec-title{font-size:clamp(20px,3vw,28px)!important;letter-spacing:-.02em}
-p,.sc-l,.qlead,.sec-sub,.pl-list span:not(.pl-d),.chips li{font-size:16px!important;line-height:1.6}
-.sc-f,.pl-f,.basis{font-size:14px!important}
+p,.sc-l,.qlead,.sec-sub,.chips li,.stp .pitem{font-size:14px!important;line-height:1.7}
+.hero .hero-sub{font-size:16px!important}
+.sc-f,.basis{font-size:14px!important}
 html{overflow-x:clip}
 .hero{position:static}
 p.tb-credit{font-size:12px!important;color:#64748B!important}
@@ -746,7 +740,7 @@ p.tb-credit{font-size:12px!important;color:#64748B!important}
   <a href="#card-2" class="secbar-a"><span class="n">2</span>세금·채권</a>
   <a href="#card-3" class="secbar-a"><span class="n">3</span>잔금일</a>
   <a href="#card-4" class="secbar-a"><span class="n">4</span>신청서·접수</a>
-  <a href="#plan" class="secbar-a">내 일정</a>
+  <a href="#check" class="secbar-a">체크리스트</a>
   <span class="secbar-gap"></span>
   <a href="#vault-sec" class="secbar-a aux">번호 보관함</a>
 </div></div>
@@ -980,42 +974,22 @@ p.tb-credit{font-size:12px!important;color:#64748B!important}
 
 <!-- 번호 보관함 -->
 
-<!-- 내 일정(2026-10-22) — 잔금일을 넣으면 할 일 날짜가 정해진다. 캘린더(.ics)·한 장 인쇄·내 셀프등기로 잔금일 넘기기 -->
-<div class="section" id="plan">
-  <span class="sec-tag">내 일정</span>
-  <h2 class="sec-title">잔금일만 넣으면 할 일 날짜가 정해집니다</h2>
-  <p class="qlead">일반적인 순서로 잡은 권장 일정입니다. 캘린더에 넣어 두면 잔금 전에 놓치는 일이 줄어듭니다.</p>
-  <div class="pl">
-    <div class="pl-top">
-      <label class="pl-lab" for="pl-in">잔금일</label><input type="date" id="pl-in">
-      <div class="pl-sit" role="group" aria-label="내 상황">
-        <button type="button" class="pl-c" data-sit="loan" aria-pressed="false">잔금대출을 받아요</button>
-        <button type="button" class="pl-c" data-sit="joint" aria-pressed="false">공동명의예요</button>
-      </div>
-    </div>
-    <p class="pl-w" id="pl-loan" hidden><b>잔금대출이 있으면 은행이 셀프등기를 허용해야 합니다.</b> 대출을 신청할 때 은행에 먼저 문의하세요.</p>
-    <p class="pl-w" id="pl-joint" hidden><b>공동명의는 매도용 인감증명서에 매수인 전원의 인적사항이 들어가야 합니다.</b> 양쪽이 모두 2명이면 신청서가 2부입니다 — <a href="joint.html">공동명의 셀프등기</a></p>
-    <ol class="pl-list" id="pl-list">
-      <li data-off="-14"><span class="pl-d">잔금 14일 전</span><div><b>매수인 서류 발급</b><span>주민등록등본(뒷자리 포함) · 토지대장 · 건축물대장 — 정부24. 발행일부터 3개월 이내 서류만 쓸 수 있어 너무 일찍 받지 않습니다.</span></div></li>
-      <li data-off="-10"><span class="pl-d">잔금 10일 전</span><div><b>채권 · 인지 · 수수료 납부</b><span>국민주택채권 매입 · 전자수입인지 · 등기신청수수료(서면 18,000원). 잔금 전에 미리 낼 수 있습니다.</span></div></li>
-      <li data-off="-3"><span class="pl-d">잔금 3일 전</span><div><b>매도인에게 매수인 인적사항 전달</b><span>매도용 인감증명서에 적힐 이름·주소·주민등록번호. 틀리면 각하됩니다.</span></div></li>
-      <li data-off="-1"><span class="pl-d">잔금 전날</span><div><b>위임장 출력</b><span>결제 후 Word 파일로 받아 출력해 둡니다. 잔금일에 매도인 인감을 받습니다.</span></div></li>
-      <li data-off="0"><span class="pl-d">잔금일</span><div><b>잔금일 — 날인 · 매도인 서류 · 취득세</b><span>위임장 인감 날인 · 등기필정보 · 매도용 인감증명서 · 초본을 받고, 위택스에서 취득세를 신고·납부합니다.</span></div></li>
-      <li data-off="1"><span class="pl-d">잔금 다음 평일</span><div><b>신청서 출력 · 등기소 접수</b><span>납부 번호가 들어간 신청서를 받아 관할 등기소에 한 번 제출합니다. 빠를수록 좋습니다.</span></div></li>
-      <li data-off="60"><span class="pl-d">잔금일 + 60일</span><div><b>등기 신청 기한</b><span>잔금일부터 60일 안에 신청해야 하며, 넘기면 과태료가 부과될 수 있습니다(부동산등기 특별조치법).</span></div></li>
-    </ol>
-    <div class="pl-act">
-      <a class="pl-b pri" id="pl-go" href="normal_form.html">이 잔금일로 서류 작성 시작 →</a>
-      <button type="button" class="pl-b" id="pl-ics">캘린더에 넣기</button>
-      <button type="button" class="pl-b" id="pl-pr">한 장으로 인쇄</button>
-    </div>
-    <p class="pl-f">날짜는 권장 일정이며 은행·기관 사정에 따라 달라질 수 있습니다. 최종 확인은 관할 등기소에서 하세요.</p>
+<!-- 서류 체크리스트(2026-10-23, 「내 일정」 대체) — 단계별로 챙길 서류. 체크는 이 기기에만, 인쇄는 한 장 -->
+<div class="section" id="check">
+  <h2 class="sec-title">셀프등기 서류 체크리스트</h2>
+  <p class="qlead">챙긴 서류를 체크해 두고, 등기소 가기 전 한 장으로 인쇄해 가방에 넣으면서 확인하세요.</p>
+  <div class="ckl">
+    <section class="ckl-g"><h3>1. 서류 준비<small>잔금 전 · 정부24</small></h3><label><input type="checkbox" data-ck="a1"><span>매매계약서 원본</span></label><label><input type="checkbox" data-ck="a2"><span>부동산거래계약 신고필증</span></label><label><input type="checkbox" data-ck="a3"><span>주민등록등본<small>주민번호 뒷자리 포함</small></span></label><label><input type="checkbox" data-ck="a4"><span>토지대장 · 건축물대장(집합·전유부)</span></label><label><input type="checkbox" data-ck="a5"><span>가족관계증명서<small>취득세 신고용 — 등기소에는 내지 않음</small></span></label></section>
+    <section class="ckl-g"><h3>2. 세금·채권 납부<small>잔금 전</small></h3><label><input type="checkbox" data-ck="b1"><span>취득세 납부확인서<small>납부서(영수증)는 안 됨</small></span></label><label><input type="checkbox" data-ck="b2"><span>국민주택채권 매입 — 채권발행번호</span></label><label><input type="checkbox" data-ck="b3"><span>전자수입인지 출력본</span></label><label><input type="checkbox" data-ck="b4"><span>등기신청수수료 영수필확인서</span></label></section>
+    <section class="ckl-g"><h3>3. 잔금일 매도인에게 받기<small>잔금일</small></h3><label><input type="checkbox" data-ck="c1"><span>위임장 — 매도인 인감 날인</span></label><label><input type="checkbox" data-ck="c2"><span>매도용 인감증명서<small>매수인 인적사항이 맞는지</small></span></label><label><input type="checkbox" data-ck="c3"><span>매도인 주민등록초본<small>주소 변동 이력 전체</small></span></label><label><input type="checkbox" data-ck="c4"><span>등기필정보 원본</span></label></section>
+    <section class="ckl-g"><h3>4. 등기소 접수<small>등기소 가는 날</small></h3><label><input type="checkbox" data-ck="d1"><span>소유권이전등기 신청서 출력본</span></label><label><input type="checkbox" data-ck="d2"><span>신분증 · 도장</span></label></section>
   </div>
+  <div class="ckl-act"><button type="button" class="ckl-b pri" id="ckl-pr">한 장으로 인쇄</button><button type="button" class="ckl-b" id="ckl-rs">체크 지우기</button><span class="ckl-n" id="ckl-n"></span></div>
 </div>
 
 <div class="section" id="vault-sec">
-    <h2 class="sec-title">받은 번호는 어디에 두나요?</h2>
-  <p class="sec-sub">각 단계에서 받은 취득세액·시가표준액·채권번호·수수료 납부번호를 저장해 두면 신청서에 자동으로 채워집니다. 입력값은 이 기기에만 저장되고 서버로 전송되지 않으며, 60일이 지나면 자동으로 사라집니다.</p>
+    <h2 class="sec-title">세금 납부를 마쳤다면 번호를 입력하세요</h2>
+  <p class="sec-sub">가이드를 따라 납부를 마쳤다면 받은 번호를 아래에 입력하고, 바로 서류 작성을 시작해 보세요. 입력한 번호는 신청서에 자동으로 채워집니다.</p>
   <div class="vault">
     <div class="vault-head">
       <div class="vault-h">저장한 등기 번호</div>
@@ -1622,49 +1596,23 @@ window.SR=window.SR||(function(){
 })();
 </script>
 <script>
-/* 내 일정 — 잔금일 기준 권장 날짜. 잔금일은 이 기기의 내 셀프등기(selfregi_hub_v1.balance)와 같은 값을 쓴다 */
+/* 서류 체크리스트 — 체크 상태는 이 기기에만(selfregi_guide_ck_v1). 인쇄는 body.pr-ck 동안 체크리스트만 */
 (function(){
-  var inp=document.getElementById('pl-in'),list=document.getElementById('pl-list');if(!inp||!list)return;
-  function rd(){try{return JSON.parse(localStorage.getItem('selfregi_hub_v1')||'null')||{};}catch(e){return {};}}
-  function pad(n){return ('0'+n).slice(-2);}
-  function add(iso,n){var p=iso.split('-');return new Date(+p[0],+p[1]-1,+p[2]+n);}
-  /* 등기소 접수(잔금 다음 날)는 주말이면 월요일로 — 등기소는 평일만 연다 */
-  function at(iso,o){var d=add(iso,o);if(o===1)while(d.getDay()===0||d.getDay()===6)d.setDate(d.getDate()+1);return d;}
-  var W='일월화수목금토';
-  function fmt(d){return (d.getMonth()+1)+'월 '+d.getDate()+'일('+W[d.getDay()]+')';}
-  function draw(){
-    var v=inp.value,today=new Date();today.setHours(0,0,0,0);
-    [].forEach.call(list.children,function(li){var o=+li.getAttribute('data-off'),el=li.querySelector('.pl-d');
-      if(!el._t)el._t=el.textContent;
-      if(!v){el.textContent=el._t;li.classList.remove('past');return;}
-      var d=at(v,o);el.textContent=fmt(d);li.classList.toggle('past',d<today&&o!==60);});
-    document.getElementById('pl-go').textContent=v?'이 잔금일로 서류 작성 시작 →':'서류 작성 시작 →';
-  }
-  var h=rd();if(h.balance)inp.value=h.balance;draw();
-  inp.addEventListener('change',function(){draw();try{window.SR&&SR.track('guide_plan',{key:'date'});}catch(e){}});
-  [].forEach.call(document.querySelectorAll('.pl-c'),function(b){b.addEventListener('click',function(){
-    var on=b.getAttribute('aria-pressed')!=='true';b.setAttribute('aria-pressed',String(on));
-    var w=document.getElementById('pl-'+b.getAttribute('data-sit'));if(w)w.hidden=!on;
-    try{window.SR&&SR.track('guide_plan',{key:b.getAttribute('data-sit')});}catch(e){}});});
-  /* 내 셀프등기로 잔금일을 넘긴다 — 같은 기기 저장값(selfregi_hub_v1)에 잔금일만 더한다 */
-  document.getElementById('pl-go').addEventListener('click',function(){
-    if(!inp.value)return;try{var o=rd();o.balance=inp.value;localStorage.setItem('selfregi_hub_v1',JSON.stringify(o));}catch(e){}
-    try{window.SR&&SR.track('guide_plan',{key:'go'});}catch(e){}});
-  document.getElementById('pl-pr').addEventListener('click',function(){window.print();});
-  document.getElementById('pl-ics').addEventListener('click',function(){
-    if(!inp.value){inp.focus();if(typeof toast==='function')toast('잔금일을 먼저 넣어 주세요.');return;}
-    var L=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//selfregi24//plan//KO','CALSCALE:GREGORIAN'],st=new Date().toISOString().replace(/[-:]/g,'').slice(0,15)+'Z';
-    function ymd(x){return x.getFullYear()+pad(x.getMonth()+1)+pad(x.getDate());}
-    [].forEach.call(list.children,function(li,i){var o=+li.getAttribute('data-off'),d=at(inp.value,o),e=new Date(d.getFullYear(),d.getMonth(),d.getDate()+1);
-      var t=li.querySelector('b').textContent,ds=li.querySelector('div span').textContent.replace(/[,;\\]/g,function(c){return '\\'+c;});
-      L.push('BEGIN:VEVENT','UID:sr-plan-'+ymd(d)+'-'+i+'@selfregi24.com','DTSTAMP:'+st,'DTSTART;VALUE=DATE:'+ymd(d),'DTEND;VALUE=DATE:'+ymd(e),'SUMMARY:셀프등기 · '+t,'DESCRIPTION:'+ds+'\\nhttps://www.selfregi24.com/guide.html#plan','END:VEVENT');});
-    L.push('END:VCALENDAR');
-    var a=document.createElement('a');a.href=URL.createObjectURL(new Blob([L.join('\r\n')],{type:'text/calendar'}));a.download='셀프등기_일정.ics';document.body.appendChild(a);a.click();
-    setTimeout(function(){URL.revokeObjectURL(a.href);a.remove();},300);
-    try{window.SR&&SR.track('guide_plan',{key:'ics'});}catch(e){}});
+  var K='selfregi_guide_ck_v1',box=document.getElementById('check');if(!box)return;
+  var ins=[].slice.call(box.querySelectorAll('input[data-ck]')),st={};
+  try{st=JSON.parse(localStorage.getItem(K)||'{}')||{};}catch(e){}
+  function draw(){var n=0;ins.forEach(function(i){i.checked=!!st[i.getAttribute('data-ck')];i.parentNode.classList.toggle('on',i.checked);if(i.checked)n++;});
+    document.getElementById('ckl-n').textContent=n+' / '+ins.length;}
+  function save(){try{localStorage.setItem(K,JSON.stringify(st));}catch(e){}}
+  ins.forEach(function(i){i.addEventListener('change',function(){st[i.getAttribute('data-ck')]=i.checked?1:0;save();draw();});});
+  document.getElementById('ckl-rs').addEventListener('click',function(){st={};save();draw();});
+  document.getElementById('ckl-pr').addEventListener('click',function(){document.body.classList.add('pr-ck');window.print();
+    try{window.SR&&SR.track('guide_check',{key:'print'});}catch(e){}});
+  window.addEventListener('afterprint',function(){document.body.classList.remove('pr-ck');});
+  draw();
 })();
 </script>
-<script>window.TM_TARGETS=".sc,.pl-list li,.sec-title,.qlead,.rin,details.all";</script>
+<script>window.TM_TARGETS=".sc,.ckl-g,.sec-title,.qlead,.rin,details.all";</script>
 <script>
 /* 시안 움직임: 화면에 들어오는 블록이 16px 떠오르며 나타난다(한 번). 줄인 움직임 설정이면 움직이지 않는다 */
 (function(){
