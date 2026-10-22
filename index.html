@@ -229,12 +229,23 @@ header{background:var(--bg)}
 .pc-go{margin-top:auto;display:flex;align-items:center;justify-content:center;min-height:48px;border-radius:12px;background:var(--navy);color:#fff;font-weight:800;font-size:16px;text-decoration:none}
 .pcommon{padding:24px 28px}
 .hero-rvl{margin:10px 0 0;font-size:14px;text-align:center}.hero-rvl a{color:#334155;font-weight:600;text-decoration:underline;text-underline-offset:3px}.hero-rvl b{color:#B45309}
-.prv{scroll-margin-top:80px;max-width:780px;margin:0 auto 14px;background:#fff;border:1.5px solid var(--border);border-radius:16px;padding:18px 28px;text-align:left}
-.prv-h{margin:0 0 6px;font-size:14px;color:var(--muted)}
-.prv-h b{font-size:16px;color:var(--navy);margin-right:6px}
-.prv-h span{color:#B45309;font-weight:700}
-.prv-t{margin:0;font-size:16px;line-height:1.7;color:#334155}
-@media(max-width:760px){.prv{padding:16px 18px}}
+/* 이용자 후기 띠 — 요금 상자 아래·「지금 시작하기」 위. 설명 상자와 구분되도록 별점·큰 인용문·작성자 줄(인용 카드 관례) */
+.rv-band{scroll-margin-top:80px;max-width:780px;margin:44px auto 0;padding:0 20px;box-sizing:content-box}
+.rv-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:0 0 14px}
+.rv-h{margin:0;font-size:24px;font-weight:700;color:var(--navy);letter-spacing:-.02em}
+.rv-sum{margin:0;font-size:14px;color:var(--muted)}
+.rv-sum b{color:var(--navy);font-size:16px}
+.rv-stars{color:#F59E0B;letter-spacing:2px}
+.rv-card{position:relative;margin:0;background:#fff;border:1px solid var(--border);border-radius:16px;padding:28px 32px 24px;box-shadow:0 1px 2px rgba(15,23,42,.04),0 8px 24px -12px rgba(15,23,42,.12);overflow:hidden}
+.rv-card::before{content:'\201C';position:absolute;right:24px;top:-6px;font:700 120px/1 Georgia,serif;color:#E0F2FE;pointer-events:none}
+.rv-card .rv-stars{position:relative;font-size:18px}
+.rv-q{position:relative;margin:10px 0 20px;font-size:20px;font-weight:500;line-height:1.6;color:var(--navy);letter-spacing:-.01em}
+.rv-by{display:flex;align-items:center;gap:12px;padding-top:16px;border-top:1px solid var(--border)}
+.rv-av{display:grid;place-items:center;width:40px;height:40px;border-radius:50%;background:#E0F2FE;color:var(--blue);font-size:14px;font-weight:700;flex:none}
+.rv-by b{display:block;font-size:16px;color:var(--navy)}
+.rv-by small{display:block;font-size:14px;color:var(--muted)}
+.rv-note{margin:10px 0 0;font-size:12px;color:var(--muted)}
+@media(max-width:760px){.rv-band{margin-top:32px}.rv-h{font-size:20px}.rv-card{padding:22px 20px 18px}.rv-q{font-size:18px}.rv-card::before{font-size:96px;right:14px}}
 @media(max-width:760px){.ptabs{display:flex}.pgrid{grid-template-columns:1fr}.pcard.off{display:none}}
 .price-box{max-width:780px;margin:0 auto;background:#fff;border:1.5px solid var(--border);border-radius:16px;padding:36px 28px;text-align:center;box-shadow:var(--shadow)}
 /* (미사용) 출시 기념 배지 — 2026-09-24 유료 전환으로 마크업 제거. 안내 무료(.price-free, 녹색)와 구분되도록 액센트 블루를 쓴다. */
@@ -1055,11 +1066,6 @@ html.mnav-open,html.mnav-open body{overflow:hidden}
       <a class="pc-go" href="normal_form.html?type=gift">증여 서류 작성하기</a>
     </section>
   </div>
-  <!-- 실사용자 후기(2026-10-22) — 결제 확인 후기 중 공개 동의한 것만 원문 그대로(normal_form PUB_REVIEWS와 같은 값). 가짜·각색 금지(copy.md) -->
-  <section class="prv" id="price-rv" aria-label="실사용자 후기">
-    <p class="prv-h"><b>실사용자 후기</b> <span>별점 5.0 · 결제 이용자 1건</span></p>
-    <p class="prv-t">익명 — “셀프등기 처음 해보는데 자동으로 작성해주고, 설명도 자세히 되어 있어서 서류 작성이 어렵지 않았습니다. 덕분에 법무사 비용 많이 절감했고, 주위에도 알려줄 생각입니다.”</p>
-  </section>
   <div class="price-box pcommon">
     <div class="price-free">가이드·체크리스트·로드맵·관할 등기소 안내 무료</div>
     <ul class="price-list">
@@ -1109,6 +1115,23 @@ html.mnav-open,html.mnav-open body{overflow:hidden}
   pick('sale', false);
 })();
 </script>
+
+<!-- 실사용자 후기(2026-10-22 · 10-23 요금 아래 독립 띠로) — 결제 확인 후기 중 공개 동의한 것만 원문 그대로(normal_form PUB_REVIEWS와 같은 값). 가짜·각색 금지(copy.md).
+     후기가 늘면 .rv-card를 하나 더 두고 .rv-list를 2열로 -->
+<section class="rv-band" id="price-rv" aria-labelledby="rv-h">
+  <div class="rv-head">
+    <h2 class="rv-h" id="rv-h">이용자 후기</h2>
+    <p class="rv-sum">평균 <b>5.0</b> · 결제 이용자 후기 1건</p>
+  </div>
+  <div class="rv-list">
+    <figure class="rv-card">
+      <span class="rv-stars" role="img" aria-label="별점 5점 만점에 5점">★★★★★</span>
+      <blockquote class="rv-q">셀프등기 처음 해보는데 자동으로 작성해주고, 설명도 자세히 되어 있어서 서류 작성이 어렵지 않았습니다. 덕분에 법무사 비용 많이 절감했고, 주위에도 알려줄 생각입니다.</blockquote>
+      <figcaption class="rv-by"><span class="rv-av" aria-hidden="true">익</span><span><b>익명</b><small>결제 이용자 · 공개 동의</small></span></figcaption>
+    </figure>
+  </div>
+  <p class="rv-note">결제가 확인된 이용자가 공개에 동의한 후기를 고치지 않고 싣습니다.</p>
+</section>
 
 <!-- ⑤ 케이스 선택 (제품 시작) — 마무리 컬러 블록 안에 둔다 -->
 <section class="finale" aria-labelledby="finale-h">
