@@ -108,7 +108,7 @@
     // 팝업 차단을 피하려면 클릭 직후 동기적으로 창을 먼저 연다.
     var w = null;
     try { w = window.open('', 'srpay', 'width=480,height=780'); } catch (e) { w = null; }
-    if (w) { try { w.document.title = '토스페이 결제'; w.document.body.innerHTML = '<p style="font:15px sans-serif;padding:24px;color:#334155">토스페이 결제창을 여는 중입니다…</p>'; } catch (e) {} }
+    if (w) { try { w.document.title = '토스페이 결제'; w.document.body.innerHTML = '<p style="font:16px sans-serif;padding:24px;color:#334155">토스페이 결제창을 여는 중입니다…</p>'; } catch (e) {} }
 
     fetch('/api/pay/create', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ product: cur }) })
       .then(asJson)
@@ -147,7 +147,7 @@
     track('begin_checkout', { value: P().price, currency: 'KRW', payment_type: 'payapp', product: cur });
     var w = null;
     try { w = window.open('', 'PayAppWindow', 'width=480,height=780'); } catch (e) { w = null; }
-    if (w) { try { w.document.title = '네이버페이 결제'; w.document.body.innerHTML = '<p style="font:15px sans-serif;padding:24px;color:#334155">결제창을 여는 중입니다…</p>'; } catch (e) {} }
+    if (w) { try { w.document.title = '네이버페이 결제'; w.document.body.innerHTML = '<p style="font:16px sans-serif;padding:24px;color:#334155">결제창을 여는 중입니다…</p>'; } catch (e) {} }
     Promise.all([
       fetch('/api/pay/payapp-create', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ product: cur }) }).then(asJson),
       loadPa(),
@@ -286,12 +286,12 @@
         '#srpay-sheet .srp-bg{position:absolute;inset:0;background:rgba(15,23,42,.45)}' +
         '#srpay-sheet .srp-card{position:relative;background:#fff;width:100%;max-width:440px;border-radius:16px 16px 0 0;padding:22px 20px calc(18px + env(safe-area-inset-bottom));font-family:inherit;color:#0F172A;box-shadow:0 -8px 30px rgba(0,0,0,.18)}' +
         '@media(min-width:600px){#srpay-sheet{align-items:center}#srpay-sheet .srp-card{border-radius:16px}}' +
-        '#srpay-sheet .srp-h{font-size:17px;font-weight:800;margin-bottom:8px}' +
+        '#srpay-sheet .srp-h{font-size:18px;font-weight:800;margin-bottom:8px}' +
         '#srpay-sheet .srp-d{font-size:14px;line-height:1.6;color:#334155;margin:0 0 10px;word-break:keep-all}' +
-        '#srpay-sheet .srp-l{font-size:13px;line-height:1.7;color:#475569;margin:0 0 16px;padding-left:18px;word-break:keep-all}' +
-        '#srpay-sheet .srp-k{font-size:13px;font-weight:700;color:#0F172A;margin:0 0 8px}' +
+        '#srpay-sheet .srp-l{font-size:14px;line-height:1.7;color:#475569;margin:0 0 16px;padding-left:18px;word-break:keep-all}' +
+        '#srpay-sheet .srp-k{font-size:14px;font-weight:700;color:#0F172A;margin:0 0 8px}' +
         '#srpay-sheet .srp-go{width:100%;min-height:50px;border:0;border-radius:12px;background:#0064FF;color:#fff;font-size:16px;font-weight:800;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px}' +
-        '#srpay-sheet .srp-go small{font-size:12.5px;font-weight:600;opacity:.85}' +
+        '#srpay-sheet .srp-go small{font-size:12px;font-weight:600;opacity:.85}' +
         '#srpay-sheet .srp-pa{margin-top:8px;background:#0F172A}' +
         '#srpay-sheet .srp-x{width:100%;min-height:44px;border:0;background:none;color:#64748B;font-size:14px;margin-top:6px;cursor:pointer;font-family:inherit}';
       document.head.appendChild(css);

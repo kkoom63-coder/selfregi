@@ -108,7 +108,7 @@
 body{word-break:keep-all;overflow-wrap:break-word} /* 한국어 단어 중간 줄바꿈 방지 — 팝업·패널 포함 사이트 전체 기본값(2026-10-17) */
 /* 키보드 사용자용 본문 바로가기. position:fixed 로 둔다 —
    absolute+left:-9999px 는 body{overflow-x:hidden}에 잘려 포커스를 받아도 안 보이는 경우가 있다. */
-.skip-link{position:fixed;top:-64px;left:8px;background:var(--navy);color:#fff;padding:10px 16px;min-height:44px;display:inline-flex;align-items:center;border-radius:8px;font-size:13px;font-weight:700;text-decoration:none;z-index:var(--z-skip);transition:top .15s}
+.skip-link{position:fixed;top:-64px;left:8px;background:var(--navy);color:#fff;padding:10px 16px;min-height:44px;display:inline-flex;align-items:center;border-radius:8px;font-size:14px;font-weight:700;text-decoration:none;z-index:var(--z-skip);transition:top .15s}
 .skip-link:focus{top:8px}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -130,7 +130,7 @@ nav{background:rgba(248,250,252,.86);backdrop-filter:saturate(140%) blur(8px);-w
 }
 .nav-inner::-webkit-scrollbar { display:none; }
 .nav-logo{flex-shrink:0;font-size:16px;font-weight:800;color:var(--navy);text-decoration:none;margin-right:auto;letter-spacing:-.3px}
-.nav-logo span{display:inline-block;background:#E0F2FE;color:#075985;font-size:11px;font-weight:700;letter-spacing:1.2px;padding:1px 6px;border-radius:10px;vertical-align:middle;margin-left:6px}
+.nav-logo span{display:inline-block;background:#E0F2FE;color:#075985;font-size:12px;font-weight:700;letter-spacing:1.2px;padding:1px 6px;border-radius:10px;vertical-align:middle;margin-left:6px}
 .nav-a{flex-shrink:0;color:#334155;font-size:14px;font-weight:600;padding:8px 10px;border-radius:7px;text-decoration:none;transition:all .15s}
 .nav-a:hover{background:#F1F5F9;color:var(--navy)}
 .nav-a.active{background:#E0F2FE;color:#075985;font-weight:600}
@@ -141,7 +141,7 @@ nav{background:rgba(248,250,252,.86);backdrop-filter:saturate(140%) blur(8px);-w
 
 .back-bar{background:var(--bg);padding:10px 20px 0}
 .back-bar-inner{max-width:1080px;margin:0 auto;display:flex;align-items:center}
-.back-a{display:inline-flex;align-items:center;gap:4px;color:#075985;background:#E0F2FE;font-size:11.5px;font-weight:700;text-decoration:none;padding:5px 12px;border-radius:20px;transition:background .12s;}
+.back-a{display:inline-flex;align-items:center;gap:4px;color:#075985;background:#E0F2FE;font-size:12px;font-weight:700;text-decoration:none;padding:5px 12px;border-radius:20px;transition:background .12s;}
 .back-a:hover{background:#BAE6FD}
 
 
@@ -153,9 +153,9 @@ nav{background:rgba(248,250,252,.86);backdrop-filter:saturate(140%) blur(8px);-w
 .scope-note a{color:#92400e;font-weight:700;text-decoration:underline}
 .page-header{background:var(--bg);padding:44px 20px 36px}
 .page-header-inner{max-width:1080px;margin:0 auto}
-.page-eyebrow{display:inline-block;background:#E0F2FE;border:1px solid #BAE6FD;color:#075985;font-size:11px;font-weight:700;letter-spacing:.8px;padding:3px 12px;border-radius:20px;margin-bottom:12px}
-.page-header h1{font-size:clamp(22px,3.4vw,28px);font-weight:900;color:var(--navy);margin-bottom:6px;word-break:keep-all}
-.page-header p{font-size:13.5px;color:var(--muted);word-break:keep-all}
+.page-eyebrow{display:inline-block;background:#E0F2FE;border:1px solid #BAE6FD;color:#075985;font-size:12px;font-weight:700;letter-spacing:.8px;padding:3px 12px;border-radius:20px;margin-bottom:12px}
+.page-header h1{font-size:clamp(20px,3.4vw,28px);font-weight:800;color:var(--navy);margin-bottom:6px;word-break:keep-all}
+.page-header p{font-size:14px;color:var(--muted);word-break:keep-all}
 
 main{max-width:1200px;margin:0 auto;padding:20px 20px 60px}
 .card{background:var(--card);border-radius:var(--radius);border:1px solid var(--border);padding:22px;margin-bottom:14px;box-shadow:var(--shadow)}
@@ -180,7 +180,7 @@ main{max-width:1200px;margin:0 auto;padding:20px 20px 60px}
 .inp-unit{position:absolute;right:12px;top:50%;transform:translateY(-50%);font-size:12px;color:var(--muted);pointer-events:none; font-weight:500;}
 
 .seg{display:flex;gap:6px;flex-wrap:wrap}
-.seg-btn{flex:1;min-width:70px;padding:9px 8px;border:1.5px solid var(--border);background:#fff;border-radius:8px;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;transition:all .15s;text-align:center; word-break:keep-all;}
+.seg-btn{flex:1;min-width:70px;padding:9px 8px;border:1.5px solid var(--border);background:#fff;border-radius:8px;font-size:14px;font-weight:600;color:var(--muted);cursor:pointer;transition:all .15s;text-align:center; word-break:keep-all;}
 .seg-btn:hover{border-color:var(--blue);color:var(--blue)}
 /* 키보드 포커스 표시 — 입력 폼이 있는 페이지라 필수. 마우스 클릭에는 나타나지 않는다. */
 a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,
@@ -190,7 +190,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,
 .divider{border:none;border-top:1px solid var(--border);margin:18px 0}
 
 .result-area{background:#f8fafc;border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-top:18px}
-.res-row{display:flex;justify-content:space-between;align-items:center;padding:11px 16px;font-size:13px;border-bottom:1px solid var(--border)}
+.res-row{display:flex;justify-content:space-between;align-items:center;padding:11px 16px;font-size:14px;border-bottom:1px solid var(--border)}
 .res-row:last-child{border-bottom:none}
 .res-row .l{color:var(--muted)}
 .res-row .v{font-weight:600;color:var(--text)}
@@ -199,34 +199,34 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,
 
 /* 2026-10-17 주소로 공시가격·채권 */
 .adr-d{margin:4px 0 14px;border:1px solid var(--border);border-radius:10px;background:#fff}
-.adr-d>summary{cursor:pointer;list-style:none;padding:11px 14px;font-size:13.5px;font-weight:700;color:var(--blue)}
+.adr-d>summary{cursor:pointer;list-style:none;padding:11px 14px;font-size:14px;font-weight:700;color:var(--blue)}
 .adr-d>summary::-webkit-details-marker{display:none}.adr-d>summary span{font-weight:500;color:var(--muted)}
 .adr-row{display:flex;gap:8px;flex-wrap:wrap;padding:0 14px}
-.adr-row input{flex:1 1 180px;min-width:0;min-height:44px;border:1.5px solid var(--border);border-radius:8px;padding:0 12px;font-family:inherit;font-size:15px}
+.adr-row input{flex:1 1 180px;min-width:0;min-height:44px;border:1.5px solid var(--border);border-radius:8px;padding:0 12px;font-family:inherit;font-size:16px}
 .adr-row input#adr-dh{flex:0 1 170px}
 .adr-row button{flex:none;min-height:44px;padding:0 18px;border:0;border-radius:8px;background:var(--blue);color:#fff;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer}
-.adr-msg{margin:8px 14px 12px;font-size:12.5px;color:var(--muted);line-height:1.6}
-.bond-box{margin-top:12px;border:1px solid #BAE6FD;background:#F0F9FF;border-radius:10px;padding:12px 14px;font-size:13.5px;color:#0C4A6E;line-height:1.7}
+.adr-msg{margin:8px 14px 12px;font-size:12px;color:var(--muted);line-height:1.6}
+.bond-box{margin-top:12px;border:1px solid #BAE6FD;background:#F0F9FF;border-radius:10px;padding:12px 14px;font-size:14px;color:#0C4A6E;line-height:1.7}
 .bond-box b{color:var(--navy)}.bond-box .bb-row{display:flex;justify-content:space-between;gap:10px}.bond-box .bb-row span:last-child{white-space:nowrap;font-weight:700;color:var(--navy)}
 .bond-box .bb-sum{margin-top:6px;padding-top:6px;border-top:1px dashed #BAE6FD}
 .bond-box .bb-fn{margin-top:6px;font-size:12px;color:#475569}
 .res-total{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:14px 16px;background:#E0F2FE;border-top:1.5px solid #BAE6FD}
-.res-total .l{min-width:0;font-size:15px;font-weight:700;color:var(--navy)}
-.res-total .v{flex:none;white-space:nowrap;font-size:22px;font-weight:800;color:var(--navy)} /* 금액은 두 줄로 깨지지 않게(2026-10-17) */
-.res-ph{padding:22px 18px;color:var(--muted);font-size:13px}
-.ph-lead{text-align:center;color:#b0bcc8;font-size:13px;margin-bottom:18px}
+.res-total .l{min-width:0;font-size:16px;font-weight:700;color:var(--navy)}
+.res-total .v{flex:none;white-space:nowrap;font-size:24px;font-weight:800;color:var(--navy)} /* 금액은 두 줄로 깨지지 않게(2026-10-17) */
+.res-ph{padding:22px 18px;color:var(--muted);font-size:14px}
+.ph-lead{text-align:center;color:#b0bcc8;font-size:14px;margin-bottom:18px}
 .ph-ex{background:#F8FAFC;border:1px solid var(--border);border-radius:10px;padding:16px 18px}
 .ph-ex-h{font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.02em;margin-bottom:12px;word-break:keep-all}
 .ph-ex-l{display:flex;flex-direction:column;gap:8px}
-.ph-ex-l>div{display:flex;justify-content:space-between;align-items:baseline;gap:12px;font-size:13px}
+.ph-ex-l>div{display:flex;justify-content:space-between;align-items:baseline;gap:12px;font-size:14px}
 .ph-ex-l dt{color:var(--muted)}
 .ph-ex-l dd{font-weight:600;color:var(--text);font-variant-numeric:tabular-nums;white-space:nowrap}
 .ph-ex-t{padding-top:8px;border-top:1px solid var(--border)}
 .ph-ex-t dt{color:var(--navy);font-weight:700}
 .ph-ex-t dd{color:var(--navy);font-weight:800}
-.ph-ex-n{font-size:11.5px;color:var(--muted);line-height:1.7;margin-top:12px;word-break:keep-all}
+.ph-ex-n{font-size:12px;color:var(--muted);line-height:1.7;margin-top:12px;word-break:keep-all}
 
-.rate-tag{display:inline-block;background:#E0F2FE;color:var(--blue);font-size:11px;font-weight:700;padding:2px 8px;border-radius:6px;margin-left:6px;vertical-align:middle}
+.rate-tag{display:inline-block;background:#E0F2FE;color:var(--blue);font-size:12px;font-weight:700;padding:2px 8px;border-radius:6px;margin-left:6px;vertical-align:middle}
 .heavy-tag{background:#fff0f0;color:#DC2626}
 
 .ntc{border-radius:8px;padding:11px 13px;font-size:12px;line-height:1.7;margin-top:14px;word-break:keep-all}
@@ -258,7 +258,7 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:40px;p
 .foot-links{display:flex;gap:6px 14px;margin-bottom:12px;flex-wrap:wrap}
 .foot-links a{color:var(--muted);font-size:12px;text-decoration:none;padding:2px 0}
 .foot-links a:hover{color:var(--navy)}
-.foot-copy{font-size:11px;color:var(--muted);line-height:1.9;word-break:keep-all}.foot-biz{font-size:11.5px;color:#334155;font-weight:500;margin-bottom:10px}.foot-biz a{color:var(--blue);text-decoration:none}
+.foot-copy{font-size:12px;color:var(--muted);line-height:1.9;word-break:keep-all}.foot-biz{font-size:12px;color:#334155;font-weight:500;margin-bottom:10px}.foot-biz a{color:var(--blue);text-decoration:none}
 
 @media(max-width:520px){
   .field-grid.col2{grid-template-columns:1fr}
@@ -284,7 +284,7 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:40px;p
      본문 문장 속 링크는 SC 2.5.8 '인라인' 예외라 대상이 아니다. */
   .foot-links a{display:inline-block;min-height:24px;line-height:24px;min-width:24px;text-align:center}
   /* 모바일 가독 하한 */
-  .page-eyebrow{font-size:11px}
+  .page-eyebrow{font-size:12px}
 }
 .nav-logo{display:inline-flex;align-items:center;gap:7px}.nav-mark{width:22px;height:22px;flex:none}.nav-logo b{color:#0369A1;font-weight:inherit}.nav-wm{font-weight:inherit}/* 푸터 공통 — index.html 기준 (2026-10-04) */
 footer{background:var(--bg);border-top:1px solid var(--border);margin-top:40px;padding:32px 20px 28px}
@@ -293,12 +293,12 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:40px;p
 .foot-links{display:flex;gap:6px 14px;margin-bottom:12px;flex-wrap:wrap}
 .foot-links a{color:var(--muted);font-size:12px;text-decoration:none;padding:2px 0}
 .foot-links a:hover{color:var(--navy)}
-.foot-biz{font-size:11.5px;color:#334155;font-weight:500;margin-bottom:10px}.foot-biz a{color:var(--blue);text-decoration:underline}
-.foot-copy{font-size:11px;color:var(--muted);line-height:1.9;word-break:keep-all}
+.foot-biz{font-size:12px;color:#334155;font-weight:500;margin-bottom:10px}.foot-biz a{color:var(--blue);text-decoration:underline}
+.foot-copy{font-size:12px;color:var(--muted);line-height:1.9;word-break:keep-all}
 
 /* 상단 메뉴 — index.html 수치로 통일 (2026-10-04) */
 .nav-inner{max-width:1200px;padding:0 20px;height:54px;gap:2px}
-.nav-logo{font-size:15px;letter-spacing:-.02em}
+.nav-logo{font-size:16px;letter-spacing:-.02em}
 .nav-a{font-size:14px;font-weight:600;padding:8px 12px;border-radius:7px;letter-spacing:-.16px}
 .nav-scroll{gap:2px}
 @media(max-width:768px){.nav-logo{margin-right:8px}}
@@ -327,10 +327,10 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:40px;p
   .nav-scroll{overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 20px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 20px),transparent)}
   .nav-scroll::-webkit-scrollbar{display:none}
   .nav-logo{font-size:14px;margin-right:8px}.nav-mark{width:20px;height:20px}
-  .nav-a{font-size:13.5px;padding:8px 10px}
+  .nav-a{font-size:14px;padding:8px 10px}
   .nav-a.cta{padding:8px 12px;margin-left:6px}
 }
-@media(max-width:560px){.nav-a{font-size:13px;padding:7px 9px}.nav-a.cta{font-size:13px;padding:7px 11px}}
+@media(max-width:560px){.nav-a{font-size:14px;padding:7px 9px}.nav-a.cta{font-size:14px;padding:7px 11px}}
 
 /* 본문 시작점을 상단 메뉴 로고(index 기준)와 맞춤 */
 .page-header-inner{max-width:1160px}
@@ -356,8 +356,8 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:40px;p
 .mnav-acc[aria-expanded="true"] svg{transform:rotate(180deg)}
 .mnav-sub{padding:2px 0 10px;border-bottom:1px solid var(--border)}
 .mnav-sub[hidden]{display:none}
-.mnav-sub a{display:block;padding:10px 12px;border-radius:8px;font-size:15px;font-weight:600;color:#334155;text-decoration:none}
-.mnav-sub a span{display:block;font-size:12.5px;font-weight:500;color:#475569;margin-top:2px}
+.mnav-sub a{display:block;padding:10px 12px;border-radius:8px;font-size:16px;font-weight:600;color:#334155;text-decoration:none}
+.mnav-sub a span{display:block;font-size:12px;font-weight:500;color:#475569;margin-top:2px}
 .mnav-sub a[aria-current="page"]{background:#E0F2FE;color:#075985}
 .mnav-cta{padding:14px 20px calc(14px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--border);background:#fff}
 .mnav-cta a{display:flex;align-items:center;justify-content:center;min-height:52px;border-radius:10px;background:var(--blue);color:#fff;font-size:16px;font-weight:700;text-decoration:none}
@@ -375,24 +375,24 @@ html.mnav-open,html.mnav-open body{overflow:hidden}
 /* 잔금일 기준 할 일 달력(2026-10-17) — 결과 아래 법무사 보수 상자·잔금대출 질문을 대체 */
 .pl [hidden]{display:none}
 .pl{margin-top:20px;background:#fff;border:1px solid var(--border);border-radius:12px;padding:20px 18px}
-.pl-h{font-size:17px;font-weight:800;color:var(--navy)}
-.pl-sub{font-size:13px;color:var(--muted);margin:4px 0 12px}
+.pl-h{font-size:18px;font-weight:800;color:var(--navy)}
+.pl-sub{font-size:14px;color:var(--muted);margin:4px 0 12px}
 .pl-in{display:flex;align-items:center;gap:10px;margin-bottom:6px}
 .pl-in span{font-size:14px;font-weight:700;color:var(--navy);white-space:nowrap}
-.pl-in input{flex:1;min-width:0;min-height:44px;border:1.5px solid var(--blue);border-radius:10px;padding:0 12px;font-family:inherit;font-size:15px;font-weight:600;color:var(--navy);background:#fff}
+.pl-in input{flex:1;min-width:0;min-height:44px;border:1.5px solid var(--blue);border-radius:10px;padding:0 12px;font-family:inherit;font-size:16px;font-weight:600;color:var(--navy);background:#fff}
 .pl-list{list-style:none;margin:0;padding:0}
 .pl-list li{display:flex;gap:12px;padding:12px 0;border-top:1px solid #F1F5F9}
 .pl-list li:first-child{border-top:0}
 .pl-d{flex:none;width:68px}
-.pl-d b{display:block;font-size:13px;color:var(--blue)}.pl-d small{font-size:12.5px;color:var(--muted)}
-.pl-t{min-width:0}.pl-t b{display:block;font-size:15px;color:var(--navy)}.pl-t small{display:block;font-size:13px;color:#475569;margin-top:2px;line-height:1.55}
-.pl-go{display:inline-block;white-space:nowrap;margin-top:8px;background:var(--blue);color:#fff;border-radius:8px;padding:9px 12px;font-size:13.5px;font-weight:700;text-decoration:none}
-.pl-dl{margin-top:8px;background:#FEF3C7;border-radius:10px;padding:10px 12px;font-size:13.5px;color:#78350F}
+.pl-d b{display:block;font-size:14px;color:var(--blue)}.pl-d small{font-size:12px;color:var(--muted)}
+.pl-t{min-width:0}.pl-t b{display:block;font-size:16px;color:var(--navy)}.pl-t small{display:block;font-size:14px;color:#475569;margin-top:2px;line-height:1.55}
+.pl-go{display:inline-block;white-space:nowrap;margin-top:8px;background:var(--blue);color:#fff;border-radius:8px;padding:9px 12px;font-size:14px;font-weight:700;text-decoration:none}
+.pl-dl{margin-top:8px;background:#FEF3C7;border-radius:10px;padding:10px 12px;font-size:14px;color:#78350F}
 .pl-bar{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
 .pl-bar button{min-height:44px;border:1.5px solid var(--border);border-radius:10px;background:#fff;font-family:inherit;font-size:14px;font-weight:700;color:var(--navy);cursor:pointer}
-.pl-fee{margin:14px 0 0;padding-top:12px;border-top:1px solid var(--border);font-size:13.5px;color:#334155}
+.pl-fee{margin:14px 0 0;padding-top:12px;border-top:1px solid var(--border);font-size:14px;color:#334155}
 .pl-fn a{color:var(--blue);font-weight:700}
-.pl-fn{margin:6px 0 0;font-size:11.5px;color:var(--muted);line-height:1.6}
+.pl-fn{margin:6px 0 0;font-size:12px;color:var(--muted);line-height:1.6}
 </style>
 </head>
 <body>
@@ -452,7 +452,7 @@ html.mnav-open,html.mnav-open body{overflow:hidden}
     <hr class="divider">
 
     <div class="field" style="margin-bottom:14px">
-      <label>취득 후 보유 주택 수 <span style="font-size:11px;font-weight:400;color:var(--muted)">(세대원 포함)</span></label>
+      <label>취득 후 보유 주택 수 <span style="font-size:12px;font-weight:400;color:var(--muted)">(세대원 포함)</span></label>
       <div class="seg" id="seg-house">
         <button class="seg-btn on" data-val="1" onclick="setSeg('seg-house',this)">1주택</button>
         <button class="seg-btn"   data-val="2" onclick="setSeg('seg-house',this)">2주택</button>
@@ -472,7 +472,7 @@ html.mnav-open,html.mnav-open body{overflow:hidden}
 
     <!-- 감면 조건 (1주택자용 점진적 노출, 신생아 감면 추가) -->
     <div class="field" id="row-benefit">
-      <label>취득세 감면 대상 여부 <span style="font-size:11px;font-weight:400;color:var(--muted)">(택 1)</span></label>
+      <label>취득세 감면 대상 여부 <span style="font-size:12px;font-weight:400;color:var(--muted)">(택 1)</span></label>
       <div class="seg" id="seg-benefit">
         <button class="seg-btn on" data-val="none" onclick="setSeg('seg-benefit',this)">해당 없음</button>
         <button class="seg-btn" data-val="first" onclick="setSeg('seg-benefit',this)">생애최초 주택</button>
@@ -595,7 +595,7 @@ html.mnav-open,html.mnav-open body{overflow:hidden}
             </tr>
             <tr>
               <td>6억 초과~9억 이하</td>
-              <td>1.01%~2.99% <span style="font-size:11.5px;color:var(--muted)">(가액×2/3억−3)÷100</span></td>
+              <td>1.01%~2.99% <span style="font-size:12px;color:var(--muted)">(가액×2/3억−3)÷100</span></td>
               <td>취득세×10%</td>
               <td>85㎡ 초과만 0.20%</td>
               <td class="hl">사선형 누진</td>
