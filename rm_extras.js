@@ -153,11 +153,19 @@
   function openBundle() {
     var P = people();
     var el = ensureModal();
+    el.setAttribute('aria-label', '최종 서류 체크리스트');
     $('bd-body').innerHTML = sheetHtml(P);
     el.classList.add('open'); document.documentElement.classList.add('bd-lock');
     trk('bundle_open', { mode: P.filings > 1 ? 'two' : 'one' });
   }
-  window.SRBundle = { open: openBundle };
+  /* 같은 인쇄 틀에 다른 내용(허브 준비서류 체크리스트 등)을 띄운다 */
+  function openHtml(html, label) {
+    var el = ensureModal();
+    el.setAttribute('aria-label', label || '체크리스트');
+    $('bd-body').innerHTML = html;
+    el.classList.add('open'); document.documentElement.classList.add('bd-lock');
+  }
+  window.SRBundle = { open: openBundle, openHtml: openHtml };
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bindResume); else bindResume();
 })();
