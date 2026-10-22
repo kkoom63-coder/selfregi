@@ -183,7 +183,7 @@
      소유권이전등기신청서 — f = selfregi_form_v1, relay = 번호 보관함
        relay: { siga:[], bondamt:[], bond:[], fee:[], tax, edu, rural } (로드맵 RELAY와 같은 모양)
        opt:   { gift: 증여 신청서 템플릿, court: 관할 등기소 이름 }
-     반환: { files:[{blob,name}], jointBoth, purposeGap }
+     반환: { files:[{blob,name}], jointBoth, purposeGap, coOwnerGap }
      ========================================================= */
   async function applyFiles(f, relay, opt) {
     opt = opt || {};
@@ -248,7 +248,12 @@
        공유자 지분 이전(「갑구 ○번 □□□지분 …이전」)은 갑구 순위번호가 필요해 자동으로 쓰지 않는다. */
     var partShare = (f.transferMode === 'part' && /분의/.test(f.transferShare || '')) ? f.transferShare : '';
     var purposeGap = false;
+    /* 공유자 1인의 지분 이전(등기부 소유자 2명↑, 매도인 1명 — 허브 coOwnerSale): 「소유권이전」을 찍으면 틀린다.
+       등기의 목적은 공란, 이전할 지분은 그 공유자의 등기부 지분(일부만 넘기면 이용자가 적은 지분). */
+    var co = (!jointBoth && sellerArr.length === 1 && f.coOwnerSale) ? f.coOwnerSale : null;
+    var coShare = co ? (partShare || ((co.sd && co.sn) ? co.sd + '분의 ' + co.sn : '')) : '';
     function regPurposeFor(bi) {
+      if (co) return '';
       if (!jointBoth && partShare && sellerArr.length === 1) return '소유권 일부이전';
       if (!jointBoth) return (sellerArr.length > 1) ? '공유자전원지분전부이전' : '소유권이전';
       var s = purposeForBuyer(bi);
@@ -304,7 +309,7 @@
         BUYER_ADDR: joinLines(buyerArr.map(function (p) { return p.addr; })),
         BUYER_SHARE: joinLines(buyerArr.map(function (p) { return _shareOf(p); })),
         REG_PURPOSE: regPurposeFor(0),
-        TRANSFER_SHARE: partShare ? '공유자 지분 ' + partShare : '전 부',
+        TRANSFER_SHARE: co ? (coShare ? '공유자 지분 ' + coShare : '') : (partShare ? '공유자 지분 ' + partShare : '전 부'),
         /* 신청서가 1건이면 이 부동산 전체가 대상 — 지분별로 나눠 적은 시가표준액·채권은 합계가 된다. */
         SIGA: fmtWon(relaySum('siga')), BOND_AMT: fmtWon(relaySum('bondamt')),
         BOND_TOTAL: fmtWon(relaySum('bondamt')),
@@ -316,7 +321,7 @@
       var seq = jointBoth ? '_' + (k + 1) + 'of2' : '';
       files.push({ blob: blob, name: '소유권이전등기신청서' + (opt.gift ? '(증여)' : '') + seq + '_' + nm + '_' + suffix + '.docx' });
     }
-    return { files: files, jointBoth: jointBoth, purposeGap: purposeGap };
+    return { files: files, jointBoth: jointBoth, purposeGap: purposeGap, coOwnerGap: !!co };
   }
 
   /* =========================================================
