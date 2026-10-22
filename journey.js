@@ -20,14 +20,14 @@
     { n: 1, t: '등기부·정보', s: '자동으로 채우기', href: 'normal_form.html#ocr-card' },
     { n: 2, t: '위임장', s: '잔금 전날 · 결제', href: 'normal_form.html#pay-card' },
     { n: 3, t: '세금 납부', s: '잔금일 이후', href: 'normal_form.html#s=3' },
-    { n: 4, t: '신청서·등기소', s: '접수 한 번', href: 'normal_form.html#s=6' }
+    { n: 4, t: '신청서·등기소', s: '접수 한 번', href: 'normal_form.html#s=app' }
   ];
   /* 증여에는 잔금이 없다 — 계약서·위임장 날인 → 구청 검인 → 취득세(증여) → 신청서 */
   var GIFT = [
     SALE[0],
     { n: 2, t: '증여계약서·위임장', s: '날인 전 · 결제', href: 'normal_form.html#pay-card' },
     { n: 3, t: '검인·세금 납부', s: '구청 검인 · 취득세', href: 'normal_form.html?type=gift#s=3' },
-    { n: 4, t: '신청서·등기소', s: '접수 한 번', href: 'normal_form.html?type=gift#s=6' }
+    { n: 4, t: '신청서·등기소', s: '접수 한 번', href: 'normal_form.html?type=gift#s=app' }
   ];
   function isGift(){
     var tab = document.querySelector('.deal-tab-btn.active');

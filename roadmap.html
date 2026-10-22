@@ -10,7 +10,7 @@
   if(/(^|&)addr=/.test(q)){location.replace('guide.html');return;}
   try{g=(JSON.parse(localStorage.getItem('selfregi_form_v1')||'{}')||{}).dealType==='gift';}catch(e){}
   if(g&&!/(^|&)type=gift(&|$)/.test(q))q=(q?q+'&':'')+'type=gift';
-  location.replace('normal_form.html'+(q?'?'+q:'')+(/[#&]r=/.test(h)?h:'#s='+(/^#r[45]/.test(h)?7:6)));
+  location.replace('normal_form.html'+(q?'?'+q:'')+(/[#&]r=/.test(h)?h:'#s='+(/^#r[45]/.test(h)?'visit':'app')));
 })();
 </script>
 </head><body><a href="normal_form.html">서류 작성 화면으로 이동</a></body></html>
