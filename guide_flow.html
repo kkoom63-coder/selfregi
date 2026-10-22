@@ -319,7 +319,7 @@ function viewEnter(st){
   }
   if(t.key==='wetax')html='<div class="rcpt"><label class="btn rcpt-btn">납부확인서 PDF 올리기 — 자동으로 채우기<input type="file" accept="application/pdf,.pdf" hidden id="rcptIn"></label><p class="note" id="rcptMsg">위택스·이택스 납부내역에서 받은 납부확인서 PDF를 올리면 아래 칸이 채워집니다.</p></div>'+html;
   if(SHOT[t.key])html+='<button type="button" class="skip" id="rewalk">'+t.name+' 화면 설명 다시 보기</button>';
-  html+='<p class="note">이 기기에만 저장되고 60일 뒤 지워집니다. 신청서 자동완성 때 그대로 쓰입니다.</p>';
+  html+='<p class="note">신청서 자동완성 때 그대로 쓰입니다.</p>';
   V.innerHTML=html;
   var rw=document.getElementById('rewalk');if(rw)rw.onclick=function(){go('t='+t.key+'&m=walk&s=0');};
   var ri=document.getElementById('rcptIn');
