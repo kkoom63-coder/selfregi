@@ -655,6 +655,9 @@ window.SR=window.SR||(function(){
 <script src="pay.js"></script>
 <script src="review.js"></script>
 <script src="regparse.js"></script>
+<script src="regocr.js"></script>
+<script src="regocr_pp.js"></script>
+<script src="regfields.js"></script>
 <script src="guide_shots.js"></script>
 <script src="court.js"></script>
 <script src="siga.js"></script>
@@ -1394,19 +1397,141 @@ function sigaGo(){OCR.sigaRes=null;
 function readBuf(fl){return new Promise(function(ok,no){var r=new FileReader();r.onload=function(){ok(r.result);};r.onerror=function(){no(new Error('파일을 읽지 못했습니다.'));};r.readAsArrayBuffer(fl);});}
 function setOcr(o){Object.keys(o).forEach(function(k){OCR[k]=o[k];});render();}
 function isPdf(fl){return /pdf/i.test(fl.type)||/\.pdf$/i.test(fl.name);}
-var PHOTO_MSG='<b>사진·스캔 PDF는 서류 작성 화면에서 읽습니다.</b> 이 시제품은 인터넷등기소 PDF 원본만 바로 읽습니다.<a class="btn line" href="form_classic.html'+(GIFT?'?type=gift':'')+'" data-handoff="1">서류 작성 화면에서 읽기</a>';
+/* ---------- 사진·스캔 PDF 판독(2026-10-22, form_classic에서 이식 — runOcr는 원본 그대로) ---------- */
+var TESS_SRC='https://cdn.jsdelivr.net/npm/tesseract.js@5.1.1/dist/tesseract.min.js',MAX_SHOTS=8;
+function trk(n,d){track(n,d);}
+function say(t){OCR.say=t||'';var e=document.querySelector('#dz .say');if(e)e.textContent=OCR.say;}
+function bar(v){if(v==null)return;OCR.pct=v;var e=document.querySelector('#dz .pr i');if(e)e.style.width=Math.round(v*100)+'%';}
+function loadTess(){
+  if(window.Tesseract)return Promise.resolve();
+  say('사진 판독기를 내려받는 중입니다. 처음 한 번만 시간이 걸립니다…');
+  return new Promise(function(res,rej){var t=document.createElement('script');t.src=TESS_SRC;t.onload=res;
+    t.onerror=function(){rej(new Error('사진 판독기를 내려받지 못했습니다. 인터넷 연결을 확인해 주세요.'));};document.head.appendChild(t);});
+}
+function toImage(fl){return new Promise(function(res,rej){var r=new FileReader();
+  r.onload=function(){var im=new Image();im.onload=function(){res(im);};im.onerror=function(){rej(new Error('이미지를 열지 못했습니다.'));};im.src=r.result;};
+  r.onerror=function(){rej(new Error('파일을 읽지 못했습니다.'));};r.readAsDataURL(fl);});}
+function isHeic(fl){return /heic|heif/i.test(fl.type)||/\.hei[cf]$/i.test(fl.name);}
+function natCmp(a,b){return String(a.name).localeCompare(String(b.name),'ko',{numeric:true,sensitivity:'base'});}
+  async function runOcr(sources, onPartial){
+    /* PP-OCRv5 를 기본으로 쓴다 (2026.08.22 전환).
+       모바일은 아직 tesseract 를 유지한다 — 18MB 모델 + onnxruntime-web 이
+       폰 브라우저에서 끝까지 도는지 실측 전이고, 중간에 죽으면 폴백 없이 백지가 된다.
+       데스크톱을 먼저 최적화하고 모바일은 실측 후에 넘긴다.
+       ?pp=0  데스크톱에서도 즉시 tesseract 로 되돌린다 (사고 시 롤백 경로)
+       ?pp=1  모바일에서도 강제로 PP-OCR 을 쓴다 (모바일 실측용) */
+    var isMobile = /Android|iPhone|iPad|iPod|IEMobile|Opera Mini/i.test(navigator.userAgent)
+      || (window.matchMedia && window.matchMedia('(pointer:coarse)').matches && screen.width < 900);
+    /* 2026-10-10: 갤럭시 S26 실측(사진 3장 약 20초, PC와 같은 판독 결과)으로 모바일도 PP-OCR 기본.
+       메모리 4GB 미만으로 알려진 기기만 tesseract 를 유지하고, PP-OCR 준비가 실패하면 tesseract 로 넘어간다. */
+    var lowMem = isMobile && navigator.deviceMemory && navigator.deviceMemory < 4;
+    var usePP = !!window.RegOCRPP
+      && !/[?&]pp=0/.test(location.search)
+      && (/[?&]pp=1/.test(location.search) || !lowMem);
+    var ENG = usePP ? window.RegOCRPP : window.RegOCR;
+    var ppOpt = {};
+    if(usePP){
+      /* ?det=server 로 예전 84MB 검출모델과 비교할 수 있다(기본은 mobile).
+         ?w=1600 처럼 입력 해상도 상한을 바꿔 속도·정확도를 실측한다(기본 2400). */
+      if(/[?&]det=server/.test(location.search)) window.RegOCRPP.useServerDet();
+      var mw = (location.search.match(/[?&]w=(\d{3,5})/)||[])[1];
+      if(mw) ppOpt.maxWidth = +mw;
+      if(/[?&]dedup=1/.test(location.search)) ppOpt.dedup = true;
+    }
+    if(!usePP) await loadTess();
+    say('한국어 판독기를 준비하는 중입니다…');
+    var wOpt = {
+      logger:function(m){ if(m&&m.status&&typeof m.progress==='number'){
+        say('판독기 준비: '+m.status); bar(0.1+0.15*m.progress); } }
+    };
+    var worker;
+    try{ worker = await ENG.makeWorker(window.Tesseract, wOpt); }
+    catch(e){
+      if(!usePP) throw e;
+      /* 모델 내려받기·메모리 실패 → 기존 엔진으로 다시 시도 */
+      usePP = false; ENG = window.RegOCR; trk('ocr_fallback',{mode: isMobile ? 'mobile' : 'desktop'});
+      await loadTess(); worker = await ENG.makeWorker(window.Tesseract, wOpt);
+    }
+    var tokAll = [], txtAll = [], confirm = [];
+    /* 사진 경로는 라벨 앵커(regfields)로 뽑는다.
+       좌표 기반 표 판정은 OCR 이 한 페이지를 여러 벌로 묶어 내놓을 때 값이 반복된다.
+       라벨 앵커는 '첫 일치만' 취하므로 몇 벌이 들어오든 값이 늘지 않는다.
+       텍스트 레이어 PDF는 좌표가 진짜이므로 regparse 를 그대로 쓴다. */
+    var useFields = usePP && window.RegFields;
+    function parseAll(toks, txts){
+      if(useFields) return RegFields.extract(txts);
+      return RegParse.parseTokens(ENG.combinePages(toks), { ocr: true });
+    }
+    try{
+      for(var i=0;i<sources.length;i++){
+        var src = sources[i];
+        say('판독 중… ('+(i+1)+'/'+sources.length+')');
+        /* 장마다 해상도가 다를 수 있으므로 프리셋을 매 장 다시 계산한다. */
+        var out = await ENG.recognize(src.el, window.Tesseract, {
+          worker: worker,
+          maxWidth: ppOpt.maxWidth,
+          dedup: ppOpt.dedup,
+          maxPasses: src.clean ? 1 : 2,
+          presets: src.clean ? [{name:'그대로', blur:0, width:(src.el.width||src.el.naturalWidth)}] : null,
+          onProgress:function(p){
+            var base = 0.25 + 0.7*(i/sources.length);
+            bar(Math.min(0.97, base + (p.phase==='ocr'?0.05:0)));
+          }
+        });
+        if(out && out.tokens && out.tokens.length) tokAll.push(out.tokens);
+        if(out && typeof out.text === 'string') txtAll.push(out.text);
+        if(out && out.confirmList && out.confirmList.length) confirm = confirm.concat(out.confirmList);
+
+        /* 부동산 정보는 전부 1페이지 표제부에 있다. 매도인·지분만 뒤쪽에 있으므로
+           1페이지를 읽는 즉시 보여주고 나머지는 계속 읽는다.
+           총 소요시간은 그대로지만 빈 화면을 보는 시간이 4분의 1로 줄어든다. */
+        if(i===0 && sources.length>1 && onPartial && tokAll.length){
+          try{
+            var p1 = parseAll([tokAll[0]], txtAll.slice(0,1));
+            if(p1 && p1.ok){ p1._ocr = true; p1._confirm = []; p1._partial = true; onPartial(p1); }
+          }catch(e){}
+        }
+      }
+    } finally { try{ await worker.terminate(); }catch(e){} }
+    if(!tokAll.length) throw new Error('사진에서 글자를 찾지 못했습니다. 더 밝고 또렷한 사진으로 다시 시도해 주세요.');
+    var comb = ENG.combinePages(tokAll);
+    var parsed = parseAll(tokAll, txtAll);
+    parsed._ocr = true;
+    parsed._confirm = confirm;
+    /* 진단용 원문. 파싱이 실패해도 무엇이 읽혔는지 볼 수 있어야 한다. */
+    parsed._raw = useFields ? txtAll.join('\n') : comb.map(function(t){ return t.str; }).join(' ');
+    bar(1);
+    return parsed;
+  }
+/* 사진 여러 장(파일 이름 순, 최대 8장) 또는 글자 없는 PDF → 판독 결과(parseRegistry와 같은 모양) */
+async function photoParse(imgs,pdfBuf){
+  var srcs=[];
+  if(pdfBuf){
+    var doc=await pdfjsLib.getDocument({data:pdfBuf}).promise,n=Math.min(doc.numPages,MAX_SHOTS);
+    for(var p=1;p<=n;p++){say('페이지를 이미지로 바꾸는 중… ('+p+'/'+n+')');bar(0.1+0.1*p/n);
+      var pg=await doc.getPage(p),vp=pg.getViewport({scale:200/72}),cv=document.createElement('canvas');
+      cv.width=vp.width;cv.height=vp.height;await pg.render({canvasContext:cv.getContext('2d'),viewport:vp}).promise;srcs.push({el:cv,clean:true});}
+  }else{
+    for(var i=0;i<imgs.length;i++){if(imgs.length>1)say('사진을 여는 중… ('+(i+1)+'/'+imgs.length+')');srcs.push({el:await toImage(imgs[i]),clean:false});}
+  }
+  return runOcr(srcs,null);
+}
 function readReg(files){
   var list=[].slice.call(files||[]);if(!list.length)return;
   var dx=list.filter(function(fl){return /\.docx$/i.test(fl.name||'')||/wordprocessingml/.test(fl.type||'');})[0];
   if(dx)return resumeDocx(dx); /* 위임장 파일 → 이어서 하기 */
   OCR.files=list;var pdf=list.filter(isPdf)[0];
   track('hub_ocr',{type:pdf?'pdf':'image'});
-  if(!pdf){setOcr({err:PHOTO_MSG,say:''});return;}
   if(!window.pdfjsLib||!window.RegParse){setOcr({err:'판독 모듈을 불러오지 못했습니다. 새로고침 후 다시 시도해 주세요.',say:''});return;}
-  setOcr({busy:true,err:'',pct:.15,say:'발급 원본을 여는 중…'});
-  readBuf(pdf).then(function(buf){return RegParse.parseRegistry(pdfjsLib,buf);}).then(function(res){
+  var imgs=list.filter(function(fl){return !isPdf(fl)&&!isHeic(fl);}).sort(natCmp),heic=list.filter(isHeic).length;
+  if(!pdf&&!imgs.length){setOcr({err:'HEIC 형식은 아직 읽지 못합니다. 아이폰 [설정 > 카메라 > 포맷]을 「높은 호환성」으로 바꾸거나 JPG로 저장해 올려 주세요.',say:''});return;}
+  if(imgs.length>MAX_SHOTS)imgs=imgs.slice(0,MAX_SHOTS);
+  setOcr({busy:true,err:'',pct:.15,say:pdf?'발급 원본을 여는 중…':'사진을 읽을 준비를 하는 중…'});
+  var job=pdf?readBuf(pdf).then(function(buf){return RegParse.parseRegistry(pdfjsLib,buf.slice(0)).then(function(r){
+      if(r&&!r.ok&&r.reason==='NO_TEXT_LAYER'){say('사진으로 만들어진 PDF입니다. 이미지 판독으로 넘어갑니다…');return photoParse(null,buf);}return r;});})
+    :photoParse(imgs,null);
+  job.then(function(res){
     if(!res||!res.ok){
-      if(res&&res.reason==='NO_TEXT_LAYER'){setOcr({busy:false,err:PHOTO_MSG,say:''});return;}
       throw new Error(res&&res.reason==='NOT_REGISTRY'?'등기사항전부증명서로 보이지 않습니다. 다른 파일을 올리셨는지 확인해 주세요.':((res&&res.warnings&&res.warnings[0])||'내용을 알아보지 못했습니다.'));
     }
     var g=summarize(res);
@@ -1417,9 +1542,9 @@ function readReg(files){
     if(S.hub.party&&g.owners.length){var old=S.hub.party.s;S.hub.party.s=g.owners.slice(0,2).map(function(o){
       var m=old.filter(function(q){return q.name===o.name;})[0];return {name:o.name,addr:m?m.addr:'',sd:g.owners.length>1?o.sd:'',sn:g.owners.length>1?o.sn:''};});}
     S.hub.reg=g;saveHub();OPEN.ph=null;
-    track('hub_ocr_ok',{step:S.hub.reg.got});
+    track('hub_ocr_ok',{step:S.hub.reg.got,type:res._ocr?'photo':'pdf'});
     setOcr({busy:false,pct:1,say:'',err:''});
-    toast('등기부에서 '+S.hub.reg.got+'칸을 채웠습니다');
+    toast(res._ocr?'사진에서 '+S.hub.reg.got+'칸을 읽었습니다. 원본과 꼭 대조해 주세요.'+(heic?' (HEIC '+heic+'장은 건너뜀)':''):'등기부에서 '+S.hub.reg.got+'칸을 채웠습니다',0,!!res._ocr);
     scrollToEl(document.getElementById('reg'));
   }).catch(function(e){var m=e&&e.message?e.message:String(e);setOcr({busy:false,say:'',err:'<b>읽지 못했습니다.</b> '+(/<a /.test(m)?m:esc(m))});});
 }
