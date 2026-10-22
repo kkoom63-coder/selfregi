@@ -972,7 +972,7 @@ function syncForm(atLoad){
 var PAY=GIFT?['bond','efee','wetax']:['bond','stamp','efee','wetax']; /* 순수 증여는 인지세가 없다(domain.md Case G) */
 function paid(k){return k==='stamp'?!!S.fin.stamp:f({bond:'bond',efee:'fee',wetax:'tax'}[k]);}
 function payLeft(){return PAY.filter(function(k){return !paid(k);}).length;}
-/* 매매 취득세는 신청서를 막지 않는다 — 신청서는 잔금 전에 출력하고(10/23) 위택스 납부는 잔금일부터라, 아직이면 취득세 칸만 비워 받는다(10/24 사용자: 「잔금 전/후」 고르기 삭제) */
+/* 매매 취득세는 신청서를 막지 않는다 — 신청서는 잔금 전에 출력하고(10/23) 취득세는 일반적으로 잔금일 이후 신고라([미확인] 위택스 잔금 전 신고 가능 여부), 아직이면 취득세 칸만 비워 받는다(10/24 사용자: 「잔금 전/후」 고르기 삭제) */
 function payDue(){return PAY.filter(function(k){return !paid(k)&&(GIFT||k!=='wetax');});}
 function payLeftFor(){return payDue().length;}
 
@@ -1349,7 +1349,7 @@ var FIELDS={
 var PAYTX={
   bond:'공시가격(시가표준액)으로 금액이 정해져 잔금 전에 살 수 있습니다.',
   efee:'잔금 1~2주 전에 미리 내 두면 당일이 가벼워집니다.',
-  wetax:'잔금일 당일 위택스로 내거나, 잔금 전 구청 세무과를 방문해 미리 신고·납부할 수 있습니다. 등기에는 <b>납부확인서</b>를 씁니다.'
+  wetax:'대부분 잔금일 이후 위택스로 신고·납부합니다. 잔금 전에 내려면 관할 구청 세무과에 문의하세요. 등기에는 <b>납부확인서</b>를 씁니다.'
 };
 /* 결제 확인 후기 중 「공개 동의」한 것만 원문 그대로 적는다(Firestore reviews, status:test 제외). 가짜·각색 금지 — copy.md */
 if(GIFT)PAYTX={
@@ -1386,7 +1386,7 @@ function panel(k,d){
       +'<p class="tip">첨부서류는 발행일부터 3개월 이내여야 합니다.</p>'+shotBtn('docs');
   case 'bond': case 'efee': case 'wetax':
     var why=blocked(k),p=pre(k)||d;
-    return (why?'<div class="warn">'+(k==='wetax'&&!GIFT?'위택스 납부는 잔금일부터입니다 · 잔금 전에 내려면 구청 세무과를 방문하세요':esc(why)+'에 할 수 있습니다. 순서만 미리 봐 두세요.')+'</div>':'')
+    return (why?'<div class="warn">'+(k==='wetax'&&!GIFT?'취득세는 일반적으로 잔금일(취득일) 이후 신고합니다':esc(why)+'에 할 수 있습니다. 순서만 미리 봐 두세요.')+'</div>':'')
       +'<p>'+PAYTX[k]+'</p>'
       +(k==='bond'&&reg()?'<button type="button" class="btn line" data-siga="1">공시가격 자동조회 및 채권 금액 계산하기</button>'+sigaHtml():'')
       +(p?'':shotBtn(k,true))
