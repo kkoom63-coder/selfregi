@@ -552,9 +552,16 @@ p,.pv-r,.ck span,.rvl p{font-size:14px;line-height:1.6}
 .court{padding:6px 12px;margin-bottom:6px}
 .pvp-h{gap:8px;margin-bottom:8px}
 .pvp-cn{margin-left:auto;font-size:12px;color:var(--muted)}.pvp-cn b{color:var(--navy)}
-.pvp-foot{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px 12px;margin:8px 2px 0;font-size:14px}
-.pvp-foot .pvp-reset{display:inline;margin:0;font-size:12px}
-.sample-l{color:var(--blue);font-weight:700;text-decoration:none}
+.stp-note{margin:8px 0 0;font-size:12px;color:#CBD5E1}
+.wz-need{margin:0 0 10px;font-size:14px;font-weight:600;color:var(--warn-tx)}
+.nx-dlg{max-width:440px;width:calc(100% - 32px);border:0;border-radius:12px;padding:20px;color:var(--text);background:var(--card)}
+.nx-dlg::backdrop{background:rgba(15,23,42,.5)}
+.nx-dlg h2{margin:0 0 6px;font-size:18px;font-weight:700;color:var(--navy)}
+.nx-dlg p{margin:0 0 12px;font-size:14px;color:var(--muted)}
+.nx-dlg ul{list-style:none;margin:0 0 16px;padding:0;display:grid;gap:8px}
+.nx-dlg li{padding:10px 12px;border:1px solid var(--warn-bd);background:var(--warn-bg);border-radius:10px;font-size:14px;color:var(--warn-tx)}
+.nx-dlg li b{display:block;font-size:16px;color:var(--text)}
+.nx-b{display:grid;gap:8px}
 /* 내 집 카드의 준비서류 체크리스트 버튼 → 한 장 팝업 */
 .home-ck{grid-column:1;justify-self:start;display:inline-flex;align-items:center;gap:8px;margin-top:10px;min-height:36px;padding:0 14px;border:1px solid rgba(255,255,255,.35);border-radius:999px;background:transparent;color:#fff;font:inherit;font-size:14px;font-weight:700;cursor:pointer}
 .home-ck b{font-size:12px;color:var(--sky)}
@@ -594,7 +601,7 @@ p,.pv-r,.ck span,.rvl p{font-size:14px;line-height:1.6}
 <div class="wrap pg-h"><h1 id="pg-h1">소유권이전등기 신청서·위임장 자동완성</h1><p id="pg-p">등기부 한 장을 올리면 위임장·신청서에 들어갈 부동산 정보와 매도인이 채워지고, 셀프등기 순서를 한 단계씩 안내합니다.</p><p class="pg-sw"><a href="index.html#start">← 다른 등기 고르기</a><a id="pg-mode" href="normal_form.html?type=gift">증여로 받는 경우 → 증여 서류로</a></p></div>
 <!-- 첫 화면 미리 적기(2026-10-23) — 처음 온 사람(저장값 없음)에게 render()가 그리는 것과 같은 HTML. 스크립트를 실행하지 않는 검색 로봇도 화면 글을 읽는다.
      render()가 곧바로 덮어쓰므로 동작에는 영향 없음. 첫 화면 문구·구조를 바꾸면 다시 뽑아 교체: chrome --headless=new --dump-dom http://localhost:4600/normal_form.html 의 #app 안쪽(새 프로필 = 저장값 없음) -->
-<main class="wrap" id="app" aria-live="polite"><!--PRE:START--><section class="home" aria-label="내 집"><div class="home-eb">내 셀프등기</div><div class="home-addr empty">아직 집 정보가 없어요</div><div class="home-sub">등기부를 올리면 주소와 매도인이 여기에 나옵니다</div><button type="button" class="home-ck" data-prep="1">준비서류 체크리스트 <b>0 / 13</b></button><div class="home-date"><label for="bal">잔금일</label><input type="date" id="bal" value=""></div><ol class="stp7" aria-label="진행 단계"><li><button type="button" class="s7 cur sel" data-ph="1" aria-current="step"><span class="s7-n">1</span><span class="s7-t">매매정보</span></button></li><li><button type="button" class="s7" data-ph="2"><span class="s7-n">2</span><span class="s7-t">채권·인지</span></button></li><li><button type="button" class="s7" data-ph="3"><span class="s7-n">3</span><span class="s7-t">수수료·취득세</span></button></li><li><button type="button" class="s7" data-ph="4"><span class="s7-n">4</span><span class="s7-t">위임장</span></button></li><li><button type="button" class="s7" data-ph="5"><span class="s7-n">5</span><span class="s7-t">신청서</span></button></li><li><button type="button" class="s7" data-ph="6"><span class="s7-n">6</span><span class="s7-t">잔금일</span></button></li><li><button type="button" class="s7" data-ph="7"><span class="s7-n">7</span><span class="s7-t">접수</span></button></li></ol></section><div class="hgrid"><div class="stage"><section class="ocr" id="reg" aria-labelledby="ocr-t"><div class="ch"><div class="ci">0</div><div class="ct" id="ocr-t">등기부로 자동 채우기</div><span></span></div><p class="hero-note"><b>등기부 한 장이면 자동으로 채워집니다.</b> 민감정보는 출력 후 적어도 됩니다.</p><div class="drop" id="dz"><svg class="dz-ic" viewBox="0 0 40 48" aria-hidden="true" focusable="false"><path d="M4 2h22l10 10v32a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z" fill="#fff" stroke="#0369A1" stroke-width="2"></path><path d="M26 2v10h10" fill="none" stroke="#0369A1" stroke-width="2"></path><path d="M9 22h20M9 28h20M9 34h13" stroke="#93C5FD" stroke-width="2.4" stroke-linecap="round"></path></svg><div class="slot-t">등기사항전부증명서 올리기</div><div class="sub">인터넷등기소에서 받은 PDF는 글자를 그대로 가져옵니다.<br><b>사진이면 여러 장을 한꺼번에</b> 올려 주세요.</div><label class="fb" for="fi">파일 선택</label><input type="file" id="fi" accept="application/pdf,image/*,.docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document" multiple="" hidden=""><div class="say"></div></div><p class="ocr-docs"><b>취득세 납부확인서</b>도 올리면 서류에 들어갈 값이 자동으로 채워집니다.</p><p class="reg-how">등기부가 없다면 인터넷등기소에서 회원가입 없이 열람(700원)한 뒤 PDF로 저장해 올리세요.</p><a class="iros" href="https://www.iros.go.kr" target="_blank" rel="noopener">인터넷등기소 바로가기 ↗</a><p class="reg-how">받아 둔 위임장 파일(.docx)을 올리면 다른 기기에서 입력한 내용을 이어서 씁니다.</p></section><section class="wz" aria-labelledby="wz-t"><div class="wz-h"><span class="ph-n">1</span><div><h2 class="ph-t" id="wz-t">매매정보</h2><span class="ph-w">계약·당사자 정보</span></div></div><div class="wz-card" id="p-deal"><div class="wz-ct"><b>계약 정보</b><span class="pill">매매계약서 · 신고필증</span></div><div class="fld"><label for="dl-cause">계약일 <small>등기원인 — 잔금일이 아니라 계약서 작성일</small></label><input type="date" id="dl-cause" data-deal="cause" value=""></div><div class="fld"><label for="dl-price">거래가액 <small>매매계약서·신고필증 금액</small></label><input id="dl-price" data-deal="price" data-num="1" inputmode="numeric" placeholder="숫자만" value=""></div><div class="fld"><label for="dl-report">거래신고관리번호 <small>부동산거래계약 신고필증</small></label><input id="dl-report" data-deal="report" autocomplete="off" placeholder="예: 12345-2026-10-1234567" value=""></div><div class="fld"><label for="dl-share">이전할 지분 <small>매도인 지분을 모두 사면 「전부」</small></label><select id="dl-share" data-deal="share"><option selected="">전부</option><option>2분의 1</option></select></div></div><div class="wz-card"><div class="pv pe" id="pe"><div class="pv-h">매도인 · 매수인</div><div class="pe-p"><div class="pe-t">매도인</div><span class="pe-f"><label for="pe-s0-name">성명</label><input id="pe-s0-name" class="pv-in" value="" autocomplete="off"></span><span class="pe-f"><label for="pe-s0-addr">주소</label><input id="pe-s0-addr" class="pv-in" value="" placeholder="초본상 현재 주소" autocomplete="off"></span></div><label class="ck pe-ck"><input type="checkbox" id="pe-sj"><span>매도인이 2명(공동명의)</span></label><div class="pe-p"><div class="pe-t">매수인</div><span class="pe-f"><label for="pe-b0-name">성명</label><input id="pe-b0-name" class="pv-in" value="" autocomplete="off"></span><span class="pe-f"><label for="pe-b0-addr">주소</label><input id="pe-b0-addr" class="pv-in" value="" placeholder="등본상 주소" autocomplete="off"></span><span class="pe-f"><label for="pe-b0-rrn">주민번호</label><input id="pe-b0-rrn" class="pv-in" value="" placeholder="비워 두면 출력 후 직접" autocomplete="off" inputmode="numeric"></span></div><label class="ck pe-ck"><input type="checkbox" id="pe-bj"><span>매수인이 2명(공동명의)</span></label><p class="sm" id="pe-sum">신청서·위임장은 1부입니다.</p><button type="button" class="btn" data-pe="ok">완료</button></div></div><p class="hero-note">입력과 단계 안내는 무료입니다. <b>위임장·신청서 Word 파일은 4단계에서 9,900원 결제 후</b> 받습니다.</p><div class="wz-nav"><span></span><button type="button" class="btn" data-ph="2">다음: 채권·인지 →</button></div></section><p class="disc">세액·채권 금액은 각 기관 영수증 기준이며, 최종 확인은 관할 등기소에서 하세요.</p></div><aside class="pvp" aria-label="문서 반영 미리보기"><div class="pvp-bar"><b>문서 반영 미리보기</b><span>채운 칸 1 · 남은 칸 17</span><button type="button" data-pvp="1">보기</button></div><div class="pvp-c"><div class="pvp-h"><h2>문서 반영 미리보기</h2><span class="pvp-cn">채운 칸 <b>1</b> · 남은 칸 <b>17</b></span><button type="button" class="pvp-x" data-pvp="0">닫기</button></div><div class="pv"><div class="pv-h">위임장 · 신청서 공통</div><div class="pv-r"><span class="pv-k">부동산의 표시</span><span class="pv-v miss">아직 입력 전 <button type="button" class="pv-x" data-edit="addr">입력</button></span></div><div class="pv-r"><span class="pv-k">구조</span><span class="pv-v miss">아직 입력 전 <button type="button" class="pv-x" data-edit="struct">입력</button></span></div><div class="pv-r"><span class="pv-k">전유면적</span><span class="pv-v miss">아직 입력 전 <button type="button" class="pv-x" data-edit="area">입력</button></span></div><div class="pv-r"><span class="pv-k">대지권 비율</span><span class="pv-v miss">아직 입력 전 <button type="button" class="pv-x" data-edit="land">입력</button></span></div><div class="pv-r"><span class="pv-k">이전할 지분</span><span class="pv-v">전부 <button type="button" class="pv-x" data-edit="share">고치기</button></span></div><div class="pv-r"><label class="pv-k" for="cause">등기원인</label><span class="pv-v"><input type="date" id="cause" class="pv-in" aria-label="매매계약 체결일" value=""></span></div><div class="pv-r"><span class="pv-k">매도인</span><span class="pv-v miss">아직 입력 전</span></div><div class="pv-r"><span class="pv-k">매도인 주소</span><span class="pv-v miss">아직 입력 전</span></div><div class="pv-r"><span class="pv-k">매수인</span><span class="pv-v miss">아직 입력 전</span></div><div class="pv-r"><span class="pv-k">매수인 주소</span><span class="pv-v miss">아직 입력 전</span></div><div class="pv-r"><span class="pv-k">대리인 (위임장)</span><span class="pv-v miss">아직 입력 전</span></div></div><div class="pv"><div class="pv-h">신청서에만</div><div class="pv-r"><span class="pv-k">매수인 주민번호</span><span class="pv-v"><span class="pv-s">비워 두면 직접 기재</span></span></div><div class="pv-r"><span class="pv-k">거래가액</span><span class="pv-v miss">아직 입력 전 <button type="button" class="pv-x" data-edit="price">입력</button></span></div><div class="pv-r"><span class="pv-k">거래신고관리번호</span><span class="pv-v miss">아직 입력 전 <button type="button" class="pv-x" data-edit="report">입력</button></span></div><div class="pv-r"><span class="pv-k">부동산 고유번호</span><span class="pv-v miss">아직 입력 전 <button type="button" class="pv-x" data-edit="uid">입력</button></span></div><div class="pv-r"><span class="pv-k">시가표준액</span><span class="pv-v miss">아직 입력 전</span></div><div class="pv-r"><span class="pv-k">취득세</span><span class="pv-v miss">아직 입력 전</span></div><div class="pv-r"><span class="pv-k">국민주택채권</span><span class="pv-v miss">아직 입력 전</span></div><div class="pv-r"><span class="pv-k">수수료 납부번호</span><span class="pv-v miss">아직 입력 전</span></div></div><div class="pvp-foot"><a class="sample-l" href="sample_wimi.png" target="_blank" rel="noopener">결제 후 받는 위임장 견본 ↗</a><button type="button" class="pvp-reset" data-reset="1">입력 내용 모두 지우기</button></div></div></aside></div><!--PRE:END--></main>
+<main class="wrap" id="app" aria-live="polite"><!--PRE:START--><section class="home" aria-label="내 집"><div class="home-eb">내 셀프등기</div><div class="home-addr empty">아직 집 정보가 없어요</div><div class="home-sub">등기부를 올리면 주소와 매도인이 여기에 나옵니다</div><button type="button" class="home-ck" data-prep="1">준비서류 체크리스트 <b>0 / 13</b></button><div class="home-date"><label for="bal">잔금일</label><input type="date" id="bal" value=""></div><ol class="stp7" aria-label="진행 단계"><li><button type="button" class="s7 cur sel" data-ph="1" aria-current="step"><span class="s7-n">1</span><span class="s7-t">매매정보</span></button></li><li><button type="button" class="s7" data-ph="2"><span class="s7-n">2</span><span class="s7-t">채권·인지</span></button></li><li><button type="button" class="s7" data-ph="3"><span class="s7-n">3</span><span class="s7-t">수수료·취득세</span></button></li><li><button type="button" class="s7" data-ph="4"><span class="s7-n">4</span><span class="s7-t">위임장</span></button></li><li><button type="button" class="s7" data-ph="5"><span class="s7-n">5</span><span class="s7-t">신청서</span></button></li><li><button type="button" class="s7" data-ph="6"><span class="s7-n">6</span><span class="s7-t">잔금일</span></button></li><li><button type="button" class="s7" data-ph="7"><span class="s7-n">7</span><span class="s7-t">접수</span></button></li></ol><p class="stp-note">단계마다 입력·체크를 모두 마치면 번호가 ✓로 바뀝니다 · 둘러볼 때는 단계 번호를 누르세요</p></section><div class="hgrid"><div class="stage"><section class="ocr" id="reg" aria-labelledby="ocr-t"><div class="ch"><div class="ci">0</div><div class="ct" id="ocr-t">등기부로 자동 채우기</div><span></span></div><p class="hero-note"><b>등기부 한 장이면 자동으로 채워집니다.</b> 민감정보는 출력 후 적어도 됩니다.</p><div class="drop" id="dz"><svg class="dz-ic" viewBox="0 0 40 48" aria-hidden="true" focusable="false"><path d="M4 2h22l10 10v32a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z" fill="#fff" stroke="#0369A1" stroke-width="2"></path><path d="M26 2v10h10" fill="none" stroke="#0369A1" stroke-width="2"></path><path d="M9 22h20M9 28h20M9 34h13" stroke="#93C5FD" stroke-width="2.4" stroke-linecap="round"></path></svg><div class="slot-t">등기사항전부증명서 올리기</div><div class="sub">인터넷등기소에서 받은 PDF는 글자를 그대로 가져옵니다.<br><b>사진이면 여러 장을 한꺼번에</b> 올려 주세요.</div><label class="fb" for="fi">파일 선택</label><input type="file" id="fi" accept="application/pdf,image/*,.docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document" multiple="" hidden=""><div class="say"></div></div><p class="ocr-docs"><b>취득세 납부확인서</b>도 올리면 서류에 들어갈 값이 자동으로 채워집니다.</p><p class="reg-how">등기부가 없다면 인터넷등기소에서 회원가입 없이 열람(700원)한 뒤 PDF로 저장해 올리세요.</p><a class="iros" href="https://www.iros.go.kr" target="_blank" rel="noopener">인터넷등기소 바로가기 ↗</a><p class="reg-how">받아 둔 위임장 파일(.docx)을 올리면 다른 기기에서 입력한 내용을 이어서 씁니다.</p></section><section class="wz" aria-labelledby="wz-t"><div class="wz-h"><span class="ph-n">1</span><div><h2 class="ph-t" id="wz-t">매매정보</h2><span class="ph-w">계약·당사자 정보</span></div></div><div class="wz-card" id="p-deal"><div class="wz-ct"><b>계약 정보</b><span class="pill">매매계약서 · 신고필증</span></div><div class="fld"><label for="dl-cause">계약일 <small>등기원인 — 잔금일이 아니라 계약서 작성일</small></label><input type="date" id="dl-cause" data-deal="cause" value=""></div><div class="fld"><label for="dl-price">거래가액 <small>매매계약서·신고필증 금액</small></label><input id="dl-price" data-deal="price" data-num="1" inputmode="numeric" placeholder="숫자만" value=""></div><div class="fld"><label for="dl-report">거래신고관리번호 <small>부동산거래계약 신고필증</small></label><input id="dl-report" data-deal="report" autocomplete="off" placeholder="예: 12345-2026-10-1234567" value=""></div><div class="fld"><label for="dl-share">이전할 지분 <small>매도인 지분을 모두 사면 「전부」</small></label><select id="dl-share" data-deal="share"><option selected="">전부</option><option>2분의 1</option></select></div></div><div class="wz-card"><div class="pv pe" id="pe"><div class="pv-h">매도인 · 매수인</div><div class="pe-p"><div class="pe-t">매도인</div><span class="pe-f"><label for="pe-s0-name">성명</label><input id="pe-s0-name" class="pv-in" value="" autocomplete="off"></span><span class="pe-f"><label for="pe-s0-addr">주소</label><input id="pe-s0-addr" class="pv-in" value="" placeholder="초본상 현재 주소" autocomplete="off"></span></div><label class="ck pe-ck"><input type="checkbox" id="pe-sj"><span>매도인이 2명(공동명의)</span></label><div class="pe-p"><div class="pe-t">매수인</div><span class="pe-f"><label for="pe-b0-name">성명</label><input id="pe-b0-name" class="pv-in" value="" autocomplete="off"></span><span class="pe-f"><label for="pe-b0-addr">주소</label><input id="pe-b0-addr" class="pv-in" value="" placeholder="등본상 주소" autocomplete="off"></span><span class="pe-f"><label for="pe-b0-rrn">주민번호</label><input id="pe-b0-rrn" class="pv-in" value="" placeholder="비워 두면 출력 후 직접" autocomplete="off" inputmode="numeric"></span></div><label class="ck pe-ck"><input type="checkbox" id="pe-bj"><span>매수인이 2명(공동명의)</span></label><p class="sm" id="pe-sum">신청서·위임장은 1부입니다.</p><button type="button" class="btn" data-pe="ok">완료</button></div></div><p class="hero-note">입력과 단계 안내는 무료입니다. <b>위임장·신청서 Word 파일은 4단계에서 9,900원 결제 후</b> 받습니다.</p><div class="wz-nav"><span></span><button type="button" class="btn" data-ph="2" data-next="1">다음: 채권·인지 →</button></div></section><p class="disc">세액·채권 금액은 각 기관 영수증 기준이며, 최종 확인은 관할 등기소에서 하세요.</p></div><aside class="pvp" aria-label="문서 반영 미리보기"><div class="pvp-bar"><b>문서 반영 미리보기</b><span>채운 칸 1 · 남은 칸 17</span><button type="button" data-pvp="1">보기</button></div><div class="pvp-c"><div class="pvp-h"><h2>문서 반영 미리보기</h2><span class="pvp-cn">채운 칸 <b>1</b> · 남은 칸 <b>17</b></span><button type="button" class="pvp-x" data-pvp="0">닫기</button></div><div class="pv"><div class="pv-h">위임장 · 신청서 공통</div><div class="pv-r"><span class="pv-k">부동산의 표시</span><span class="pv-v miss">아직 입력 전 <button type="button" class="pv-x" data-edit="addr">입력</button></span></div><div class="pv-r"><span class="pv-k">구조</span><span class="pv-v miss">아직 입력 전 <button type="button" class="pv-x" data-edit="struct">입력</button></span></div><div class="pv-r"><span class="pv-k">전유면적</span><span class="pv-v miss">아직 입력 전 <button type="button" class="pv-x" data-edit="area">입력</button></span></div><div class="pv-r"><span class="pv-k">대지권 비율</span><span class="pv-v miss">아직 입력 전 <button type="button" class="pv-x" data-edit="land">입력</button></span></div><div class="pv-r"><span class="pv-k">이전할 지분</span><span class="pv-v">전부 <button type="button" class="pv-x" data-edit="share">고치기</button></span></div><div class="pv-r"><label class="pv-k" for="cause">등기원인</label><span class="pv-v"><input type="date" id="cause" class="pv-in" aria-label="매매계약 체결일" value=""></span></div><div class="pv-r"><span class="pv-k">매도인</span><span class="pv-v miss">아직 입력 전</span></div><div class="pv-r"><span class="pv-k">매도인 주소</span><span class="pv-v miss">아직 입력 전</span></div><div class="pv-r"><span class="pv-k">매수인</span><span class="pv-v miss">아직 입력 전</span></div><div class="pv-r"><span class="pv-k">매수인 주소</span><span class="pv-v miss">아직 입력 전</span></div><div class="pv-r"><span class="pv-k">대리인 (위임장)</span><span class="pv-v miss">아직 입력 전</span></div></div><div class="pv"><div class="pv-h">신청서에만</div><div class="pv-r"><span class="pv-k">매수인 주민번호</span><span class="pv-v"><span class="pv-s">비워 두면 직접 기재</span></span></div><div class="pv-r"><span class="pv-k">거래가액</span><span class="pv-v miss">아직 입력 전 <button type="button" class="pv-x" data-edit="price">입력</button></span></div><div class="pv-r"><span class="pv-k">거래신고관리번호</span><span class="pv-v miss">아직 입력 전 <button type="button" class="pv-x" data-edit="report">입력</button></span></div><div class="pv-r"><span class="pv-k">부동산 고유번호</span><span class="pv-v miss">아직 입력 전 <button type="button" class="pv-x" data-edit="uid">입력</button></span></div><div class="pv-r"><span class="pv-k">시가표준액</span><span class="pv-v miss">아직 입력 전</span></div><div class="pv-r"><span class="pv-k">취득세</span><span class="pv-v miss">아직 입력 전</span></div><div class="pv-r"><span class="pv-k">국민주택채권</span><span class="pv-v miss">아직 입력 전</span></div><div class="pv-r"><span class="pv-k">수수료 납부번호</span><span class="pv-v miss">아직 입력 전</span></div></div><a class="sample" href="sample_wimi.png" target="_blank" rel="noopener"><svg class="sample-ic" viewBox="0 0 40 48" aria-hidden="true" focusable="false"><path d="M4 2h22l10 10v32a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z" fill="#fff" stroke="#0369A1" stroke-width="2"></path><path d="M26 2v10h10" fill="none" stroke="#0369A1" stroke-width="2"></path><path d="M9 22h20M9 28h20M9 34h13" stroke="#93C5FD" stroke-width="2.4" stroke-linecap="round"></path></svg><span><b>결제 후 받는 위임장 견본</b><small>가상 인물로 채운 견본 · 눌러서 크게 보기</small></span></a><button type="button" class="pvp-reset" data-reset="1">입력 내용 모두 지우기</button></div></aside></div><!--PRE:END--></main>
 <script>/* 저장값·이용권·이어서 하기·증여·예시 모드로 들어온 사람에게는 위 첫 화면이 맞지 않으므로 render() 전까지 가린다(깜빡임 방지). render()가 pre-hide를 지운다 */
 (function(){try{var q=location.search+location.hash,a=document.getElementById('app');if(/type=gift|pass=|[#&]r=|demo=/.test(q)){a.classList.add('pre-hide');return;}
 ['selfregi_hub_v1','selfregi_form_v1','selfregi_pass_v1','selfregi_relay_v1'].some(function(k){var v=localStorage.getItem(k);return v&&v!=='{}'&&v!=='null'&&v!=='[]';})&&a.classList.add('pre-hide');}catch(e){}})();</script>
@@ -965,8 +972,9 @@ function syncForm(atLoad){
 var PAY=GIFT?['bond','efee','wetax']:['bond','stamp','efee','wetax']; /* 순수 증여는 인지세가 없다(domain.md Case G) */
 function paid(k){return k==='stamp'?!!S.fin.stamp:f({bond:'bond',efee:'fee',wetax:'tax'}[k]);}
 function payLeft(){return PAY.filter(function(k){return !paid(k);}).length;}
-/* 취득세를 잔금 후에 내기로 했으면 신청서는 취득세 칸만 비우고 먼저 받을 수 있다 */
-function payLeftFor(){return PAY.filter(function(k){return !paid(k)&&!(k==='wetax'&&S.hub.taxWhen==='later');}).length;}
+/* 매매 취득세는 신청서를 막지 않는다 — 신청서는 잔금 전에 출력하고(10/23) 위택스 납부는 잔금일부터라, 아직이면 취득세 칸만 비워 받는다(10/24 사용자: 「잔금 전/후」 고르기 삭제) */
+function payDue(){return PAY.filter(function(k){return !paid(k)&&(GIFT||k!=='wetax');});}
+function payLeftFor(){return payDue().length;}
 
 var PHASES=[
   {k:'pre',n:1,t:'셀프등기 사전 준비',w:'잔금일 전에 끝내 둘 것',tasks:['docs','ask','bond','stamp','efee','wetax','req','pass']},
@@ -988,7 +996,7 @@ var T={
   wetax:{t:'취득세 납부',shot:'wetax',pay:1,done:function(){return f('tax');},
     note:function(d){return d?'취득세 '+won(S.relay.tax):(pre('wetax')?'납부완료 · 영수증 번호만 적기':'위택스 · 납부확인서');}},
   apply:{t:'소유권이전등기 신청서 받기',shot:'app',done:function(){return !!S.hub.apply;},
-    note:function(d){if(d)return '받음 · 납부 번호 반영';if(!S.pass)return '위임장 결제 후';var n=payLeftFor();return n?'납부 번호 '+n+'건 남음':(S.hub.taxWhen==='later'&&!f('tax')?'취득세 칸은 비워 둡니다 · 납부 후 다시 받기':'납부 번호가 자동으로 들어갑니다');}},
+    note:function(d){if(d)return '받음 · 납부 번호 반영';if(!S.pass)return '위임장 결제 후';var n=payLeftFor();return n?'납부 번호 '+n+'건 남음':(!f('tax')?'취득세 칸은 비워 둡니다 · 납부 후 다시 받거나 직접 적기':'납부 번호가 자동으로 들어갑니다');}},
   rj:{t:'자주 반려되는 사유 최종 점검',done:function(){return !!S.hub.rjok;},
     note:function(d){if(d)return '확인함';var g=S.hub.reg;if(!g)return '등기부를 올리면 자동 점검';var n=(g.liens.length?1:0)+(g.blockers.length?1:0)+(g.isTrust?1:0)+(g.sepReg?1:0);return '등기부 자동 점검 · '+(n?'확인 필요 '+n+'건':'특이사항 없음');}},
   visit:{t:'등기소 접수',done:function(){return !!S.hub.visit;},note:function(d){return d?'접수 완료':'관할 등기소 한 번 · 제출 순서대로';}}
@@ -1014,7 +1022,7 @@ function blocked(k){
     if(k==='visit'&&!S.hub.apply)return '신청서를 받은 뒤';
     return '';
   }
-  if(k==='wetax'&&S.hub.taxWhen==='later'&&when()==='before')return '잔금 후';
+  if(k==='wetax'&&!f('tax')&&when()==='before')return '잔금일부터';
   if(k==='seller'&&when()==='before')return '잔금일 당일';
   if(k==='apply'&&(!S.pass||payLeftFor()))return T.apply.note(false);
   if(k==='visit'&&!S.hub.apply)return '신청서를 받은 뒤';
@@ -1060,24 +1068,35 @@ function curStep(nk){if(!addr()||!dealDone())return 1;
   /* 준비서류 체크는 참고 목록이라 지금 단계를 붙잡지 않는다 */
   if(nk==='docs'){for(var i=0;i<ORDER.length;i++){var k=ORDER[i];if(k!=='docs'&&!settled(k)&&!blocked(k))return stepOf(k);}return STEPS.length;}
   return nk?stepOf(nk):STEPS.length;}
-function stepDone(i){if(i===1)return dealDone();return STEPS[i-1].tasks.every(function(k){return settled(k)||(k==='wetax'&&S.hub.taxLater&&when()==='before');});}
+function stepDone(i){if(i===1)return dealDone();return STEPS[i-1].tasks.every(settled);}
+/* 완료하려면 남은 것 — 「다음」 팝업·카드 안내·신청서 대기 문구가 같은 말을 쓴다(10/24 사용자: 「납부번호 미비」 대신 무엇을 하면 되는지) */
+function missingOf(k){
+  switch(k){
+  case 'bond':return '채권발행번호를 적고 「저장」';
+  case 'efee':return '수수료 납부번호를 적고 「저장」';
+  case 'wetax':return '취득세액을 적고 「저장」';
+  case 'stamp':return '인지를 출력한 뒤 「출력했어요」 누르기';
+  case 'pass':return (GIFT?'14,900원':'9,900원')+' 결제 후 Word 파일 받기';
+  case 'req':return '체크하지 않은 항목 '+(REQ.length-cnt(REQ))+'개';
+  case 'seller':return '체크하지 않은 항목 '+(SELLER.length-cnt(SELLER))+'개';
+  case 'apply':return '신청서 Word 파일 다운로드';
+  case 'rj':return '점검 후 「확인했어요」 누르기';
+  case 'visit':return '접수 후 「접수했어요」 누르기';
+  case 'kum':return '검인 후 「검인 받았어요」 누르기';}
+  return '';}
+function stepMissing(i){
+  if(i===1){var m=[];if(!has(causeIso()))m.push(GIFT?'증여계약일':'계약일');if(!has(sellerName()))m.push('매도인 성명');if(!has(buyerName()))m.push('매수인 성명');
+    return m.length?[{t:STEPS[0].t,m:m.join(' · ')+' 입력'}]:[];}
+  /* 아직 할 수 없는 것(잔금일 전 날인 등)은 붙잡지 않는다 */
+  return STEPS[i-1].tasks.filter(function(k){return !settled(k)&&!blocked(k);}).map(function(k){return {t:T[k].t,m:missingOf(k)};});}
 function stepperHtml(cur,view){
   return '<ol class="stp7" aria-label="진행 단계">'+STEPS.map(function(s,j){var i=j+1,done=stepDone(i)&&i!==cur;
     return '<li><button type="button" class="s7'+(i===cur?' cur':'')+(done?' done':'')+(i===view?' sel':'')+'" data-ph="'+i+'"'+(i===view?' aria-current="step"':'')+'>'
       +'<span class="s7-n">'+(done?'✓':i)+'</span><span class="s7-t">'+s.t+'</span></button></li>';}).join('')+'</ol>';
 }
-function wzCard(k){var t=T[k],d=t.done(),pd=!d&&t.pay&&pre(k);
+function wzCard(k){var t=T[k],d=t.done(),pd=!d&&t.pay&&pre(k),need=!d&&!pd&&!blocked(k)&&k!=='pass'&&k!=='apply'?missingOf(k):'';
   var pill=d?'<span class="pill ok">완료</span>':(pd?'<span class="pill ok">납부완료</span>':'');
-  return '<div class="wz-card'+(d?' done':'')+'" id="p-'+k+'"><div class="wz-ct"><b>'+t.t+'</b>'+pill+'</div>'+(k==='wetax'&&!GIFT?taxBody(d):panel(k,d))+'</div>';}
-/* 취득세 — 잔금 전(구청) / 잔금 후(위택스) 선택에 따라 안내가 달라진다 */
-function taxBody(d){
-  var w=S.hub.taxWhen||'';
-  var pick='<div class="tiles"><button type="button" class="tile" data-taxw="before" aria-pressed="'+(w==='before')+'">잔금 전에 구청에서 납부<small>구청 세무과 방문 · 미리 신고·납부</small></button>'
-    +'<button type="button" class="tile" data-taxw="later" aria-pressed="'+(w==='later')+'">잔금 후 위택스로 납부<small>잔금일 이후 온라인</small></button></div>';
-  if(d||w==='before')return pick+'<div style="margin-top:12px">'+panel('wetax',d)+'</div>';
-  if(w==='later')return pick+'<p class="tip" style="margin-top:12px">신청서는 <b>취득세 칸만 비워 두고</b> 나머지를 모두 채워 둡니다. 잔금 후 납부확인서를 올리면 완성됩니다. 취득세는 등기 접수 전까지 납부를 마쳐야 합니다.</p>';
-  return '<p>취득세를 언제 내실지 고르세요. 등기에는 <b>납부확인서</b>를 씁니다.</p>'+pick;
-}
+  return '<div class="wz-card'+(d?' done':'')+'" id="p-'+k+'"><div class="wz-ct"><b>'+t.t+'</b>'+pill+'</div>'+(need?'<p class="wz-need">완료하려면 — '+esc(need)+'</p>':'')+panel(k,d)+'</div>';}
 /* ① 매매정보 — 계약일·거래가액·관리번호·이전할 지분은 바꾸는 즉시 저장, 매도인·매수인은 편집기 */
 function dealScreen(){
   if(GIFT)return giftScreen();
@@ -1106,7 +1125,7 @@ function stageHtml(view){
   var s=STEPS[view-1],h=regCard()+'<section class="wz" aria-labelledby="wz-t"><div class="wz-h"><span class="ph-n">'+view+'</span><div><h2 class="ph-t" id="wz-t">'+s.t+'</h2><span class="ph-w">'+s.w+'</span></div></div>';
   h+=view===1?dealScreen():s.tasks.map(wzCard).join('');
   h+='<div class="wz-nav">'+(view>1?'<button type="button" class="btn line" data-ph="'+(view-1)+'">← 이전</button>':'<span></span>')
-    +(view<STEPS.length?'<button type="button" class="btn'+(s.k==='poa'&&!S.pass?' line':'')+'" data-ph="'+(view+1)+'">다음: '+STEPS[view].t+' →</button>':'')+'</div></section>'; /* 결제 전에는 결제 버튼만 주인공(폰 레스토프) */
+    +(view<STEPS.length?'<button type="button" class="btn'+(s.k==='poa'&&!S.pass?' line':'')+'" data-ph="'+(view+1)+'" data-next="1">다음: '+STEPS[view].t+' →</button>':'')+'</div></section>'; /* 결제 전에는 결제 버튼만 주인공(폰 레스토프) */
   return h;
 }
 var CUR=1,VIEW=1;
@@ -1117,8 +1136,8 @@ function render(){
     +'<aside class="pvp'+(OPEN.pvp?' open':'')+'" aria-label="문서 반영 미리보기">'
     +'<div class="pvp-bar"><b>문서 반영 미리보기</b><span>채운 칸 '+pv.ok+' · 남은 칸 '+pv.left+'</span><button type="button" data-pvp="1">보기</button></div>'
     +'<div class="pvp-c"><div class="pvp-h"><h2>문서 반영 미리보기</h2><span class="pvp-cn">채운 칸 <b>'+pv.ok+'</b> · 남은 칸 <b>'+pv.left+'</b></span><button type="button" class="pvp-x" data-pvp="0">닫기</button></div>'+pv.html
-    +'<div class="pvp-foot">'+(GIFT?'':'<a class="sample-l" href="sample_wimi.png" target="_blank" rel="noopener">결제 후 받는 위임장 견본 ↗</a>')
-    +'<button type="button" class="pvp-reset" data-reset="1">입력 내용 모두 지우기</button></div>'
+    +(GIFT?'':'<a class="sample" href="sample_wimi.png" target="_blank" rel="noopener">'+DZ_IC.replace('dz-ic','sample-ic')+'<span><b>결제 후 받는 위임장 견본</b><small>가상 인물로 채운 견본 · 눌러서 크게 보기</small></span></a>') /* 10/24 사용자: 링크로 줄이니 안 보인다 → 버튼 형태로 복귀 */
+    +'<button type="button" class="pvp-reset" data-reset="1">입력 내용 모두 지우기</button>'
     +'</div></aside></div>';
   A.innerHTML=W(html);A.classList.remove('pre-hide');bind();
 }
@@ -1138,6 +1157,7 @@ function homeCard(){
     +(GIFT?'':'<div class="home-date"><label for="bal">잔금일</label><input type="date" id="bal" value="'+esc(S.hub.balance||'')+'"></div>')
     +(dd?'<div class="dday">'+dd+'</div>':'')
     +stepperHtml(CUR,VIEW)
+    +'<p class="stp-note">단계마다 입력·체크를 모두 마치면 번호가 ✓로 바뀝니다 · 둘러볼 때는 단계 번호를 누르세요</p>'
     +'</section>';
 }
 /* 증여 취득세 신고기한 — 취득일(증여계약일)이 속한 달 말일부터 3개월(지방세법 제20조①), 등기 전이면 접수일까지 */
@@ -1366,7 +1386,7 @@ function panel(k,d){
       +'<p class="tip">첨부서류는 발행일부터 3개월 이내여야 합니다.</p>'+shotBtn('docs');
   case 'bond': case 'efee': case 'wetax':
     var why=blocked(k),p=pre(k)||d;
-    return (why?'<div class="warn">'+esc(why)+'에 할 수 있습니다. 순서만 미리 봐 두세요.</div>':'')
+    return (why?'<div class="warn">'+(k==='wetax'&&!GIFT?'위택스 납부는 잔금일부터입니다 · 잔금 전에 내려면 구청 세무과를 방문하세요':esc(why)+'에 할 수 있습니다. 순서만 미리 봐 두세요.')+'</div>':'')
       +'<p>'+PAYTX[k]+'</p>'
       +(k==='bond'&&reg()?'<button type="button" class="btn line" data-siga="1">공시가격 자동조회 및 채권 금액 계산하기</button>'+sigaHtml():'')
       +(p?'':shotBtn(k,true))
@@ -1408,7 +1428,8 @@ function panel(k,d){
     var co=coOwnerSale();
     return '<p>위임장에 쓴 정보와 납부 번호가 들어간 신청서를 Word 파일로 받습니다.'+(mk?' 매도인·매수인이 모두 2인이라 신청서 2건과 매매목록을 함께 받습니다.':'')+'</p>'
       +(co?'<div class="warn">공유자 '+esc(co.name)+' 님 지분만 이전 — 「등기의 목적」은 공란, 등기부 갑구를 보고 직접 적습니다</div>':'')
-      +(w2?'<div class="warn">'+(!S.pass?'위임장 결제 후 받을 수 있습니다.':'납부 번호를 모두 적으면 받을 수 있습니다 · '+payLeftFor()+'건 남음')+'</div>':'<button type="button" class="btn" data-dl="apply">신청서 Word 파일 다운로드</button><div class="rv-slot" hidden></div>')
+      +(!w2&&!GIFT&&!f('tax')?'<p class="sm">취득세를 아직 내지 않았다면 취득세 칸은 비워 둡니다. 납부 후 다시 받거나 직접 적으세요.</p>':'')
+      +(w2?'<div class="warn">'+(!S.pass?'위임장 결제 후 받을 수 있습니다.':'아래를 마치면 받을 수 있습니다'+payDue().map(function(q){return '<br>· '+stepOf(q)+'단계 '+T[q].t+' — '+esc(missingOf(q));}).join(''))+'</div>':'<button type="button" class="btn" data-dl="apply">신청서 Word 파일 다운로드</button><div class="rv-slot" hidden></div>')
       +shotBtn('apply');
   case 'rj':
     return regScan()
@@ -1847,6 +1868,18 @@ window.addEventListener('srpay:change',function(){if(demoOn())return;var was=S.p
 function toast(m,err,long){var t=document.getElementById('toast');t.textContent=W(m);t.classList.toggle('err',!!err);t.classList.add('on');clearTimeout(t._t);
   t._t=setTimeout(function(){t.classList.remove('on');},long?Math.max(3000,String(m).length*70):2200);}
 function scrollToEl(el){if(el)window.scrollTo({top:el.getBoundingClientRect().top+window.pageYOffset-70,behavior:'smooth'});}
+function goStep(to){OPEN.ph=to;track('hub_step',{key:String(to)});render();var w=A.querySelector('.wz');if(w)scrollToEl(w);}
+function nextDlg(ms,to){
+  var d=document.getElementById('nx-dlg');if(!d){d=document.createElement('dialog');d.id='nx-dlg';d.className='nx-dlg';d.setAttribute('aria-labelledby','nx-t');document.body.appendChild(d);}
+  function cl(){if(d.close)d.close();else d.removeAttribute('open');}
+  d.innerHTML=W('<h2 id="nx-t">이 단계가 아직 완료되지 않았습니다</h2><p>아래를 마치면 단계 번호가 ✓로 바뀝니다.</p><ul>'
+    +ms.map(function(m){return '<li><b>'+esc(m.t)+'</b><span>'+esc(m.m)+'</span></li>';}).join('')+'</ul>'
+    +'<div class="nx-b"><button type="button" class="btn" data-nx="stay">이 단계 마저 하기</button><button type="button" class="btn line" data-nx="go">나중에 하고 다음 단계 보기</button></div>');
+  d.querySelector('[data-nx="stay"]').onclick=function(){cl();track('hub_next_block',{key:'stay'});};
+  d.querySelector('[data-nx="go"]').onclick=function(){cl();track('hub_next_block',{key:'go'});goStep(to);};
+  if(d.showModal)d.showModal();else d.setAttribute('open','');
+  track('hub_next_block',{key:'show',step:VIEW});
+}
 function goTask(k){OPEN.ph=stepOf(k);if(k==='reg'){render();scrollToEl(document.getElementById('reg'));return;}OPEN[k]=true;render();scrollToEl(document.getElementById('t-'+k));}
 function bind(){
   var b=document.getElementById('bal');
@@ -1856,14 +1889,15 @@ function bind(){
   if(dz){['dragenter','dragover'].forEach(function(t){dz.addEventListener(t,function(e){e.preventDefault();dz.classList.add('over');});});
     ['dragleave','drop'].forEach(function(t){dz.addEventListener(t,function(e){e.preventDefault();dz.classList.remove('over');});});
     dz.addEventListener('drop',function(e){var fl=e.dataTransfer&&e.dataTransfer.files;if(fl&&fl.length)readReg(fl);});}
-  A.querySelectorAll('[data-ph]').forEach(function(x){x.onclick=function(){var to=+x.getAttribute('data-ph');
+  A.querySelectorAll('[data-ph]').forEach(function(x){x.onclick=function(){var to=+x.getAttribute('data-ph'),from=VIEW;OPEN.ph=OPEN.ph||from;
     /* ① 매매정보에서 넘어갈 때 적던 당사자 정보를 저장한다(검증에 걸리면 머문다) */
-    if(VIEW===1&&to!==1&&document.getElementById('pe')&&!peSave())return;
-    OPEN.ph=to;track('hub_step',{key:String(to)});render();var w=A.querySelector('.wz');if(w)scrollToEl(w);};});
+    if(from===1&&to!==1&&document.getElementById('pe')&&!peSave())return;
+    /* 「다음」은 이 단계가 덜 끝났으면 팝업으로 남은 것을 보여 주고 머문다(10/24 사용자). 위 단계 번호는 둘러보기용이라 막지 않는다 */
+    if(x.hasAttribute('data-next')&&!demoOn()){var ms=stepMissing(from);if(ms.length)return nextDlg(ms,to);}
+    goStep(to);};});
   A.querySelectorAll('[data-deal]').forEach(function(i){i.onchange=function(){var k=i.getAttribute('data-deal'),v=i.value.trim(),E=S.hub.edit=S.hub.edit||{};
     if(k==='cause'){if(v)S.hub.cause=v;}else{if(k==='price')v=digits(v);if(v)E[k]=v;else delete E[k];}
     saveHub();track('hub_deal',{key:k});render();};});
-  A.querySelectorAll('[data-taxw]').forEach(function(x){x.onclick=function(){S.hub.taxWhen=x.getAttribute('data-taxw');saveHub();track('hub_tax',{key:S.hub.taxWhen});render();};});
   A.querySelectorAll('[data-pvp]').forEach(function(x){x.onclick=function(){OPEN.pvp=x.getAttribute('data-pvp')==='1';if(OPEN.pvp)track('hub_pv',{});render();};});
   A.querySelectorAll('[data-all]').forEach(function(x){x.onclick=function(){track('hub_door',{key:'all'});OPEN.ph=1;render();scrollToEl(A.querySelector('.wz'));};});
   A.querySelectorAll('[data-handoff]').forEach(function(x){x.addEventListener('click',function(e){e.preventDefault();track('hub_handoff',{});handoff(x.getAttribute('href'));});});
@@ -1884,7 +1918,10 @@ function bind(){
     A.querySelectorAll('#p-'+k+' [data-f]').forEach(function(i){var v=i.value.trim(),key=i.getAttribute('data-f');if(i.getAttribute('data-num')==='1')v=digits(v);
       if(+i.getAttribute('data-n')>1){vals[key]=vals[key]||[];vals[key][+i.getAttribute('data-i')]=v;}else vals[key]=v;if(v)n++;});
     if(!n)return toast('하나 이상 적어 주세요');
-    saveRelay(vals);track('hub_save',{key:k});OPEN[k]=false;toast('저장했습니다');var nk=nowKey();render();if(nk&&nk!=='reg'&&!blocked(nk))goTask(nk);};});
+    /* 저장 뒤에도 지금 단계에 머문다(10/24 사용자: 저장하면 매매정보로 튀던 문제) — 다 됐으면 같은 단계의 다음 카드로 */
+    saveRelay(vals);track('hub_save',{key:k});OPEN.ph=OPEN.ph||VIEW;var dn=T[k].done();
+    toast(dn?'저장했습니다 · 완료':'저장했습니다 · 완료하려면 '+missingOf(k),0,!dn);render();
+    if(dn){var nx=STEPS[VIEW-1].tasks.filter(function(q){return q!==k&&!settled(q);})[0];if(nx)scrollToEl(document.getElementById('p-'+nx));}};});
   A.querySelectorAll('[data-edit]').forEach(function(x){x.onclick=function(){var k=x.getAttribute('data-edit');OPEN['ed_'+k]=true;
     if(k==='party'){OPEN.ed_party=false;OPEN.pdraft=OPEN.prrn=OPEN.pjs=OPEN.pjb=null;OPEN.ph=1;OPEN.pvp=false;render();scrollToEl(document.getElementById('pe'));var n=document.getElementById('pe-s0-name');if(n)n.focus({preventScroll:true});return;}
     render();var i=A.querySelector('[data-ed="'+k+'"]');if(i)i.focus();};});
@@ -1923,7 +1960,7 @@ function bind(){
       msg.textContent=r.sumOk?'채웠습니다 — 세액 합계 '+Number(r.total).toLocaleString('ko-KR')+'원 일치. 「저장」을 누르세요.':'채웠습니다. 세액 합계가 맞지 않아 납부확인서와 대조해 주세요.';
     });};
   A.querySelectorAll('[data-stamp="0"]').forEach(function(x){x.onclick=function(){S.fin.stamp=false;if(!demoOn()){var fl=rd(K.flow)||{};fl.fin=fl.fin||{};delete fl.fin.stamp;wr(K.flow,fl);}render();};});
-  A.querySelectorAll('[data-stamp="1"]').forEach(function(x){x.onclick=function(){saveFin('stamp');OPEN.stamp=false;toast('저장했습니다');render();};});
+  A.querySelectorAll('[data-stamp="1"]').forEach(function(x){x.onclick=function(){saveFin('stamp');OPEN.stamp=false;OPEN.ph=OPEN.ph||VIEW;toast('저장했습니다 · 완료');render();};});
   /* 입력 내용 모두 지우기 — 이 기기 저장값(집·당사자·납부 번호·진행)만 지운다. 결제 이용권은 남긴다(재발급 30일) */
   A.querySelectorAll('[data-reset]').forEach(function(x){x.onclick=function(){
     if(demoOn())return toast('예시 상태에서는 지우지 않습니다.');
