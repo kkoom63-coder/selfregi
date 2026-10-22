@@ -553,6 +553,8 @@ p,.pv-r,.ck span,.rvl p{font-size:14px;line-height:1.6}
 .pvp-h{gap:8px;margin-bottom:8px}
 .pvp-cn{margin-left:auto;font-size:12px;color:var(--muted)}.pvp-cn b{color:var(--navy)}
 .stp-note{margin:8px 0 0;font-size:12px;color:#CBD5E1}
+.rc-ok{margin:8px 0 0;padding:8px 12px;border-radius:10px;background:var(--ok-bg);color:var(--ok);font-size:14px;font-weight:600}
+.rc-ok.bad{background:var(--warn-bg);color:var(--warn-tx)}
 .wz-need{margin:0 0 10px;font-size:14px;font-weight:600;color:var(--warn-tx)}
 .nx-dlg{max-width:440px;width:calc(100% - 32px);border:0;border-radius:12px;padding:20px;color:var(--text);background:var(--card)}
 .nx-dlg::backdrop{background:rgba(15,23,42,.5)}
@@ -1391,7 +1393,8 @@ function panel(k,d){
       +(k==='bond'&&reg()?'<button type="button" class="btn line" data-siga="1">공시가격 자동조회 및 채권 금액 계산하기</button>'+sigaHtml():'')
       +(p?'':shotBtn(k,true))
       +(k==='wetax'&&GIFT?'<p class="sm">증여세는 홈택스(세무서)에 따로 신고합니다. 등기 서류에는 들어가지 않습니다.</p>':'')
-      +(k==='wetax'?'<label class="btn line" style="margin-top:8px" for="rcpt">납부확인서 PDF 올리기 — 자동으로 채우기</label><input type="file" id="rcpt" accept="application/pdf,.pdf" hidden><p class="sm" id="rcptMsg"></p>':'')
+      +(k==='wetax'?(S.hub.rcpt&&f('tax')?'<p class="rc-ok'+(S.hub.rcpt===2?' bad':'')+'">'+(S.hub.rcpt===2?'납부확인서에서 읽었지만 세액 합계가 맞지 않습니다 · 원본과 대조해 주세요':'납부확인서에서 읽은 값입니다 · 원본과 대조해 주세요')+'</p>'
+        :'<p class="sm">위택스·이택스 <b>납부확인서 PDF</b>를 맨 위 「서류 올리기」에 올리면 세액이 자동으로 채워집니다. <button type="button" class="link" data-toreg="1">서류 올리기로 이동 ↑</button></p>'):'')
       +'<div style="margin-top:12px">'+fieldsHtml(k)+'</div><button type="button" class="btn'+(p?'':' line')+'" data-save="'+k+'">저장</button>'
       +(p?shotBtn(k):'');
   case 'stamp':
@@ -1609,10 +1612,18 @@ async function photoParse(imgs,pdfBuf){
   }
   return runOcr(srcs,null);
 }
-function readReg(files){
+function readReg(files,skipRcpt){
   var list=[].slice.call(files||[]);if(!list.length)return;
   var dx=list.filter(function(fl){return /\.docx$/i.test(fl.name||'')||/wordprocessingml/.test(fl.type||'');})[0];
   if(dx)return resumeDocx(dx); /* 위임장 파일 → 이어서 하기 */
+  /* 취득세 납부확인서 PDF도 같은 상자에서 받는다(10/23 사용자: 취득세 카드의 별도 올리기 버튼 대신). 아니면 등기부로 읽는다 */
+  var rp=list.filter(isPdf)[0];
+  if(rp&&!skipRcpt&&window.SRReceipt){setOcr({busy:true,err:'',pct:.1,say:'파일을 확인하는 중…'});
+    SRReceipt.parse(rp).then(function(r){
+      if(r.kind==='receipt'||r.kind==='partial')return applyReceipt(r);
+      if(r.kind==='not_receipt')return setOcr({busy:false,say:'',err:'<b>납부서(영수증)입니다.</b> 등기에는 「납부확인서」가 필요합니다. 위택스·이택스 납부내역에서 납부확인서를 출력해 올려 주세요.'});
+      readReg(list,1);},function(){readReg(list,1);});
+    return;}
   OCR.files=list;var pdf=list.filter(isPdf)[0];
   track('hub_ocr',{type:pdf?'pdf':'image'});
   if(!window.pdfjsLib||!window.RegParse){setOcr({err:'판독 모듈을 불러오지 못했습니다. 새로고침 후 다시 시도해 주세요.',say:''});return;}
@@ -1641,6 +1652,15 @@ function readReg(files){
     scrollToEl(document.getElementById('reg'));
   }).catch(function(e){var m=e&&e.message?e.message:String(e);setOcr({busy:false,say:'',err:'<b>읽지 못했습니다.</b> '+(/<a /.test(m)?m:esc(m))});});
 }
+/* 납부확인서 → 취득세·교육세·농특세(단독명의면 시가표준액까지) 저장 → 취득세 카드로 이동해 「납부확인서에서 읽은 값」 표시 */
+function applyReceipt(r){
+  setOcr({busy:false,pct:1,say:'',err:''});track('receipt_ocr',{key:r.kind,from:'hub_top'});
+  OPEN.ph=stepOf('wetax');
+  if(r.kind!=='receipt'){render();toast('납부확인서의 세액을 읽지 못했습니다. 취득세 칸에 직접 넣어 주세요.',1);scrollToEl(document.getElementById('p-wetax'));return;}
+  var v={tax:r.tax,edu:r.edu};if(r.rural)v.rural=r.rural;if(r.siga&&party().b.length<2)v.siga=r.siga;
+  saveRelay(v);S.hub.rcpt=r.sumOk?1:2;saveHub();render();
+  toast(r.sumOk?'납부확인서에서 취득세 '+Number(r.tax).toLocaleString('ko-KR')+'원을 채웠습니다':'납부확인서를 읽었지만 세액 합계가 맞지 않습니다. 원본과 대조해 주세요.',0,!r.sumOk);
+  scrollToEl(document.getElementById('p-wetax'));}
 /* 서류 작성 화면으로 넘길 때 올린 파일을 같이 넘긴다(서류 작성 페이지의 ?handoff=reg — 같은 IndexedDB) */
 function handoff(href){
   if(!OCR.files||!window.indexedDB){location.href=href;return;}
@@ -1919,6 +1939,7 @@ function bind(){
       if(+i.getAttribute('data-n')>1){vals[key]=vals[key]||[];vals[key][+i.getAttribute('data-i')]=v;}else vals[key]=v;if(v)n++;});
     if(!n)return toast('하나 이상 적어 주세요');
     /* 저장 뒤에도 지금 단계에 머문다(10/24 사용자: 저장하면 매매정보로 튀던 문제) — 다 됐으면 같은 단계의 다음 카드로 */
+    if(k==='wetax'&&S.hub.rcpt){S.hub.rcpt=0;saveHub();}
     saveRelay(vals);track('hub_save',{key:k});OPEN.ph=OPEN.ph||VIEW;var dn=T[k].done();
     toast(dn?'저장했습니다 · 완료':'저장했습니다 · 완료하려면 '+missingOf(k),0,!dn);render();
     if(dn){var nx=STEPS[VIEW-1].tasks.filter(function(q){return q!==k&&!settled(q);})[0];if(nx)scrollToEl(document.getElementById('p-'+nx));}};});
@@ -1951,14 +1972,7 @@ function bind(){
   A.querySelectorAll('[data-dl]').forEach(function(x){x.onclick=function(){dlDoc(x.getAttribute('data-dl'));};});
   var cz=document.getElementById('cause');if(cz)cz.onchange=function(){if(!cz.value)return;S.hub.cause=cz.value;OPEN.cause=false;saveHub();track('hub_edit',{key:'cause'});render();};
   A.querySelectorAll('[data-cause]').forEach(function(x){x.onclick=function(){OPEN.cause=true;render();var c=document.getElementById('cause');if(c)c.focus();};});
-  var rc=document.getElementById('rcpt');
-  if(rc)rc.onchange=function(){var fl=rc.files&&rc.files[0],msg=document.getElementById('rcptMsg');rc.value='';if(!fl||!window.SRReceipt)return;
-    msg.textContent='읽는 중…';
-    SRReceipt.parse(fl).then(function(r){track('receipt_ocr',{key:r.kind,from:'hub'});
-      if(r.kind!=='receipt'){msg.textContent=r.msg;return;}
-      [['tax',r.tax],['edu',r.edu],['rural',r.rural||''],['siga',document.getElementById('f-siga-1')?'':r.siga]].forEach(function(p){var el=document.getElementById('f-'+p[0]);if(el&&p[1])el.value=Number(p[1]).toLocaleString('ko-KR');});
-      msg.textContent=r.sumOk?'채웠습니다 — 세액 합계 '+Number(r.total).toLocaleString('ko-KR')+'원 일치. 「저장」을 누르세요.':'채웠습니다. 세액 합계가 맞지 않아 납부확인서와 대조해 주세요.';
-    });};
+  A.querySelectorAll('[data-toreg]').forEach(function(x){x.onclick=function(){scrollToEl(document.getElementById('reg'));};});
   A.querySelectorAll('[data-stamp="0"]').forEach(function(x){x.onclick=function(){S.fin.stamp=false;if(!demoOn()){var fl=rd(K.flow)||{};fl.fin=fl.fin||{};delete fl.fin.stamp;wr(K.flow,fl);}render();};});
   A.querySelectorAll('[data-stamp="1"]').forEach(function(x){x.onclick=function(){saveFin('stamp');OPEN.stamp=false;OPEN.ph=OPEN.ph||VIEW;toast('저장했습니다 · 완료');render();};});
   /* 입력 내용 모두 지우기 — 이 기기 저장값(집·당사자·납부 번호·진행)만 지운다. 결제 이용권은 남긴다(재발급 30일) */
