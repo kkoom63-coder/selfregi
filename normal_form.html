@@ -114,6 +114,9 @@ button{font-family:inherit;cursor:pointer}
 .court-k{color:var(--sub2);flex:none}
 .court-n{flex:1;min-width:0;font-weight:700;color:var(--navy)}
 .court-a{font-size:12px;color:var(--muted)}
+.court-x{flex:none;border:1px solid var(--border);background:var(--card);border-radius:8px;padding:4px 10px;font:inherit;font-size:14px;font-weight:700;color:var(--blue);cursor:pointer}
+.court-f{flex:1;display:flex;gap:6px;min-width:0}.court-f .pv-in{flex:1;min-width:0}
+.court-note{margin:0 0 8px;font-size:14px;color:var(--sub2)}.court-h{color:var(--blue);font-weight:700}
 .court-m{flex:none;font-size:14px;font-weight:700;color:var(--blue);text-decoration:none}
 .ocr-all{display:inline-block;margin-top:12px;font-size:14px;font-weight:700;color:var(--blue);background:none;border:0;padding:0}
 .ocr-err{background:var(--warn-bg);border:1px solid var(--warn-bd);color:var(--warn-tx);border-radius:10px;padding:10px 12px;font-size:14px;margin-top:10px}
@@ -1206,8 +1209,13 @@ function partySum(js,jb){if(GIFT)return '증여계약서·위임장·신청서�
 function courtBox(g){
   var c=window.SRCourt&&g&&g.addr?SRCourt.find(g.addr):null;
   function one(o,k){return '<div class="court"><span class="court-k">'+k+'</span><span class="court-n">'+esc(o.n)+'</span><a class="court-m" href="https://map.naver.com/v5/search/'+encodeURIComponent(o.n)+'" target="_blank" rel="noopener">지도 ↗</a></div>';}
-  if(!c)return '<div class="court"><span class="court-k">관할 등기소</span><span class="court-a">주소로 찾지 못함 · 인터넷등기소에서 확인</span></div>';
-  if(c.ambiguous)return c.opts.map(function(o,i){return one(o,i?'또는':'관할 등기소');}).join('');
+  /* 직접 고른·적은 등기소가 있으면 그것이 기준(신청서 「○○지방법원 등기국 귀중」에도 들어간다) */
+  if(has(S.hub.court))return one({n:S.hub.court},'관할 등기소').replace('</div>',' <button type="button" class="court-x" data-court-reset="1">바꾸기</button></div>');
+  var help='<a class="court-h" href="https://www.iros.go.kr" target="_blank" rel="noopener">인터넷등기소 「관할 등기소 찾기」 ↗</a>';
+  if(!c)return '<div class="court court-in"><label class="court-k" for="court-in">관할 등기소</label><span class="court-f"><input id="court-in" class="pv-in" placeholder="예: 대전지방법원 등기과" autocomplete="off"><button type="button" class="court-x" data-court-save="1">저장</button></span></div>'
+    +'<p class="court-note">이 주소의 관할은 아직 자동으로 찾지 못합니다. '+help+'에서 확인해 적어 주세요.</p>';
+  if(c.ambiguous)return '<p class="court-note">이 주소는 동에 따라 관할이 나뉩니다. 맞는 곳을 고르세요. '+help+'</p>'
+    +c.opts.map(function(o){return one(o,'').replace('</div>',' <button type="button" class="court-x" data-court="'+esc(o.n)+'">선택</button></div>');}).join('');
   return one(c,'관할 등기소');
 }
 
@@ -1538,7 +1546,7 @@ function readReg(files){
     /* 소재지번을 못 읽었으면 등기부가 아니거나 거의 읽지 못한 것 — 빈 미리보기를 「정확도 높음」으로 보여주지 않는다 */
     if(!has(g.addr))throw new Error('등기부를 제대로 읽지 못했습니다. <a href="https://www.iros.go.kr" target="_blank" rel="noopener">인터넷등기소</a>에서 등기사항전부증명서를 새로 발급받아 PDF로 올리면 정확하게 읽힙니다.');
     /* 새 등기부를 올리면 부동산 칸을 고친 값은 버리고, 매도인은 새 등기부 소유자로 바꾼다(같은 이름이면 적어 둔 주소 유지) */
-    var E=S.hub.edit||{};['addr','jibun','apt','dong','floor','ho','struct','area','land','uid'].forEach(function(k){delete E[k];});
+    var E=S.hub.edit||{};['addr','jibun','apt','dong','floor','ho','struct','area','land','uid'].forEach(function(k){delete E[k];});S.hub.court='';
     if(S.hub.party&&g.owners.length){var old=S.hub.party.s;S.hub.party.s=g.owners.slice(0,2).map(function(o){
       var m=old.filter(function(q){return q.name===o.name;})[0];return {name:o.name,addr:m?m.addr:'',sd:g.owners.length>1?o.sd:'',sn:g.owners.length>1?o.sn:''};});}
     S.hub.reg=g;saveHub();OPEN.ph=null;
@@ -1607,7 +1615,7 @@ function relayFull(f){
   return R;
 }
 function rsum(a){return (a||[]).reduce(function(s,v){return s+(Number(digits(v))||0);},0);}
-function courtName(){var p=prop(),c=window.SRCourt&&has(p.jibun)?SRCourt.find(p.jibun):null;return c&&!c.ambiguous?c.n:'';}
+function courtName(){if(has(S.hub.court))return S.hub.court;var p=prop(),c=window.SRCourt&&has(p.jibun)?SRCourt.find(p.jibun):null;return c&&!c.ambiguous?c.n:'';}
 
 /* 손으로 적어야 할 칸 — 서류 작성 화면 nfBlankItems·로드맵 rmBlankItems와 같은 항목 */
 function blanks(kind,f){
@@ -1840,6 +1848,10 @@ function bind(){
     if(!window.confirm('이 기기에 저장된 입력 내용(부동산·당사자·납부 번호·진행 상황)을 모두 지울까요? 결제한 이용권은 그대로 남습니다.'))return;
     [K.hub,K.form,K.relay,K.relayM,K.relayTs,K.flow,'sr_resume_draft'].forEach(function(k){try{localStorage.removeItem(k);}catch(e){}});
     S=realState();OPEN={};OCR={busy:false,err:'',files:null,pct:0,say:''};track('hub_reset',{});render();window.scrollTo(0,0);toast('입력 내용을 모두 지웠습니다.');};});
+  /* 관할 등기소 직접 고르기·적기 */
+  A.querySelectorAll('[data-court]').forEach(function(x){x.onclick=function(){S.hub.court=x.getAttribute('data-court');saveHub();track('hub_court',{key:'pick'});render();};});
+  A.querySelectorAll('[data-court-save]').forEach(function(x){x.onclick=function(){var v=(document.getElementById('court-in')||{}).value||'';v=v.trim();if(!v)return toast('등기소 이름을 적어 주세요.',1);S.hub.court=v;saveHub();track('hub_court',{key:'type'});render();};});
+  A.querySelectorAll('[data-court-reset]').forEach(function(x){x.onclick=function(){S.hub.court='';saveHub();render();};});
   A.querySelectorAll('[data-unmark]').forEach(function(x){x.onclick=function(){S.hub[x.getAttribute('data-unmark')]=false;saveHub();render();};});
   A.querySelectorAll('[data-mark]').forEach(function(x){x.onclick=function(){var k=x.getAttribute('data-mark');S.hub[k]=true;saveHub();OPEN[k==='rjok'?'rj':k]=false;render();};});
 }
