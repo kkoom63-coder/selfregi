@@ -271,8 +271,17 @@ const PYEONGTAEK = {ambiguous:true, opts:[
 const METRO_RE = /^(서울|부산|대구|인천|광주|대전|울산)/;
 
 function tokens(addr){ return (addr||'').trim().split(/\s+/); }
+/* 2026 전남광주통합특별시 출범 — 등기부 주소가 새 이름으로 나와도 관할표(2025.11.03 PDF, 옛 이름 기준)를 찾도록
+   뒤에 「○○구」면 광주광역시, 「○○시·군」이면 전라남도로 읽는다(10/24) */
+function norm(addr){
+  addr=(addr||'').trim();
+  const m=addr.match(/^전남광주통합특별시\s+(\S+)/);
+  if(!m) return addr;
+  return (/구$/.test(m[1])?'광주광역시':'전라남도')+addr.slice('전남광주통합특별시'.length);
+}
 
 function findTaxOffice(addr){
+  addr=norm(addr);
   const p = tokens(addr);
   const gu = p.find(x=>x.endsWith('구'));
   const si = p.find(x=>x.endsWith('시'));
@@ -285,6 +294,7 @@ function findTaxOffice(addr){
 }
 
 function findCourt(addr){
+  addr=norm(addr);
   const p = tokens(addr);
   if(addr.startsWith('서울')){
     const gu = p.find(x=>x.endsWith('구'));
