@@ -711,7 +711,8 @@ window.SR=window.SR||(function(){
   return {track:track,report:report,exportCsv:exportCsv,reset:reset};
 })();
 </script>
-<script>try{if(window.SR){var r=document.referrer||'';var from=/normal_form\.html/.test(r)?'form':(/roadmap\.html/.test(r)?'roadmap':(/guide/.test(r)?'guide':(/selfregi/.test(r)?'index':'direct')));SR.track('hub_enter',{from:from});}}catch(e){}</script>
+<script>try{if(window.SR){var r=document.referrer||'';var from=/normal_form\.html/.test(r)?'form':(/roadmap\.html/.test(r)?'roadmap':(/guide/.test(r)?'guide':(/selfregi/.test(r)?'index':'direct')));/* 옛 서류 작성 화면과 같은 출처 분류(계산기·따라 하기 포함)로 hub_enter와 옛 이름 form_enter를 함께 보낸다 — GA 주요 이벤트 form_enter 추세가 10/22 교체로 끊기지 않게(10/23) */
+var f2=/normal_form\.html/.test(r)?'form':/guide_flow\.html/.test(r)?'gflow':(/guide\.html/.test(r)?'guide':(/calculator\.html/.test(r)?'calculator':(/roadmap\.html/.test(r)?'roadmap':(/selfregi/.test(r)?'index':'direct'))));SR.track('hub_enter',{from:f2});SR.track('form_enter',{from:f2,ui:'hub'});}}catch(e){}</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script src="tpl_wimi.js"></script>
@@ -1130,7 +1131,7 @@ function stageHtml(view){
     +(view<STEPS.length?'<button type="button" class="btn'+(s.k==='poa'&&!S.pass?' line':'')+'" data-ph="'+(view+1)+'" data-next="1">다음: '+STEPS[view].t+' →</button>':'')+'</div></section>'; /* 결제 전에는 결제 버튼만 주인공(폰 레스토프) */
   return h;
 }
-var CUR=1,VIEW=1;
+var CUR=1,VIEW=1,PAYV=false; /* PAYV: 이 방문에서 결제 버튼 노출(nf_pay_view)을 이미 보냈는지 */
 function render(){
   var nk=nowKey(),pv=pvBody(reg());CUR=curStep(nk);VIEW=OPEN.ph||CUR;
   var html=homeCard()+'<div class="hgrid"><div class="stage">'+stageHtml(VIEW)
@@ -1968,7 +1969,8 @@ function bind(){
         p.querySelector('[data-edok]').onclick=function(){edSave('share');};document.getElementById('ed-share').focus();return;}edSave(k);};
     else i.onkeydown=function(e){if(e.key==='Enter'){e.preventDefault();edSave(k);}};});
   A.querySelectorAll('[data-siga]').forEach(function(x){x.onclick=sigaGo;});
-  A.querySelectorAll('[data-pay]').forEach(function(x){x.onclick=function(){if(demoOn())return toast('예시 상태에서는 결제하지 않습니다.');if(!window.SRPay)return toast('결제 모듈을 불러오지 못했습니다. 새로고침 후 다시 시도해 주세요.',1);track('hub_pay',{});syncForm();SRPay.start();};});
+  A.querySelectorAll('[data-pay]').forEach(function(x){x.onclick=function(){if(demoOn())return toast('예시 상태에서는 결제하지 않습니다.');if(!window.SRPay)return toast('결제 모듈을 불러오지 못했습니다. 새로고침 후 다시 시도해 주세요.',1);track('hub_pay',{});track('nf_pay_click',{mode:'hub'});syncForm();SRPay.start();};
+    if(!PAYV&&'IntersectionObserver' in window){var io=new IntersectionObserver(function(es){if(PAYV||!es.some(function(e){return e.isIntersecting;}))return;PAYV=true;io.disconnect();track('nf_pay_view',{mode:'hub',product:GIFT?'gift':'sale'});},{threshold:.5});io.observe(x);}});
   A.querySelectorAll('[data-dl]').forEach(function(x){x.onclick=function(){dlDoc(x.getAttribute('data-dl'));};});
   var cz=document.getElementById('cause');if(cz)cz.onchange=function(){if(!cz.value)return;S.hub.cause=cz.value;OPEN.cause=false;saveHub();track('hub_edit',{key:'cause'});render();};
   A.querySelectorAll('[data-cause]').forEach(function(x){x.onclick=function(){OPEN.cause=true;render();var c=document.getElementById('cause');if(c)c.focus();};});
