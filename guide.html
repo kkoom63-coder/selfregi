@@ -346,7 +346,7 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:40px;p
 .gm-nav:hover:not(:disabled){border-color:var(--blue);color:var(--blue)}
 .gm-nav:disabled{opacity:.35;cursor:default}
 .gm-nav.next{background:var(--navy);border-color:var(--navy);color:#fff}
-.gm-nav.next:hover:not(:disabled){background:var(--blue);border-color:var(--blue)}
+.gm-nav.next:hover:not(:disabled){background:var(--blue);border-color:var(--blue);color:#fff}
 @media(max-width:760px){
   .gm-back{padding:0;align-items:stretch}
   .gm{grid-template-columns:1fr;max-width:none;max-height:100dvh;border-radius:0}
@@ -372,7 +372,7 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:40px;p
 .rin-row input{flex:1;min-width:0;height:36px;border:1px solid var(--border);border-radius:8px;padding:0 11px;font-family:inherit;font-size:14px;color:var(--text);background:#fff}
 .rin-row input:focus{outline:none;border-color:var(--blue)}
 .rin-row button{flex-shrink:0;padding:0 15px;border:none;border-radius:8px;background:#F1F5F9;color:var(--navy);font-size:12px;font-weight:700;font-family:inherit;cursor:pointer;transition:.15s}
-.rin-row button:hover{background:var(--blue)}
+.rin-row button:hover{background:var(--blue);color:#fff}
 .rin.saved .rin-row button{background:#047857}
 /* 미니 신청서 프리뷰 */
 .vprev{margin-top:18px;border:1px solid var(--border);border-radius:12px;overflow:hidden;background:#fff}
@@ -664,6 +664,13 @@ details.txt li .tip em{font-style:normal;font-weight:800;margin-right:6px}
 .hero .rt-s:not(:last-child)::after{content:"";position:absolute;top:20px;left:50%;width:100%;height:2px;background:rgba(255,255,255,.35)}
 .hero .rt-s i{position:relative;z-index:1;display:grid;place-items:center;width:40px;height:40px;border-radius:50%;background:#0F172A;border:2px solid rgba(255,255,255,.6);font-style:normal;font-size:16px;font-weight:700}
 .hero .rt-s:last-child i{background:#7DD3FC;border-color:#7DD3FC;color:#0F172A}
+/* 가이드의 한 장면(10/23): 선이 ①→④ 차례로 그어지고 ④가 마지막에 켜진다 */
+.hero .rt-s:not(:last-child)::after{transform-origin:left center;animation:rtLine .55s cubic-bezier(.2,.7,.2,1) both}
+.hero .rt-s:nth-of-type(1)::after{animation-delay:.3s}.hero .rt-s:nth-of-type(2)::after{animation-delay:.6s}.hero .rt-s:nth-of-type(3)::after{animation-delay:.9s}
+@keyframes rtLine{from{transform:scaleX(0)}}
+.hero .rt-s:last-child i{animation:rtEnd .55s cubic-bezier(.2,.7,.2,1) 1.25s both}
+@keyframes rtEnd{from{background:#0F172A;border-color:rgba(255,255,255,.6);color:#fff;box-shadow:0 0 0 0 rgba(125,211,252,.6)}60%{box-shadow:0 0 0 10px rgba(125,211,252,0)}}
+@media (prefers-reduced-motion:reduce){.hero .rt-s::after,.hero .rt-s:last-child i{animation:none!important}}
 .hero .rt-s b{font-size:14px;font-weight:700;line-height:1.35;text-align:center}
 .hero .rt-s:hover i,.hero .rt-s:focus-visible i{border-color:#fff}
 .hero .rt-s:focus-visible{outline:2px solid #7DD3FC;outline-offset:4px;border-radius:8px}
@@ -700,7 +707,7 @@ details.all>.all-b{padding:0 12px 12px}
 /* 내 일정 */
 /* 서류 체크리스트(2026-10-23) — 단계별 4묶음, 체크는 이 기기에만. 인쇄는 체크리스트만 한 장(나머지는 display:none — visibility로 숨기면 빈 쪽이 여러 장 나온다) */
 .ckl{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px;margin-top:16px}
-.ckl-g{background:#F3F5F8;border-radius:16px;padding:16px 18px}
+.ckl-g{background:#F7F9FB;border-radius:16px;padding:16px 18px}
 .ckl-g h3{margin:0 0 8px;font-size:16px;font-weight:700;color:var(--navy);display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
 .ckl-g h3 small{font-size:12px;font-weight:600;color:var(--muted)}
 .ckl-g label{display:flex;gap:10px;align-items:flex-start;padding:7px 0;font-size:14px;line-height:1.5;color:var(--text);cursor:pointer;border-top:1px solid #E2E8F0}
@@ -731,7 +738,7 @@ button:active,.btn:active,.sgo:active,.ckl-b:active{transform:scale(.98)}
 body{background:#fff;font-size:14px}
 .sec-tag,.sec-label,.sc-n,.mm-n{display:none!important}
 .sc,.finish,.vault,details.all{border:0!important;box-shadow:none!important}
-.sc,details.all{background:#F3F5F8!important;border-radius:16px!important}
+.sc,details.all{background:#F7F9FB!important;border-radius:16px!important}
 .chips li{background:#fff!important}
 .sec-title{font-size:clamp(20px,3vw,28px)!important;letter-spacing:-.02em}
 p,.sc-l,.qlead,.sec-sub,.chips li,.stp .pitem{font-size:14px!important;line-height:1.7}

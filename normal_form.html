@@ -555,6 +555,23 @@ p,.pv-r,.ck span,.rvl p{font-size:14px;line-height:1.6}
 .stp-note{margin:8px 0 0;font-size:12px;color:#CBD5E1}
 .rc-ok{margin:8px 0 0;padding:8px 12px;border-radius:10px;background:var(--ok-bg);color:var(--ok);font-size:14px;font-weight:600}
 .rc-ok.bad{background:var(--warn-bg);color:var(--warn-tx)}
+/* 움직임(2026-10-23, impeccable animate · 직방 덱 레퍼런스 곡선) — 기본 상태는 항상 보이고 움직임은 덧붙이기만.
+   대표 장면: 등기부·납부확인서를 읽으면 미리보기 칸이 위에서부터 차례로 밝아진다(「자동으로 채워진다」를 눈으로) */
+:root{--ease:cubic-bezier(.2,.7,.2,1);--d1:.18s;--d2:.3s;--d3:.55s}
+.pv-r.pv-fill{border-radius:6px;animation:pvFill .9s var(--ease);animation-delay:calc(var(--i,0) * 45ms)}
+@keyframes pvFill{0%{background:transparent}25%{background:#DBEAFE}100%{background:transparent}}
+.pvp-bar.pv-fill{animation:pvBar .9s var(--ease) 2}
+@keyframes pvBar{0%{box-shadow:0 0 0 0 rgba(125,211,252,.6)}100%{box-shadow:0 0 0 10px rgba(125,211,252,0)}}
+.wz-in{animation:wzIn var(--d2) var(--ease)}
+@keyframes wzIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.s7.just .s7-n{animation:s7Done var(--d3) var(--ease)}
+@keyframes s7Done{0%{transform:scale(.6);box-shadow:0 0 0 0 rgba(4,120,87,.55)}100%{transform:none;box-shadow:0 0 0 8px rgba(4,120,87,0)}}
+.ck{transition:background-color var(--d2) var(--ease)}
+.toast{transform:translate(-50%,8px);transition:opacity var(--d1) var(--ease),transform var(--d2) var(--ease)}
+.toast.on{transform:translate(-50%,0)}
+@media (prefers-reduced-motion:reduce){.wz-in{animation-name:wzFade}.s7.just .s7-n{animation:none}.pvp-bar.pv-fill{animation:none}.toast{transform:translateX(-50%)}}
+@keyframes wzFade{from{opacity:0}to{opacity:1}}
+
 .wz-need{margin:0 0 10px;font-size:14px;font-weight:600;color:var(--warn-tx)}
 .nx-dlg{max-width:440px;width:calc(100% - 32px);border:0;border-radius:12px;padding:20px;color:var(--text);background:var(--card)}
 .nx-dlg::backdrop{background:rgba(15,23,42,.5)}
@@ -1131,7 +1148,7 @@ function stageHtml(view){
     +(view<STEPS.length?'<button type="button" class="btn'+(s.k==='poa'&&!S.pass?' line':'')+'" data-ph="'+(view+1)+'" data-next="1">다음: '+STEPS[view].t+' →</button>':'')+'</div></section>'; /* 결제 전에는 결제 버튼만 주인공(폰 레스토프) */
   return h;
 }
-var CUR=1,VIEW=1,PAYV=false; /* PAYV: 이 방문에서 결제 버튼 노출(nf_pay_view)을 이미 보냈는지 */
+var CUR=1,VIEW=1,PAYV=false,FILLED=0,PREVDONE=null,LASTVIEW=0; /* FILLED: 방금 판독해 채운 시각 · PREVDONE: 직전 그리기의 완료 단계 · LASTVIEW: 직전 단계 */ /* PAYV: 이 방문에서 결제 버튼 노출(nf_pay_view)을 이미 보냈는지 */
 function render(){
   var nk=nowKey(),pv=pvBody(reg());CUR=curStep(nk);VIEW=OPEN.ph||CUR;
   var html=homeCard()+'<div class="hgrid"><div class="stage">'+stageHtml(VIEW)
@@ -1142,7 +1159,17 @@ function render(){
     +(GIFT?'':'<a class="sample" href="sample_wimi.png" target="_blank" rel="noopener">'+DZ_IC.replace('dz-ic','sample-ic')+'<span><b>결제 후 받는 위임장 견본</b><small>가상 인물로 채운 견본 · 눌러서 크게 보기</small></span></a>') /* 10/24 사용자: 링크로 줄이니 안 보인다 → 버튼 형태로 복귀 */
     +'<button type="button" class="pvp-reset" data-reset="1">입력 내용 모두 지우기</button>'
     +'</div></aside></div>';
-  A.innerHTML=W(html);A.classList.remove('pre-hide');bind();
+  A.innerHTML=W(html);A.classList.remove('pre-hide');bind();motion();
+}
+/* 그린 뒤 움직임만 덧붙인다 — 단계를 바꿨을 때 화면 들어오기, 새로 끝난 단계 ✓, 방금 판독한 칸 차례로 밝히기 */
+function motion(){
+  if(LASTVIEW&&VIEW!==LASTVIEW){var w=A.querySelector('.wz');if(w)w.classList.add('wz-in');}LASTVIEW=VIEW;
+  var dn=[].map.call(A.querySelectorAll('.s7.done'),function(b){return b.getAttribute('data-ph');});
+  if(PREVDONE)A.querySelectorAll('.s7.done').forEach(function(b){if(PREVDONE.indexOf(b.getAttribute('data-ph'))<0)b.classList.add('just');});
+  PREVDONE=dn;
+  if(FILLED&&Date.now()-FILLED<2500){FILLED=0;
+    A.querySelectorAll('.pvp-c .pv-r').forEach(function(r,i){if(!r.querySelector('.pv-v.miss')){r.style.setProperty('--i',Math.min(i,14));r.classList.add('pv-fill');}});
+    var b=A.querySelector('.pvp-bar');if(b)b.classList.add('pv-fill');}
 }
 
 function homeCard(){
@@ -1646,7 +1673,7 @@ function readReg(files,skipRcpt){
     var E=S.hub.edit||{};['addr','jibun','apt','dong','floor','ho','struct','area','land','uid'].forEach(function(k){delete E[k];});S.hub.court='';
     if(S.hub.party&&g.owners.length){var old=S.hub.party.s;S.hub.party.s=g.owners.slice(0,2).map(function(o){
       var m=old.filter(function(q){return q.name===o.name;})[0];return {name:o.name,addr:m?m.addr:'',sd:g.owners.length>1?o.sd:'',sn:g.owners.length>1?o.sn:''};});}
-    S.hub.reg=g;saveHub();OPEN.ph=null;
+    S.hub.reg=g;saveHub();OPEN.ph=null;FILLED=Date.now();
     track('hub_ocr_ok',{step:S.hub.reg.got,type:res._ocr?'photo':'pdf'});
     setOcr({busy:false,pct:1,say:'',err:''});
     toast(res._ocr?'사진에서 '+S.hub.reg.got+'칸을 읽었습니다. 원본과 꼭 대조해 주세요.'+(heic?' (HEIC '+heic+'장은 건너뜀)':''):'등기부에서 '+S.hub.reg.got+'칸을 채웠습니다',0,!!res._ocr);
@@ -1659,7 +1686,7 @@ function applyReceipt(r){
   OPEN.ph=stepOf('wetax');
   if(r.kind!=='receipt'){render();toast('납부확인서의 세액을 읽지 못했습니다. 취득세 칸에 직접 넣어 주세요.',1);scrollToEl(document.getElementById('p-wetax'));return;}
   var v={tax:r.tax,edu:r.edu};if(r.rural)v.rural=r.rural;if(r.siga&&party().b.length<2)v.siga=r.siga;
-  saveRelay(v);S.hub.rcpt=r.sumOk?1:2;saveHub();render();
+  saveRelay(v);S.hub.rcpt=r.sumOk?1:2;saveHub();FILLED=Date.now();render();
   toast(r.sumOk?'납부확인서에서 취득세 '+Number(r.tax).toLocaleString('ko-KR')+'원을 채웠습니다':'납부확인서를 읽었지만 세액 합계가 맞지 않습니다. 원본과 대조해 주세요.',0,!r.sumOk);
   scrollToEl(document.getElementById('p-wetax'));}
 /* 서류 작성 화면으로 넘길 때 올린 파일을 같이 넘긴다(서류 작성 페이지의 ?handoff=reg — 같은 IndexedDB) */
