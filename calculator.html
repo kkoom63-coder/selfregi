@@ -393,6 +393,7 @@ html.mnav-open,html.mnav-open body{overflow:hidden}
 .pl-fee{margin:14px 0 0;padding-top:12px;border-top:1px solid var(--border);font-size:14px;color:#334155}
 .pl-fn a{color:var(--blue);font-weight:700}
 .pl-fn{margin:6px 0 0;font-size:12px;color:var(--muted);line-height:1.6}
+.calc-self{margin:12px 0 0;font-size:14px;color:var(--muted,#64748B)}.calc-self a{color:var(--blue,#0369A1);font-weight:700;text-decoration:none;white-space:nowrap}.calc-self a:hover{text-decoration:underline}
 </style>
 </head>
 <body>
@@ -543,6 +544,8 @@ html.mnav-open,html.mnav-open body{overflow:hidden}
       </div>
       <div class="bond-box" id="r-bond" hidden></div>
       <div class="ntc warn" id="r-warn" style="display:none"></div>
+      <!-- 한 줄 안내(10/24) — 계산기는 서류 작성 전환 경로가 아니다(이용 목적이 다름). 이미 계약한 집을 계산하는 사람에게만 「직접 등기도 된다」를 알린다 -->
+      <p class="calc-self">잔금 후 소유권이전등기도 직접 할 수 있습니다 · <a class="calc-self-a" href="guide.html">셀프등기 순서 보기 →</a></p>
 
       <div class="ntc warn" style="margin-top:12px">
         <strong>납부 시점: 실질 기한은 등기 접수일입니다</strong><br>
@@ -922,8 +925,8 @@ window.SR=window.SR||(function(){
     ran=true; SR.track('calc_run',{});
   },true);
   document.addEventListener('click',function(e){
-    var a=e.target&&e.target.closest&&e.target.closest('a[href^="normal_form.html"]');
-    if(a) SR.track('calc_cta',{from:a.closest('.pl')?'plan':(a.classList.contains('cta-btn')?'result':'nav')});
+    var a=e.target&&e.target.closest&&e.target.closest('a[href^="normal_form.html"],a.calc-self-a');
+    if(a) SR.track('calc_cta',{from:a.classList.contains('calc-self-a')?'self':(a.closest('.pl')?'plan':(a.classList.contains('cta-btn')?'result':'nav'))});
   },true);
 })();
 </script>
