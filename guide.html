@@ -756,9 +756,9 @@ html{overflow-x:clip}
 .hero{position:static}
 p.tb-credit{font-size:12px!important;color:#64748B!important}
 #content{position:relative;overflow:hidden}
-.hero .tb-photo{position:absolute;inset:0;z-index:0;opacity:.24;animation:tbIn 1.8s ease-out both}
-.hero .tb-photo::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(15,23,42,.35),rgba(15,23,42,.85))}
-@keyframes tbIn{from{opacity:0}to{opacity:.24}}
+.hero .tb-photo{position:absolute;inset:0;z-index:0;opacity:.9;animation:tbIn 1.8s ease-out both}
+.hero .tb-photo::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(15,23,42,.55),rgba(15,23,42,.35) 55%,rgba(15,23,42,.7))}
+@keyframes tbIn{from{opacity:0}to{opacity:.9}}
 @media (prefers-reduced-motion:reduce){.hero .tb-photo{animation:none}}
 .hero>*:not(.tb-photo){position:relative;z-index:1}
 .hero h1{font-size:clamp(28px,5.4vw,44px)!important;line-height:1.06;letter-spacing:-.03em}
@@ -796,7 +796,7 @@ p.tb-credit{font-size:12px!important;color:#64748B!important}
 <main>
 <header id="content">
   <div class="hero">
-    <figure class="tb-photo" aria-hidden="true"><img src="assets/wide-view-of-nowon-gu-apartment-buildings.jpg" alt=""></figure>
+    <figure class="tb-photo" aria-hidden="true"><img src="assets/hero-city.svg" alt=""></figure>
     <h1>셀프등기는 <em>네 단계</em>,<br>등기소 방문은 한&nbsp;번입니다</h1>
     <p class="hero-sub">서류 준비와 세금 납부는 잔금 전에 온라인으로 끝내고, 등기소는 마지막에 한 번만 갑니다.</p>
     <div class="route" role="navigation" aria-label="셀프등기 순서">
@@ -1052,7 +1052,6 @@ p.tb-credit{font-size:12px!important;color:#64748B!important}
     </div>
   </div>
 </div>
-<p class="section tb-credit" style="padding-top:24px">사진: 「Wide view of Nowon-gu Apartment buildings」, Wikimedia Commons, CC BY-SA 4.0 · 화면 캡처: 정부24·주택도시기금, 견본은 가상 인물</p>
 
 </main>
 
