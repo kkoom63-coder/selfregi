@@ -1048,7 +1048,6 @@ function blocked(k){
     if(k==='visit'&&!S.hub.apply)return '신청서를 받은 뒤';
     return '';
   }
-  if(k==='wetax'&&!f('tax')&&when()==='before')return '잔금일부터';
   if(k==='seller'&&when()==='before')return '잔금일 당일';
   if(k==='apply'&&(!S.pass||payLeftFor()))return T.apply.note(false);
   if(k==='visit'&&!S.hub.apply)return '신청서를 받은 뒤';
