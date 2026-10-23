@@ -102,7 +102,11 @@ header{background:var(--bg)}
 @keyframes hlDraw{from{background-size:0 .26em}}
 @media (prefers-reduced-motion:reduce){.hero h1 em{animation:none}}
 .hero-what{font-size:14px;color:#334155;line-height:1.8;margin-bottom:10px;word-break:keep-all}
-.hero-basis{font-size:12px;color:var(--muted);margin-bottom:28px}
+.hero-basis{font-size:12px;color:var(--muted);margin-top:18px}
+/* 히어로 정리(10/24 A안): 꼬리표·같은 말 반복 삭제, 각주는 버튼 아래, 안심 문구·후기 링크는 작은 한 줄 */
+.hero .hero-concept{margin-bottom:28px}
+.hero-meta{margin:6px auto 0;font-size:14px;color:var(--muted)}
+.hero-meta a{color:#334155;font-weight:600;text-decoration:underline;text-underline-offset:3px;white-space:nowrap}
 .hero-concept{font-size:clamp(16px,2.2vw,18px);font-weight:700;color:var(--navy);line-height:1.5;margin-bottom:12px;word-break:keep-all}
 .hero-concept em{font-style:normal;color:var(--blue)}
 .hero-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:16px}
@@ -736,17 +740,14 @@ html.mnav-open,html.mnav-open body{overflow:hidden}
 <!-- 히어로 -->
 <header>
   <div class="hero">
-    <div class="hero-badge">셀프등기 서류 자동생성 서비스</div>
     <h1>법무사 없이 셀프등기하면,<br><em>약 120만원</em>이 절약됩니다</h1>
-    <p class="hero-concept">온라인으로 미리 끝내고, <em>등기소는 단 한 번.</em></p>
-        <p class="hero-what">서류 발급·취득세 신고·채권 매입은 온라인으로 끝내고, 자동완성한 서류로 한 번에 접수합니다.</p>
-    <p class="hero-basis">※ 서울 중위가격 아파트 15억원 기준 법무사 수수료 (대한법무사협회 보수기준 별표 2026. 8. 20. 개정 기준, 법무사마다 상이)</p>
+    <p class="hero-concept">서류 발급·세금 납부는 온라인으로 미리 끝내고, <em>등기소는 단 한 번.</em></p>
     <div class="hero-btns">
       <a href="#start" class="btn-primary">서류 작성 시작하기 →</a>
       <a href="#guide-band" class="btn-ghost">셀프등기가 처음이라면</a>
     </div>
-    <p class="hero-trust">주민등록번호 등 민감정보는 저장하지 않습니다.</p>
-    <p class="hero-rvl"><a href="#price-rv">결제 이용자 후기 <b>별점 5.0</b> 보기 →</a></p>
+    <p class="hero-basis">※ 서울 중위가격 아파트 15억원 기준 법무사 수수료 (대한법무사협회 보수기준 별표 2026. 8. 20. 개정 기준, 법무사마다 상이)</p>
+    <p class="hero-meta">주민등록번호 등 민감정보는 저장하지 않습니다 · <a href="#price-rv">결제 이용자 후기 보기 →</a></p>
   </div>
 </header>
 
