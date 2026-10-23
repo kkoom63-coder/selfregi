@@ -31,13 +31,20 @@
     var r = await jsonp('https://api.vworld.kr/req/search', { service: 'search', request: 'search', version: '2.0', query: addr, type: 'address', category: 'parcel', size: '1' });
     var it = r && r.response && r.response.result && r.response.result.items && r.response.result.items[0];
     if (!it || !it.id) return null;
+    /* 2026-10-24 실측: ① 전남광주통합특별시 출범 후 주소 검색은 새 필지번호(12…)를 주지만 공동주택가격은 옛 번호(광주 29…·전남 46…)에 남아 있다
+       → 새 번호로 못 찾으면 옛 번호로 다시. 광주 5개 구는 번호가 제각각(서구 12240←29140 확인 · 남구 12270←29155 · 북구 12300←29170 · 광산구 12330←29200, 동구 12210←29110은 추정), 전남은 뒷자리 같음(12110←46110).
+       ② 동 이름이 지역마다 「104」 또는 「101동」 → 둘 다 시도 */
+    var GJ = { '12210': '29110', '12240': '29140', '12270': '29155', '12300': '29170', '12330': '29200' };
+    var pnus = [it.id], sg = it.id.slice(0, 5);
+    if (/^12/.test(sg)) pnus.push((GJ[sg] || ('46' + sg.slice(2))) + it.id.slice(5));
+    var dongs = dong ? [dong, dong + '동'] : [''];
     var y = new Date().getFullYear(), hit = null;
-    for (var yr of [y, y - 1]) {
-      var p = { pnu: it.id, stdrYear: String(yr), hoNm: ho, numOfRows: '1', pageNo: '1' };
-      if (dong) p.dongNm = dong;
+    search: for (var pn of pnus) for (var dn of dongs) for (var yr of [y, y - 1]) {
+      var p = { pnu: pn, stdrYear: String(yr), hoNm: ho, numOfRows: '1', pageNo: '1' };
+      if (dn) p.dongNm = dn;
       var d = await jsonp('https://api.vworld.kr/ned/data/getApartHousingPriceAttr', p);
       var f = d && d.apartHousingPrices && d.apartHousingPrices.field;
-      if (f && f.length && digits(f[0].pblntfPc)) { hit = { v: digits(f[0].pblntfPc), y: yr, t: now, parcel: (it.address && it.address.parcel) || '' }; break; }
+      if (f && f.length && digits(f[0].pblntfPc)) { hit = { v: digits(f[0].pblntfPc), y: yr, t: now, parcel: (it.address && it.address.parcel) || '' }; break search; }
     }
     if (hit) { S = load(); S.c = S.c || {}; S.c[id] = hit; save(S); }
     return hit;
