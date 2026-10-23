@@ -152,19 +152,21 @@ header{background:var(--bg)}
 /* 시연 레이어 — 좌표는 캡처 1800×1040 기준 %. 글자 크기는 프레임 폭(cqw) 비례라 캡처 글씨와 같이 줄어든다 */
 #hapanel-transfer{position:relative;container-type:inline-size}
 .hd{position:absolute;inset:0;pointer-events:none;font-family:inherit}
-.hd-dz{position:absolute;left:3.1%;top:25%;width:59.8%;height:38.5%;border:2px solid #0369A1;border-radius:1cqw;background:rgba(3,105,161,.07);opacity:0;transition:opacity .25s}
+.hd-dz{position:absolute;left:7.22%;top:16.93%;width:53.98%;height:27.99%;border:2px solid #0369A1;border-radius:1cqw;background:rgba(3,105,161,.07);opacity:0;transition:opacity .25s}
 .hd-file{position:absolute;left:80%;top:88%;display:flex;align-items:flex-start;opacity:0;transform:translate(-50%,-50%);transition:left 1.1s cubic-bezier(.4,0,.2,1),top 1.1s cubic-bezier(.4,0,.2,1),opacity .3s,transform .3s}
 .hd-doc{display:inline-flex;align-items:center;gap:.6cqw;background:#fff;border:1px solid #CBD5E1;border-radius:.6cqw;padding:.6cqw 1cqw;font-size:1.05cqw;font-weight:700;color:#0F172A;white-space:nowrap;box-shadow:0 6px 16px rgba(15,23,42,.18)}
 .hd-doc i{font-style:normal;font-size:.8cqw;font-weight:800;color:#fff;background:#DC2626;border-radius:.3cqw;padding:.15cqw .4cqw}
 .hd-cur{width:2cqw;height:2cqw;margin:1.6cqw 0 0 -.6cqw;filter:drop-shadow(0 1px 1px rgba(0,0,0,.25))}
-.hd-st{position:absolute;left:33%;top:58.5%;transform:translate(-50%,-50%);background:#0F172A;color:#fff;font-size:1.05cqw;font-weight:700;padding:.5cqw 1.2cqw;border-radius:2cqw;white-space:nowrap;opacity:0;transition:opacity .25s}
+.hd-st{position:absolute;left:34.21%;top:30.92%;transform:translate(-50%,-50%);background:#0F172A;color:#fff;font-size:1.05cqw;font-weight:700;padding:.5cqw 1.2cqw;border-radius:2cqw;white-space:nowrap;opacity:0;transition:opacity .25s}
 .hd-v{position:absolute;height:3.1%;min-width:6.8%;display:flex;align-items:center;padding:0 .3cqw;background:#FCFCFB;color:#075985;font-size:1.12cqw;font-weight:700;white-space:nowrap;opacity:0;transform:translateY(.3cqw);transition:opacity .3s,transform .3s}
 .hd-n{position:absolute;right:2.6%;width:3.6%;height:3.2%;display:flex;align-items:center;justify-content:flex-end;background:#fff;font-family:'SFMono-Regular',Consolas,monospace;font-size:1.05cqw;font-weight:700;opacity:0}
-.hd-n.b{color:#047857}.hd-n.a{color:#B45309}.hd-n.c{color:#64748B}
+.hd-n.b,.hd-n.a{color:#0F172A}
+.hd-v{width:16.39%;height:2.6%;background:#fff;color:#0F172A;font-size:1.05cqw;font-weight:500;padding:0}
+.hd-n{right:auto!important;width:1.3%!important;height:2.4%!important;justify-content:flex-start!important;font-family:inherit!important;font-size:.95cqw!important;font-weight:700!important}
 .hd-tag{position:absolute;right:1.2%;top:1.2%;font-size:.9cqw;font-weight:700;color:#475569;background:rgba(241,245,249,.92);border:1px solid #CBD5E1;border-radius:1cqw;padding:.25cqw .8cqw;opacity:0;transition:opacity .3s}
 .hd.on .hd-tag,.hd.on .hd-n{opacity:1}
 .hd.over .hd-dz{opacity:1}
-.hd.go .hd-file{left:33%;top:41%;opacity:1}
+.hd.go .hd-file{left:34.21%;top:30.92%;opacity:1}
 .hd.drop .hd-file{opacity:0;transform:translate(-50%,-50%) scale(.6)}
 .hd.read .hd-st{opacity:1}
 .hd-v.in{opacity:1;transform:none}
@@ -176,17 +178,17 @@ header{background:var(--bg)}
   .hdm{display:block;position:absolute;inset:0;pointer-events:none;overflow:hidden}
   .ha-frame .hdm img{position:absolute;left:0;width:100%;aspect-ratio:auto}
   .hdm-b{top:0;height:100%;opacity:0;transition:opacity .35s}
-  .hdm-dz{position:absolute;left:6.8%;top:23.2%;width:86.5%;height:50.8%;border:2px solid #0369A1;border-radius:10px;background:rgba(3,105,161,.08);opacity:0;transition:opacity .25s}
+  .hdm-dz{position:absolute;left:8.38%;top:23.08%;width:83.24%;height:45.38%;border:2px solid #0369A1;border-radius:10px;background:rgba(3,105,161,.08);opacity:0;transition:opacity .25s}
   .hdm-file{position:absolute;left:50%;top:106%;transform:translate(-50%,-50%);transition:top 1s cubic-bezier(.4,0,.2,1),opacity .3s,transform .3s}
   .hdm-doc{display:inline-flex;align-items:center;gap:6px;background:#fff;border:1px solid #CBD5E1;border-radius:8px;padding:7px 10px;font-size:12px;font-weight:700;color:#0F172A;white-space:nowrap;box-shadow:0 6px 16px rgba(15,23,42,.18)}
   .hdm-doc i{font-style:normal;font-size:12px;font-weight:800;color:#fff;background:#DC2626;border-radius:4px;padding:1px 5px}
-  .hdm-st{position:absolute;left:50%;top:45%;transform:translate(-50%,-50%);background:#0F172A;color:#fff;font-size:12px;font-weight:700;padding:6px 14px;border-radius:16px;white-space:nowrap;opacity:0;transition:opacity .25s}
-  .hdm-pr{position:absolute;left:10.8%;top:68.1%;width:78.4%;height:5px;background:#E2E8F0;border-radius:3px;overflow:hidden;opacity:0}
+  .hdm-st{position:absolute;left:50%;top:45.77%;transform:translate(-50%,-50%);background:#0F172A;color:#fff;font-size:12px;font-weight:700;padding:6px 14px;border-radius:16px;white-space:nowrap;opacity:0;transition:opacity .25s}
+  .hdm-pr{position:absolute;left:12%;top:63.1%;width:76%;height:5px;background:#E2E8F0;border-radius:3px;overflow:hidden;opacity:0}
   .hdm-pr i{display:block;height:100%;width:0;background:#0369A1;transition:width 1.3s linear}
-  .hdm-tap{position:absolute;left:88.1%;top:93%;width:44px;height:44px;margin:-22px 0 0 -22px;border-radius:50%;background:rgba(255,255,255,.6);opacity:0}
+  .hdm-tap{position:absolute;left:85.68%;top:90.19%;width:44px;height:44px;margin:-22px 0 0 -22px;border-radius:50%;background:rgba(255,255,255,.6);opacity:0}
   .hdm-dim{position:absolute;inset:0;background:rgba(15,23,42,.45);opacity:0;transition:opacity .3s}
-  .hdm-sh{top:20%;height:80%;transform:translateY(100%);transition:transform .45s cubic-bezier(.2,.8,.2,1)}
-  .hdm.go .hdm-file{top:48%}
+  .hdm-sh{top:30%;height:70%;transform:translateY(100%);transition:transform .45s cubic-bezier(.2,.8,.2,1)}
+  .hdm.go .hdm-file{top:45.8%}
   .hdm.over .hdm-dz{opacity:1}
   .hdm.drop .hdm-file{opacity:0;transform:translate(-50%,-50%) scale(.6)}
   .hdm.read .hdm-st,.hdm.read .hdm-pr{opacity:1}
@@ -201,8 +203,8 @@ header{background:var(--bg)}
   .hdm-hit{display:block;position:absolute;z-index:2;background:transparent;border:0;padding:0;cursor:pointer;-webkit-tap-highlight-color:transparent;border-radius:12px}
   .hdm-hit[hidden]{display:none}
   .hdm-hit:focus-visible{outline:2px solid #7DD3FC;outline-offset:-2px}
-  .hdm-see{left:2.7%;top:88.1%;width:94.6%;height:10%}
-  .hdm-x{left:81.4%;top:23.1%;width:13.5%;height:6.9%}
+  .hdm-see{left:3.24%;top:85%;width:93.51%;height:10.38%}
+  .hdm-x{left:82.43%;top:32.88%;width:13.51%;height:5.38%}
   .hdm-ctl{display:flex;gap:6px;position:absolute;right:8px;top:6px;z-index:3;align-items:center}
   .hdm-tag{font-size:12px;font-weight:700;color:#475569;background:rgba(241,245,249,.94);border:1px solid #CBD5E1;border-radius:10px;padding:2px 8px}
 }
@@ -820,38 +822,37 @@ html.mnav-open,html.mnav-open body{overflow:hidden}
         <div class="ha-panel" role="tabpanel" id="hapanel-transfer" aria-labelledby="hatab-transfer">
           <!-- 700px 아래에서는 세로 화면으로 바꾼다 — 가로 캡처를 335px 로 줄이면 글자가 읽히지 않는다(R2-A04와 같은 결함). -->
           <picture>
-            <source media="(max-width:700px)" srcset="hero_app_transfer_m@1x.webp?v=1010b 370w, hero_app_transfer_m.webp?v=1010b 740w" sizes="calc(100vw - 40px)">
-            <source srcset="hero_app_transfer@1x.webp?v=1010b 900w, hero_app_transfer.webp?v=1010b 1800w" sizes="(max-width:1240px) calc(100vw - 40px), 1160px">
-            <img src="hero_app_transfer@1x.webp?v=1010b" width="900" height="520" alt="셀프등기24 서류 작성 화면. 왼쪽에 등기사항전부증명서를 올리는 칸이 있고, 오른쪽 문서 반영 미리보기 패널에 위임장·신청서에 들어갈 항목과 아직 비어 있는 항목 수가 표시된다." decoding="async">
+            <source media="(max-width:700px)" srcset="hero_app_transfer_m@1x.webp?v=1024 370w, hero_app_transfer_m.webp?v=1024 740w" sizes="calc(100vw - 40px)">
+            <source srcset="hero_app_transfer@1x.webp?v=1024 900w, hero_app_transfer.webp?v=1024 1800w" sizes="(max-width:1240px) calc(100vw - 40px), 1160px">
+            <img src="hero_app_transfer@1x.webp?v=1024" width="900" height="520" alt="셀프등기24 서류 작성 화면. 왼쪽에 등기사항전부증명서를 올리는 칸이 있고, 오른쪽 문서 반영 미리보기 패널에 위임장·신청서에 들어갈 항목과 아직 비어 있는 항목 수가 표시된다." decoding="async">
           </picture>
           <!-- 시연 레이어(데스크톱 전용): 등기부 PDF를 끌어다 놓으면 오른쪽 미리보기가 채워지는 모습.
-               좌표는 hero_app_transfer 캡처(1800×1040) 기준 %. 캡처를 바꾸면 좌표도 다시 잰다.
+               좌표는 hero_app_transfer 캡처(1800×1040 = 서류 작성 화면 1440px의 x55~1385·y418~1186, 10/24) 기준 %. 캡처를 바꾸면 좌표도 다시 잰다.
                값은 견본이다 — 실제 이용자 정보가 아니다. -->
           <div class="hd" aria-hidden="true">
             <div class="hd-dz"></div>
             <div class="hd-file"><span class="hd-doc"><i>PDF</i>등기사항전부증명서.pdf</span><svg class="hd-cur" viewBox="0 0 24 24"><path d="M4 2l16 11-7 1.5L9.5 21z" fill="#0F172A" stroke="#fff" stroke-width="1.5" stroke-linejoin="round"/></svg></div>
             <div class="hd-st"></div>
-            <span class="hd-v" style="left:76.5%;top:17.9%">견본아파트 제101동 제1001호</span>
-            <span class="hd-v" style="left:77%;top:25.1%">홍길동</span>
-            <span class="hd-v" style="left:72.1%;top:41.4%">철근콘크리트구조</span>
-            <span class="hd-v" style="left:74.1%;top:45%">84.97㎡</span>
-            <span class="hd-v" style="left:75.5%;top:48.6%">43,210분의 52.8</span>
-            <span class="hd-v" style="left:77.5%;top:59.4%">1101-0000-000000</span>
-            <span class="hd-n b" style="top:68.9%">0</span>
-            <span class="hd-n a" style="top:72.9%">9</span>
-            <span class="hd-n c" style="top:76.9%">8</span>
+            <span class="hd-v" style="left:75.41%;top:11.98%">견본아파트 101동 1001호</span>
+            <span class="hd-v" style="left:75.41%;top:15.23%">철근콘크리트구조</span>
+            <span class="hd-v" style="left:75.41%;top:18.49%">84.97㎡</span>
+            <span class="hd-v" style="left:75.41%;top:21.88%">43210분의 52.8</span>
+            <span class="hd-v" style="left:75.41%;top:33.07%">홍길동</span>
+            <span class="hd-v" style="left:75.41%;top:65.49%">1101-0000-000000</span>
+            <span class="hd-n b" style="left:87.2%;top:4.17%;width:.95%!important">1</span>
+            <span class="hd-n a" style="left:91.73%;top:4.17%;width:2%!important">17</span>
             <span class="hd-tag">시연 · 견본 값</span>
           </div>
           <!-- 모바일 시연 레이어: PDF가 올라감 → 판독 → 하단 「문서 반영 미리보기」 막대 → 시트. 값은 견본이다. -->
           <div class="hdm" aria-hidden="true">
-            <img class="hdm-b" src="hero_app_transfer_m2@1x.webp?v=1010b" srcset="hero_app_transfer_m2@1x.webp?v=1010b 370w, hero_app_transfer_m2.webp?v=1010b 740w" sizes="calc(100vw - 40px)" width="370" height="520" alt="" loading="lazy" decoding="async">
+            <img class="hdm-b" src="hero_app_transfer_m2@1x.webp?v=1024" srcset="hero_app_transfer_m2@1x.webp?v=1024 370w, hero_app_transfer_m2.webp?v=1024 740w" sizes="calc(100vw - 40px)" width="370" height="520" alt="" loading="lazy" decoding="async">
             <div class="hdm-dz"></div>
             <div class="hdm-file"><span class="hdm-doc"><i>PDF</i>등기사항전부증명서.pdf</span></div>
             <div class="hdm-st">등기부를 읽는 중…</div>
             <div class="hdm-pr"><i></i></div>
             <span class="hdm-tap"></span>
             <div class="hdm-dim"></div>
-            <img class="hdm-sh" src="hero_app_transfer_m3@1x.webp?v=1010b" srcset="hero_app_transfer_m3@1x.webp?v=1010b 370w, hero_app_transfer_m3.webp?v=1010b 740w" sizes="calc(100vw - 40px)" width="370" height="416" alt="" loading="lazy" decoding="async">
+            <img class="hdm-sh" src="hero_app_transfer_m3@1x.webp?v=1024" srcset="hero_app_transfer_m3@1x.webp?v=1024 370w, hero_app_transfer_m3.webp?v=1024 740w" sizes="calc(100vw - 40px)" width="370" height="364" alt="" loading="lazy" decoding="async">
           </div>
           <button type="button" class="hdm-hit hdm-see" aria-label="문서 반영 미리보기 열기(견본)"></button>
           <button type="button" class="hdm-hit hdm-x" aria-label="미리보기 닫기" hidden></button>
@@ -1578,9 +1579,9 @@ function demoLoop(el, run, finish){
 (function(){
   var hd=document.querySelector('.hd'); if(!hd||!window.matchMedia) return;
   var rs=[].slice.call(hd.querySelectorAll('.hd-r')), vs=[].slice.call(hd.querySelectorAll('.hd-v')),
-      nb=hd.querySelector('.hd-n.b'), na=hd.querySelector('.hd-n.a'), nc=hd.querySelector('.hd-n.c'), st=hd.querySelector('.hd-st');
-  /* 집계는 실제 서류 작성 화면의 판독 전후 값(입력 0→11 · 빈칸 9→3 · 비워도 됨 8→3, 10/10 실측) */
-  function count(k){ var f=k/vs.length; nb.textContent=Math.round(11*f); na.textContent=9-Math.round(6*f); nc.textContent=8-Math.round(5*f); }
+      nb=hd.querySelector('.hd-n.b'), na=hd.querySelector('.hd-n.a'), st=hd.querySelector('.hd-st');
+  /* 집계는 실제 서류 작성 화면의 판독 전후 값(채운 칸 1→7 · 남은 칸 17→11, 10/24 실측) */
+  function count(k){ var f=k/vs.length; nb.textContent=1+Math.round(6*f); na.textContent=17-Math.round(6*f); }
   function reset(){ hd.className='hd'; rs.concat(vs).forEach(function(v){ v.classList.remove('in'); }); count(0); st.textContent=''; }
   function finish(){ hd.className='hd on read'; rs.concat(vs).forEach(function(v){ v.classList.add('in'); }); count(vs.length); st.textContent='등기부에서 칸을 채웠습니다'; }
   demoLoop(hd, function(at){
