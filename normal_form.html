@@ -318,6 +318,7 @@ html.demo-on .demo{display:block}
 .wz-card{display:block;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;margin-bottom:10px;box-shadow:var(--shadow)}
 .wz-card.done{border-color:#A7F3D0}
 .wz-ct{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px}
+.pe-rc{margin:-2px -8px 4px 58px}
 .dm-row{display:flex;justify-content:flex-end;margin:8px 0 0}
 .dm-open{border:0;background:none;padding:4px 2px;font:inherit;font-size:14px;font-weight:600;color:var(--blue);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
 .dm .gm-in{max-width:640px}
@@ -683,7 +684,7 @@ p,.pv-r,.ck span,.rvl p{font-size:14px;line-height:1.6}
     <p class="dm-lead">종류는 알아서 구분합니다 · 서버로 보내지 않고 이 기기에서 읽습니다</p>
     <ul class="dm-l">
       <li><div class="dm-t">등기사항전부증명서 <span class="dm-f">PDF · 사진</span></div><p class="dm-v">부동산의 표시(소재지·건물명·동·호), 구조, 전유면적, 대지권 비율, 부동산 고유번호, <span class="sale-only">매도인</span><span class="gift-only">증여인</span>(현재 소유자) 성명</p><p class="dm-n">인터넷등기소에서 받은 PDF가 가장 정확합니다 · 사진은 여러 장을 한꺼번에 올려 주세요</p></li>
-      <li class="sale-only"><div class="dm-t">부동산거래 신고필증 <span class="dm-f">PDF · 사진</span></div><p class="dm-v">매도인·매수인 성명, 거래가액, 거래신고관리번호, 계약일, 잔금일</p><p class="dm-n">공동명의의 두 번째 이름은 직접 입력 · 이미 적어 둔 이름은 바꾸지 않습니다</p></li>
+      <li class="sale-only"><div class="dm-t">부동산거래 신고필증 <span class="dm-f">PDF · 사진</span></div><p class="dm-v">매도인·매수인 성명, 매수인 주소, 거래가액, 거래신고관리번호, 계약일, 잔금일</p><p class="dm-n">매도인 주소는 초본과 같다고 체크하면 채웁니다 · 이미 적은 값은 바꾸지 않습니다 · 공동명의 두 번째 사람은 직접</p></li>
       <li><div class="dm-t">취득세 납부확인서 <span class="dm-f">PDF</span></div><p class="dm-v">취득세·지방교육세·농어촌특별세, 시가표준액(단독명의)</p><p class="dm-n">위택스·이택스에서 받은 PDF만 · 납부서(영수증)는 등기에 쓸 수 없어 읽지 않습니다</p></li>
       <li><div class="dm-t">받아 둔 위임장 <span class="dm-f">.docx</span></div><p class="dm-v">이 화면에서 입력한 내용 전체(다른 기기에서 이어서 쓰기)</p></li>
     </ul>
@@ -1334,9 +1335,11 @@ function partyEd(){
   var P=clone(OPEN.pdraft||party()),js=OPEN.pjs!=null?OPEN.pjs:P.s.length>1,jb=OPEN.pjb!=null?OPEN.pjb:P.b.length>1,h='';
   var rv=function(i){return OPEN.prrn?(OPEN.prrn[i]||''):rrnOf(i);};
   while(P.s.length<2)P.s.push({name:'',addr:'',sd:'',sn:''});while(P.b.length<2)P.b.push({name:'',addr:'',sd:'',sn:''});
+  var ra=(S.hub.rpt&&S.hub.rpt.s)||'';
   function one(w,i,q,joint){var t=(w==='s'?'매도인':'매수인')+(joint?' '+(i+1):'');
     return '<div class="pe-p"><div class="pe-t">'+t+'</div>'+pIn('pe-'+w+i+'-name','성명',q.name,'')
       +pIn('pe-'+w+i+'-addr','주소',q.addr,w==='s'?'초본상 현재 주소':'등본상 주소')
+      +(w==='s'&&i===0&&ra&&q.addr!==ra?'<label class="ck pe-rc"><input type="checkbox" data-rcaddr="1"><span>초본 주소가 신고필증 주소와 같습니다 — 신고필증 주소로 채우기</span></label>':'')
       +(w==='b'?pIn('pe-b'+i+'-rrn','주민번호',rv(i),'비워 두면 출력 후 직접'):'')
       +(joint?pShare(w,i,q):'')+'</div>';}
   h+='<div class="pv pe" id="pe"><div class="pv-h">매도인 · 매수인</div>'
@@ -1738,6 +1741,9 @@ function applyReport(r,type){
   var P=party(),E=S.hub.edit=S.hub.edit||{},got=[];
   if(r.seller&&P.s[0]&&!has(P.s[0].name)){P.s[0].name=r.seller;got.push('매도인');}
   if(r.buyer&&P.b[0]&&!has(P.b[0].name)){P.b[0].name=r.buyer;got.push('매수인');}
+  /* 매수인 주소는 바로 채우고(빈 칸만), 매도인 주소는 초본과 같다고 체크해야 채운다(당사자 입력 칸) */
+  if(r.buyerAddr&&P.b[0]&&!has(P.b[0].addr)){P.b[0].addr=r.buyerAddr;got.push('매수인 주소');}
+  S.hub.rpt={s:r.sellerAddr||''};
   if(r.price){E.price=r.price;got.push('거래가액');}
   if(r.no){E.report=r.no;got.push('신고관리번호');}
   if(r.cause){S.hub.cause=r.cause;got.push('계약일');}
@@ -1745,7 +1751,7 @@ function applyReport(r,type){
   track('report_ocr',{type:type,step:got.length});
   if(!got.length){render();toast('신고필증을 읽지 못했습니다. 계약 정보 칸에 직접 넣어 주세요.',1);scrollToEl(document.getElementById('p-deal'));return;}
   S.hub.party=P;saveHub();FILLED=Date.now();OPEN.ph=1;render();
-  toast('신고필증에서 '+got.join('·')+'을 채웠습니다. 원본과 대조해 주세요.'+(r.price&&!r.priceOk?' 거래가액은 특히 확인해 주세요.':''),0,1);
+  toast('신고필증에서 '+got.join('·')+'을 채웠습니다. 원본과 대조해 주세요.'+(r.price&&!r.priceOk?' 거래가액은 특히 확인해 주세요.':'')+(got.indexOf('매수인 주소')>-1?' 매수인 주소는 등본 주소와 같아야 합니다(잔금 후 전입했다면 새 주소).':''),0,1);
   scrollToEl(document.getElementById('p-deal'));}
 /* 서류 작성 화면으로 넘길 때 올린 파일을 같이 넘긴다(서류 작성 페이지의 ?handoff=reg — 같은 IndexedDB) */
 function handoff(href){
@@ -2026,6 +2032,7 @@ function bind(){
     var nk=nowKey();render();if(nk&&nk!=='reg')goTask(nk);};});
   A.querySelectorAll('[data-prep]').forEach(function(x){x.onclick=openPrep;});
   A.querySelectorAll('[data-dm]').forEach(function(x){x.onclick=openDocs;});
+  A.querySelectorAll('[data-rcaddr]').forEach(function(x){x.onchange=function(){var a=document.getElementById('pe-s0-addr');if(!a)return;if(x.checked){x._old=a.value;a.value=(S.hub.rpt&&S.hub.rpt.s)||'';track('report_addr',{});}else a.value=x._old||'';};});
   A.querySelectorAll('[data-ck]').forEach(function(x){x.onchange=function(){var id=x.getAttribute('data-ck'),st=x.getAttribute('data-store');S.hub[st]=S.hub[st]||{};if(x.checked)S.hub[st][id]=1;else delete S.hub[st][id];saveHub();render();};});
   A.querySelectorAll('input[data-num="1"]').forEach(function(i){i.addEventListener('input',function(){var d=digits(i.value);i.value=d?Number(d).toLocaleString('ko-KR'):'';});});
   A.querySelectorAll('[data-save]').forEach(function(x){x.onclick=function(){var k=x.getAttribute('data-save'),vals={},n=0;

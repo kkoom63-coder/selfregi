@@ -44,6 +44,34 @@
     return cands[0] || '';
   }
 
+  /* 「주소(법인소재지)」 라벨 아래 줄(또는 같은 줄 오른쪽)의 주소 — 오른쪽 「거래지분」 칸 앞까지 */
+  var ADDR = /[가-힣]+(특별시|광역시|특별자치시|특별자치도|도)\s|[가-힣]+(시|군|구)\s[가-힣]/;
+  function addrNear(lines, li, lab){
+    function pick(L, sameLine){
+      var t = L.items.filter(function(k){
+        return sameLine ? (k.x > lab.x + 10 && k.x - lab.x < 280) : (k.x > lab.x - 20 && k.x - lab.x < 280);
+      }).map(function(k){ return k.s; }).join(' ').replace(/^주소\S*\s*/, '').trim();
+      return ADDR.test(t + ' ') ? t : '';
+    }
+    var v = pick(lines[li], true);
+    for (var j = li + 1; !v && j < lines.length && lines[j].top - lines[li].top < 40; j++) v = pick(lines[j], false);
+    return v ? spaceAddr(v) : '';
+  }
+  /* 판독기가 글자 사이에 빈칸을 끼운다(「대 전광 역시」) → 빈칸을 모두 지우고 주소 단위마다 다시 띄운다 */
+  function spaceAddr(a){
+    return a.replace(/\s+/g, '')
+      .replace(/(특별시|광역시|특별자치시|특별자치도)/g, '$1 ')
+      .replace(/^([가-힣]{2,4}도)(?=[가-힣]+[시군])/, '$1 ')
+      .replace(/([가-힣]시)(?=[가-힣]+구)/g, '$1 ')
+      .replace(/([가-힣][구군])(?=[가-힣]+(동|읍|면|로|길|가))/g, '$1 ')
+      .replace(/([가-힣])(?=\d)(?!\d+가(?:\d|$))/g, '$1 ')
+      .replace(/(\d)(?=[가-힣])(?![동호층번차단])(?!가(?:\d|\s|$))/g, '$1 ')
+      .replace(/(\d[동가])(?=\d)/g, '$1 ')
+      .replace(/,(?=\S)/g, ', ')
+      .replace(/(\S)\(/g, '$1 (')
+      .replace(/\s+/g, ' ').trim();
+  }
+
   function ymd(m){ return m ? m[1] + '-' + ('0' + m[2]).slice(-2) + '-' + ('0' + m[3]).slice(-2) : ''; }
   function dateAfter(text, label){
     var re = new RegExp(label + '[^0-9]{0,12}(\\d{4})\\s*[년.\\-/]\\s*(\\d{1,2})\\s*[월.\\-/]\\s*(\\d{1,2})');
@@ -57,12 +85,13 @@
     if (!/신고필증/.test(norm(flat))) return { kind: 'none' };
 
     /* 성명 라벨을 위에서부터 — 위탁관리인 줄은 빼고, 앞의 두 칸이 매도인·매수인(서식 순서), 세 번째는 중개사 */
-    var names = [];
+    var names = [], addrs = [];
     lines.forEach(function(L, li){
       if (/위탁관리인/.test(L.text)) return;
       L.items.forEach(function(k){
-        if (!/^성명/.test(norm(k.s))) return;
-        names.push(nameNear(lines, li, k));
+        var n = norm(k.s);
+        if (/^성명/.test(n)) names.push(nameNear(lines, li, k));
+        else if (/^주소/.test(n)) addrs.push(addrNear(lines, li, k));
       });
     });
     /* 칸 이름(①매도인·②매수인)이 읽혔으면 그 위아래 순서를 따른다 */
@@ -84,6 +113,8 @@
       kind: 'report',
       seller: (buyerFirst ? names[1] : names[0]) || '',
       buyer: (buyerFirst ? names[0] : names[1]) || '',
+      sellerAddr: (buyerFirst ? addrs[1] : addrs[0]) || '',
+      buyerAddr: (buyerFirst ? addrs[0] : addrs[1]) || '',
       price: price ? String(price) : '',
       priceOk: !!(price && dep && bal && dep + mid + bal === price),
       no: no,
