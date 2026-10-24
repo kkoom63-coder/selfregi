@@ -318,8 +318,16 @@ html.demo-on .demo{display:block}
 .wz-card{display:block;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;margin-bottom:10px;box-shadow:var(--shadow)}
 .wz-card.done{border-color:#A7F3D0}
 .wz-ct{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px}
-.pe-rc{margin:-2px -8px 4px 58px}
-.pe-rc small{display:block;color:var(--muted)}
+.pe-fa{grid-template-columns:60px minmax(0,1fr) auto}
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.pe-same{align-self:stretch;display:inline-flex;align-items:center;gap:6px;padding:0 10px;border:1px solid var(--border);border-radius:6px;background:var(--card);font-size:14px;font-weight:600;color:var(--sub);white-space:nowrap;cursor:pointer;transition:border-color var(--d1) var(--ease),background-color var(--d1) var(--ease),color var(--d1) var(--ease)}
+.pe-same input{margin:0;width:15px;height:15px;accent-color:var(--blue)}
+.pe-same:hover{border-color:#94A3B8}
+.pe-same:has(input:checked){border-color:var(--blue);background:#F0F9FF;color:var(--blue)}
+.pe-same:has(input:focus-visible){outline:2px solid var(--blue);outline-offset:2px}
+.dg-fill{margin-top:6px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.dg-fill code{font:inherit;color:var(--text)}
+.dg-fill button{border:1px solid var(--blue);background:#fff;color:var(--blue);border-radius:6px;padding:3px 10px;font-size:14px;font-weight:600;cursor:pointer}
 .dm-row{display:flex;justify-content:flex-end;margin:8px 0 0}
 .dm-open{border:0;background:none;padding:4px 2px;font:inherit;font-size:14px;font-weight:600;color:var(--blue);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
 .dm .gm-in{max-width:640px}
@@ -1332,20 +1340,26 @@ function peSave(){
   var bad=(js&&shareOk(s)===false)||(jb&&shareOk(b)===false);
   toast(bad?'저장했습니다. 지분 합계가 1이 아닙니다 — 등기부와 대조해 주세요.':'저장했습니다',bad,bad);render();return true;
 }
+/* 매도인 주소 — 읽어 둔 값 하나(신고필증이 있으면 신고필증, 없으면 같은 이름의 등기부 소유자 주소).
+   초본과 같다고 체크해야 채운다(반려 1위가 주소 불일치). 입력칸 오른쪽 끝선에 붙는 「초본과 같음」 */
+function sAddrSrc(i,name){
+  var ra=i===0&&S.hub.rpt&&S.hub.rpt.s;if(ra)return {src:'신고필증',v:ra};
+  var g=reg(),o=g&&g.owners.filter(function(x){return x.name===name;})[0];
+  return o&&has(o.regAddr)?{src:'등기부',v:o.regAddr}:null;}
+function sAddrIn(i,q){
+  var id='pe-s'+i+'-addr',r=sAddrSrc(i,q.name),on=r&&q.addr===r.v;
+  if(!r)return pIn(id,'주소',q.addr,'초본상 현재 주소');
+  var tip=r.src+' 주소: '+r.v+' — 매도인 초본 주소와 같으면 체크하세요';
+  return '<span class="pe-f pe-fa"><label for="'+id+'">주소</label><input id="'+id+'" class="pv-in" value="'+esc(q.addr||'')+'" placeholder="초본상 현재 주소" autocomplete="off">'
+    +'<label class="pe-same" title="'+esc(tip)+'"><input type="checkbox" data-rcaddr="'+i+'" data-v="'+esc(r.v)+'"'+(on?' checked':'')+' aria-describedby="'+id+'-why"><span>초본과 같음</span></label>'
+    +'<span class="vh" id="'+id+'-why">'+esc(tip)+'</span></span>';}
 function partyEd(){
   var P=clone(OPEN.pdraft||party()),js=OPEN.pjs!=null?OPEN.pjs:P.s.length>1,jb=OPEN.pjb!=null?OPEN.pjb:P.b.length>1,h='';
   var rv=function(i){return OPEN.prrn?(OPEN.prrn[i]||''):rrnOf(i);};
   while(P.s.length<2)P.s.push({name:'',addr:'',sd:'',sn:''});while(P.b.length<2)P.b.push({name:'',addr:'',sd:'',sn:''});
-  /* 매도인 주소 — 등기부(소유자 주소)·신고필증에서 읽어 둔 값. 초본과 같다고 체크해야 채운다(반려 1위가 주소 불일치) */
-  function addrSrc(i,q){var c=[],g=reg(),o=g&&g.owners.filter(function(x){return x.name===q.name;})[0];
-    if(o&&has(o.regAddr))c.push({src:'등기부',v:o.regAddr});
-    var ra=i===0&&S.hub.rpt&&S.hub.rpt.s;if(ra){var dup=c.filter(function(x){return x.v.replace(/\s/g,'')===ra.replace(/\s/g,'');})[0];if(dup)dup.src+='·신고필증';else c.push({src:'신고필증',v:ra});}
-    return c.filter(function(x){return x.v!==q.addr;});}
-  function rcBox(i,q){return addrSrc(i,q).map(function(x){return '<label class="ck pe-rc"><input type="checkbox" data-rcaddr="'+i+'" data-v="'+esc(x.v)+'"><span>매도인 초본 주소가 '+x.src+' 주소와 같습니다 — 채우기<small>'+esc(x.v)+'</small></span></label>';}).join('');}
   function one(w,i,q,joint){var t=(w==='s'?'매도인':'매수인')+(joint?' '+(i+1):'');
     return '<div class="pe-p"><div class="pe-t">'+t+'</div>'+pIn('pe-'+w+i+'-name','성명',q.name,'')
-      +pIn('pe-'+w+i+'-addr','주소',q.addr,w==='s'?'초본상 현재 주소':'등본상 주소')
-      +(w==='s'?rcBox(i,q):'')
+      +(w==='s'?sAddrIn(i,q):pIn('pe-'+w+i+'-addr','주소',q.addr,'등본상 주소'))
       +(w==='b'?pIn('pe-b'+i+'-rrn','주민번호',rv(i),'비워 두면 출력 후 직접'):'')
       +(joint?pShare(w,i,q):'')+'</div>';}
   h+='<div class="pv pe" id="pe"><div class="pv-h">매도인 · 매수인</div>'
@@ -1836,7 +1850,8 @@ function blanks(kind,f){
   if(kind==='wimi')it.push(['작성일의 일(day)',GIFT?'날인하는 날짜를 적습니다':'잔금 당일 날짜를 적습니다']);
   else it.push(['등기의무자의 등기필정보 — 일련번호·비밀번호',GIFT?'증여인의 등기필정보를 보고 적습니다':'잔금일에 받은 등기필정보를 보고 적습니다']);
   add(has(f.jibun),'부동산의 표시 — 소재지번');add(has(f.ho),'부동산의 표시 — 호');add(has(f.propArea),'부동산의 표시 — 전유면적');add(has(f.total)&&has(f.unit),'대지권의 비율');
-  pt.sellerArr.forEach(function(p,i){var w='등기의무자(매도인)'+(pt.sellerArr.length>1?' '+(i+1):'');add(has(p.name),w+' 성명');add(has(p.addr),w+' 주소','초본상 현재 주소');});
+  pt.sellerArr.forEach(function(p,i){var w='등기의무자(매도인)'+(pt.sellerArr.length>1?' '+(i+1):'');add(has(p.name),w+' 성명');
+    if(!has(p.addr)){var r=sAddrSrc(i,p.name);it.push([w+' 주소','초본상 현재 주소',r?{i:i,src:r.src,v:r.v}:null]);}});
   pt.buyerArr.forEach(function(p,i){var w='등기권리자(매수인)'+(pt.buyerArr.length>1?' '+(i+1):'');add(has(p.name),w+' 성명');add(has(p.addr),w+' 주소');
     if(kind==='apply')add(has(p.rrn),w+' 주민등록번호','출력한 뒤 직접 적어도 됩니다');});
   add(has(f.causeYr)&&has(f.causeMo)&&has(f.causeDy),'등기원인과 그 연월일(계약일)');
@@ -1860,9 +1875,13 @@ function gate(kind,items){
       '<label class="ck dg-ck" for="dgC"><input type="checkbox" id="dgC"><span><b>가지고 계신 원본 서류와 미리보기 내용을 대조해, 다른 곳이 없음을 확인했습니다.</b>'
       +'<small>'+(kind==='wimi'?'주소·면적·성명을 등기부·초본과 한 번 더 대조해 주세요.':'부동산 표시·성명·주소는 등기부·초본과, 세액·채권·납부번호는 영수증과 대조해 주세요.')+'</small></span></label>'
       +(items.length?'<p class="ask-q">손으로 적어야 할 칸 '+items.length+'개</p><p class="ask-d">빈칸은 공란으로 인쇄됩니다. 출력한 뒤 직접 적어 제출하세요.</p><ul class="rs">'
-        +items.map(function(x){return '<li><i class="no">공란</i><span>'+esc(x[0])+(x[1]?'<small>'+esc(x[1])+'</small>':'')+'</span></li>';}).join('')+'</ul>':'')
+        +items.map(function(x){var f=x[2];return '<li><i class="no">공란</i><span>'+esc(x[0])+(x[1]?'<small>'+esc(x[1])+'</small>':'')
+          +(f?'<span class="dg-fill"><small>읽어 둔 '+esc(f.src)+' 주소 <code>'+esc(f.v)+'</code> — 초본과 같으면</small><button type="button" data-dgfill="'+f.i+'" data-v="'+esc(f.v)+'">넣기</button></span>':'')+'</span></li>';}).join('')+'</ul>':'')
       +'<p class="sm">제출 전 등기기록·관련 서류와 일치하는지 확인할 책임은 이용자에게 있습니다(<a href="terms.html#a7" target="_blank" rel="noopener">이용약관 제7조</a>).</p>');
     var ok=document.getElementById('dgOk'),c=document.getElementById('dgC');ok.disabled=true;ok.textContent=doc+' 내려받기';
+    /* 읽어 둔 매도인 주소 넣기 → 당사자 값 저장 후 같은 서류를 처음부터 다시(빈칸 목록·문서 값 갱신) */
+    document.querySelectorAll('#dgB [data-dgfill]').forEach(function(b){b.onclick=function(){var P=party(),i=+b.getAttribute('data-dgfill');
+      if(P.s[i]){P.s[i].addr=b.getAttribute('data-v');S.hub.party=P;saveHub();track('seller_addr',{from:'gate'});gateEnd(false);setTimeout(function(){render();dlDoc(kind);},0);}};});
     c.onchange=function(){ok.disabled=!c.checked;c.closest('.ck').classList.toggle('on',c.checked);};
     DG.hidden=false;document.body.style.overflow='hidden';document.getElementById('dgB').scrollTop=0;c.focus();
     track('hub_gate',{doc:kind,key:String(items.length)});
@@ -2038,8 +2057,8 @@ function bind(){
     var nk=nowKey();render();if(nk&&nk!=='reg')goTask(nk);};});
   A.querySelectorAll('[data-prep]').forEach(function(x){x.onclick=openPrep;});
   A.querySelectorAll('[data-dm]').forEach(function(x){x.onclick=openDocs;});
-  A.querySelectorAll('[data-rcaddr]').forEach(function(x){x.onchange=function(){var i=x.getAttribute('data-rcaddr'),a=document.getElementById('pe-s'+i+'-addr');if(!a)return;
-    if(x.checked){A.querySelectorAll('[data-rcaddr="'+i+'"]').forEach(function(y){if(y!==x&&y.checked){y.checked=false;}});if(a._orig==null)a._orig=a.value;a.value=x.getAttribute('data-v');track('seller_addr',{});}else a.value=a._orig||'';};});
+  A.querySelectorAll('[data-rcaddr]').forEach(function(x){x.onchange=function(){var a=document.getElementById('pe-s'+x.getAttribute('data-rcaddr')+'-addr');if(!a)return;
+    if(x.checked){if(a._orig==null)a._orig=a.value===x.getAttribute('data-v')?'':a.value;a.value=x.getAttribute('data-v');track('seller_addr',{from:'party'});}else a.value=a._orig||'';};});
   A.querySelectorAll('[data-ck]').forEach(function(x){x.onchange=function(){var id=x.getAttribute('data-ck'),st=x.getAttribute('data-store');S.hub[st]=S.hub[st]||{};if(x.checked)S.hub[st][id]=1;else delete S.hub[st][id];saveHub();render();};});
   A.querySelectorAll('input[data-num="1"]').forEach(function(i){i.addEventListener('input',function(){var d=digits(i.value);i.value=d?Number(d).toLocaleString('ko-KR'):'';});});
   A.querySelectorAll('[data-save]').forEach(function(x){x.onclick=function(){var k=x.getAttribute('data-save'),vals={},n=0;
