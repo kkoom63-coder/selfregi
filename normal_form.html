@@ -319,6 +319,7 @@ html.demo-on .demo{display:block}
 .wz-card.done{border-color:#A7F3D0}
 .wz-ct{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px}
 .pe-rc{margin:-2px -8px 4px 58px}
+.pe-rc small{display:block;color:var(--muted)}
 .dm-row{display:flex;justify-content:flex-end;margin:8px 0 0}
 .dm-open{border:0;background:none;padding:4px 2px;font:inherit;font-size:14px;font-weight:600;color:var(--blue);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
 .dm .gm-in{max-width:640px}
@@ -683,7 +684,7 @@ p,.pv-r,.ck span,.rvl p{font-size:14px;line-height:1.6}
   <div class="gm-b">
     <p class="dm-lead">종류는 알아서 구분합니다 · 서버로 보내지 않고 이 기기에서 읽습니다</p>
     <ul class="dm-l">
-      <li><div class="dm-t">등기사항전부증명서 <span class="dm-f">PDF · 사진</span></div><p class="dm-v">부동산의 표시(소재지·건물명·동·호), 구조, 전유면적, 대지권 비율, 부동산 고유번호, <span class="sale-only">매도인</span><span class="gift-only">증여인</span>(현재 소유자) 성명</p><p class="dm-n">인터넷등기소에서 받은 PDF가 가장 정확합니다 · 사진은 여러 장을 한꺼번에 올려 주세요</p></li>
+      <li><div class="dm-t">등기사항전부증명서 <span class="dm-f">PDF · 사진</span></div><p class="dm-v">부동산의 표시(소재지·건물명·동·호), 구조, 전유면적, 대지권 비율, 부동산 고유번호, <span class="sale-only">매도인</span><span class="gift-only">증여인</span>(현재 소유자) 성명·주소</p><p class="dm-n">매도인 주소는 초본과 같다고 체크하면 채웁니다 · 인터넷등기소 PDF가 가장 정확합니다</p></li>
       <li class="sale-only"><div class="dm-t">부동산거래 신고필증 <span class="dm-f">PDF · 사진</span></div><p class="dm-v">매도인·매수인 성명, 매수인 주소, 거래가액, 거래신고관리번호, 계약일, 잔금일</p><p class="dm-n">매도인 주소는 초본과 같다고 체크하면 채웁니다 · 이미 적은 값은 바꾸지 않습니다 · 공동명의 두 번째 사람은 직접</p></li>
       <li><div class="dm-t">취득세 납부확인서 <span class="dm-f">PDF</span></div><p class="dm-v">취득세·지방교육세·농어촌특별세, 시가표준액(단독명의)</p><p class="dm-n">위택스·이택스에서 받은 PDF만 · 납부서(영수증)는 등기에 쓸 수 없어 읽지 않습니다</p></li>
       <li><div class="dm-t">받아 둔 위임장 <span class="dm-f">.docx</span></div><p class="dm-v">이 화면에서 입력한 내용 전체(다른 기기에서 이어서 쓰기)</p></li>
@@ -1335,11 +1336,16 @@ function partyEd(){
   var P=clone(OPEN.pdraft||party()),js=OPEN.pjs!=null?OPEN.pjs:P.s.length>1,jb=OPEN.pjb!=null?OPEN.pjb:P.b.length>1,h='';
   var rv=function(i){return OPEN.prrn?(OPEN.prrn[i]||''):rrnOf(i);};
   while(P.s.length<2)P.s.push({name:'',addr:'',sd:'',sn:''});while(P.b.length<2)P.b.push({name:'',addr:'',sd:'',sn:''});
-  var ra=(S.hub.rpt&&S.hub.rpt.s)||'';
+  /* 매도인 주소 — 등기부(소유자 주소)·신고필증에서 읽어 둔 값. 초본과 같다고 체크해야 채운다(반려 1위가 주소 불일치) */
+  function addrSrc(i,q){var c=[],g=reg(),o=g&&g.owners.filter(function(x){return x.name===q.name;})[0];
+    if(o&&has(o.regAddr))c.push({src:'등기부',v:o.regAddr});
+    var ra=i===0&&S.hub.rpt&&S.hub.rpt.s;if(ra){var dup=c.filter(function(x){return x.v.replace(/\s/g,'')===ra.replace(/\s/g,'');})[0];if(dup)dup.src+='·신고필증';else c.push({src:'신고필증',v:ra});}
+    return c.filter(function(x){return x.v!==q.addr;});}
+  function rcBox(i,q){return addrSrc(i,q).map(function(x){return '<label class="ck pe-rc"><input type="checkbox" data-rcaddr="'+i+'" data-v="'+esc(x.v)+'"><span>매도인 초본 주소가 '+x.src+' 주소와 같습니다 — 채우기<small>'+esc(x.v)+'</small></span></label>';}).join('');}
   function one(w,i,q,joint){var t=(w==='s'?'매도인':'매수인')+(joint?' '+(i+1):'');
     return '<div class="pe-p"><div class="pe-t">'+t+'</div>'+pIn('pe-'+w+i+'-name','성명',q.name,'')
       +pIn('pe-'+w+i+'-addr','주소',q.addr,w==='s'?'초본상 현재 주소':'등본상 주소')
-      +(w==='s'&&i===0&&ra&&q.addr!==ra?'<label class="ck pe-rc"><input type="checkbox" data-rcaddr="1"><span>초본 주소가 신고필증 주소와 같습니다 — 신고필증 주소로 채우기</span></label>':'')
+      +(w==='s'?rcBox(i,q):'')
       +(w==='b'?pIn('pe-b'+i+'-rrn','주민번호',rv(i),'비워 두면 출력 후 직접'):'')
       +(joint?pShare(w,i,q):'')+'</div>';}
   h+='<div class="pv pe" id="pe"><div class="pv-h">매도인 · 매수인</div>'
@@ -2032,7 +2038,8 @@ function bind(){
     var nk=nowKey();render();if(nk&&nk!=='reg')goTask(nk);};});
   A.querySelectorAll('[data-prep]').forEach(function(x){x.onclick=openPrep;});
   A.querySelectorAll('[data-dm]').forEach(function(x){x.onclick=openDocs;});
-  A.querySelectorAll('[data-rcaddr]').forEach(function(x){x.onchange=function(){var a=document.getElementById('pe-s0-addr');if(!a)return;if(x.checked){x._old=a.value;a.value=(S.hub.rpt&&S.hub.rpt.s)||'';track('report_addr',{});}else a.value=x._old||'';};});
+  A.querySelectorAll('[data-rcaddr]').forEach(function(x){x.onchange=function(){var i=x.getAttribute('data-rcaddr'),a=document.getElementById('pe-s'+i+'-addr');if(!a)return;
+    if(x.checked){A.querySelectorAll('[data-rcaddr="'+i+'"]').forEach(function(y){if(y!==x&&y.checked){y.checked=false;}});if(a._orig==null)a._orig=a.value;a.value=x.getAttribute('data-v');track('seller_addr',{});}else a.value=a._orig||'';};});
   A.querySelectorAll('[data-ck]').forEach(function(x){x.onchange=function(){var id=x.getAttribute('data-ck'),st=x.getAttribute('data-store');S.hub[st]=S.hub[st]||{};if(x.checked)S.hub[st][id]=1;else delete S.hub[st][id];saveHub();render();};});
   A.querySelectorAll('input[data-num="1"]').forEach(function(i){i.addEventListener('input',function(){var d=digits(i.value);i.value=d?Number(d).toLocaleString('ko-KR'):'';});});
   A.querySelectorAll('[data-save]').forEach(function(x){x.onclick=function(){var k=x.getAttribute('data-save'),vals={},n=0;
