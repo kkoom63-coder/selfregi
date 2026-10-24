@@ -7,7 +7,7 @@ import { execFileSync } from 'node:child_process';
 import { rmSync, mkdirSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 
-const EXCLUDE = /^\.|^(worker\/|lib\/|api\/|functions\/|fixtures\/|docs\/|design\/|backup\/)|(^|\/)\.[^/]+$|\.md$|\.py$|\.mjs$|^(test\.js|ppocr_test\.html|regparse-test\.html|vercel\.json|wrangler\.jsonc|firebase\.json|build_cf\.sh|package(-lock)?\.json)$/;
+const EXCLUDE = /^\.|^(worker\/|lib\/|tools\/|tests\/|api\/|functions\/|fixtures\/|docs\/|design\/|backup\/)|(^|\/)\.[^/]+$|\.md$|\.py$|\.mjs$|^(test\.js|ppocr_test\.html|regparse-test\.html|vercel\.json|wrangler\.jsonc|firebase\.json|build_cf\.sh|package(-lock)?\.json)$/;
 
 const fromHead = (f) => execFileSync('git', ['show', 'HEAD:' + f], { maxBuffer: 256 * 1024 * 1024 });
 

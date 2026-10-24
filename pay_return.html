@@ -52,8 +52,14 @@ p{font-size:14px;line-height:1.7;color:#334155;margin:0 0 12px}
 .re small b{display:inline;margin:0;font-size:inherit;color:#075985}
 .kk-n{font-size:12px;color:#475569;margin-top:6px;text-align:center}
 .qr{display:none;margin-top:14px;padding-top:14px;border-top:1px dashed #BAE6FD;text-align:center}
-.qr canvas{width:220px;height:220px;image-rendering:pixelated;background:#fff;padding:8px;border-radius:8px}
+.qr canvas{display:block;margin:0 auto;image-rendering:pixelated;border-radius:6px} /* 크기는 drawQR이 정한다(모듈당 정수 화소 + 사방 4모듈 여백) */
 .qr small{margin-top:6px}
+.qr-big{margin-top:8px;border:0;background:none;padding:4px 2px;font:inherit;font-size:14px;font-weight:600;color:#075985;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.qrz{position:fixed;inset:0;z-index:50;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;background:rgba(15,23,42,.72);padding:16px}
+.qrz[hidden]{display:none}
+.qrz-c{background:#fff;border-radius:12px;padding:16px;display:flex;flex-direction:column;align-items:center;gap:10px}
+.qrz-c p{margin:0;font-size:14px;color:#334155}
+.qrz-x{min-height:44px;padding:0 20px;border:0;border-radius:10px;background:#0F172A;color:#fff;font:inherit;font-size:16px;font-weight:700;cursor:pointer}
 @media (hover:hover) and (pointer:fine){.qr{display:block}}
 </style>
 </head>
@@ -124,7 +130,7 @@ p{font-size:14px;line-height:1.7;color:#334155;margin:0 0 12px}
     x.fillStyle='#0F172A'; x.font='700 30px '+F; x.fillText('주문번호  '+orderNo,56,220);
     x.fillStyle='#047857'; x.fillText('사용 기한  '+ud+'까지',56,268);
     if(typeof qrcode==='function'){
-      var qr=qrcode(0,'L'); qr.addData(link); qr.make();
+      var qr=qrcode(0,'L'); qr.addData(qrText(link)); qr.make();
       var n=qr.getModuleCount(), size=440, cell=Math.floor(size/n), off=(W-cell*n)/2, top=310;
       x.fillStyle='#0F172A';
       for(var r=0;r<n;r++) for(var k=0;k<n;k++) if(qr.isDark(r,k)) x.fillRect(off+k*cell, top+r*cell, cell, cell);
@@ -157,15 +163,43 @@ p{font-size:14px;line-height:1.7;color:#334155;margin:0 0 12px}
   function kakaoReady(){
     try{ if(!window.Kakao) return false; if(!Kakao.isInitialized()) Kakao.init(KAKAO_JS_KEY); return !!(Kakao.Share&&Kakao.Share.sendDefault); }catch(e){ return false; }
   }
-  function drawQR(cv, text){
-    if(!cv||typeof qrcode!=='function') return false;
+  /* QR(2026-10-25 개선): 재발급 링크가 약 1,500자라 QR이 129×129칸(28형)이 된다. 예전엔 4px로 그린 그림을 220px로
+     줄여 한 칸이 1.7px, 여백도 CSS padding 8px뿐이라 휴대폰 카메라가 칸을 구분하지 못했다(zxing 판독 시험: 거리 5단계 중 1단계만 인식).
+     ① 화면 화소 기준 정수 배율로 그린다(칸 크기가 고르게) ② 사방 4칸 여백을 그림 안에 넣는다 ③ 칸이 작으면 「크게 보기」. */
+  function drawQR(cv, text, cssMax, tight){
+    if(!cv||typeof qrcode!=='function') return null;
     try{
       var qr=qrcode(0,'L'); qr.addData(text); qr.make();
-      var n=qr.getModuleCount(), s=4, q=cv.getContext('2d'); cv.width=cv.height=n*s;
-      q.fillStyle='#fff'; q.fillRect(0,0,n*s,n*s); q.fillStyle='#0F172A';
-      for(var r=0;r<n;r++) for(var k=0;k<n;k++) if(qr.isDark(r,k)) q.fillRect(k*s,r*s,s,s);
-      return true;
-    }catch(e){ return false; }
+      var n=qr.getModuleCount(), dpr=window.devicePixelRatio||1, Q=4, px=Math.floor(cssMax*dpr/(n+8));
+      /* tight: 둘레가 밝은 바탕(카드의 옅은 하늘색)이면 여백을 2칸으로 줄여 한 칸을 1px 더 키울 수 있을 때 줄인다 */
+      if(tight && Math.floor(cssMax*dpr/(n+4))>px){ Q=2; px=Math.floor(cssMax*dpr/(n+4)); }
+      px=Math.max(1,px); var t=n+2*Q, side=t*px, q=cv.getContext('2d');
+      cv.width=cv.height=side; cv.style.width=cv.style.height=(side/dpr)+'px';
+      q.fillStyle='#fff'; q.fillRect(0,0,side,side); q.fillStyle='#0F172A';
+      for(var r=0;r<n;r++) for(var k=0;k<n;k++) if(qr.isDark(r,k)) q.fillRect((k+Q)*px,(r+Q)*px,px,px);
+      return { n:n, cssCell:px/dpr };
+    }catch(e){ return null; }
+  }
+  /* QR에 담을 링크: 이용권이 #r= 안(k)에도 들어 있으므로 ?pass=를 빼서 약 140자를 줄인다(칸 수 129 → 117).
+     링크 글자(복사·카카오톡)는 그대로 ?pass=를 둔다 — 입력 내용을 못 여는 옛 브라우저에서도 결제는 이어지게. */
+  function qrText(link){
+    var m=link.match(/#r=([A-Za-z0-9_-]+)$/); if(!m) return link;
+    var gift=/[?&]type=gift(&|#|$)/.test(link);
+    return location.origin+'/normal_form.html'+(gift?'?type=gift':'')+'#r='+m[1];
+  }
+  function openBigQR(text){
+    var z=document.getElementById('qrz');
+    if(!z){
+      z=document.createElement('div'); z.id='qrz'; z.className='qrz'; z.setAttribute('role','dialog'); z.setAttribute('aria-modal','true'); z.setAttribute('aria-label','재발급 링크 QR 크게 보기');
+      z.innerHTML='<div class="qrz-c"><canvas id="qrz-cv" aria-label="재발급 링크 QR"></canvas><p>휴대폰 카메라를 화면에 가까이 대 주세요</p></div><button type="button" class="qrz-x" id="qrz-x">닫기</button>';
+      document.body.appendChild(z);
+      var close=function(){ z.hidden=true; document.removeEventListener('keydown',esc1); var b=document.getElementById('qrbig'); if(b) b.focus(); };
+      var esc1=function(e){ if(e.key==='Escape') close(); };
+      z._open=function(){ z.hidden=false; document.addEventListener('keydown',esc1); document.getElementById('qrz-x').focus(); };
+      document.getElementById('qrz-x').onclick=close; z.onclick=function(e){ if(e.target===z) close(); };
+    }
+    drawQR(document.getElementById('qrz-cv'), text, Math.min(720, window.innerWidth-64, window.innerHeight-160));
+    z._open(); trk('pass_qr_big',{});
   }
   /* link: 입력 내용까지 담긴 링크(#r=) · short: 결제만 담긴 링크(이용권 카드 글자용) */
   function keepPass(link, short, orderNo, ud){
@@ -185,7 +219,11 @@ p{font-size:14px;line-height:1.7;color:#334155;margin:0 0 12px}
       } else { copy(link, sh); trk('pass_share',{mode:'copy'}); }
     };
     if(cd) cd.onclick=function(){ saveCard(link, short, orderNo, ud, 'button'); };
-    if(drawQR(document.getElementById('qrc'), link)) trk('pass_qr',{len:link.length});
+    var qt=qrText(link), qc=document.getElementById('qrc'), qb=document.getElementById('qrbig');
+    if(qc && getComputedStyle(qc.parentNode).display!=='none'){
+      var d=drawQR(qc, qt, qc.parentNode.clientWidth, true);
+      if(d){ trk('pass_qr',{len:qt.length, n:d.n}); if(qb) qb.onclick=function(){ openBigQR(qt); }; }
+    }
   }
   /* 결제 직전 서류 작성 화면이 맡겨 둔 입력 내용(주민등록번호 제외)을 링크 끝 #r= 에 담는다. 읽은 뒤 바로 지운다. */
   function withDraft(base, token){
@@ -221,7 +259,7 @@ p{font-size:14px;line-height:1.7;color:#334155;margin:0 0 12px}
           '<p class="kk-n" id="kk-n">받는 사람에서 「나와의 채팅」을 고르면 나에게 보관됩니다</p>'+
           '<div class="keep"><button class="btn" id="sh" type="button">'+(navigator.share?'다른 앱으로 보내기':'링크 복사')+'</button><button class="btn out" id="cd" type="button">이용권 카드 저장</button></div>'+
           '<p class="kept" id="kept" hidden></p>'+
-          '<div class="qr"><canvas id="qrc" aria-label="재발급 링크 QR"></canvas><small>휴대폰 카메라로 찍으면 휴대폰에서 바로 이어집니다</small></div></div>'+
+          '<div class="qr"><canvas id="qrc" aria-label="재발급 링크 QR"></canvas><small>휴대폰 카메라로 찍으면 휴대폰에서 바로 이어집니다 · 입력 내용이 담긴 QR이니 캡처해 다른 사람에게 보내지 마세요</small><button type="button" class="qr-big" id="qrbig">인식이 안 되면 QR 크게 보기</button></div></div>'+
           backBtn(hasOpener?'창 닫고 서류 받으러 가기':'서류 받으러 돌아가기')+
           '<p class="meta" style="margin-top:12px">주문번호 '+esc(d.orderNo)+' · '+Number(d.amount).toLocaleString('ko-KR')+'원</p>';
         keepPass(link, short, d.orderNo, ud);

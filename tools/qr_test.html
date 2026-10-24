@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>재발급 QR 카메라 인식 시험 · 셀프등기24 개발용</title>
+<!-- 개발용 시험 페이지(2026-10-25). 결제 완료 화면(pay_return.html)의 QR을 기존 방식과 개선 방식으로 나란히 그려
+     실제 휴대폰 기본 카메라로 인식되는지 비교한다. tools/ 는 배포에서 제외(build_fb.mjs·build_cf.sh·.vercelignore). -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0F172A;--blue:#0369A1;--bg:#F8FAFC;--card:#fff;--text:#020617;--sub:#334155;--muted:#64748B;--border:#E2E8F0;--ok:#047857;--ok-bg:#ECFDF5;--err:#B91C1C;--err-bg:#FEF2F2;--sky:#F0F9FF;--sky-bd:#BAE6FD;color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0B1220;--card:#111827;--text:#F8FAFC;--sub:#CBD5E1;--muted:#94A3B8;--border:#1F2937;--sky:#0C1A2B;--sky-bd:#1E3A5F;--ok-bg:#052E1F;--err-bg:#2A0F12;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0B1220;--card:#111827;--text:#F8FAFC;--sub:#CBD5E1;--muted:#94A3B8;--border:#1F2937;--sky:#0C1A2B;--sky-bd:#1E3A5F;--ok-bg:#052E1F;--err-bg:#2A0F12;color-scheme:dark}
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--text);font-family:'Noto Sans KR',system-ui,-apple-system,'Malgun Gothic',sans-serif;font-size:16px;line-height:1.6;word-break:keep-all;overflow-wrap:break-word}
+.wrap{max-width:1200px;margin:0 auto;padding:32px 20px 60px}
+h1{font-size:28px;font-weight:800;margin:0 0 6px}
+.lead{font-size:16px;color:var(--sub);margin:0 0 20px}
+.box{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px 20px;margin-bottom:16px}
+.box h2{font-size:18px;font-weight:700;margin:0 0 8px}
+.steps{margin:0;padding-left:20px;font-size:14px;color:var(--sub)}
+.steps li{margin:2px 0}
+.bar{display:flex;flex-wrap:wrap;gap:12px;align-items:center;font-size:14px;color:var(--sub)}
+.bar select{font:inherit;font-size:14px;padding:6px 10px;border:1px solid var(--border);border-radius:8px;background:var(--card);color:var(--text)}
+.bar b{color:var(--text)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(420px,1fr));gap:16px}
+@media (max-width:480px){.grid{grid-template-columns:1fr}}
+.v{display:flex;flex-direction:column;gap:10px}
+.v .tag{display:inline-block;font-size:12px;font-weight:700;padding:1px 8px;border-radius:999px;background:var(--navy);color:#fff}
+.v .tag.new{background:var(--blue)}
+.v h3{font-size:18px;font-weight:700;margin:0}
+.v p{margin:0;font-size:14px;color:var(--sub)}
+.stage{background:var(--sky);border:1px solid var(--sky-bd);border-radius:10px;padding:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:300px;gap:8px}
+/* 기존 방식 그대로(pay_return.html 2026-10-24) */
+.old canvas{width:220px;height:220px;image-rendering:pixelated;background:#fff;padding:8px;border-radius:8px}
+.new canvas{display:block;margin:0 auto;image-rendering:pixelated;border-radius:6px}
+.meta{font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+.big{min-height:44px;padding:0 18px;border:0;border-radius:10px;background:var(--blue);color:#fff;font:inherit;font-size:16px;font-weight:700;cursor:pointer}
+.rec{display:grid;grid-template-columns:auto 1fr;gap:6px 10px;align-items:center;font-size:14px}
+.rec .ox{display:flex;gap:6px}
+.rec button{min-width:44px;min-height:36px;border:1px solid var(--border);border-radius:8px;background:var(--card);color:var(--sub);font:inherit;font-size:14px;font-weight:700;cursor:pointer}
+.rec button[aria-pressed="true"].o{background:var(--ok-bg);border-color:var(--ok);color:var(--ok)}
+.rec button[aria-pressed="true"].x{background:var(--err-bg);border-color:var(--err);color:var(--err)}
+.sum{font-size:14px;white-space:pre-wrap;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px 12px;margin:8px 0 0;font-family:ui-monospace,Consolas,monospace;overflow-x:auto}
+.row{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.row button{min-height:40px;padding:0 14px;border:1px solid var(--blue);border-radius:8px;background:var(--card);color:var(--blue);font:inherit;font-size:14px;font-weight:600;cursor:pointer}
+.warn{background:#FFF7ED;border:1px solid #FDBA74;color:#9A3412;border-radius:10px;padding:10px 14px;font-size:14px;margin-bottom:16px}
+.warn[hidden]{display:none}
+.qrz{position:fixed;inset:0;z-index:50;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;background:rgba(15,23,42,.72);padding:16px}
+.qrz[hidden]{display:none}
+.qrz-c{background:#fff;border-radius:12px;padding:16px;display:flex;flex-direction:column;align-items:center;gap:10px}
+.qrz-c p{margin:0;font-size:14px;color:#334155}
+.qrz-x{min-height:44px;padding:0 20px;border:0;border-radius:10px;background:#0F172A;color:#fff;font:inherit;font-size:16px;font-weight:700;cursor:pointer}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <h1>재발급 QR 카메라 인식 시험</h1>
+  <p class="lead">결제 완료 화면의 QR을 기존 방식과 개선 방식으로 나란히 그렸습니다. PC 화면에 띄우고 휴대폰 기본 카메라로 찍어 비교해 주세요.</p>
+  <p class="warn" id="mob" hidden>휴대폰에서 열었습니다. 이 시험은 PC 화면에 띄워 놓고 휴대폰으로 찍는 시험입니다. PC에서 열어 주세요.</p>
+
+  <section class="box">
+    <h2>시험 방법</h2>
+    <ol class="steps">
+      <li>PC 화면 밝기·배율은 평소대로 둡니다. 지금 화면 배율 <b id="dpr"></b>(Windows 125%면 1.25)</li>
+      <li>휴대폰 <b>기본 카메라 앱</b>을 켜고 QR에서 약 30cm 떨어진 곳부터 천천히 가까이 댑니다.</li>
+      <li>3초 안에 화면에 링크 알림이 뜨면 <b>O</b>, 가까이 대도 안 뜨면 <b>X</b>를 누릅니다. 링크는 누르지 않아도 됩니다.</li>
+      <li>아이폰·갤럭시 둘 다 해 보고, 끝나면 「결과 복사」를 눌러 붙여 넣어 주세요.</li>
+    </ol>
+  </section>
+
+  <section class="box bar">
+    <label>링크 길이 <select id="len">
+      <option value="1490">1,490자 — 리포트 실측(매도·매수 1명씩)</option>
+      <option value="1800">1,800자 — 입력이 많은 경우(공동명의 등)</option>
+    </select></label>
+    <span>개선 방식은 중복 이용권(<code>?pass=</code>, 약 140자)을 뺀 길이로 그립니다.</span>
+  </section>
+
+  <div class="grid">
+    <section class="box v" aria-labelledby="h-a">
+      <div><span class="tag">A</span></div>
+      <h3 id="h-a">기존 방식</h3>
+      <p>4px로 그린 그림을 220px로 줄이고 여백은 CSS 8px</p>
+      <div class="stage old"><canvas id="cv-a" aria-label="기존 방식 QR"></canvas></div>
+      <span class="meta" id="m-a"></span>
+      <div class="rec" data-v="A"></div>
+    </section>
+    <section class="box v" aria-labelledby="h-b">
+      <div><span class="tag new">B</span></div>
+      <h3 id="h-b">개선 — 결제 완료 카드 안</h3>
+      <p>정수 배율, 사방 4칸 여백, 카드 폭 안 최대 360px</p>
+      <div class="stage new" id="st-b"><canvas id="cv-b" aria-label="개선 방식 QR"></canvas></div>
+      <span class="meta" id="m-b"></span>
+      <div class="rec" data-v="B"></div>
+    </section>
+    <section class="box v" aria-labelledby="h-c">
+      <div><span class="tag new">C</span></div>
+      <h3 id="h-c">개선 — 「QR 크게 보기」</h3>
+      <p>전체 화면, 최대 720px. 버튼을 눌러 띄운 뒤 찍어 주세요</p>
+      <div class="stage"><button type="button" class="big" id="open-c">QR 크게 보기</button></div>
+      <span class="meta" id="m-c"></span>
+      <div class="rec" data-v="C"></div>
+    </section>
+  </div>
+
+  <section class="box">
+    <h2>결과</h2>
+    <pre class="sum" id="sum"></pre>
+    <div class="row"><button type="button" id="copy">결과 복사</button><button type="button" id="reset">결과 지우기</button></div>
+  </section>
+</main>
+
+<div class="qrz" id="qrz" role="dialog" aria-modal="true" aria-label="QR 크게 보기" hidden>
+  <div class="qrz-c"><canvas id="cv-c" aria-label="크게 보기 QR"></canvas><p>휴대폰 카메라를 화면에 가까이 대 주세요</p></div>
+  <button type="button" class="qrz-x" id="qrz-x">닫기</button>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+<script>
+(function(){
+  var DEV=['아이폰','갤럭시'], KEY='sr_qrtest_v1', res={};
+  try{ res=JSON.parse(localStorage.getItem(KEY)||'{}')||{}; }catch(e){ res={}; }
+  function save(){ try{ localStorage.setItem(KEY, JSON.stringify(res)); }catch(e){} }
+  var dpr=window.devicePixelRatio||1;
+  document.getElementById('dpr').textContent=dpr;
+  if(!matchMedia('(hover:hover) and (pointer:fine)').matches) document.getElementById('mob').hidden=false;
+
+  /* 실제 링크와 같은 모양·길이: 압축된 입력 내용은 무작위 문자열에 가깝다(base64url).
+     링크를 눌러도 사이트 첫 화면만 열린다(#qt= 는 사이트가 읽지 않음). */
+  var B64='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_';
+  function rnd(n){ var a=new Uint8Array(n), s=''; crypto.getRandomValues(a); for(var i=0;i<n;i++) s+=B64[a[i]&63]; return s; }
+  function link(v, total){ var head='https://www.selfregi24.com/?qrtest='+v+'#qt=z'; return head+rnd(Math.max(10,total-head.length)); }
+
+  /* A: pay_return.html 기존 drawQR 그대로 */
+  function drawOld(cv, text){
+    var qr=qrcode(0,'L'); qr.addData(text); qr.make();
+    var n=qr.getModuleCount(), s=4, q=cv.getContext('2d'); cv.width=cv.height=n*s;
+    q.fillStyle='#fff'; q.fillRect(0,0,n*s,n*s); q.fillStyle='#0F172A';
+    for(var r=0;r<n;r++) for(var k=0;k<n;k++) if(qr.isDark(r,k)) q.fillRect(k*s,r*s,s,s);
+    return { n:n, cssCell:220/n };
+  }
+  /* B·C: 개선 drawQR(2026-10-25 패치와 같은 코드) */
+  function drawNew(cv, text, cssMax, tight){
+    var qr=qrcode(0,'L'); qr.addData(text); qr.make();
+    var n=qr.getModuleCount(), Q=4, px=Math.floor(cssMax*dpr/(n+8));
+      /* tight: 둘레가 밝은 바탕(카드의 옅은 하늘색)이면 여백을 2칸으로 줄여 한 칸을 1px 더 키울 수 있을 때 줄인다 */
+      if(tight && Math.floor(cssMax*dpr/(n+4))>px){ Q=2; px=Math.floor(cssMax*dpr/(n+4)); }
+      px=Math.max(1,px); var t=n+2*Q, side=t*px, q=cv.getContext('2d');
+    cv.width=cv.height=side; cv.style.width=cv.style.height=(side/dpr)+'px';
+    q.fillStyle='#fff'; q.fillRect(0,0,side,side); q.fillStyle='#0F172A';
+    for(var r=0;r<n;r++) for(var k=0;k<n;k++) if(qr.isDark(r,k)) q.fillRect((k+Q)*px,(r+Q)*px,px,px);
+    return { n:n, cssCell:px/dpr };
+  }
+  var L={};
+  function meta(id, t, d){ document.getElementById(id).textContent=t.length.toLocaleString('ko-KR')+'자 · '+d.n+'×'+d.n+'칸 · 한 칸 '+d.cssCell.toFixed(2)+'px(CSS)'; }
+  function drawAll(){
+    if(typeof qrcode!=='function'){ document.getElementById('m-a').textContent='QR 라이브러리를 불러오지 못했습니다. 인터넷 연결을 확인해 주세요.'; return; }
+    var total=+document.getElementById('len').value;
+    L.A=link('A', total); L.B=link('B', total-140); L.C=link('C', total-140);
+    meta('m-a', L.A, drawOld(document.getElementById('cv-a'), L.A));
+    var st=document.getElementById('st-b');
+    /* 결제 완료 카드의 QR 칸 폭은 376px(1440·1920px 화면, 배율 1~1.5 실측) → pay_return과 같이 min(360, 376) */
+    meta('m-b', L.B, drawNew(document.getElementById('cv-b'), L.B, Math.min(376, st.clientWidth-28), true));
+    document.getElementById('m-c').textContent=L.C.length.toLocaleString('ko-KR')+'자 · 버튼을 누르면 화면 크기에 맞춰 그립니다';
+  }
+  var z=document.getElementById('qrz'), opener=document.getElementById('open-c');
+  function closeZ(){ z.hidden=true; opener.focus(); }
+  opener.onclick=function(){
+    var d=drawNew(document.getElementById('cv-c'), L.C, Math.min(720, window.innerWidth-64, window.innerHeight-160));
+    meta('m-c', L.C, d); z.hidden=false; document.getElementById('qrz-x').focus();
+  };
+  document.getElementById('qrz-x').onclick=closeZ;
+  z.onclick=function(e){ if(e.target===z) closeZ(); };
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape' && !z.hidden) closeZ(); });
+
+  /* 기록 */
+  document.querySelectorAll('.rec').forEach(function(box){
+    var v=box.getAttribute('data-v');
+    DEV.forEach(function(dv){
+      var lab=document.createElement('span'); lab.textContent=dv;
+      var ox=document.createElement('span'); ox.className='ox';
+      ['O','X'].forEach(function(a){
+        var b=document.createElement('button'); b.type='button'; b.className=a.toLowerCase(); b.textContent=a;
+        b.setAttribute('aria-label', v+' '+dv+' '+(a==='O'?'인식됨':'인식 안 됨'));
+        b.onclick=function(){ var k=v+'|'+dv+'|'+document.getElementById('len').value; res[k]=res[k]===a?'':a; save(); paint(); };
+        ox.appendChild(b);
+      });
+      box.appendChild(lab); box.appendChild(ox);
+    });
+  });
+  function paint(){
+    var len=document.getElementById('len').value;
+    document.querySelectorAll('.rec').forEach(function(box){
+      var v=box.getAttribute('data-v'), btns=box.querySelectorAll('button');
+      btns.forEach(function(b,i){ var dv=DEV[Math.floor(i/2)], a=b.textContent; b.setAttribute('aria-pressed', String(res[v+'|'+dv+'|'+len]===a)); });
+    });
+    var lines=['재발급 QR 카메라 인식 시험 · 화면 배율 '+dpr+' · '+navigator.userAgent.replace(/^.*?\(([^)]*)\).*$/,'$1')];
+    ['1490','1800'].forEach(function(n){
+      var row=[];
+      ['A','B','C'].forEach(function(v){ row.push(v+'('+DEV.map(function(dv){ return dv+' '+(res[v+'|'+dv+'|'+n]||'-'); }).join(', ')+')'); });
+      lines.push(Number(n).toLocaleString('ko-KR')+'자: '+row.join(' · '));
+    });
+    document.getElementById('sum').textContent=lines.join('\n');
+  }
+  document.getElementById('copy').onclick=function(){
+    var t=document.getElementById('sum').textContent, b=this;
+    (navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(function(){ b.textContent='복사했습니다'; }, function(){ b.textContent='위 글을 직접 복사해 주세요'; });
+  };
+  document.getElementById('reset').onclick=function(){ res={}; save(); paint(); };
+  document.getElementById('len').onchange=function(){ drawAll(); paint(); };
+  var rt; window.addEventListener('resize', function(){ clearTimeout(rt); rt=setTimeout(drawAll, 200); });
+  drawAll(); paint();
+})();
+</script>
+</body>
+</html>

@@ -247,7 +247,7 @@
        단독소유자 지분 일부 → 등기의 목적 「소유권 일부이전」, 이전할 지분은 부동산 전체 기준 「공유자 지분 ○분의 ○」.
        공유자 지분 이전(「갑구 ○번 □□□지분 …이전」)은 갑구 순위번호가 필요해 자동으로 쓰지 않는다. */
     var partShare = (f.transferMode === 'part' && /분의/.test(f.transferShare || '')) ? f.transferShare : '';
-    var purposeGap = false;
+    var purposeGap = false, partialGap = false;
     /* 공유자 1인의 지분 이전(등기부 소유자 2명↑, 매도인 1명 — 허브 coOwnerSale): 「소유권이전」을 찍으면 틀린다.
        등기의 목적은 공란, 이전할 지분은 그 공유자의 등기부 지분(일부만 넘기면 이용자가 적은 지분). */
     var co = (!jointBoth && sellerArr.length === 1 && f.coOwnerSale) ? f.coOwnerSale : null;
@@ -255,6 +255,8 @@
     function regPurposeFor(bi) {
       if (co) return '';
       if (!jointBoth && partShare && sellerArr.length === 1) return '소유권 일부이전';
+      /* D3(2026-10-25): 등기부 공유자가 매도인보다 많으면 「공유자전원」이 아니다 — 갑구 순위번호가 필요한 문구라 공란으로 둔다 */
+      if (!jointBoth && sellerArr.length > 1 && +f.regOwnerCount > sellerArr.length) { partialGap = true; return ''; }
       if (!jointBoth) return (sellerArr.length > 1) ? '공유자전원지분전부이전' : '소유권이전';
       var s = purposeForBuyer(bi);
       if (!s) purposeGap = true;
@@ -321,7 +323,7 @@
       var seq = jointBoth ? '_' + (k + 1) + 'of2' : '';
       files.push({ blob: blob, name: '소유권이전등기신청서' + (opt.gift ? '(증여)' : '') + seq + '_' + nm + '_' + suffix + '.docx' });
     }
-    return { files: files, jointBoth: jointBoth, purposeGap: purposeGap, coOwnerGap: !!co };
+    return { files: files, jointBoth: jointBoth, purposeGap: purposeGap, coOwnerGap: !!co, partialGap: partialGap };
   }
 
   /* =========================================================

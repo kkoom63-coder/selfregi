@@ -38,6 +38,11 @@
   function squash(s) { return nz(s).replace(/\s+/g, ''); }
   function tidy(s) { return nz(s).replace(/\s+/g, ' ').trim(); }
 
+  /* 대지권 비율 칸 정리(2026-10-25, 리포트 D4): 구형(전산이기) 등기부는 분자가 다음 줄 「(전 1) 73.593」에 있고
+     같은 칸에 등기원인 날짜 「1996년6월19일」이 섞여, 「분의」 뒤 첫 숫자로 연도를 잡았다. 날짜·(전 n) 표시를 먼저 지운다. */
+  function ratioText(s) {
+    return squash(s).replace(/\d{4}년\d{1,2}월\d{1,2}일/g, '').replace(/\(전\d*\)/g, '').replace(/\d+번(?=\D|$)/g, '');
+  }
   // "63527.1분의 75.809" / "55분의 1" → {denom, num}
   function parseRatio(s) {
     var m = squash(s).match(/([\d.,]+)분의([\d.,]+)/);
@@ -363,6 +368,12 @@
     return best || t;
   }
   function isStruct(v) { return STRUCT.indexOf(squash(v || '')) >= 0; }
+  /* 칸 글자에서 구조 어휘만 집는다(「철근콘크리트조도면편철장제2책382장」 → 철근콘크리트조). 못 찾으면 null */
+  function structFrom(t) {
+    var m = squash(t).match(/(?:철골철근|철근|철골)?(?:콘|콩)크리트(?:구조|조)|(?:벽돌|연와|시멘트블럭|목|석|철파이프)조/);
+    var v = m ? snapStruct(m[0]) : null;
+    return v && isStruct(v) ? v : null;
+  }
 
   // ---------- 3) 섹션 분할 ----------
   function sliceSections(lines) {
@@ -417,12 +428,41 @@
   }
 
 
+  /* 리포트 D1(2026-10-24): pdf.js가 「2 압류」를 텍스트 조각 하나로 주면 x좌표로는 나눌 수 없어
+     순위번호 칸에 「2 압류」가 통째로 들어가고, 순위번호 정규식에 걸리지 않아 행이 전부 버려졌다
+     → 압류·경매가 있어도 「없음」. 첫 칸이 「숫자 + 한글」이면 순위번호와 등기목적으로 다시 나눈다.
+     날짜(2023년…)·층호(3층) 등은 순위번호가 아니므로 제외한다. */
+  function splitRankLead(c) {
+    /* 경계가 왼쪽으로 밀려 「2 압류」가 둘째 칸에 들어간 경우도 같은 방식으로 되돌린다 */
+    if (!squash(c[0]) && /^\d{1,3}(-\d{1,3})?[가-힣]/.test(squash(c[1]))) { c = c.slice(); c[0] = c[1]; c[1] = ''; }
+    var q = squash(c[0]);
+    if (/^\d+(-\d+)?$/.test(q)) return c;
+    var m = q.match(/^(\d{1,3}(?:-\d{1,3})?)([가-힣].*)$/);
+    if (!m || /^(년|월|일|층|호|번|동|분의|길|로|㎡)/.test(m[2])) return c;
+    var out = c.slice(); out[0] = m[1]; out[1] = m[2] + (c[1] ? ' ' + c[1] : ''); return out;
+  }
+  /* 소유권을 제한하는 등기(셀프 매매·증여 전에 반드시 확인). 화면 라벨과 같은 순서 */
+  var BLOCK_KW = /가압류|가처분|압류|경매|예고등기|환매|신탁|가등기/g;
+  function blockWords(text) {
+    var seen = [], m; BLOCK_KW.lastIndex = 0;
+    while ((m = BLOCK_KW.exec(squash(text)))) if (seen.indexOf(m[0]) < 0) seen.push(m[0]);
+    return seen;
+  }
+
   // 요약 페이지의 "순위번호 | 등기목적 | 접수정보 | 주요등기사항 | 대상소유자" 표 공통 파서
-  function parseRankTable(body, startRe, endRe) {
+  // stat(선택): { status: 'absent'|'none'|'rows'|'unread', words: [표 글자에서 찾은 제한 등기 낱말] }
+  function parseRankTable(body, startRe, endRe, stat) {
+    stat = stat || {};
     var i0 = -1;
     for (var i = 0; i < body.length; i++) { if (startRe.test(squash(body[i].text))) { i0 = i; break; } }
+    stat.status = 'absent'; stat.words = [];
     if (i0 < 0) return [];
-    if (/기록사항없음/.test(squash(body[i0 + 1] ? body[i0 + 1].text : ''))) return [];
+    if (/기록사항없음/.test(squash(body[i0 + 1] ? body[i0 + 1].text : ''))) { stat.status = 'none'; return []; }
+    /* 표를 못 읽어도 「없음」이라고 하지 않도록 표 범위의 글자에서 제한 등기 낱말을 따로 찾아 둔다 */
+    var raw = [];
+    for (var g = i0 + 1; g < body.length; g++) { if (endRe.test(squash(body[g].text))) break; raw.push(body[g].text); }
+    stat.words = blockWords(raw.join(' '));
+    stat.status = 'unread';
     var h = -1;
     for (var e = i0; e < Math.min(i0 + 4, body.length); e++) {
       if (squash(body[e].text).indexOf('순위번호') === 0) { h = e; break; }
@@ -430,12 +470,16 @@
     if (h < 0) return [];
     var bands = headerBands(body[h], ['순위번호', '등기목적', '접수정보', '주요등기사항', '대상소유자']);
     if (!bands) return [];
-    var data = body.slice(h + 1, h + 40);
+    /* 열 경계 보정에는 이 표의 행만 쓴다. 예전엔 40줄을 통째로 넘겨 다음 표(3.(근)저당권)의
+       머리글·행 좌표가 섞여 경계가 왼쪽으로 밀렸다(2026-10-25 합성 시험에서 재현) */
+    var hEnd = h + 1;
+    while (hEnd < body.length && hEnd < h + 40 && !endRe.test(squash(body[hEnd].text))) hEnd++;
+    var data = body.slice(h + 1, hEnd);
     bands = refineBands(data, bands, makeIsNumberLed(data));
     var rows = [], cur = null;
     for (var f = h + 1; f < body.length; f++) {
       if (endRe.test(squash(body[f].text))) break;
-      var c = splitByBands(body[f], bands);
+      var c = splitRankLead(splitByBands(body[f], bands));
       if (/^\d+(-\d+)?$/.test(squash(c[0]))) {
         cur = { rank: c[0], purpose: c[1], rest: tidy(c[2] + ' ' + c[3]), owner: c[4] };
         rows.push(cur);
@@ -452,12 +496,13 @@
       r.receiptNo = (q.match(/제([\d]+)호/) || [])[1] || null;
       r.receiptDate = (q.match(/(\d{4}년\d{1,2}월\d{1,2}일)/) || [])[1] || null;
     });
+    if (rows.length) stat.status = 'rows';
     return rows;
   }
 
   // ---------- 5) 요약 페이지 ----------
   function parseSummary(lines) {
-    var res = { owners: [], liens: [], encumbrances: [], present: false };
+    var res = { owners: [], liens: [], encumbrances: [], present: false, encStatus: 'absent', encKeywords: [], lienStatus: 'absent' };
     var startIdx = -1;
     for (var i = 0; i < lines.length; i++) {
       if (squash(lines[i].text).indexOf('주요등기사항요약') >= 0) { startIdx = i; break; }
@@ -507,13 +552,17 @@
     }
 
     // --- 2. 소유지분을 제외한 소유권에 관한 사항 (갑구): 압류·가압류·가처분 등 ---
-    res.encumbrances = parseRankTable(body, /^2\.소유지분을제외한/, /^3\.\(근\)저당권|^\[참고사항\]/);
+    var es = {};
+    res.encumbrances = parseRankTable(body, /^2\.소유지분을제외한/, /^3\.\(근\)저당권|^\[참고사항\]/, es);
+    res.encStatus = es.status; res.encKeywords = es.words;
 
     // --- 3. (근)저당권 및 전세권 등 (을구) ---
     var lIdx = -1;
     for (var d = 0; d < body.length; d++) {
       if (/^3\.\(근\)저당권/.test(squash(body[d].text))) { lIdx = d; break; }
     }
+    /* lienStatus(2026-10-25, 리포트 D2): none = 「기록사항 없음」(살아 있는 근저당 없음) · rows · unread(표는 있는데 못 읽음) */
+    if (lIdx >= 0) res.lienStatus = /기록사항없음/.test(squash(body[lIdx + 1] ? body[lIdx + 1].text : '')) ? 'none' : 'unread';
     if (lIdx >= 0 && !/기록사항없음/.test(squash(body[lIdx + 1] ? body[lIdx + 1].text : ''))) {
       var lh = -1;
       for (var e = lIdx; e < Math.min(lIdx + 4, body.length); e++) {
@@ -526,7 +575,7 @@
           var cl = null;
           for (var f = lh + 1; f < body.length; f++) {
             if (/^\[참고사항\]/.test(squash(body[f].text))) break;
-            var cc = splitByBands(body[f], lb);
+            var cc = splitRankLead(splitByBands(body[f], lb));
             if (/^\d+(-\d+)?$/.test(squash(cc[0]))) {
               cl = { rank: cc[0], purpose: cc[1], rest: tidy(cc[2] + ' ' + cc[3]), owner: cc[4] };
               res.liens.push(cl);
@@ -536,6 +585,7 @@
               if (cc[4]) cl.owner += cc[4];
             }
           }
+          if (res.liens.length) res.lienStatus = 'rows';
           res.liens.forEach(function (L) {
             var q = squash(L.rest);
             L.receiptNo   = (q.match(/제([\d]+)호/) || [])[1] || null;
@@ -828,10 +878,11 @@
   /* 본문에서 읽은 근저당을 요약표와 대조한다.
      요약표에 없으면 이미 말소된 등기일 가능성이 높다.
      (열람용 "말소사항 포함" 등기부에는 말소된 근저당도 본문에 그대로 남는다.) */
-  function markCancelled(eul, summaryLiens) {
+  function markCancelled(eul, summaryLiens, lienStatus) {
     var set = {};
     (summaryLiens || []).forEach(function (s) { if (s.receiptNo) set[String(s.receiptNo)] = true; });
-    var haveSummary = Object.keys(set).length > 0;
+    /* 요약표 3번이 「기록사항 없음」이면 본문의 근저당은 모두 말소된 것이다(예전엔 대조표가 비었다고 전부 유효로 셌다 — 리포트 D2) */
+    var haveSummary = Object.keys(set).length > 0 || lienStatus === 'none';
     eul.liens.forEach(function (L) {
       /* parseEul 은 숫자, parseEulText 는 문자열을 넣는다. 문자열로 통일해 비교한다. */
       if (eul.cancelledRanks.map(String).indexOf(String(L.rank)) >= 0) { L.cancelled = true; }
@@ -910,6 +961,8 @@
         P.exclusiveNo = tidy(cellLines(ex.cells[2]).join(' '));
         var dt = cellLines(ex.cells[3]);
         P.exclusiveStruct = dt.length ? snapStruct(dt[0]) : null;
+        /* 등기원인 칸의 「도면편철장 제2책382장」이 구조에 붙는 경우(리포트 D4) — 구조 어휘만 다시 집는다 */
+        if (dt.length && !isStruct(P.exclusiveStruct)) P.exclusiveStruct = structFrom(dt.join('')) || P.exclusiveStruct;
         P.exclusiveArea = parseArea(dt.join(' '));
       }
       var lrP = parseSection(sec.LAND_RIGHT, COLS.LAND_RIGHT);
@@ -917,7 +970,7 @@
         var hit = lrP.recs.filter(function (r) { return /소유권대지권/.test(squash(r.cells[1])); }).pop();
         if (hit) {
           P.landRightType = '소유권대지권';
-          P.landRightRatio = parseRatio(cellLines(hit.cells[2]).join(''));
+          P.landRightRatio = parseRatio(ratioText(cellLines(hit.cells[2]).join('')));
         }
       }
       P.separateReg = judgeSeparateReg((sec.LAND_RIGHT || []).map(function (L) { return L.text; }).join('\n'));
@@ -984,7 +1037,8 @@
     }
     var alt = parseEulText(denoise(lines));
     if (eulScore(alt) > eulScore(eulRaw)) eulRaw = alt;
-    var eul = markCancelled(eulRaw, out.liens);
+    out.lienStatus = sum.present ? sum.lienStatus : 'absent';
+    var eul = markCancelled(eulRaw, out.liens, out.lienStatus);
     out.summaryLiens = out.liens;
     if (eul.present) {
       out.eulPresent = true;
@@ -1004,6 +1058,19 @@
     }
 
     if (opt && opt.ocr) ocrFill(out, lines);
+    else headerPrefer(out, lines);
+    /* 리포트 D1: 소유권 제한 판정 재료(validate에서 blockerStatus로 정리) */
+    out._encStatus = sum.present ? sum.encStatus : 'absent';
+    out._encWords = sum.present ? (sum.encKeywords || []) : [];
+    if (!sum.present) {
+      var ga = -1, gz = lines.length;
+      for (var gi = 0; gi < lines.length; gi++) {
+        var gt = squash(lines[gi].text);
+        if (ga < 0 && /갑구/.test(gt) && /소유권에관한사항/.test(gt)) ga = gi;
+        else if (ga >= 0 && (/을구/.test(gt) || /주요등기사항요약/.test(gt))) { gz = gi; break; }
+      }
+      if (ga >= 0) out._encWords = blockWords(lines.slice(ga, gz).map(function (L) { return L.text; }).join(' '));
+    }
     validate(out);
     if (opt && opt.ocr) { ocrConfidence(out); crossCheck(out, lines); }
     return out;
@@ -1107,6 +1174,23 @@
     o.address = respace(am[1]);
     o.name = tidy(am[2]);
     return o;
+  }
+
+  /* 텍스트 레이어 PDF: 모든 페이지 머리의 「[집합건물] … 제N동 제N층 제N호」 한 줄은 표가 아니라 열 경계 오류가 없다.
+     표제부에서 조합한 소재지번이 머리 줄과 다르면 머리 줄을 쓰고 원래 값은 남긴다(리포트 D4: 구형 등기부에서 「덕양구」 누락). */
+  function headerPrefer(out, lines) {
+    var P = out.property || (out.property = {});
+    var hd = headerIdent(lines.map(function (x) { return tidy(x.text); }));
+    if (!hd || !hd.address || (hd.variants && hd.variants.length > 1)) return;
+    var full = hd.address + (hd.name && out.docType !== '토지' ? ' ' + hd.name : '') + (hd.dong ? ' 제' + hd.dong + '동' : '');
+    if (squash(full) !== squash(P.jibunAddress || '')) {
+      if (P.jibunAddress) { P.jibunAddressTable = P.jibunAddress; out.headerUsed = true; }
+      P.jibunAddress = full;
+    }
+    if (hd.exclusiveNo && squash(hd.exclusiveNo) !== squash(P.exclusiveNo || '')) {
+      if (P.exclusiveNo) { P.exclusiveNoTable = P.exclusiveNo; out.headerUsed = true; }
+      P.exclusiveNo = hd.exclusiveNo;
+    }
   }
 
   function ocrFill(out, lines) {
@@ -1362,7 +1446,13 @@
       if (!r) { c.landRightRatio = 'low'; w.push('대지권비율을 읽지 못했습니다.'); }
       else if (parseFloat(r.num) > parseFloat(r.denom)) {
         c.landRightRatio = 'low'; w.push('대지권비율의 분자가 분모보다 큽니다. 원본 확인이 필요합니다.');
+      } else if (/^(19|20)\d\d$/.test(String(r.num)) && /\./.test(String(r.denom))) {
+        /* 분모는 소수인데 분자가 네 자리 정수(연도 모양) — 등기원인 날짜를 잘못 잡았을 가능성(리포트 D4) */
+        c.landRightRatio = 'low'; w.push('대지권비율의 분자(' + r.num + ')가 연도처럼 보입니다. 원본 확인이 필요합니다.');
       } else c.landRightRatio = 'high';
+      if (out.property.exclusiveStruct && !isStruct(out.property.exclusiveStruct)) {
+        c.exclusiveStruct = 'low'; w.push('구조(' + out.property.exclusiveStruct + ')를 정확히 읽지 못했습니다. 원본 확인이 필요합니다.');
+      }
       c.exclusiveArea = out.property.exclusiveArea ? 'high' : 'low';
     }
 
@@ -1417,9 +1507,26 @@
       out.cancel.supported = false;
       out.cancel.reasons.push('현재 유효한 근저당권이 확인되지 않습니다. 이미 말소되었을 수 있습니다.');
     }
-    var BLOCKERS = /압류|가압류|가처분|경매|예고등기|환매|신탁/;
+    var BLOCKERS = /압류|가압류|가처분|경매|예고등기|환매|신탁|가등기/;
     out.blockers = (out.encumbrances || []).filter(function (r) { return BLOCKERS.test(r.purpose); });
     out.hasBlocker = out.blockers.length > 0;
+    /* blockerStatus(2026-10-25, 리포트 D1): 판독 실패를 「없음」으로 보이지 않게 한다.
+       none  = 요약표 2번이 「기록사항 없음」 — 이때만 화면에 「없음」
+       found = 요약표 2번에서 제한 등기를 읽음
+       check = 요약표 2번을 못 읽었거나(표는 있는데 행 0) 요약표가 없음 → 「확인 필요」.
+               blockerWords: 요약표 2번 글자(없으면 갑구 본문 — 말소된 것도 섞일 수 있음)에서 찾은 낱말 */
+    var encSt = out._encStatus || 'absent';
+    out.blockerWords = out._encWords || [];
+    out.blockerWordsFrom = encSt === 'absent' ? 'body' : 'summary';
+    if (out.hasBlocker) out.blockerStatus = 'found';
+    else if (encSt === 'none') out.blockerStatus = 'none';
+    else if (encSt === 'rows') out.blockerStatus = (out.encumbrances || []).length ? 'found' : 'none';
+    else {
+      out.blockerStatus = 'check';
+      w.push('소유권 제한(압류·가압류·가처분·경매·신탁 등)을 자동으로 확인하지 못했습니다' +
+             (out.blockerWords.length ? '(등기부에 「' + out.blockerWords.join('·') + '」 글자가 있습니다)' : '') +
+             '. 등기부 원본의 갑구와 「주요 등기사항 요약」 2번을 확인하세요.');
+    }
     if (out.hasBlocker) {
       w.push('소유권에 압류·가처분 등의 제한이 기재되어 있습니다(' +
              out.blockers.map(function (r) { return r.purpose; }).join(', ') +
@@ -1484,7 +1591,7 @@
     parseRegistry: parseRegistry,
     parseTokens: parseTokens,
     compareSellerAddress: compareSellerAddress,
-    _internal: { itemsToLines: itemsToLines, tokensToLines: tokensToLines, sliceSections: sliceSections, parseSection: parseSection, headerBands: headerBands, COLS: COLS, SUB: SUB, splitByBands: splitByBands, parseSummary: parseSummary, parseEul: parseEul, parseEulText: parseEulText, eulPartyText: eulPartyText, eulParty: eulParty, markCancelled: markCancelled, headerIdent: headerIdent, looseRatio: looseRatio, respace: respace, judgeSeparateReg: judgeSeparateReg, parseRatio: parseRatio }
+    _internal: { itemsToLines: itemsToLines, tokensToLines: tokensToLines, sliceSections: sliceSections, parseSection: parseSection, headerBands: headerBands, COLS: COLS, SUB: SUB, splitByBands: splitByBands, parseSummary: parseSummary, ratioText: ratioText, parseRatio: parseRatio, snapStruct: snapStruct, structFrom: structFrom, headerIdent: headerIdent, markCancelled: markCancelled, parseEul: parseEul, parseEulText: parseEulText, eulPartyText: eulPartyText, eulParty: eulParty, markCancelled: markCancelled, headerIdent: headerIdent, looseRatio: looseRatio, respace: respace, judgeSeparateReg: judgeSeparateReg, parseRatio: parseRatio }
   };
 
   if (typeof module !== 'undefined' && module.exports) module.exports = RegParse;

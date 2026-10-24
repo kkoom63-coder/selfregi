@@ -1,12 +1,16 @@
 // 결제 흐름 로컬 시험 서버 — 정적 파일(D:\Selfregi) + /api/pay/* 를 운영 함수와 같은 worker 코드로 처리.
-// 토스페이 테스트 키(sk_test_…, PAY_ALLOW_TEST=1) · 저장소는 메모리. 127.0.0.1에서만 연다.
+// 토스페이 테스트 키(sk_test_…, PAY_ALLOW_TEST=1) · 저장소는 메모리. 기본은 127.0.0.1에서만 연다.
+// 휴대폰 실기기 시험(2026-10-25): PAYDEV_HOST=0.0.0.0 이면 같은 와이파이의 휴대폰이 http://<PC IP>:포트 로 들어올 수 있다.
+//   PC에서도 127.0.0.1 대신 그 IP 주소로 열어야 결제 완료 QR에 휴대폰이 갈 수 있는 주소가 담긴다. 시험 후 끄기.
 import http from 'node:http';
 import fs from 'node:fs';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
+import os from 'node:os';
 
 const ROOT = process.argv[2] || 'D:\\Selfregi';
 const PORT = +(process.argv[3] || 4610);
+const HOST = process.env.PAYDEV_HOST || '127.0.0.1';
 const W = (n) => import(pathToFileURL(path.join(ROOT, 'functions/shared/worker/pay', n + '.js')).href);
 const ROUTES = {
   '/api/pay/create': 'create', '/api/pay/confirm': 'confirm', '/api/pay/verify': 'verify', '/api/pay/review': 'review',
@@ -55,4 +59,9 @@ http.createServer(async (req, res) => {
     res.writeHead(200, { 'Content-Type': TYPES[path.extname(f)] || 'application/octet-stream', 'Cache-Control': 'no-store' });
     fs.createReadStream(f).pipe(res);
   } catch (e) { console.error(e); res.writeHead(500); res.end(String(e && e.message || e)); }
-}).listen(PORT, '127.0.0.1', () => console.log('paydev on http://127.0.0.1:' + PORT));
+}).listen(PORT, HOST, () => {
+  console.log('paydev on http://127.0.0.1:' + PORT);
+  if (HOST !== '127.0.0.1') Object.values(os.networkInterfaces()).flat()
+    .filter((a) => a && a.family === 'IPv4' && !a.internal)
+    .forEach((a) => console.log('  같은 와이파이 휴대폰·PC에서: http://' + a.address + ':' + PORT + '/normal_form.html'));
+});
