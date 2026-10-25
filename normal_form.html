@@ -311,7 +311,17 @@ html.demo-on .demo{display:block}
 .rvl-st{color:#B45309;font-weight:700}
 /* 후기 위치(2026-10-25): 넓은 화면은 미리보기 아래(rvl-side), 좁은 화면은 위임장 단계 본문 아래(rvl-main) */
 .rvl-side{display:none}
-@media (min-width:1081px){.rvl-main{display:none}.rvl-side{display:block;margin-top:10px;box-shadow:var(--shadow)}.rvl-side p+p{margin-top:8px;padding-top:8px;border-top:1px solid var(--line)}}
+@media (min-width:1081px){.rvl-main{display:none}.rvl-side{display:block;margin-top:8px;padding:12px 14px;box-shadow:var(--shadow)}}
+.rvl-sl{display:grid}
+.rvl-sl p{grid-area:1/1;visibility:hidden;opacity:0;transition:opacity .2s}
+.rvl-sl p.on{visibility:visible;opacity:1}
+.rvl-rs{color:#F59E0B;letter-spacing:1px;font-size:12px}.rvl-rs i{font-style:normal;color:#E2E8F0}
+.rvl-hd{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:0 0 8px}.rvl-hd h3{margin:0;white-space:nowrap}
+.rvl-nav{display:flex;align-items:center;gap:4px;flex:none}
+.rvl-nav button{width:28px;height:28px;border:1px solid var(--border);border-radius:50%;background:var(--card);color:var(--navy);font-size:18px;line-height:1;cursor:pointer}
+.rvl-nav button:hover{background:#F0F9FF;border-color:var(--blue);color:var(--blue)}
+.rvl-n{min-width:34px;text-align:center;font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+@media (prefers-reduced-motion:reduce){.rvl-sl p{transition:none}}
 .sg-box{background:var(--info-bg);border:1px solid var(--info-bd);color:var(--info-tx);border-radius:10px;padding:10px 12px;margin:8px 0 0}
 .sg-box p{margin:0;font-size:14px}
 .sg-box b{font-weight:700}
@@ -1283,7 +1293,7 @@ function render(){
     +'<div class="pvp-c"><div class="pvp-h"><h2>문서 반영 미리보기</h2><span class="pvp-cn">채운 칸 <b>'+pv.ok+'</b> · 남은 칸 <b>'+pv.left+'</b></span><button type="button" class="pvp-x" data-pvp="0">닫기</button></div>'+pv.html
     +(GIFT?'':'<a class="sample" href="sample_wimi.png" target="_blank" rel="noopener">'+DZ_IC.replace('dz-ic','sample-ic')+'<span><b>결제 후 받는 위임장 견본</b><small>가상 인물로 채운 견본 · 눌러서 크게 보기</small></span></a>') /* 10/24 사용자: 링크로 줄이니 안 보인다 → 버튼 형태로 복귀 */
     +'<button type="button" class="pvp-reset" data-reset="1">입력 내용 모두 지우기</button>'
-    +'</div>'+(STEPS[VIEW-1].k==='poa'?reviewLine('rvl-side',1):'')+'</aside></div>'; /* 넓은 화면(1081px~)은 미리보기 아래(2026-10-25) */
+    +'</div>'+(STEPS[VIEW-1].k==='poa'?reviewLine('rvl-side'):'')+'</aside></div>'; /* 넓은 화면(1081px~)은 미리보기 아래(2026-10-25) */
   A.innerHTML=W(html);A.classList.remove('pre-hide');bind();motion();
 }
 /* 그린 뒤 움직임만 덧붙인다 — 단계를 바꿨을 때 화면 들어오기, 새로 끝난 단계 ✓, 방금 판독한 칸 차례로 밝히기 */
@@ -1545,7 +1555,14 @@ var PUB_REVIEWS=[ /* 최신순 */
   {r:4,t:'시험용 등기부 PDF로 사용하고 면적·대지권 비율·관할 등기소까지 자동으로 채워지는 것 확인한 뒤 진행했어요. 채권 계산부터 제출 순서 체크리스트까지 7단계로 안내돼서 처음인데도 어렵지 않았어요.'}, /* SR20261024231444-LWL9Q5 · 2026.10 · publish:true (QR 문의 고객, 10/25 21:12 작성) */
   {r:5,t:'셀프등기 처음 해보는데 자동으로 작성해주고, 설명도 자세히 되어 있어서 서류 작성이 어렵지 않았습니다. 덕분에 법무사 비용 많이 절감했고, 주위에도 알려줄 생각입니다.'} /* SR20261010095839-LBZ2PD · 2026.10 · publish:true */
 ];
-function reviewLine(cls,max){var n=PUB_REVIEWS.length;if(!n)return '';
+/* 미리보기 아래 후기(2026-10-25): 한 건씩 넘겨 본다(‹ 1 / n ›, 끝에서 처음으로). 자동으로 넘기지 않는다.
+   모든 후기를 같은 칸에 겹쳐 두고 보이는 것만 바꿔, 넘길 때 높이가 바뀌지 않는다(가장 긴 후기 높이) */
+function reviewCar(){var n=PUB_REVIEWS.length;if(!n)return '';var i=Math.min(OPEN.rvi||0,n-1);
+  var avg=PUB_REVIEWS.reduce(function(a,r){return a+r.r;},0)/n;
+  return '<section class="rvl rvl-side rvl-car" aria-label="실사용자 후기" aria-roledescription="carousel"><div class="rvl-hd"><h3>실사용자 후기 <span class="rvl-st">별점 '+avg.toFixed(1)+'</span> <small>결제 이용자 '+n+'건</small></h3>'
+    +(n>1?'<div class="rvl-nav"><button type="button" data-rv="-1" aria-label="이전 후기">‹</button><span class="rvl-n" aria-live="polite">'+(i+1)+' / '+n+'</span><button type="button" data-rv="1" aria-label="다음 후기">›</button></div>':'')+'</div>'
+    +'<div class="rvl-sl">'+PUB_REVIEWS.map(function(x,k){return '<p class="'+(k===i?'on':'')+'"'+(k===i?'':' aria-hidden="true"')+'><span class="rvl-rs" role="img" aria-label="별점 '+x.r+'점">'+'★'.repeat(x.r)+'<i>'+'★'.repeat(5-x.r)+'</i></span> 익명 — <q>'+esc(x.t)+'</q></p>';}).join('')+'</div></section>';}
+function reviewLine(cls,max){var n=PUB_REVIEWS.length;if(!n)return '';if(cls==='rvl-side')return reviewCar();
   var avg=PUB_REVIEWS.reduce(function(a,r){return a+r.r;},0)/n,r=PUB_REVIEWS[0];
   return '<section class="rvl '+(cls||'')+'" aria-label="실사용자 후기"><h3>실사용자 후기 <span class="rvl-st">별점 '+avg.toFixed(1)+'</span> <small>결제 이용자 '+n+'건</small></h3>'
     +PUB_REVIEWS.slice(0,max||n).map(function(x){return '<p>익명 — <q>'+esc(x.t)+'</q></p>';}).join('')+'</section>';} /* max: 미리보기 아래(좁은 칸)는 최신 1건만 */
@@ -2159,6 +2176,13 @@ function bind(){
     var nk=nowKey();render();if(nk&&nk!=='reg')goTask(nk);};});
   A.querySelectorAll('[data-prep]').forEach(function(x){x.onclick=openPrep;});
   A.querySelectorAll('[data-dm]').forEach(function(x){x.onclick=openDocs;});
+  /* 후기 넘기기(미리보기 아래) — 버튼·좌우 밀기 */
+  A.querySelectorAll('.rvl-car').forEach(function(box){var ps=box.querySelectorAll('.rvl-sl p'),lab=box.querySelector('.rvl-n'),n=ps.length;if(n<2)return;
+    function go(d){OPEN.rvi=(((OPEN.rvi||0)+d)%n+n)%n;ps.forEach(function(p,k){var on=k===OPEN.rvi;p.classList.toggle('on',on);if(on)p.removeAttribute('aria-hidden');else p.setAttribute('aria-hidden','true');});
+      if(lab)lab.textContent=(OPEN.rvi+1)+' / '+n;track('review_nav',{key:String(d)});}
+    box.querySelectorAll('[data-rv]').forEach(function(b){b.onclick=function(){go(+b.getAttribute('data-rv'));};});
+    var x0=null;box.addEventListener('touchstart',function(e){x0=e.touches[0].clientX;},{passive:true});
+    box.addEventListener('touchend',function(e){if(x0==null)return;var dx=e.changedTouches[0].clientX-x0;x0=null;if(Math.abs(dx)>40)go(dx<0?1:-1);});});
   A.querySelectorAll('[data-sg]').forEach(function(box){var i=box.getAttribute('data-sg'),v=box.getAttribute('data-v'),a=document.getElementById('pe-s'+i+'-addr');if(!a)return;
     var fill=box.querySelector('[data-sgfill]'),undo=box.querySelector('[data-sgundo]');
     fill.onclick=function(){if(a._orig==null)a._orig=a.value===v?'':a.value;a.value=v;box.classList.add('ok');undo.focus();track('seller_addr',{from:'party'});peRead();pvLive();};
