@@ -1287,13 +1287,13 @@ var CUR=1,VIEW=1,PAYV=false,FILLED=0,PREVDONE=null,LASTVIEW=0; /* FILLED: 방금
 function render(){
   var nk=nowKey(),pv=pvBody(reg());CUR=curStep(nk);VIEW=OPEN.ph||CUR;
   var html=homeCard()+'<div class="hgrid"><div class="stage">'+stageHtml(VIEW)
-    +'<p class="disc">세액·채권 금액은 각 기관 영수증 기준이며, 최종 확인은 관할 등기소에서 하세요.</p>'+(STEPS[VIEW-1].k==='poa'?reviewLine('rvl-main'):'')+'</div>' /* 후기는 결제를 고민하는 위임장 단계에서만 — 좁은 화면은 본문 아래 */
+    +'<p class="disc">세액·채권 금액은 각 기관 영수증 기준이며, 최종 확인은 관할 등기소에서 하세요.</p>'+(RV_STEP[STEPS[VIEW-1].k]?reviewLine('rvl-main'):'')+'</div>' /* 후기는 결제와 관련된 위임장·신청서 단계에서 — 좁은 화면은 본문 아래 */
     +'<aside class="pvp'+(OPEN.pvp?' open':'')+'" aria-label="문서 반영 미리보기">'
     +'<div class="pvp-bar"><b>문서 반영 미리보기</b><span>채운 칸 '+pv.ok+' · 남은 칸 '+pv.left+'</span><button type="button" data-pvp="1">보기</button></div>'
     +'<div class="pvp-c"><div class="pvp-h"><h2>문서 반영 미리보기</h2><span class="pvp-cn">채운 칸 <b>'+pv.ok+'</b> · 남은 칸 <b>'+pv.left+'</b></span><button type="button" class="pvp-x" data-pvp="0">닫기</button></div>'+pv.html
     +(GIFT?'':'<a class="sample" href="sample_wimi.png" target="_blank" rel="noopener">'+DZ_IC.replace('dz-ic','sample-ic')+'<span><b>결제 후 받는 위임장 견본</b><small>가상 인물로 채운 견본 · 눌러서 크게 보기</small></span></a>') /* 10/24 사용자: 링크로 줄이니 안 보인다 → 버튼 형태로 복귀 */
     +'<button type="button" class="pvp-reset" data-reset="1">입력 내용 모두 지우기</button>'
-    +'</div>'+(STEPS[VIEW-1].k==='poa'?reviewLine('rvl-side'):'')+'</aside></div>'; /* 넓은 화면(1081px~)은 미리보기 아래(2026-10-25) */
+    +'</div>'+(RV_STEP[STEPS[VIEW-1].k]?reviewLine('rvl-side'):'')+'</aside></div>'; /* 넓은 화면(1081px~)은 미리보기 아래(2026-10-25) */
   A.innerHTML=W(html);A.classList.remove('pre-hide');bind();motion();
 }
 /* 그린 뒤 움직임만 덧붙인다 — 단계를 바꿨을 때 화면 들어오기, 새로 끝난 단계 ✓, 방금 판독한 칸 차례로 밝히기 */
@@ -1557,6 +1557,8 @@ var PUB_REVIEWS=[ /* 최신순 */
 ];
 /* 미리보기 아래 후기(2026-10-25): 한 건씩 넘겨 본다(‹ 1 / n ›, 끝에서 처음으로). 자동으로 넘기지 않는다.
    모든 후기를 같은 칸에 겹쳐 두고 보이는 것만 바꿔, 넘길 때 높이가 바뀌지 않는다(가장 긴 후기 높이) */
+/* 후기를 보여 줄 단계(2026-10-25): 위임장(결제)·신청서(결제 이용권으로 받음) — 매매·증여 같은 키 */
+var RV_STEP={poa:1,app:1};
 function reviewCar(){var n=PUB_REVIEWS.length;if(!n)return '';var i=Math.min(OPEN.rvi||0,n-1);
   var avg=PUB_REVIEWS.reduce(function(a,r){return a+r.r;},0)/n;
   return '<section class="rvl rvl-side rvl-car" aria-label="실사용자 후기" aria-roledescription="carousel"><div class="rvl-hd"><h3>실사용자 후기 <span class="rvl-st">별점 '+avg.toFixed(1)+'</span> <small>결제 이용자 '+n+'건</small></h3>'
