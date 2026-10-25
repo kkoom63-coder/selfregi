@@ -80,7 +80,9 @@
         .then(function (r) { return r.json().catch(function () { return { ok: false }; }).then(function (j) { return { s: r.status, j: j }; }); })
         .then(function (x) {
           if ((x.j && x.j.ok) || x.s === 409) {
-            ls(DONE_KEY, p.token.slice(0, 24)); trk('review_submit', { key: String(rating) });
+            ls(DONE_KEY, p.token.slice(0, 24));
+            /* 409 = 이 주문으로 이미 남긴 후기(저장 안 됨). 예전엔 둘 다 review_submit으로 세어 GA 건수와 Firestore 건수가 달랐다(2026-10-25) */
+            trk(x.s === 409 ? 'review_dup' : 'review_submit', { key: String(rating) });
             f.innerHTML = '<div class="rv-done"><b>후기를 보내 주셔서 감사합니다.</b><span>등기소 접수까지 잘 마치시길 바랍니다.</span><button type="button" class="rv-send rv-ok">닫기</button></div>';
             f.querySelector('.rv-ok').onclick = close;
             slots('');

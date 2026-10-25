@@ -897,6 +897,8 @@ function summarize(res){
     blockers:(res.blockers||[]).map(function(b){return b.purpose;}),isTrust:!!res.isTrust,
     /* 소유권 제한 판정(2026-10-25, 리포트 D1): none일 때만 「없음」. 사진 판독(regfields)은 상태가 없어 hasBlocker로 정한다 */
     blk:res.blockerStatus||(res.hasBlocker?'check':(res._ocr?'ocr':'none')),blkW:res.blockerWords||[],
+    /* 제한 등기 상세(2026-10-25): 요약표 「등기목적」은 「약정/금지사항/환매특약」 같은 분류 이름이라 주요등기사항 문구까지 넘긴다(접수일·접수번호는 뺀다) */
+    blkD:(res.blockers||[]).map(function(b){return {rank:b.rank||'',purpose:b.purpose||'',rest:String(b.rest||'').replace(/^\s*\d{4}년\s*\d{1,2}월\s*\d{1,2}일\s*/,'').replace(/제\d{4,}호\s*/g,'').trim()};}),
     sepReg:!!(P.separateReg&&P.separateReg.value),ocr:!!res._ocr,
     road:P.roadAddress||'', /* D5: 판독한 도로명주소 → 서류 [도로명주소] 줄(propRoadAddr) */
     lienSt:res.lienStatus||'',lienN:(res.liens||[]).length}; /* D2: 요약표 3번을 못 읽었으면 개수 대신 「원본 확인」 */
@@ -968,13 +970,25 @@ var BLK_L='압류·가압류·가처분·경매·신탁 등';
 /* old: 이 수정 전에 읽어 저장한 결과 — 같은 오류로 「없음」이었을 수 있어 다시 점검하게 한다 */
 function blkSt(g){return g.blk||(g.blockers.length?'found':'old');}
 function blkOn(g){var b=blkSt(g);return b==='found'||b==='check'||b==='old';}
+/* 제한 등기 종류별 설명(2026-10-25 실제 등기부 확인: 요약표 2번 「약정/금지사항/환매특약」 = 갑구 1-1 민간임대주택 부기등기).
+   근거는 법제처 현행 조문으로 확인 — 민간임대주택법 제43조①②(임대의무기간 중 양도 제한·임대사업자 간 신고 양도), 같은 법 시행령 제4조의2(부기등기 문구),
+   주택법 제61조③⑤(입주예정자 동의 없는 양도 금지 부기등기, 부기등기 뒤 양수는 무효) */
+var BLK_GEN='제한 등기가 남아 있으면 이전이 막히거나 이전 뒤에도 효력이 남을 수 있습니다. 진행 전 법무사 상담을 권합니다.';
+function blkInfo(d){var t=d.purpose+' '+d.rest;
+  if(/민간임대주택/.test(t))return {n:'민간임대주택 부기등기',w:'임대의무기간에는 양도가 제한되고, 다른 임대사업자에게만 신고 후 양도할 수 있습니다(민간임대주택법 제43조). 매도인이 임대사업자 등록을 말소했는지, 양도 요건을 갖췄는지 진행 전 확인하세요.'};
+  if(/입주예정자/.test(t))return {n:'금지사항 부기등기(분양 주택)',w:'입주예정자 동의 없이 양도하거나 제한물권을 설정할 수 없다는 등기입니다. 부기등기 뒤에 넘겨받으면 효력이 없을 수 있어(주택법 제61조) 말소 여부를 먼저 확인하세요.'};
+  if(/환매/.test(d.rest)||/^환매/.test(d.purpose))return {n:'환매특약',w:'매도인 쪽이 정해진 기간 안에 되살 수 있는 권리가 등기되어 있습니다. 환매 기간과 말소 여부를 확인하고, 진행 전 법무사 상담을 권합니다.'};
+  if(/가등기/.test(t))return {n:d.purpose,w:'가등기에 따른 본등기가 되면 뒤에 한 소유권 이전보다 앞설 수 있습니다. 진행 전 법무사 상담을 권합니다.'};
+  if(/신탁/.test(d.purpose))return {n:d.purpose,w:'신탁된 부동산은 수탁자 동의 등 절차가 다릅니다. 진행 전 법무사 상담을 권합니다.'};
+  return {n:d.purpose,w:BLK_GEN+(d.rest?' 내용: '+d.rest.slice(0,60)+(d.rest.length>60?'…':''):'')};}
 function blkRow(g,row){var b=blkSt(g),W2=g.blkW||[];
-  if(b==='found')row(false,'확인 필요',BLK_L+' — '+esc(g.blockers.length?g.blockers.join('·'):W2.join('·')),'제한 등기가 남아 있으면 이전이 막히거나 이전 뒤에도 효력이 남을 수 있습니다. 진행 전 법무사 상담을 권합니다.');
+  if(b==='found'&&g.blkD&&g.blkD.length){g.blkD.forEach(function(d){var f=blkInfo(d);row(false,'확인 필요','소유권 제한 — '+esc(f.n)+(d.rank?' (갑구 '+esc(d.rank)+')':''),f.w);});return;}
+  if(b==='found')row(false,'확인 필요',BLK_L+' — '+esc(g.blockers.length?g.blockers.join('·'):W2.join('·')),BLK_GEN);
   else if(b==='check')row(false,'확인 필요',BLK_L+' — 자동으로 읽지 못했습니다',(W2.length?'등기부에 「'+W2.join('·')+'」 글자가 있습니다. ':'')+'원본 갑구와 「주요 등기사항 요약」 2번을 직접 확인해 주세요.');
   else if(b==='old')row(false,'확인 필요',BLK_L+' — 다시 점검이 필요합니다','점검 방식이 바뀌었습니다. 등기부를 다시 올리거나 원본 갑구와 「주요 등기사항 요약」 2번을 확인해 주세요.');
   else if(b==='ocr')row(true,'없음',BLK_L,'사진 판독이라 원본 갑구를 한 번 더 확인해 주세요.');
   else row(true,'없음',BLK_L,'');}
-function blkToast(g){var b=blkSt(g);return b==='found'?' · 압류·경매 등 소유권 제한이 있습니다 — 「등기부 자동 점검」을 확인하세요':(b==='check'?' · 소유권 제한을 자동으로 확인하지 못했습니다 — 원본 갑구를 확인하세요':'');}
+function blkToast(g){var b=blkSt(g);return b==='found'?' · 소유권 제한 등기가 있습니다 — 「등기부 자동 점검」을 확인하세요':(b==='check'?' · 소유권 제한을 자동으로 확인하지 못했습니다 — 원본 갑구를 확인하세요':'');}
 /* 올린 등기부를 읽어 나온 결과 — 문제 없음도 그대로 보여준다(점검했다는 사실이 정보다) */
 function regScan(){
   var g=S.hub.reg;

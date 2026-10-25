@@ -103,6 +103,11 @@ header{background:var(--bg)}
 @media (prefers-reduced-motion:reduce){.hero h1 em{animation:none}}
 .hero-what{font-size:14px;color:#334155;line-height:1.8;margin-bottom:10px;word-break:keep-all}
 .hero-basis{font-size:12px;color:var(--muted);margin-top:18px}
+.hero-basis{text-wrap:balance} /* 휴대폰에서 「별도)」만 한 줄로 떨어지지 않게 */
+.hero-basis b{font-weight:600;color:#334155}
+.hero-cost{display:inline-block;margin-top:12px;padding:10px 18px;border:1.5px solid var(--blue);border-radius:10px;background:#fff;color:var(--blue);font-size:14px;font-weight:700;text-decoration:none}
+.hero-cost:hover{background:#F0F9FF}
+.hero-cost:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
 /* 히어로 정리(10/24 A안): 꼬리표·같은 말 반복 삭제, 각주는 버튼 아래, 안심 문구·후기 링크는 작은 한 줄 */
 .hero .hero-concept{margin-bottom:28px}
 .hero-meta{margin:6px auto 0;font-size:14px;color:var(--muted)}
@@ -746,7 +751,9 @@ html.mnav-open,html.mnav-open body{overflow:hidden}
       <a href="#start" class="btn-primary">서류 작성 시작하기 →</a>
       <a href="#guide-band" class="btn-ghost">셀프등기가 처음이라면</a>
     </div>
-    <p class="hero-basis">※ 서울 중위가격 아파트 15억원 기준 법무사 수수료 (대한법무사협회 보수기준 별표 2026. 8. 20. 개정 기준, 법무사마다 상이)</p>
+    <p class="hero-basis">※ 서울 중위가격 아파트 15억원 기준 법무사 기본보수 상한 (대한법무사협회 보수기준 별표 2026. 8. 20. 개정 기준, 실비·부가세 별도)<br><b>실제 견적은 법무사마다 다르고 이보다 낮을 수 있습니다</b></p>
+    <!-- B2(2026-10-25): 「약 120만원」은 15억원·기본보수 상한 기준이라 내 매매가로 비교해 보게 한다 — 입력은 cost.html 매매가 칸에서(이동하면 바로 입력 상태) -->
+    <a class="hero-cost" href="cost.html#c1-h" data-cta="hero">내 매매가로 등기비용 비교하기 →</a>
     <p class="hero-meta">주민등록번호 등 민감정보는 저장하지 않습니다 · <a href="#price-rv">결제 이용자 후기 보기 →</a></p>
   </div>
 </header>
@@ -1692,5 +1699,6 @@ function demoLoop(el, run, finish){
   window.addEventListener('resize',function(){ if(window.innerWidth>768&&!p.hidden) close(); });
 })();
 </script>
+<script>(function(){var a=document.querySelector('.hero-cost');if(a)a.addEventListener('click',function(){try{if(typeof gtag==='function')gtag('event','hero_cost',{});}catch(x){}});})();</script>
 </body>
 </html>

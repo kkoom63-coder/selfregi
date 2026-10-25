@@ -96,7 +96,10 @@ nav{background:rgba(248,250,252,.86);backdrop-filter:saturate(140%) blur(8px);-w
 .presets button{min-height:40px;padding:6px 14px;border:1px solid var(--border);border-radius:8px;background:#fff;font-family:inherit;font-size:14px;font-weight:600;color:#334155;cursor:pointer}
 .presets button:hover,.presets button[aria-pressed="true"]{border-color:var(--blue);color:#fff;background:var(--blue)}
 .sum{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-top:18px}
+/* 900px 이하는 세로로 쌓는다 — 세 칸이 나란히 서면 768px 전후에서 금액·설명이 비좁아 두 줄로 넘어갔다(2026-10-25) */
+@media(max-width:900px){.sum{grid-template-columns:1fr}}
 .sum>div{background:#F8FAFC;border:1px solid var(--border);border-radius:10px;padding:14px 16px}
+@media(max-width:340px){.sum>div{padding:14px 12px}} /* 320px에서 보수 카드 설명이 1px 모자라 두 줄이 되던 것 */
 .sum dt{font-size:12px;font-weight:700;color:#475569}
 .sum dd{font-size:24px;font-weight:800;color:var(--navy);margin-top:2px;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
 .sum dd small{display:block;font-size:12px;font-weight:500;color:var(--muted);letter-spacing:0;margin-top:2px}
@@ -254,6 +257,8 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:40px;p
 .foot-biz{font-size:12px;color:#334155;font-weight:500;margin-bottom:10px;line-height:1.7;word-break:keep-all}.foot-biz a{color:var(--blue);text-decoration:underline}
 .foot-copy{font-size:12px;color:var(--muted);line-height:1.9;word-break:keep-all}
 @media(max-width:560px){.foot-links a,footer a{display:inline-block;min-height:24px;line-height:24px}}
+/* B2: 첫 화면에서 #c1-h로 넘어올 때 상단 메뉴에 제목이 가리지 않게 */
+.ct{scroll-margin-top:110px}
 </style>
 </head>
 <body>
@@ -296,7 +301,7 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:40px;p
       </div>
     </div>
     <dl class="sum" aria-live="polite">
-      <div><dt>법무사에게 맡기면 (보수)</dt><dd><span id="r-fee" class="js-fee">1,200,000원</span><small>기본보수 상한 · 실비·부가세 별도</small></dd></div>
+      <div><dt>법무사에게 맡기면 (보수)</dt><dd><span id="r-fee" class="js-fee">1,200,000원</span><small>실제 보수는 법무사 확인 · 실비·부가세 별도</small></dd></div>
       <div class="us"><dt>셀프등기24로 직접 하면 (이용료)</dt><dd>9,900원<small>부동산 1건 · Word 파일 받을 때 한 번</small></dd></div>
       <div class="diff"><dt>차이</dt><dd><span id="r-diff">약 1,190,100원</span><small>등기신청수수료는 양쪽 모두 냅니다</small></dd></div>
     </dl>
@@ -343,7 +348,7 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:40px;p
         </tbody>
       </table>
     </div>
-    <div class="note"><b>양식 직접 작성과 다른 점은 이용료 9,900원입니다.</b> 종이 신청서로 내면 누가 작성해도 등기신청수수료는 18,000원입니다. 매도인·매수인이 모두 2인 이상이면 신청서가 2건이 되어 수수료도 2건입니다.</div>
+    <div class="note"><b>양식 직접 작성과 차이는 이용료 9,900원뿐</b> · 종이 신청 수수료 18,000원은 같음(양쪽 2인 이상이면 2건)</div>
   </section>
 
   <!-- 04 이용료 9,900원으로 대신하는 일 -->
@@ -451,6 +456,9 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:40px;p
       if(window.gtag) gtag('event', 'cost_preset', { v: b.textContent });
     });
   });
+  /* B2(2026-10-25): 첫 화면 「내 매매가로 등기비용 비교하기」(#c1-h)로 오면 매매가 칸을 바로 입력 상태로 */
+  /* 문서 로드 뒤 브라우저가 #c1-h(제목)로 이동하며 초점을 빼앗으므로 load 뒤에 준다 */
+  if(location.hash==='#c1-h'){ var fz=function(){ try{ input.focus({preventScroll:true}); input.select(); }catch(e){} }; if(document.readyState==='complete') setTimeout(fz,0); else window.addEventListener('load',function(){ setTimeout(fz,0); }); }
   render();
   /* 비용 비교 → 서류 작성 이동 측정 (from=nav 상단 메뉴 / finish 하단 버튼) */
   document.addEventListener('click', function(e){
