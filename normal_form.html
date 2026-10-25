@@ -309,6 +309,9 @@ html.demo-on .demo{display:block}
 .rvl p{margin:0;font-size:14px;color:var(--sub)}
 .rvl q{color:var(--text);quotes:"“" "”"}
 .rvl-st{color:#B45309;font-weight:700}
+/* 후기 위치(2026-10-25): 넓은 화면은 미리보기 아래(rvl-side), 좁은 화면은 위임장 단계 본문 아래(rvl-main) */
+.rvl-side{display:none}
+@media (min-width:1081px){.rvl-main{display:none}.rvl-side{display:block;margin-top:10px;box-shadow:var(--shadow)}.rvl-side p+p{margin-top:8px;padding-top:8px;border-top:1px solid var(--line)}}
 .sg-box{background:var(--info-bg);border:1px solid var(--info-bd);color:var(--info-tx);border-radius:10px;padding:10px 12px;margin:8px 0 0}
 .sg-box p{margin:0;font-size:14px}
 .sg-box b{font-weight:700}
@@ -1274,13 +1277,13 @@ var CUR=1,VIEW=1,PAYV=false,FILLED=0,PREVDONE=null,LASTVIEW=0; /* FILLED: 방금
 function render(){
   var nk=nowKey(),pv=pvBody(reg());CUR=curStep(nk);VIEW=OPEN.ph||CUR;
   var html=homeCard()+'<div class="hgrid"><div class="stage">'+stageHtml(VIEW)
-    +'<p class="disc">세액·채권 금액은 각 기관 영수증 기준이며, 최종 확인은 관할 등기소에서 하세요.</p>'+(STEPS[VIEW-1].k==='poa'?reviewLine():'')+'</div>' /* 후기는 결제를 고민하는 위임장 단계에서만 */
+    +'<p class="disc">세액·채권 금액은 각 기관 영수증 기준이며, 최종 확인은 관할 등기소에서 하세요.</p>'+(STEPS[VIEW-1].k==='poa'?reviewLine('rvl-main'):'')+'</div>' /* 후기는 결제를 고민하는 위임장 단계에서만 — 좁은 화면은 본문 아래 */
     +'<aside class="pvp'+(OPEN.pvp?' open':'')+'" aria-label="문서 반영 미리보기">'
     +'<div class="pvp-bar"><b>문서 반영 미리보기</b><span>채운 칸 '+pv.ok+' · 남은 칸 '+pv.left+'</span><button type="button" data-pvp="1">보기</button></div>'
     +'<div class="pvp-c"><div class="pvp-h"><h2>문서 반영 미리보기</h2><span class="pvp-cn">채운 칸 <b>'+pv.ok+'</b> · 남은 칸 <b>'+pv.left+'</b></span><button type="button" class="pvp-x" data-pvp="0">닫기</button></div>'+pv.html
     +(GIFT?'':'<a class="sample" href="sample_wimi.png" target="_blank" rel="noopener">'+DZ_IC.replace('dz-ic','sample-ic')+'<span><b>결제 후 받는 위임장 견본</b><small>가상 인물로 채운 견본 · 눌러서 크게 보기</small></span></a>') /* 10/24 사용자: 링크로 줄이니 안 보인다 → 버튼 형태로 복귀 */
     +'<button type="button" class="pvp-reset" data-reset="1">입력 내용 모두 지우기</button>'
-    +'</div></aside></div>';
+    +'</div>'+(STEPS[VIEW-1].k==='poa'?reviewLine('rvl-side',1):'')+'</aside></div>'; /* 넓은 화면(1081px~)은 미리보기 아래(2026-10-25) */
   A.innerHTML=W(html);A.classList.remove('pre-hide');bind();motion();
 }
 /* 그린 뒤 움직임만 덧붙인다 — 단계를 바꿨을 때 화면 들어오기, 새로 끝난 단계 ✓, 방금 판독한 칸 차례로 밝히기 */
@@ -1538,13 +1541,14 @@ if(GIFT)PAYTX={
   efee:'인터넷등기소에서 납부합니다 · 서면 신청 18,000원.',
   wetax:'검인받은 증여계약서로 위택스에서 취득세(무상취득)를 신고·납부합니다. 등기에는 <b>납부확인서</b>를 씁니다.'
 };
-var PUB_REVIEWS=[
+var PUB_REVIEWS=[ /* 최신순 */
+  {r:4,t:'시험용 등기부 PDF로 사용하고 면적·대지권 비율·관할 등기소까지 자동으로 채워지는 것 확인한 뒤 진행했어요. 채권 계산부터 제출 순서 체크리스트까지 7단계로 안내돼서 처음인데도 어렵지 않았어요.'}, /* SR20261024231444-LWL9Q5 · 2026.10 · publish:true (QR 문의 고객, 10/25 21:12 작성) */
   {r:5,t:'셀프등기 처음 해보는데 자동으로 작성해주고, 설명도 자세히 되어 있어서 서류 작성이 어렵지 않았습니다. 덕분에 법무사 비용 많이 절감했고, 주위에도 알려줄 생각입니다.'} /* SR20261010095839-LBZ2PD · 2026.10 · publish:true */
 ];
-function reviewLine(){var n=PUB_REVIEWS.length;if(!n)return '';
+function reviewLine(cls,max){var n=PUB_REVIEWS.length;if(!n)return '';
   var avg=PUB_REVIEWS.reduce(function(a,r){return a+r.r;},0)/n,r=PUB_REVIEWS[0];
-  return '<section class="rvl" aria-label="실사용자 후기"><h3>실사용자 후기 <span class="rvl-st">별점 '+avg.toFixed(1)+'</span> <small>결제 이용자 '+n+'건</small></h3>'
-    +PUB_REVIEWS.map(function(x){return '<p>익명 — <q>'+esc(x.t)+'</q></p>';}).join('')+'</section>';}
+  return '<section class="rvl '+(cls||'')+'" aria-label="실사용자 후기"><h3>실사용자 후기 <span class="rvl-st">별점 '+avg.toFixed(1)+'</span> <small>결제 이용자 '+n+'건</small></h3>'
+    +PUB_REVIEWS.slice(0,max||n).map(function(x){return '<p>익명 — <q>'+esc(x.t)+'</q></p>';}).join('')+'</section>';} /* max: 미리보기 아래(좁은 칸)는 최신 1건만 */
 function shotN(key){var s=shotOf(key);return s?s.steps.length:0;}
 function shotBtn(k,primary){var key=T[k].shot;if(!shotN(key))return '';
   return '<button type="button" class="btn'+(primary?'':' line')+'" data-shot="'+key+'">'+(SHOT_LB[k]||'화면 가이드 보기')+'</button>';}
