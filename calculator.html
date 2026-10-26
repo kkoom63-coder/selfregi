@@ -390,10 +390,15 @@ html.mnav-open,html.mnav-open body{overflow:hidden}
 .pl-dl{margin-top:8px;background:#FEF3C7;border-radius:10px;padding:10px 12px;font-size:14px;color:#78350F}
 .pl-bar{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
 .pl-bar button{min-height:44px;border:1.5px solid var(--border);border-radius:10px;background:#fff;font-family:inherit;font-size:14px;font-weight:700;color:var(--navy);cursor:pointer}
-.pl-fee{margin:14px 0 0;padding-top:12px;border-top:1px solid var(--border);font-size:14px;color:#334155}
+.lw[hidden]{display:none}.lw{margin:12px 0 0;padding:14px 16px;border:1px solid var(--border);border-radius:12px;background:#fff}
+.lw-t{margin:0;font-size:16px;font-weight:600;color:#0F172A}.lw-t b{color:var(--blue)}
+.lw-b{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.lw-b a{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 16px;border-radius:8px;font-size:14px;font-weight:700;text-decoration:none;white-space:nowrap}
+.lw-g{border:1px solid var(--border);color:#0F172A;background:#fff}.lw-g:hover{border-color:var(--blue);color:var(--blue)}
+.lw-go{background:var(--blue);color:#fff}.lw-go:hover{background:#075985}
+@media(max-width:560px){.lw-b a{flex:1 1 100%}}
 .pl-fn a{color:var(--blue);font-weight:700}
 .pl-fn{margin:6px 0 0;font-size:12px;color:var(--muted);line-height:1.6}
-.calc-self{margin:12px 0 0;font-size:14px;color:var(--muted,#64748B)}.calc-self a{color:var(--blue,#0369A1);font-weight:700;text-decoration:none;white-space:nowrap}.calc-self a:hover{text-decoration:underline}
 </style>
 </head>
 <body>
@@ -544,26 +549,22 @@ html.mnav-open,html.mnav-open body{overflow:hidden}
       </div>
       <div class="bond-box" id="r-bond" hidden></div>
       <div class="ntc warn" id="r-warn" style="display:none"></div>
-      <!-- 한 줄 안내(10/24) — 계산기는 서류 작성 전환 경로가 아니다(이용 목적이 다름). 이미 계약한 집을 계산하는 사람에게만 「직접 등기도 된다」를 알린다 -->
-      <p class="calc-self">잔금 후 소유권이전등기도 직접 할 수 있습니다 · <a class="calc-self-a" href="guide.html">셀프등기 순서 보기 →</a></p>
-
-      <div class="ntc warn" style="margin-top:12px">
-        <strong>납부 시점: 실질 기한은 등기 접수일입니다</strong><br>
-        지방세법상 신고·납부 기한은 취득일부터 60일이지만, 소유권이전등기 신청서에는 취득세 납부확인서를 첨부합니다.
-        60일이 남아 있어도 <b>등기를 접수하는 날까지 납부가 끝나 있어야</b> 합니다.
-        자세한 순서는 <a href="guide.html#flow" style="color:#92400e;font-weight:700">셀프등기 가이드</a>에서 확인하세요.
+      <!-- 결과 바로 아래 — 법무사 보수와 셀프등기 두 갈래(사용자 10/26). 납부 시점 안내는 할 일의 기한 줄로 옮김 -->
+      <div class="lw" hidden>
+        <p class="lw-t">법무사에게 소유권이전등기를 맡기면 세금과 별도로 보수 약 <b id="r-lawyer-fee">0원</b>이 듭니다</p>
+        <div class="lw-b"><a href="guide.html" class="lw-g calc-self-a">셀프등기 가이드 →</a><a href="normal_form.html" class="lw-go">셀프등기 서류 자동완성 →</a></div>
+        <p class="pl-fn">입력과 단계 안내는 무료 · 위임장·신청서 Word 파일은 9,900원 · * 법무사 보수: 대한법무사협회 보수기준 별표(2026. 8. 20. 개정) 기본보수 상한 · 실비·부가세 별도 · 법무사마다 다름 <a href="cost.html">비용 비교 →</a></p>
       </div>
 
-      <!-- 잔금일 기준 할 일 달력(2026-10-17): 단계는 스크립트가 그린다(#pl-list) -->
+      <!-- 잔금일까지 할 일(2026-10-17, 10/26 제목 변경): 단계는 스크립트가 그린다(#pl-list) -->
       <div class="pl" id="plan">
-        <div class="pl-h">잔금일 기준 할 일 달력</div>
+        <div class="pl-h">잔금일까지 할 일</div>
         <p class="pl-sub">잔금일을 넣으면 은행·매도인·등기소 할 일이 날짜로 나옵니다.</p>
         <label class="pl-in"><span>잔금일</span><input type="date" id="pl-date"></label>
         <ol class="pl-list" id="pl-list"></ol>
         <div class="pl-dl" id="pl-dl" hidden></div>
         <div class="pl-bar" id="pl-bar" hidden><button type="button" id="pl-share">휴대폰에 보관</button><button type="button" id="pl-ics">캘린더에 추가</button></div>
-        <p class="pl-fee">법무사에게 맡기면 세금과 별도로 보수 약 <b id="r-lawyer-fee">0원</b>이 듭니다.<br><a href="normal_form.html" class="pl-go">셀프로 서류 자동완성 · 9,900원 →</a></p>
-        <p class="pl-fn">* 법무사 보수: 대한법무사협회 보수기준 별표(2026. 8. 20. 개정) 기본보수 상한 · 실비·부가세 별도 · 법무사마다 다름. 날짜는 일반적인 순서이며 최종 확인은 관할 등기소. <a href="cost.html">비용 비교 →</a></p>
+        <p class="pl-fn">* 날짜는 일반적인 순서이며 최종 확인은 관할 등기소에서 하세요.</p>
       </div>
     </div>
   </div>
@@ -851,6 +852,7 @@ function calc(){
   // 법무사 비용 동적 바인딩
   const lawyerFeeFmt = (lawyerFee / 10000).toLocaleString('ko-KR') + '만 원';
   document.getElementById('r-lawyer-fee').textContent = lawyerFeeFmt;
+  var lwBox = document.querySelector('.lw'); if (lwBox) lwBox.hidden = !/[1-9]/.test(lawyerFeeFmt); /* 금액 넣기 전 「0원」 안 보이게 */
 
   const warn = document.getElementById('r-warn');
   if(warnMsg){ warn.textContent=warnMsg; warn.style.display='block'; }
@@ -926,7 +928,7 @@ window.SR=window.SR||(function(){
   },true);
   document.addEventListener('click',function(e){
     var a=e.target&&e.target.closest&&e.target.closest('a[href^="normal_form.html"],a.calc-self-a');
-    if(a) SR.track('calc_cta',{from:a.classList.contains('calc-self-a')?'self':(a.closest('.pl')?'plan':(a.classList.contains('cta-btn')?'result':'nav'))});
+    if(a) SR.track('calc_cta',{from:a.closest('.lw')?(a.classList.contains('calc-self-a')?'lw_guide':'lw_form'):(a.closest('.pl')?'plan':(a.classList.contains('cta-btn')?'result':'nav'))});
   },true);
 })();
 </script>
@@ -1012,9 +1014,8 @@ window.SR=window.SR||(function(){
   var STEPS=[
     [-30,'D-30','은행에 셀프 이전등기 되는지 묻기','잔금대출이 있으면 은행이 지정 법무사에게 이전등기까지 맡기도록 하는 경우가 많습니다. 대출이 없으면 건너뜁니다.'],
     [-14,'D-14','매도인에게 서류 부탁하기','부동산 매도용 인감증명서 — 매수인 이름·주소가 정확히 들어가야 합니다.'],
-    [-7,'D-7','내 서류 준비','주민등록초본(주소 전체 이력)·건축물대장 등. 위임장·신청서는 아래 자동완성으로.'],
-    [0,'잔금일','잔금 · 매도인 서류 받기','등기필증·인감증명서를 받고 위임장에 매도인 인감을 받습니다.'],
-    [1,'다음 평일','취득세 내고 등기소 한 번','위택스 취득세 등{T} → 국민주택채권·수수료 → 관할 등기소 접수.']];
+    [-7,'D-7','내 서류 준비','주민등록초본(주소 전체 이력)·건축물대장 등. 위임장·신청서는 셀프등기 서류 자동완성으로.'],
+    [0,'잔금일','잔금 · 취득세 납부 · 등기소 접수','매도인 서류(등기필증·인감증명서)와 위임장 인감을 받고, 위택스 취득세 등{T} → 국민주택채권·수수료 → 관할 등기소 접수까지 같은 날 마칩니다.']]; /* 사용자 10/26: 셀프등기는 잔금일 당일 접수가 일반적(다음 평일 단계 삭제) */
   function base(){return /^\d{4}-\d{2}-\d{2}$/.test(inp.value)?new Date(inp.value+'T00:00:00'):null;}
   function add(b,n){var d=new Date(b);d.setDate(d.getDate()+n);return d;}
   function weekday(d){while(d.getDay()===0||d.getDay()===6)d.setDate(d.getDate()+1);return d;}
@@ -1030,7 +1031,7 @@ window.SR=window.SR||(function(){
     }).join('');
     var dl=document.getElementById('pl-dl');
     dl.hidden=document.getElementById('pl-bar').hidden=list.hidden=!b; /* 잔금일 넣기 전엔 접어 둔다(모바일 길이) */
-    if(b)dl.innerHTML='신고·등기 기한: 잔금일부터 60일 — <b>'+md(add(b,60))+'</b>까지';
+    if(b)dl.innerHTML='신고·등기 기한 잔금일부터 60일(<b>'+md(add(b,60))+'</b>) · 취득세는 등기 접수 전까지 납부(신청서에 납부확인서 첨부)';
   }
   function track(n,d){try{window.SR&&SR.track(n,d||{});}catch(e){}}
   function link(){return location.origin+location.pathname+'?bal='+inp.value+'#plan';}
@@ -1039,7 +1040,7 @@ window.SR=window.SR||(function(){
   document.addEventListener('input',function(e){if(e.target!==inp)setTimeout(render,0);});
   document.getElementById('pl-share').addEventListener('click',function(){
     var b=base(),btn=this;if(!b)return;track('calc_plan_save',{mode:'share'});
-    if(navigator.share){navigator.share({title:'잔금일 기준 할 일 달력',text:'잔금일 '+md(b)+' 기준 셀프등기 할 일',url:link()}).catch(function(){});return;}
+    if(navigator.share){navigator.share({title:'잔금일까지 할 일',text:'잔금일 '+md(b)+' 기준 셀프등기 할 일',url:link()}).catch(function(){});return;}
     function done(){btn.textContent='링크 복사됨';setTimeout(function(){btn.textContent='휴대폰에 보관';},2000);}
     try{navigator.clipboard.writeText(link()).then(done,function(){prompt('이 링크를 보관하세요',link());});}catch(e){prompt('이 링크를 보관하세요',link());}
   });
