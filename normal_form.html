@@ -158,7 +158,7 @@ button{font-family:inherit;cursor:pointer}
 .pay-proof{margin:10px 0 0;padding-top:10px;border-top:1px solid var(--border)}
 .pay-proof p{margin:0 0 4px;font-size:14px;color:var(--sub)}
 .pay-proof s{color:var(--muted)}.pay-proof .pp-n{color:var(--blue);font-weight:700}
-.pay-proof .pp-st{color:#B45309;font-weight:700}.pay-proof q{color:var(--text);quotes:"“" "”";white-space:nowrap}.nw{white-space:nowrap}
+.nw{white-space:nowrap}
 .pay-re{font-weight:600;color:var(--sub)}
 .svc{margin-top:10px;border:1px solid var(--border);border-radius:10px;padding:0 12px}
 .svc summary{cursor:pointer;padding:10px 0;font-size:14px;font-weight:700;color:var(--sub)}
@@ -1609,19 +1609,15 @@ function wimiPv(){var p=prop();if(!has(p.jibun))return '';
   function row(k,v){return '<div class="wpv-r"><span>'+k+'</span><span>'+esc(v||'')+'</span></div>';}
   var top='<b>1동의 건물의 표시</b>'+(has(p.uid)?' [고유번호 : '+esc(p.uid)+']':'')+'<br>'+esc(p.jibun+(has(p.apt)?' '+p.apt:'')+(dn?' 제'+dn:''))
     +'<br><b>전유부분의 건물의 표시</b><br>건물의 번호 '+esc((has(p.floor)?'제'+p.floor+'층 ':'')+(has(p.ho)?'제'+p.ho+'호':''))
-    +(has(p.struct)||has(p.area)?'<br>구조 '+esc(p.struct||'')+(has(p.area)?' 면적 '+esc(p.area)+'㎡':''):'')
-    +(has(p.total)&&has(p.unit)?'<br><b>대지권의 비율</b> '+esc(p.total+' 분의 '+p.unit):'');
-  var rest=row('등기원인과 그 연월일',c?c[0]+'년 '+(+c[1])+'월 '+(+c[2])+'일 매매':'')+row('등기의 목적','소유권이전')+row('이전할 지분',shareTxt())
+    +(has(p.struct)||has(p.area)?'<br>구조 '+esc(p.struct||'')+(has(p.area)?' 면적 '+esc(p.area)+'㎡':''):''); /* 대지권 비율은 이용자가 잘 모르는 값이라 흐린 쪽으로(사용자 10/26) */
+  var rest=(has(p.total)&&has(p.unit)?row('대지권의 비율',p.total+' 분의 '+p.unit):'')+row('등기원인과 그 연월일',c?c[0]+'년 '+(+c[1])+'월 '+(+c[2])+'일 매매':'')+row('등기의 목적','소유권이전')+row('이전할 지분',shareTxt())
     +row('대리인',[ag.name,ag.addr].filter(has).join(' '))+row('위임인(매도인)',P.s.map(function(q){return [q.name,q.addr].filter(has).join(' ');}).join(' / '))
     +row('위임인(매수인)',P.b.map(function(q){return [q.name,q.addr].filter(has).join(' ');}).join(' / '));
   return '<div class="wpv" role="img" aria-label="내 정보로 채운 위임장 미리보기 — 부동산의 표시만 보이고 나머지는 결제 후 Word 파일로 받습니다"><span class="wpv-tag">내 정보로 채운 위임장</span>'
     +'<div class="wpv-doc" aria-hidden="true"><div class="wpv-h">위임장</div><div class="wpv-top"><div class="wpv-l">부동산의 표시</div><div class="wpv-sec">'+top+'</div></div>'
     +'<div class="wpv-cut"></div><div class="wpv-blur">'+rest+'</div></div><div class="wpv-fade">이하 결제 후 Word 원본으로 받습니다</div></div>';}
-/* 결제 카드 근거 — 법무사 보수 비교(첫 화면과 같은 기준) + 실제 결제 이용자 후기 한 줄(원문에 있는 구절일 때만) */
-var RV_SHORT='처음인데도 어렵지 않았어요';
-function payProof(){var n=PUB_REVIEWS.length,avg=n?PUB_REVIEWS.reduce(function(a,r){return a+r.r;},0)/n:0,hasQ=PUB_REVIEWS.some(function(r){return r.t.indexOf(RV_SHORT)>-1;});
-  return '<div class="pay-proof"><p>법무사 기본보수 상한 <s>약 120만원</s> → <span class="pp-n">9,900원</span></p>'
-    +(n?'<p><span class="pp-st">★ '+avg.toFixed(1)+'</span> 결제 이용자 '+n+'건'+(hasQ?' · <q>'+RV_SHORT+'</q>':'')+'</p>':'')+'</div>';}
+/* 결제 카드 근거 — 법무사 보수 비교(첫 화면과 같은 기준). 후기는 같은 단계의 후기 카드가 맡는다(중복 금지, 사용자 10/26) */
+function payProof(){return '<div class="pay-proof"><p>법무사 기본보수 상한 <s>약 120만원</s> → <span class="pp-n">9,900원</span></p></div>';}
 function panel(k,d){
   switch(k){
   case 'docs':
