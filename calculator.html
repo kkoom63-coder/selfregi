@@ -381,9 +381,9 @@ html.mnav-open,html.mnav-open body{overflow:hidden}
 .pl-in span{font-size:14px;font-weight:700;color:var(--navy);white-space:nowrap}
 .pl-in input{flex:1;min-width:0;min-height:44px;border:1.5px solid var(--blue);border-radius:10px;padding:0 12px;font-family:inherit;font-size:16px;font-weight:600;color:var(--navy);background:#fff}
 .pl-list{list-style:none;margin:0;padding:0}
-.pl-list li{display:flex;gap:12px;padding:12px 0;border-top:1px solid #F1F5F9}
+.pl-list li{display:flex;gap:12px;padding:12px;border-top:1px solid #F1F5F9}
 .pl-list li:first-child{border-top:0}
-.pl-list li.pl-key{margin:4px 0 6px;padding:12px 14px;border:1px solid #FED7AA;border-radius:10px;background:#FFF7ED}.pl-list li.pl-key .pl-t>b{color:#9A3412}.pl-list li.pl-key+li{border-top:0}
+.pl-list li.pl-key{margin:4px 0 6px;padding:11px;border:1px solid #FED7AA;border-radius:10px;background:#FFF7ED}.pl-list li.pl-key .pl-t>b{color:#9A3412}.pl-list li.pl-key+li{border-top:0}
 .pl-d{flex:none;width:68px}
 .pl-d b{display:block;font-size:14px;color:var(--blue)}.pl-d small{font-size:12px;color:var(--muted)}
 .pl-t{min-width:0}.pl-t b{display:block;font-size:16px;color:var(--navy)}.pl-t small{display:block;font-size:14px;color:#475569;margin-top:2px;line-height:1.55}
@@ -1032,7 +1032,7 @@ window.SR=window.SR||(function(){
     }).join('');
     var dl=document.getElementById('pl-dl');
     dl.hidden=document.getElementById('pl-bar').hidden=list.hidden=!b; /* 잔금일 넣기 전엔 접어 둔다(모바일 길이) */
-    if(b)dl.innerHTML='신고·등기 기한 잔금일부터 60일(<b>'+md(add(b,60))+'</b>) · 취득세는 등기 접수 전까지 납부(신청서에 납부확인서 첨부)';
+    if(b)dl.innerHTML='신고·등기 기한은 잔금일부터 60일(<b>'+md(add(b,60))+'</b>)이지만, 등기 신청서에 취득세 납부확인서를 첨부하므로 등기 접수 전까지 납부해야 합니다';
   }
   function track(n,d){try{window.SR&&SR.track(n,d||{});}catch(e){}}
   function link(){return location.origin+location.pathname+'?bal='+inp.value+'#plan';}
