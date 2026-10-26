@@ -1642,7 +1642,7 @@ function panel(k,d){
         +(ru?'<p class="sm">재발급 링크: <a href="'+esc(ru)+'" style="word-break:break-all">'+esc(ru.replace(/^https?:\/\//,'').slice(0,40))+'…</a> — 다른 기기에서도 다시 받을 수 있습니다.</p>':'')+'<button type="button" class="btn line" data-wpv="1">내가 입력한 값으로 위임장 미리보기</button>';} /* 날인 방법 안내는 뻔해서 빼고 입력값 확인으로(사용자 10/26) */
     return wimiPv()+'<div class="pay-p"><b>9,900원</b><span>부동산 1건 · 부가세 포함</span></div>'
       +'<p class="pay-d">위임장 · 소유권이전등기신청서 · 매매목록(해당 시)</p>'
-      +'<p class="pay-re">결제 후 <b>'+(S.hub.balance?'잔금일 다음 14일까지':'30일 동안')+'</b> 고쳐서 몇 번이든 다시 받을 수 있습니다</p>' /* 사용자 10/26: 재발급 기간을 카드 안에서 강조(법무사 보수 비교 줄은 빼기) */
+      +'<p class="pay-re"><b>결제일부터 30일 또는 잔금일부터 14일 중 늦은 날까지</b> 고쳐서 몇 번이든 다시 받을 수 있습니다</p>' /* 서비스 제공 방식 「재발급」·약관 제5조와 같은 문구(사용자 10/26) */ /* 사용자 10/26: 재발급 기간을 카드 안에서 강조(법무사 보수 비교 줄은 빼기) */
       +'<button type="button" class="btn" data-pay="1">9,900원 결제하고 서류 받기</button>'
       +'<p class="sm">토스페이 · 네이버페이</p>'
       +'<details class="svc"><summary>서비스 제공 방식과 시점</summary><dl>'
