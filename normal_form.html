@@ -142,6 +142,24 @@ button{font-family:inherit;cursor:pointer}
 .pay-p b{font-size:24px;font-weight:800;color:var(--navy);font-variant-numeric:tabular-nums}
 .pay-p span{font-size:14px;color:var(--muted)}
 .panel .pay-d{font-size:14px;color:var(--sub2);margin:0 0 10px}
+/* 결제 카드 — 내 정보로 채운 위임장 미리보기(B안: 부동산 표시만 선명, 아래는 흐림 · 사용자 10/26) */
+.wpv{position:relative;margin:0 0 14px;border:1px solid var(--border);border-radius:10px;overflow:hidden;background:#fff}
+.wpv-tag{position:absolute;left:10px;top:10px;z-index:2;font-size:12px;font-weight:700;color:#fff;background:var(--navy);border-radius:999px;padding:2px 10px}
+.wpv-doc{padding:40px 16px 0;font-size:12px;line-height:1.7;color:#1E293B}
+.wpv-h{border:1px solid #475569;border-bottom:0;padding:6px 0;text-align:center;font-size:16px;font-weight:700;letter-spacing:.8em;text-indent:.8em}
+.wpv-top{display:grid;grid-template-columns:26px minmax(0,1fr);border:1px solid #475569}
+.wpv-l{display:flex;align-items:center;justify-content:center;border-right:1px solid #475569;writing-mode:vertical-rl;letter-spacing:.3em;font-size:12px}
+.wpv-sec{padding:6px 10px;overflow-wrap:anywhere}.wpv-sec b{font-weight:700}
+.wpv-blur{max-height:112px;overflow:hidden;filter:blur(3.5px);user-select:none;-webkit-user-select:none}
+.wpv-r{display:grid;grid-template-columns:120px minmax(0,1fr);border:1px solid #475569;border-top:0}
+.wpv-r>span{padding:5px 10px}.wpv-r>span:first-child{border-right:1px solid #475569;text-align:center}
+.wpv-fade{position:absolute;left:0;right:0;bottom:0;z-index:2;padding:40px 10px 10px;text-align:center;font-size:12px;font-weight:700;color:var(--blue);background:linear-gradient(rgba(255,255,255,0),#fff 55%)}
+.wpv-cut{border-top:2px dashed var(--blue);margin-top:-1px}
+.pay-proof{margin:10px 0 0;padding-top:10px;border-top:1px solid var(--border)}
+.pay-proof p{margin:0 0 4px;font-size:14px;color:var(--sub)}
+.pay-proof s{color:var(--muted)}.pay-proof .pp-n{color:var(--blue);font-weight:700}
+.pay-proof .pp-st{color:#B45309;font-weight:700}.pay-proof q{color:var(--text);quotes:"“" "”";white-space:nowrap}.nw{white-space:nowrap}
+.pay-re{font-weight:600;color:var(--sub)}
 .svc{margin-top:10px;border:1px solid var(--border);border-radius:10px;padding:0 12px}
 .svc summary{cursor:pointer;padding:10px 0;font-size:14px;font-weight:700;color:var(--sub)}
 .svc dl{display:grid;grid-template-columns:64px minmax(0,1fr);gap:6px 10px;margin:0 0 10px;font-size:12px;color:var(--sub)}
@@ -1584,6 +1602,26 @@ function fieldsHtml(k){
 }
 function ckList(list,store,cls){var c=S.hub[store]||{};
   return list.map(function(x){return '<label class="ck'+(c[x.id]?' on':'')+(cls?' '+cls:'')+'"><input type="checkbox" id="ck-'+x.id+'" data-ck="'+x.id+'" data-store="'+store+'"'+(c[x.id]?' checked':'')+'><span>'+x.t+(x.s?'<small>'+esc(x.s)+'</small>':'')+'</span></label>';}).join('');}
+/* 결제 전 위임장 미리보기 — 문서 반영 미리보기와 같은 값으로 위쪽(부동산의 표시)만 선명하게, 나머지는 흐리게(결제 후 Word 원본) */
+function wimiPv(){var p=prop();if(!has(p.jibun))return '';
+  var P=party(),cd=causeIso(),c=cd?cd.split('-'):null,ag=P.b[Math.min(+P.agent||0,P.b.length-1)]||{};
+  var dn=has(p.dong)?(/동$/.test(p.dong)?p.dong:p.dong+'동'):'';
+  function row(k,v){return '<div class="wpv-r"><span>'+k+'</span><span>'+esc(v||'')+'</span></div>';}
+  var top='<b>1동의 건물의 표시</b>'+(has(p.uid)?' [고유번호 : '+esc(p.uid)+']':'')+'<br>'+esc(p.jibun+(has(p.apt)?' '+p.apt:'')+(dn?' 제'+dn:''))
+    +'<br><b>전유부분의 건물의 표시</b><br>건물의 번호 '+esc((has(p.floor)?'제'+p.floor+'층 ':'')+(has(p.ho)?'제'+p.ho+'호':''))
+    +(has(p.struct)||has(p.area)?'<br>구조 '+esc(p.struct||'')+(has(p.area)?' 면적 '+esc(p.area)+'㎡':''):'')
+    +(has(p.total)&&has(p.unit)?'<br><b>대지권의 비율</b> '+esc(p.total+' 분의 '+p.unit):'');
+  var rest=row('등기원인과 그 연월일',c?c[0]+'년 '+(+c[1])+'월 '+(+c[2])+'일 매매':'')+row('등기의 목적','소유권이전')+row('이전할 지분',shareTxt())
+    +row('대리인',[ag.name,ag.addr].filter(has).join(' '))+row('위임인(매도인)',P.s.map(function(q){return [q.name,q.addr].filter(has).join(' ');}).join(' / '))
+    +row('위임인(매수인)',P.b.map(function(q){return [q.name,q.addr].filter(has).join(' ');}).join(' / '));
+  return '<div class="wpv" role="img" aria-label="내 정보로 채운 위임장 미리보기 — 부동산의 표시만 보이고 나머지는 결제 후 Word 파일로 받습니다"><span class="wpv-tag">내 정보로 채운 위임장</span>'
+    +'<div class="wpv-doc" aria-hidden="true"><div class="wpv-h">위임장</div><div class="wpv-top"><div class="wpv-l">부동산의 표시</div><div class="wpv-sec">'+top+'</div></div>'
+    +'<div class="wpv-cut"></div><div class="wpv-blur">'+rest+'</div></div><div class="wpv-fade">이하 결제 후 Word 원본으로 받습니다</div></div>';}
+/* 결제 카드 근거 — 법무사 보수 비교(첫 화면과 같은 기준) + 실제 결제 이용자 후기 한 줄(원문에 있는 구절일 때만) */
+var RV_SHORT='처음인데도 어렵지 않았어요';
+function payProof(){var n=PUB_REVIEWS.length,avg=n?PUB_REVIEWS.reduce(function(a,r){return a+r.r;},0)/n:0,hasQ=PUB_REVIEWS.some(function(r){return r.t.indexOf(RV_SHORT)>-1;});
+  return '<div class="pay-proof"><p>법무사 기본보수 상한 <s>약 120만원</s> → <span class="pp-n">9,900원</span></p>'
+    +(n?'<p><span class="pp-st">★ '+avg.toFixed(1)+'</span> 결제 이용자 '+n+'건'+(hasQ?' · <q>'+RV_SHORT+'</q>':'')+'</p>':'')+'</div>';}
 function panel(k,d){
   switch(k){
   case 'docs':
@@ -1609,10 +1647,12 @@ function panel(k,d){
     if(d){var ru=window.SRPay&&!demoOn()?SRPay.reissueUrl():'';
       return '<p>위임장을 인쇄해 매도인 인감도장으로 날인받고, 2장 이상이면 간인합니다.</p><button type="button" class="btn" data-dl="wimi">위임장 Word 파일 다운로드</button>'
         +(ru?'<p class="sm">재발급 링크: <a href="'+esc(ru)+'" style="word-break:break-all">'+esc(ru.replace(/^https?:\/\//,'').slice(0,40))+'…</a> — 다른 기기에서도 다시 받을 수 있습니다.</p>':'')+shotBtn('pass');}
-    return '<div class="pay-p"><b>9,900원</b><span>부동산 1건 · 부가세 포함</span></div>'
+    return wimiPv()+'<div class="pay-p"><b>9,900원</b><span>부동산 1건 · 부가세 포함</span></div>'
       +'<p class="pay-d">위임장 · 소유권이전등기신청서 · 매매목록(해당 시)</p>'
+      +payProof()
       +'<button type="button" class="btn" data-pay="1">9,900원 결제하고 서류 받기</button>'
-      +'<p class="sm">토스페이 · 네이버페이 · 잔금 전날까지 출력해 잔금일에 매도인 인감 날인을 받으세요.</p>'
+      +'<p class="sm"><span class="pay-re">'+(S.hub.balance?'잔금일 후 14일까지':'결제일부터 30일')+' 고치고 다시 받기 무료</span> <span class="nw">· 토스페이 · 네이버페이</span></p>'
+      +'<p class="sm">※ 서울 중위가격 아파트 15억원 기준, 대한법무사협회 보수기준 별표(2026. 8. 20. 개정) 기본보수 상한 · 실비·부가세 별도, 법무사마다 상이</p>'
       +'<details class="svc"><summary>서비스 제공 방식과 시점</summary><dl>'
       +'<dt>제공 방식</dt><dd>브라우저에서 Word(.docx) 파일로 내려받습니다. 별도 배송이나 승인 대기가 없습니다.</dd>'
       +'<dt>제공 시점</dt><dd>위임장은 결제 승인 직후, 신청서는 제세공과금 납부 후 번호를 입력하는 즉시 내려받습니다.</dd>'
