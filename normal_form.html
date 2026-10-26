@@ -2177,6 +2177,8 @@ function nextDlg(ms,to){
   if(d.showModal)d.showModal();else d.setAttribute('open','');
   track('hub_next_block',{key:'show',step:VIEW});
 }
+/* 체크·표시를 바꿔 단계가 끝나도 보던 단계에 머문다 — 지금 단계(CUR)가 넘어가며 화면이 튀지 않게(10/24 피드백 2·3의 잔여) */
+function pin(){OPEN.ph=OPEN.ph||VIEW;}
 function goTask(k){OPEN.ph=stepOf(k);if(k==='reg'){render();scrollToEl(document.getElementById('reg'));return;}OPEN[k]=true;render();scrollToEl(document.getElementById('t-'+k));}
 function bind(){
   var b=document.getElementById('bal');
@@ -2223,7 +2225,7 @@ function bind(){
     fill.onclick=function(){if(a._orig==null)a._orig=a.value===v?'':a.value;a.value=v;box.classList.add('ok');undo.focus();track('seller_addr',{from:'party'});peRead();pvLive();};
     undo.onclick=function(){a.value=a._orig||'';box.classList.remove('ok');fill.focus();peRead();pvLive();};
     a.addEventListener('input',function(){box.classList.toggle('ok',a.value===v);});});
-  A.querySelectorAll('[data-ck]').forEach(function(x){x.onchange=function(){var id=x.getAttribute('data-ck'),st=x.getAttribute('data-store');S.hub[st]=S.hub[st]||{};if(x.checked)S.hub[st][id]=1;else delete S.hub[st][id];saveHub();render();};});
+  A.querySelectorAll('[data-ck]').forEach(function(x){x.onchange=function(){var id=x.getAttribute('data-ck'),st=x.getAttribute('data-store');S.hub[st]=S.hub[st]||{};if(x.checked)S.hub[st][id]=1;else delete S.hub[st][id];pin();saveHub();render();};});
   A.querySelectorAll('input[data-num="1"]').forEach(function(i){i.addEventListener('input',function(){var d=digits(i.value);i.value=d?Number(d).toLocaleString('ko-KR'):'';});});
   A.querySelectorAll('[data-save]').forEach(function(x){x.onclick=function(){var k=x.getAttribute('data-save'),vals={},n=0;
     A.querySelectorAll('#p-'+k+' [data-f]').forEach(function(i){var v=i.value.trim(),key=i.getAttribute('data-f');if(i.getAttribute('data-num')==='1')v=digits(v);
@@ -2260,7 +2262,7 @@ function bind(){
         p.querySelector('[data-edok]').onclick=function(){edSave('share');};document.getElementById('ed-share').focus();return;}edSave(k);};
     else i.onkeydown=function(e){if(e.key==='Enter'){e.preventDefault();edSave(k);}};});
   A.querySelectorAll('[data-siga]').forEach(function(x){x.onclick=sigaGo;});
-  A.querySelectorAll('[data-bondfill]').forEach(function(x){x.onclick=function(){var v=x.getAttribute('data-bondfill');saveRelay({bondamt:v});track('hub_bondfill',{});
+  A.querySelectorAll('[data-bondfill]').forEach(function(x){x.onclick=function(){var v=x.getAttribute('data-bondfill');pin();saveRelay({bondamt:v});track('hub_bondfill',{});
     toast('채권매입금액 '+Number(v).toLocaleString('ko-KR')+'원을 넣었습니다 · 매입 후 영수증 금액과 대조해 주세요',0,1);render();var i=document.getElementById('f-bondamt');if(i)scrollToEl(i);};});
   A.querySelectorAll('[data-pay]').forEach(function(x){x.onclick=function(){if(demoOn())return toast('예시 상태에서는 결제하지 않습니다.');if(!window.SRPay)return toast('결제 모듈을 불러오지 못했습니다. 새로고침 후 다시 시도해 주세요.',1);track('hub_pay',{});track('nf_pay_click',{mode:'hub'});syncForm();SRPay.start();};
     if(!PAYV&&'IntersectionObserver' in window){var io=new IntersectionObserver(function(es){if(PAYV||!es.some(function(e){return e.isIntersecting;}))return;PAYV=true;io.disconnect();track('nf_pay_view',{mode:'hub',product:GIFT?'gift':'sale'});},{threshold:.5});io.observe(x);}});
@@ -2268,7 +2270,7 @@ function bind(){
   var cz=document.getElementById('cause');if(cz)cz.onchange=function(){if(!cz.value)return;S.hub.cause=cz.value;OPEN.cause=false;saveHub();track('hub_edit',{key:'cause'});render();};
   A.querySelectorAll('[data-cause]').forEach(function(x){x.onclick=function(){OPEN.cause=true;render();var c=document.getElementById('cause');if(c)c.focus();};});
   A.querySelectorAll('[data-toreg]').forEach(function(x){x.onclick=function(){scrollToEl(document.getElementById('reg'));};});
-  A.querySelectorAll('[data-stamp="0"]').forEach(function(x){x.onclick=function(){S.fin.stamp=false;if(!demoOn()){var fl=rd(K.flow)||{};fl.fin=fl.fin||{};delete fl.fin.stamp;wr(K.flow,fl);}render();};});
+  A.querySelectorAll('[data-stamp="0"]').forEach(function(x){x.onclick=function(){pin();S.fin.stamp=false;if(!demoOn()){var fl=rd(K.flow)||{};fl.fin=fl.fin||{};delete fl.fin.stamp;wr(K.flow,fl);}render();};});
   A.querySelectorAll('[data-stamp="1"]').forEach(function(x){x.onclick=function(){saveFin('stamp');OPEN.stamp=false;OPEN.ph=OPEN.ph||VIEW;toast('저장했습니다 · 완료');render();};});
   /* 입력 내용 모두 지우기 — 이 기기 저장값(집·당사자·납부 번호·진행)만 지운다. 결제 이용권은 남긴다(재발급 30일) */
   A.querySelectorAll('[data-reset]').forEach(function(x){x.onclick=function(){
@@ -2281,8 +2283,8 @@ function bind(){
   A.querySelectorAll('[data-court-save]').forEach(function(x){x.onclick=function(){var v=(document.getElementById('court-in')||{}).value||'';v=v.trim();if(!v)return toast('등기소 이름을 적어 주세요.',1);S.hub.court=v;saveHub();track('hub_court',{key:'type'});render();};});
   A.querySelectorAll('[data-court-reset]').forEach(function(x){x.onclick=function(){S.hub.court='';saveHub();render();};});
   A.querySelectorAll('[data-bundle]').forEach(function(x){x.onclick=function(){if(demoOn())return toast('예시 상태에서는 열지 않습니다.');syncForm();if(window.SRBundle)SRBundle.open();};});
-  A.querySelectorAll('[data-unmark]').forEach(function(x){x.onclick=function(){S.hub[x.getAttribute('data-unmark')]=false;saveHub();render();};});
-  A.querySelectorAll('[data-mark]').forEach(function(x){x.onclick=function(){var k=x.getAttribute('data-mark');S.hub[k]=true;saveHub();OPEN[k==='rjok'?'rj':k]=false;render();};});
+  A.querySelectorAll('[data-unmark]').forEach(function(x){x.onclick=function(){pin();S.hub[x.getAttribute('data-unmark')]=false;saveHub();render();};});
+  A.querySelectorAll('[data-mark]').forEach(function(x){x.onclick=function(){var k=x.getAttribute('data-mark');pin();S.hub[k]=true;saveHub();OPEN[k==='rjok'?'rj':k]=false;render();};});
 }
 
 /* 시제품 예시 상태 전환 */
