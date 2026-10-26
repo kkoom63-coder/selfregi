@@ -383,6 +383,7 @@ html.mnav-open,html.mnav-open body{overflow:hidden}
 .pl-list{list-style:none;margin:0;padding:0}
 .pl-list li{display:flex;gap:12px;padding:12px 0;border-top:1px solid #F1F5F9}
 .pl-list li:first-child{border-top:0}
+.pl-list li.pl-key{margin:4px 0 6px;padding:12px 14px;border:1px solid #FED7AA;border-radius:10px;background:#FFF7ED}.pl-list li.pl-key .pl-t>b{color:#9A3412}.pl-list li.pl-key+li{border-top:0}
 .pl-d{flex:none;width:68px}
 .pl-d b{display:block;font-size:14px;color:var(--blue)}.pl-d small{font-size:12px;color:var(--muted)}
 .pl-t{min-width:0}.pl-t b{display:block;font-size:16px;color:var(--navy)}.pl-t small{display:block;font-size:14px;color:#475569;margin-top:2px;line-height:1.55}
@@ -552,7 +553,7 @@ html.mnav-open,html.mnav-open body{overflow:hidden}
       <!-- 결과 바로 아래 — 법무사 보수와 셀프등기 두 갈래(사용자 10/26). 납부 시점 안내는 할 일의 기한 줄로 옮김 -->
       <div class="lw" hidden>
         <p class="lw-t">법무사에게 소유권이전등기를 맡기면 세금과 별도로 보수 약 <b id="r-lawyer-fee">0원</b>이 듭니다</p>
-        <div class="lw-b"><a href="guide.html" class="lw-g calc-self-a">셀프등기 가이드 →</a><a href="normal_form.html" class="lw-go">셀프등기 서류 자동완성 →</a></div>
+        <div class="lw-b"><a href="guide.html" class="lw-g calc-self-a">셀프등기 가이드 보기 →</a><a href="normal_form.html" class="lw-go">9,900원으로 위임장·신청서 자동완성 →</a></div>
         <p class="pl-fn">입력과 단계 안내는 무료 · 위임장·신청서 Word 파일은 9,900원 · * 법무사 보수: 대한법무사협회 보수기준 별표(2026. 8. 20. 개정) 기본보수 상한 · 실비·부가세 별도 · 법무사마다 다름 <a href="cost.html">비용 비교 →</a></p>
       </div>
 
@@ -1012,7 +1013,7 @@ window.SR=window.SR||(function(){
   var inp=document.getElementById('pl-date'),list=document.getElementById('pl-list');if(!inp||!list)return;
   var WD='일월화수목금토';
   var STEPS=[
-    [-30,'D-30','은행에 셀프 이전등기 되는지 묻기','잔금대출이 있으면 은행이 지정 법무사에게 이전등기까지 맡기도록 하는 경우가 많습니다. 대출이 없으면 건너뜁니다.'],
+    [-30,'D-30','잔금대출이 있다면 은행에 셀프등기 되는지 먼저 묻기','은행이 지정 법무사에게 이전등기까지 맡기도록 하는 경우가 많습니다. 셀프로 해도 된다고 하면 법무사 보수를 아낄 수 있습니다. 대출이 없으면 건너뜁니다.',1], /* 사용자 10/26: 핵심 단계라 강조 */
     [-14,'D-14','매도인에게 서류 부탁하기','부동산 매도용 인감증명서 — 매수인 이름·주소가 정확히 들어가야 합니다.'],
     [-7,'D-7','내 서류 준비','주민등록초본(주소 전체 이력)·건축물대장 등. 위임장·신청서는 셀프등기 서류 자동완성으로.'],
     [0,'잔금일','잔금 · 취득세 납부 · 등기소 접수','매도인 서류(등기필증·인감증명서)와 위임장 인감을 받고, 위택스 취득세 등{T} → 국민주택채권·수수료 → 관할 등기소 접수까지 같은 날 마칩니다.']]; /* 사용자 10/26: 셀프등기는 잔금일 당일 접수가 일반적(다음 평일 단계 삭제) */
@@ -1027,7 +1028,7 @@ window.SR=window.SR||(function(){
   function render(){
     var b=base();
     list.innerHTML=STEPS.map(function(s){
-      return '<li><div class="pl-d"><b>'+s[1]+'</b><small>'+(b?md(day(b,s)):'')+'</small></div><div class="pl-t"><b>'+s[2]+'</b><small>'+desc(s)+'</small>'+'</div></li>';
+      return '<li'+(s[4]?' class="pl-key"':'')+'><div class="pl-d"><b>'+s[1]+'</b><small>'+(b?md(day(b,s)):'')+'</small></div><div class="pl-t"><b>'+s[2]+'</b><small>'+desc(s)+'</small>'+'</div></li>';
     }).join('');
     var dl=document.getElementById('pl-dl');
     dl.hidden=document.getElementById('pl-bar').hidden=list.hidden=!b; /* 잔금일 넣기 전엔 접어 둔다(모바일 길이) */
