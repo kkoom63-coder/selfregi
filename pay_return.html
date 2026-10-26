@@ -232,7 +232,7 @@ p{font-size:14px;line-height:1.7;color:#334155;margin:0 0 12px}
     return SRResume.toHash(dr.p, token).then(function(h){ return base+'#r='+h; }, function(){ return base; });
   }
   function confirm(tries){
-    fetch(PA?'/api/pay/payapp-confirm':'/api/pay/confirm',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({orderNo:orderNo})})
+    fetch(PA?'/api/pay/payapp-confirm':'/api/pay/confirm',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({orderNo:orderNo,bal:((get('selfregi_hub_v1')||{}).balance||'')})}) /* 잔금일 → 매매 이용권은 잔금일+14일까지(서버가 검증·상한) */
       .then(function(r){return r.json();})
       .then(function(d){
         if(PA && d && d.pending){

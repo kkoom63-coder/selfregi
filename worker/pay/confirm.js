@@ -7,7 +7,7 @@ export async function onRequestPost({ request, env }) {
   const key = apiKey(env);
   if (!key || !secret(env)) return json(503, { ok: false, msg: '결제 설정이 아직 완료되지 않았습니다.' });
 
-  const { orderNo } = await readJson(request);
+  const { orderNo, bal } = await readJson(request); // bal: 이용자가 입력한 잔금일(매매 이용권 기한 연장용)
   if (!ORDER_RE.test(orderNo || '')) return json(400, { ok: false, msg: '주문번호가 올바르지 않습니다.' });
 
   try {
@@ -34,7 +34,7 @@ export async function onRequestPost({ request, env }) {
       return json(409, { ok: false, msg: m, payStatus: st.payStatus });
     }
 
-    const pass = await signPass(env, orderNo, Date.now(), product);
+    const pass = await signPass(env, orderNo, Date.now(), product, bal);
     return json(200, { ok: true, orderNo, token: pass.token, exp: pass.exp, amount: st.amount, product });
   } catch (e) {
     console.error('confirm error', orderNo, e && e.message);

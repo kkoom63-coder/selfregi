@@ -28,7 +28,7 @@
     if (!r || !(r.buyerName || r.sellerName || r.jibun || r.aptName)) { say('이 위임장 파일에는 신청서에 넣을 정보가 없습니다. 서류 작성 화면에서 입력한 뒤 받은 위임장을 올려 주세요.', 'err'); return; }
     var paid = '';
     if (got.k && window.SRPay && SRPay.redeemToken && !SRPay.has()) {
-      paid = (await SRPay.redeemToken(got.k)) ? ' 결제도 확인되었습니다.' : ' 이 파일의 결제는 기한(30일)이 지났거나 취소되어 이어받지 못했습니다.';
+      paid = (await SRPay.redeemToken(got.k)) ? ' 결제도 확인되었습니다.' : ' 이 파일의 결제는 기한이 지났거나 취소되어 이어받지 못했습니다.';
     }
     r.v = r.v || 3; r.ts = Date.now();
     try { localStorage.setItem('selfregi_form_v1', JSON.stringify(r)); } catch (e) {}

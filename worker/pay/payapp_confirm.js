@@ -6,7 +6,7 @@ import { PRODUCTS, productKey, ORDER_RE, json, secret, payappKeys, signPass, rea
 export async function onRequestPost({ request, env }) {
   if (!secret(env) || !payappKeys(env) || !env.paStore) return json(503, { ok: false, msg: '결제 설정이 아직 완료되지 않았습니다.' });
 
-  const { orderNo } = await readJson(request);
+  const { orderNo, bal } = await readJson(request);
   if (!ORDER_RE.test(orderNo || '')) return json(400, { ok: false, msg: '주문번호가 올바르지 않습니다.' });
 
   try {
@@ -15,7 +15,7 @@ export async function onRequestPost({ request, env }) {
     if (doc.st === 'cancel') return json(409, { ok: false, msg: '취소된 결제입니다.' });
     if (doc.st !== 'paid') return json(202, { ok: false, pending: true, msg: '결제 확인을 기다리는 중입니다.' });
     const product = productKey(doc.product);
-    const pass = await signPass(env, orderNo, doc.paidAt || Date.now(), product);
+    const pass = await signPass(env, orderNo, doc.paidAt || Date.now(), product, bal);
     return json(200, { ok: true, orderNo, token: pass.token, exp: pass.exp, amount: PRODUCTS[product].price, product });
   } catch (e) {
     console.error('payapp confirm error', orderNo, e && e.message);

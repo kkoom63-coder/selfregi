@@ -21,7 +21,7 @@
     var n = applyResume(got.d);
     var paid = '';
     if (got.k && window.SRPay && SRPay.redeemToken && !SRPay.has()) {
-      paid = (await SRPay.redeemToken(got.k)) ? ' <b>결제도 확인되어 바로 내려받을 수 있습니다.</b>' : ' 이 파일의 결제는 기한(30일)이 지났거나 취소되어 이어받지 못했습니다.';
+      paid = (await SRPay.redeemToken(got.k)) ? ' <b>결제도 확인되어 바로 내려받을 수 있습니다.</b>' : ' 이 파일의 결제는 기한이 지났거나 취소되어 이어받지 못했습니다.';
     }
     var when = got.ts ? new Date(got.ts) : null;
     var ds = when ? (when.getFullYear() + '. ' + (when.getMonth() + 1) + '. ' + when.getDate() + '.') : '';
@@ -65,7 +65,7 @@
     var n = applyResume(got.d);
     var paid = '';
     if (got.k && window.SRPay && SRPay.redeemToken && !SRPay.has()) {
-      paid = (await SRPay.redeemToken(got.k)) ? ' 결제도 확인되어 바로 내려받을 수 있습니다.' : ' 이 링크의 결제는 기한(30일)이 지났거나 취소되어 이어받지 못했습니다.';
+      paid = (await SRPay.redeemToken(got.k)) ? ' 결제도 확인되어 바로 내려받을 수 있습니다.' : ' 이 링크의 결제는 기한이 지났거나 취소되어 이어받지 못했습니다.';
     }
     say('<b>링크에서 입력 내용 ' + n + '칸을 불러왔습니다.</b>' + paid + ' 주민등록번호는 링크에 담기지 않으니 필요하면 다시 입력해 주세요.', 'ok');
     var b = $('resume-box'); if (b) setTimeout(function () { b.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 300);
