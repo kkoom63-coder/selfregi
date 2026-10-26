@@ -28,9 +28,11 @@
     if (S.d !== today) { S.d = today; S.n = 0; }
     if (S.n >= LIM) return { err: 'limit' };
     S.n++; save(S);
-    var r = await jsonp('https://api.vworld.kr/req/search', { service: 'search', request: 'search', version: '2.0', query: addr, type: 'address', category: 'parcel', size: '1' });
-    var it = r && r.response && r.response.result && r.response.result.items && r.response.result.items[0];
-    if (!it || !it.id) return null;
+    /* 지번으로 먼저, 못 찾으면 도로명(「동호로10길 30」)으로. 도로명 결과의 id도 같은 19자리 필지고유번호(2026-10-26 실측: 동호로10길 30 → 1114016200108420000 = 신당동 842) */
+    function search(cat) { return jsonp('https://api.vworld.kr/req/search', { service: 'search', request: 'search', version: '2.0', query: addr, type: 'address', category: cat, size: '1' }); }
+    function first(r) { var x = r && r.response && r.response.result && r.response.result.items && r.response.result.items[0]; return x && /^\d{19}$/.test(x.id || '') ? x : null; }
+    var it = first(await search('parcel')) || first(await search('road'));
+    if (!it) return null;
     /* 2026-10-24 실측: ① 전남광주통합특별시 출범 후 주소 검색은 새 필지번호(12…)를 주지만 공동주택가격은 옛 번호(광주 29…·전남 46…)에 남아 있다
        → 새 번호로 못 찾으면 옛 번호로 다시. 광주 5개 구는 번호가 제각각(서구 12240←29140 확인 · 남구 12270←29155 · 북구 12300←29170 · 광산구 12330←29200, 동구 12210←29110은 추정), 전남은 뒷자리 같음(12110←46110).
        ② 동 이름이 지역마다 「104」 또는 「101동」 → 둘 다 시도 */
