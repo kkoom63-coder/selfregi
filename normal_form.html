@@ -1567,9 +1567,10 @@ if(GIFT)PAYTX={
   efee:'인터넷등기소에서 납부합니다 · 서면 신청 18,000원.',
   wetax:'검인받은 증여계약서로 위택스에서 취득세(무상취득)를 신고·납부합니다. 등기에는 <b>납부확인서</b>를 씁니다.'
 };
-var PUB_REVIEWS=[ /* 최신순 */
-  {r:4,t:'시험용 등기부 PDF로 사용하고 면적·대지권 비율·관할 등기소까지 자동으로 채워지는 것 확인한 뒤 진행했어요. 채권 계산부터 제출 순서 체크리스트까지 7단계로 안내돼서 처음인데도 어렵지 않았어요.'}, /* SR20261024231444-LWL9Q5 · 2026.10 · publish:true (QR 문의 고객, 10/25 21:12 작성) */
-  {r:5,t:'셀프등기 처음 해보는데 자동으로 작성해주고, 설명도 자세히 되어 있어서 서류 작성이 어렵지 않았습니다. 덕분에 법무사 비용 많이 절감했고, 주위에도 알려줄 생각입니다.'} /* SR20261010095839-LBZ2PD · 2026.10 · publish:true */
+var PUB_REVIEWS=[ /* 최신순 · d=작성일 */
+  {r:5,d:'2026.10.27',t:'정말 필요한 내용만 직관적으로 표현되어서, 다음달 소유권이전 시에 너무 큰 도움이 될 듯합니다. 다른 법무사분께 맡겨도 같은 서류로 받을듯 하네요^.^ 시간과 품 그리고 비용까지 아끼게 해주셔서 감사합니다! 대박나세요!!!'}, /* SR20261027152426-J5ESVQ · publish:true */
+  {r:4,d:'2026.10.25',t:'시험용 등기부 PDF로 사용하고 면적·대지권 비율·관할 등기소까지 자동으로 채워지는 것 확인한 뒤 진행했어요. 채권 계산부터 제출 순서 체크리스트까지 7단계로 안내돼서 처음인데도 어렵지 않았어요.'}, /* SR20261024231444-LWL9Q5 · 2026.10 · publish:true (QR 문의 고객, 10/25 21:12 작성) */
+  {r:5,d:'2026.10.10',t:'셀프등기 처음 해보는데 자동으로 작성해주고, 설명도 자세히 되어 있어서 서류 작성이 어렵지 않았습니다. 덕분에 법무사 비용 많이 절감했고, 주위에도 알려줄 생각입니다.'} /* SR20261010095839-LBZ2PD · 2026.10 · publish:true */
 ];
 /* 미리보기 아래 후기(2026-10-25): 한 건씩 넘겨 본다(‹ 1 / n ›, 끝에서 처음으로). 자동으로 넘기지 않는다.
    모든 후기를 같은 칸에 겹쳐 두고 보이는 것만 바꿔, 넘길 때 높이가 바뀌지 않는다(가장 긴 후기 높이) */
@@ -1579,7 +1580,7 @@ function reviewCar(cls){var n=PUB_REVIEWS.length;if(!n)return '';var i=Math.min(
   var avg=PUB_REVIEWS.reduce(function(a,r){return a+r.r;},0)/n;
   return '<section class="rvl '+(cls||'rvl-side')+' rvl-car" aria-label="실사용자 후기" aria-roledescription="carousel"><div class="rvl-hd"><h3>실사용자 후기 <span class="rvl-st">별점 '+avg.toFixed(1)+'</span> <small>결제 이용자 '+n+'건</small></h3>'
     +(n>1?'<div class="rvl-nav"><button type="button" data-rv="-1" aria-label="이전 후기">‹</button><span class="rvl-n" aria-live="polite">'+(i+1)+' / '+n+'</span><button type="button" data-rv="1" aria-label="다음 후기">›</button></div>':'')+'</div>'
-    +'<div class="rvl-sl">'+PUB_REVIEWS.map(function(x,k){return '<p class="'+(k===i?'on':'')+'"'+(k===i?'':' aria-hidden="true"')+'><span class="rvl-rs" role="img" aria-label="별점 '+x.r+'점">'+'★'.repeat(x.r)+'<i>'+'★'.repeat(5-x.r)+'</i></span> 익명 — <q>'+esc(x.t)+'</q></p>';}).join('')+'</div></section>';}
+    +'<div class="rvl-sl">'+PUB_REVIEWS.map(function(x,k){return '<p class="'+(k===i?'on':'')+'"'+(k===i?'':' aria-hidden="true"')+'><span class="rvl-rs" role="img" aria-label="별점 '+x.r+'점">'+'★'.repeat(x.r)+'<i>'+'★'.repeat(5-x.r)+'</i></span> 익명 · '+x.d+' — <q>'+esc(x.t)+'</q></p>';}).join('')+'</div></section>';}
 function reviewLine(cls,max){var n=PUB_REVIEWS.length;if(!n)return '';if(cls==='rvl-side'||cls==='rvl-main')return reviewCar(cls); /* 좁은 화면도 1건씩 넘겨 보기(사용자 10/26) */
   var avg=PUB_REVIEWS.reduce(function(a,r){return a+r.r;},0)/n,r=PUB_REVIEWS[0];
   return '<section class="rvl '+(cls||'')+'" aria-label="실사용자 후기"><h3>실사용자 후기 <span class="rvl-st">별점 '+avg.toFixed(1)+'</span> <small>결제 이용자 '+n+'건</small></h3>'

@@ -253,8 +253,18 @@ header{background:var(--bg)}
 .rv-stars{color:#F59E0B;letter-spacing:2px}
 .rv-stars .rv-off{color:#E2E8F0}
 /* 후기 2건(2026-10-25): 넓은 화면은 2열, 카드 높이를 맞춘다 */
-.rv-list{display:grid;grid-template-columns:1fr;gap:16px}
-@media(min-width:768px){.rv-list{grid-template-columns:1fr 1fr}.rv-list .rv-card{display:flex;flex-direction:column}.rv-list .rv-q{flex:1;font-size:18px}}
+.rv-list{display:grid;grid-auto-flow:column;grid-auto-columns:88%;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch;padding:2px 2px 10px;margin:-2px -2px 0}
+.rv-list::-webkit-scrollbar{display:none}
+.rv-list .rv-card{scroll-snap-align:start;display:flex;flex-direction:column}.rv-list .rv-q{flex:1}
+@media(min-width:768px){.rv-list{grid-auto-columns:calc(50% - 8px)}.rv-list .rv-q{font-size:18px}}
+/* 2026-10-28 후기 3건부터 가로로 넘겨 본다(데스크톱 2장·휴대폰 1장+다음 장 살짝), 작성일 표시 */
+.rv-right{display:flex;align-items:center;gap:12px}
+.rv-nav{display:flex;gap:6px}
+.rv-nav button{width:36px;height:36px;border-radius:50%;border:1px solid var(--border);background:#fff;color:var(--navy);font-size:18px;line-height:1;cursor:pointer;font-family:inherit}
+.rv-nav button:hover:not(:disabled){border-color:var(--blue);color:var(--blue)}
+.rv-nav button:disabled{opacity:.35;cursor:default}
+.rv-top{position:relative;display:flex;align-items:center}
+.rv-date{margin-left:8px;font-size:12px;color:var(--muted);letter-spacing:0;vertical-align:1px}
 .rv-card{position:relative;margin:0;background:#fff;border:1px solid var(--border);border-radius:16px;padding:28px 32px 24px;box-shadow:0 1px 2px rgba(15,23,42,.04),0 8px 24px -12px rgba(15,23,42,.12);overflow:hidden}
 .rv-card::before{content:'\201C';position:absolute;right:24px;top:-6px;font:700 120px/1 Georgia,serif;color:#E0F2FE;pointer-events:none}
 .rv-card .rv-stars{position:relative;font-size:18px}
@@ -1115,22 +1125,39 @@ html.mnav-open,html.mnav-open body{overflow:hidden}
 <section class="rv-band" id="price-rv" aria-labelledby="rv-h">
   <div class="rv-head">
     <h2 class="rv-h" id="rv-h">이용자 후기</h2>
-    <p class="rv-sum">평균 <b>4.5</b> · 결제 이용자 후기 2건</p>
+    <div class="rv-right"><p class="rv-sum">평균 <b>4.7</b> · 결제 이용자 후기 3건</p><div class="rv-nav" hidden><button type="button" data-rv="-1" aria-label="이전 후기">‹</button><button type="button" data-rv="1" aria-label="다음 후기">›</button></div></div>
   </div>
-  <div class="rv-list"><!-- 최신순 -->
+  <div class="rv-list" tabindex="0" aria-label="후기 목록, 옆으로 넘겨 보기"><!-- 최신순 -->
+    <figure class="rv-card"><!-- SR20261027152426-J5ESVQ · 2026.10.27 작성 · publish:true -->
+      <div class="rv-top"><span class="rv-stars" role="img" aria-label="별점 5점 만점에 5점">★★★★★</span><span class="rv-date">2026.10.27</span></div>
+      <blockquote class="rv-q">정말 필요한 내용만 직관적으로 표현되어서, 다음달 소유권이전 시에 너무 큰 도움이 될 듯합니다. 다른 법무사분께 맡겨도 같은 서류로 받을듯 하네요^.^ 시간과 품 그리고 비용까지 아끼게 해주셔서 감사합니다! 대박나세요!!!</blockquote>
+      <figcaption class="rv-by"><span class="rv-av" aria-hidden="true">익</span><span><b>익명</b><small>결제 이용자 · 공개 동의</small></span></figcaption>
+    </figure>
     <figure class="rv-card"><!-- SR20261024231444-LWL9Q5 · 2026.10 · publish:true -->
-      <span class="rv-stars" role="img" aria-label="별점 5점 만점에 4점">★★★★<span class="rv-off">★</span></span>
+      <div class="rv-top"><span class="rv-stars" role="img" aria-label="별점 5점 만점에 4점">★★★★<span class="rv-off">★</span></span><span class="rv-date">2026.10.25</span></div>
       <blockquote class="rv-q">시험용 등기부 PDF로 사용하고 면적·대지권 비율·관할 등기소까지 자동으로 채워지는 것 확인한 뒤 진행했어요. 채권 계산부터 제출 순서 체크리스트까지 7단계로 안내돼서 처음인데도 어렵지 않았어요.</blockquote>
       <figcaption class="rv-by"><span class="rv-av" aria-hidden="true">익</span><span><b>익명</b><small>결제 이용자 · 공개 동의</small></span></figcaption>
     </figure>
     <figure class="rv-card"><!-- SR20261010095839-LBZ2PD · 2026.10 · publish:true -->
-      <span class="rv-stars" role="img" aria-label="별점 5점 만점에 5점">★★★★★</span>
+      <div class="rv-top"><span class="rv-stars" role="img" aria-label="별점 5점 만점에 5점">★★★★★</span><span class="rv-date">2026.10.10</span></div>
       <blockquote class="rv-q">셀프등기 처음 해보는데 자동으로 작성해주고, 설명도 자세히 되어 있어서 서류 작성이 어렵지 않았습니다. 덕분에 법무사 비용 많이 절감했고, 주위에도 알려줄 생각입니다.</blockquote>
       <figcaption class="rv-by"><span class="rv-av" aria-hidden="true">익</span><span><b>익명</b><small>결제 이용자 · 공개 동의</small></span></figcaption>
     </figure>
   </div>
   <p class="rv-note">결제가 확인된 이용자가 공개에 동의한 후기를 고치지 않고 싣습니다.</p>
 </section>
+<script>
+/* 후기 넘기기: 넘칠 때만 ‹ › 표시, 한 장 폭씩 이동 */
+(function(){
+  var list=document.querySelector('.rv-list'), nav=document.querySelector('.rv-nav'); if(!list||!nav) return;
+  var prev=nav.querySelector('[data-rv="-1"]'), next=nav.querySelector('[data-rv="1"]');
+  function sync(){ var over=list.scrollWidth>list.clientWidth+2; nav.hidden=!over;
+    prev.disabled=list.scrollLeft<4; next.disabled=list.scrollLeft+list.clientWidth>=list.scrollWidth-4; }
+  nav.addEventListener('click',function(e){ var b=e.target.closest('button'); if(!b) return;
+    var card=list.querySelector('.rv-card'); list.scrollBy({left:(+b.dataset.rv)*(card.offsetWidth+16),behavior:'smooth'}); });
+  list.addEventListener('scroll',sync,{passive:true}); window.addEventListener('resize',sync); sync();
+})();
+</script>
 
 <!-- ⑥ Q&A -->
 <div class="section" id="faq">
