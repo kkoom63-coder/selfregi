@@ -584,6 +584,9 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:40px;p
   .purpose-grid{grid-template-columns:1fr}
   .steps{grid-template-columns:1fr}
   .hero-btns{flex-direction:column;align-items:stretch}
+  /* 2026-10-28 휴대폰: 세 버튼 같은 폭·글자 가운데(늘린 버튼 안 글자가 왼쪽에 붙어 보이던 문제) */
+  .hero-btns .btn-primary,.hero-btns .btn-ghost{justify-content:center}
+  .hero .hero-cost{display:block;text-align:center}
 }
 
 /* ── 와이드 보강 (레이아웃 확장 시 밀도/가독 유지) ── */
