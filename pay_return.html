@@ -231,6 +231,22 @@ p{font-size:14px;line-height:1.7;color:#334155;margin:0 0 12px}
     if(!dr||!dr.p||Date.now()-(dr.at||0)>3*3600*1000||!window.SRResume||!SRResume.toHash) return Promise.resolve(base);
     return SRResume.toHash(dr.p, token).then(function(h){ return base+'#r='+h; }, function(){ return base; });
   }
+  /* 결제 통계(2026-10-28): 어느 지역·가격대·상황에서 결제하는지 보려고 구간 값만 보낸다.
+     주소 원문·동호수·이름·주민등록번호는 보내지 않는다(시·도와 시·군·구까지만). 개인정보처리방침 「이용 기록」 */
+  function buyStats(gift){
+    var f=get('selfregi_form_v1')||{}, h=get('selfregi_hub_v1')||{}, o={product:gift?'gift':'sale'};
+    var t=String(f.jibun||'').trim().split(/\s+/);
+    if(t[0]) o.region_sido=t[0];
+    if(t[1]&&/[시군구]$/.test(t[1])) o.region_sgg=t[0]+' '+t[1];
+    if(t[2]&&/구$/.test(t[2])&&/시$/.test(t[1])) o.region_sgg=t[0]+' '+t[1]+' '+t[2]; /* 수원시 영통구처럼 구가 한 단계 더 있는 곳 */
+    var won=+String(f.dealPrice||'').replace(/[^0-9]/g,'');
+    if(!gift&&won) o.price_band=won<5e8?'5억 미만':won<1e9?'5~10억':won<1.5e9?'10~15억':'15억 이상';
+    var nb=(f.buyers||[]).length, ns=(f.sellers||[]).length;
+    if(nb||ns) o.joint=(ns>1?'2':'1')+':'+(nb>1?'2':'1');
+    var bd=/^\d{4}-\d{2}-\d{2}$/.test(h.balance||'')?new Date(h.balance+'T00:00:00+09:00'):null;
+    if(bd){ var dd=Math.round((bd-Date.now())/864e5); o.days_to_balance=dd<0?'잔금 후':dd<=7?'7일 이내':dd<=30?'8~30일':'31일 이상'; }
+    return o;
+  }
   function confirm(tries){
     fetch(PA?'/api/pay/payapp-confirm':'/api/pay/confirm',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({orderNo:orderNo,bal:((get('selfregi_hub_v1')||{}).balance||'')})}) /* 잔금일 → 매매 이용권은 잔금일+14일까지(서버가 검증·상한) */
       .then(function(r){return r.json();})
@@ -244,7 +260,7 @@ p{font-size:14px;line-height:1.7;color:#334155;margin:0 0 12px}
         if(GIFT&&from==='/normal_form.html')from+='?type=gift'; /* 허브는 한 주소에서 ?type=gift로 증여 모드 — 돌아갈 때 모드를 잃지 않게 */
         set(GIFT?'selfregi_pass_gift_v1':PASS_KEY,{token:d.token,orderNo:d.orderNo,exp:d.exp}); /* 상품별 이용권(pay.js PRODUCTS와 같은 키) */
         try{localStorage.removeItem(PENDING_KEY);}catch(e){}
-        try{ if(typeof gtag==='function') gtag('event','purchase',{transaction_id:d.orderNo,value:d.amount,currency:'KRW',items:[{item_name:GIFT?'증여 서류 자동완성':'서류 자동완성',price:d.amount,quantity:1}]}); }catch(e){}
+        try{ if(typeof gtag==='function') gtag('event','purchase',Object.assign({transaction_id:d.orderNo,value:d.amount,currency:'KRW',items:[{item_name:GIFT?'증여 서류 자동완성':'서류 자동완성',price:d.amount,quantity:1}]},buyStats(GIFT))); }catch(e){}
         try{ if(hasOpener) window.opener.postMessage({type:'srpay:paid'},location.origin); }catch(e){}
         var short=location.origin+'/normal_form.html?pass='+encodeURIComponent(d.token)+(GIFT?'&type=gift':'');
         var until=new Date(d.exp); var ud=until.getFullYear()+'. '+(until.getMonth()+1)+'. '+until.getDate()+'.';
