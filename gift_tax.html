@@ -325,6 +325,7 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:40px;p
 .basis-t{font-size:14px;font-weight:800;color:var(--navy);margin:18px 0 4px}
 #out.result-area{background:none;border:0;border-radius:0;overflow:visible}
 .res-box{background:#f8fafc;border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.mode-tab{display:flex;gap:8px;margin-top:18px;max-width:560px}.mode-tab a{flex:1;padding:12px 14px;border:1.5px solid var(--border);border-radius:10px;background:#fff;font-size:16px;font-weight:700;color:var(--navy);text-align:center;text-decoration:none;line-height:1.4}.mode-tab a span{display:block;font-size:12px;font-weight:500;color:var(--muted);margin-top:2px}.mode-tab a.on{border-color:var(--blue);background:var(--blue);color:#fff}.mode-tab a.on span{color:#E0F2FE}.mode-tab a:not(.on):hover{border-color:var(--blue);color:var(--blue)}
 </style>
 </head>
 <body>
@@ -351,6 +352,7 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:40px;p
     <b>증여는 공시가격이 아니라 &lsquo;시가인정액&rsquo;</b>이 원칙입니다(지방세법 제10조의2제1항).
     그래서 공시가격으로 계산하면 실제 세액보다 적게 나올 수 있습니다.
     배우자나 부모에게서 받는 단순한 증여라면 <b>예상 증여세</b>도 함께 확인하실 수 있습니다.</p>
+    <!-- 취득 방법 탭(2026-10-29): 계산기 이용자 70%가 45세 이상 → 자녀 증여 갈래를 맨 위에 --><nav class="mode-tab" aria-label="취득 방법"><a href="calculator.html" >매매로 살 때<span>매매가 기준</span></a><a href="gift_tax.html" class="on" aria-current="page">증여로 받을 때<span>부모·배우자에게</span></a></nav>
   </div>
 </div>
 
