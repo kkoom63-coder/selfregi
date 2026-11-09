@@ -330,6 +330,7 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:40px;p
 @media(max-width:560px){.pc{display:none}}.ls>span+span::before{content:" · "}@media(max-width:560px){.ls>span{display:block}.ls>span+span::before{content:none}}.seo .basis{font-size:14px}.seo .basis th,.seo .basis td{padding:9px 12px}@media(max-width:560px){.gift-tbl th:nth-child(2),.gift-tbl td:nth-child(2),.gift-tbl th:nth-child(3),.gift-tbl td:nth-child(3){display:none}.seo .basis th,.seo .basis td{padding:9px 8px}}.seo-lead b{white-space:nowrap}
 @media(max-width:400px){.seo .basis th,.seo .basis td,.seo .rate-table th,.seo .rate-table td{padding-left:6px;padding-right:6px}.basis td{word-break:keep-all;overflow-wrap:break-word}}
 @media(max-width:560px){.basis:not(.gift-tbl) tr:first-child{display:none}.basis:not(.gift-tbl) tr{display:block;padding:10px 12px;border-bottom:1px solid var(--border)}.basis:not(.gift-tbl) tr:last-child{border-bottom:0}.basis:not(.gift-tbl) td{display:block;padding:0!important;border:0!important;font-size:14px}.basis:not(.gift-tbl) td:first-child{font-weight:700;color:var(--navy);margin-bottom:2px}.basis:not(.gift-tbl) td:last-child{font-size:12px;margin-top:4px}}
+.aff{display:flex;align-items:center;gap:16px;background:#F5F3FF;border-color:#DDD6FE}.aff-brand{display:flex;align-items:center;gap:8px;flex:none}.aff-logo{width:56px;height:28px;border-radius:6px;object-fit:cover;flex:none}.aff-t{flex:1;min-width:0}.aff-tag{display:inline-block;font-size:12px;font-weight:700;color:#5B21B6;background:#fff;border:1px solid #C4B5FD;border-radius:999px;padding:0 8px;line-height:18px}.aff .cs{margin-top:3px}.aff .cs b{color:#5B21B6;font-weight:700}.aff.card{margin-bottom:6px}.aff-note{margin:0 0 14px;padding:0 4px;font-size:12px;color:var(--muted)}.aff-b{display:flex;gap:8px;flex:none}.aff-b a{padding:9px 14px;background:#fff;border:1px solid #C4B5FD;border-radius:8px;font-size:14px;font-weight:700;color:#5B21B6;text-decoration:none;white-space:nowrap;transition:border-color .15s,background .15s}.aff-b a:hover{border-color:#7C3AED;background:#EDE9FE}@media(max-width:720px){.aff{flex-direction:column;align-items:stretch;gap:10px}.aff .ct{font-size:16px;line-height:1.45}.aff .cs{margin-top:4px;line-height:1.5}.aff-b{width:100%}.aff-b a{flex:1;text-align:center;padding:11px 8px}}
 </style>
 </head>
 <body>
@@ -508,6 +509,20 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:40px;p
     <div class="result-area" id="out"></div>
   </div>
 
+  <!-- 제휴 광고(링크프라이스·숨고, 2026-11-10): 매매 계산기와 같은 틀. 결과 카드 바로 아래 독립 카드 -->
+  <aside class="card aff" aria-label="제휴 광고">
+    <div class="aff-brand"><span class="aff-tag">광고</span><img class="aff-logo" src="https://img.linkprice.com/files/glink/soomgo/20250717/NrVw2YYIxgabj_3.%20%E1%84%8B%E1%85%A5%E1%84%91%E1%85%B5%E1%86%AF%E1%84%85%E1%85%B5%E1%84%8B%E1%85%A6%E1%84%8B%E1%85%B5%E1%84%90%E1%85%B3_%E1%84%80%E1%85%B5%E1%84%87%E1%85%A9%E1%86%AB%E1%84%85%E1%85%A9%E1%84%80%E1%85%A9%E1%84%92%E1%85%A7%E1%86%BC%E1%84%87%E1%85%A2%E1%84%82%E1%85%A5_120%2060.png" alt="숨고" width="120" height="60" loading="lazy"></div>
+    <div class="aff-t">
+      <div class="ct">증여세 신고·감정평가, 전문가 견적을 비교해 보세요</div>
+      <div class="cs">숨고에서 세무·회계사, 감정평가사 견적을 <b>무료</b>로 받아 보세요</div>
+    </div>
+    <div class="aff-b">
+      <a href="https://lpweb.kr/click.php?m=soomgo&a=A100709312&l=9999&l_cd1=3&l_cd2=0&tu=https%3A%2F%2Fsoomgo.com%2Fhire%2F%ED%9A%8C%EA%B3%84-%EC%84%B8%EB%AC%B4-%EB%8C%80%ED%96%89" target="_blank" rel="sponsored noopener" data-aff="tax">세무·회계사 견적 받기 →</a>
+      <a href="https://lpweb.kr/click.php?m=soomgo&a=A100709312&l=9999&l_cd1=3&l_cd2=0&tu=https%3A%2F%2Fsoomgo.com%2Fhire%2F%EA%B0%90%EC%A0%95%ED%8F%89%EA%B0%80" target="_blank" rel="sponsored noopener" data-aff="appraise">감정평가 견적 받기 →</a>
+    </div>
+  </aside>
+  <p class="aff-note">제휴 광고 · 셀프등기24가 수수료를 받을 수 있습니다</p>
+
   <!-- 본문(2026-10-30 SEO/GEO): 증여가액별 표 — 세율은 아래 「계산 근거」 표와 같은 값 -->
   <section class="card seo" aria-labelledby="sec-gift-price">
     <h2 id="sec-gift-price">증여가액별 취득세 미리보기</h2>
@@ -555,8 +570,8 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:40px;p
     <div class="table-scroll">
       <table class="basis">
         <tr><th>항목</th><th>내용</th><th>근거</th></tr>
-        <tr><td>증여재산가액</td><td>입력한 시가인정액 × 증여 지분. 상속세 및 증여세법상 시가와 같다고 가정한 값이며, 실제 평가액은 다를 수 있습니다</td>
-            <td>계산상 가정</td></tr>
+        <tr><td>증여재산가액</td><td>입력한 시가인정액 × 증여 지분. 시가는 ① 그 집의 매매·감정가액(평가기간: 증여일 전 6개월~후 3개월) → ② 없으면 면적·위치가 비슷한 집의 거래가액 → ③ 그것도 없으면 공시가격 순으로 정해집니다. 그 집의 감정가액이 있으면 비슷한 집 거래가액보다 먼저 적용됩니다. 감정은 2곳 평균(증여세는 기준시가 10억원 이하면 1곳)이며, 지나치게 낮으면 세무서가 다시 감정할 수 있습니다</td>
+            <td>제60조, 시행령 제49조<br>(취득세: 지방세법 시행령 제14조)</td></tr>
         <tr><td>증여재산 공제</td><td>배우자 6억원, 직계존속 → 자녀 5천만원(미성년자 2천만원). 증여 전 10년 이내 공제받은 금액과 합산한 한도</td>
             <td>상속세 및 증여세법 제53조제1호·제2호</td></tr>
         <tr><td>혼인·출산 공제</td><td>혼인신고일 전후 2년 이내 또는 자녀 출생일(입양신고일)부터 2년 이내 직계존속 증여에 1억원 추가 공제 (혼인·출산 합산 1억원 한도)</td>
@@ -997,5 +1012,7 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:40px;p
   window.addEventListener('resize',function(){ if(window.innerWidth>768&&!p.hidden) close(); });
 })();
 </script>
+<script>/* 제휴 광고 클릭(2026-11-10): 매매 계산기와 같은 이벤트명·키(soomgo_tax·soomgo_appraise). 휠 클릭도 센다 */
+document.querySelectorAll('.aff [data-aff]').forEach(function(a){function hit(){window.gtag&&gtag('event','aff_click',{key:'soomgo_'+a.dataset.aff})}a.addEventListener('click',hit);a.addEventListener('auxclick',function(e){if(e.button===1)hit()})});</script>
 </body>
 </html>
