@@ -30,7 +30,7 @@
 <meta property="og:description" content="신생아 출산가구 최대 500만원, 생애최초 최대 200만원 감면을 반영한 아파트 취득세 계산기. 1주택·다주택 중과세율과 지방교육세·농어촌특별세까지 2026년 현행세법 기준으로 계산합니다.">
 <meta property="og:image" content="https://www.selfregi24.com/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
-<!-- 계산 로직과 아래 '1주택 표준세율표'에 적힌 값을 그대로 옮긴 것. 로직을 바꾸면 여기도 같이 고쳐야 한다. -->
+<!-- 계산 로직과 아래 「계산 근거」 표·「자주 묻는 질문」에 적힌 값을 그대로 옮긴 것. 로직을 바꾸면 여기도 같이 고쳐야 한다. -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -402,6 +402,21 @@ html.mnav-open,html.mnav-open body{overflow:hidden}
 .pl-fn{margin:6px 0 0;font-size:12px;color:var(--muted);line-height:1.6}
 .mode-tab{display:flex;gap:8px;margin-top:18px;max-width:560px}.mode-tab a{flex:1;padding:12px 14px;border:1.5px solid var(--border);border-radius:10px;background:#fff;font-size:16px;font-weight:700;color:var(--navy);text-align:center;text-decoration:none;line-height:1.4}.mode-tab a span{display:block;font-size:12px;font-weight:500;color:var(--muted);margin-top:2px}.mode-tab a.on{border-color:var(--blue);background:var(--blue);color:#fff}.mode-tab a.on span{color:#E0F2FE}.mode-tab a:not(.on):hover{border-color:var(--blue);color:var(--blue)}
 .aff{display:flex;align-items:center;gap:16px;background:#F5F3FF;border-color:#DDD6FE}.aff-brand{display:flex;align-items:center;gap:8px;flex:none}.aff-logo{width:56px;height:28px;border-radius:6px;object-fit:cover;flex:none}.aff-t{flex:1;min-width:0}.aff-tag{display:inline-block;font-size:12px;font-weight:700;color:#5B21B6;background:#fff;border:1px solid #C4B5FD;border-radius:999px;padding:0 8px;line-height:18px}.aff .cs{margin-top:3px}.aff .cs b{color:#5B21B6;font-weight:700}.aff.card{margin-bottom:6px}.aff-note{margin:0 0 14px;padding:0 4px;font-size:12px;color:var(--muted)}.aff-b{display:flex;gap:8px;flex:none}.aff-b a{padding:9px 14px;background:#fff;border:1px solid #C4B5FD;border-radius:8px;font-size:14px;font-weight:700;color:#5B21B6;text-decoration:none;white-space:nowrap;transition:border-color .15s,background .15s}.aff-b a:hover{border-color:#7C3AED;background:#EDE9FE}@media(max-width:720px){.aff{flex-direction:column;align-items:stretch;gap:10px}.aff .ct{font-size:16px;line-height:1.45}.aff .cs{margin-top:4px;line-height:1.5}.aff-b{width:100%}.aff-b a{flex:1;text-align:center;padding:11px 8px}}
+.basis{width:100%;border-collapse:collapse;font-size:12px;margin-top:6px}
+.basis th,.basis td{border:1px solid var(--border);padding:8px 10px;text-align:left;vertical-align:top;
+  word-break:keep-all;line-height:1.6}
+.basis th{background:#F8FAFC;color:var(--navy);font-weight:700;white-space:nowrap}
+.basis td:last-child{color:var(--muted)}
+.next{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+.next a{flex:1;min-width:180px;display:block;padding:13px 16px;border-radius:10px;text-decoration:none;
+  font-size:14px;font-weight:700;text-align:center;word-break:keep-all}
+.next a.p{background:var(--navy);color:#fff}
+.next a.s{background:#fff;color:var(--navy);border:1.5px solid var(--border)}
+.basis-t{font-size:14px;font-weight:800;color:var(--navy);margin:18px 0 4px}
+.seo h2{font-size:20px;font-weight:800;color:var(--navy);margin:0 0 8px;line-height:1.4}.seo-lead{font-size:16px;line-height:1.75;color:var(--text);margin:0 0 12px}.seo-lead b{color:var(--navy)}.seo-fn{font-size:12px;color:var(--muted);margin:8px 0 0;line-height:1.6}.seo .basis td.hl{font-weight:700;color:var(--navy);white-space:nowrap}.qa{border-top:1px solid var(--border)}.qa:first-of-type{border-top:0}.qa summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;gap:12px;padding:14px 0;font-size:16px;font-weight:600;color:var(--navy)}.qa summary::-webkit-details-marker{display:none}.qa summary::after{content:"+";color:var(--muted);font-weight:400}.qa[open] summary::after{content:"2"}.qa p{font-size:14px;line-height:1.75;color:#334155;margin:0 0 14px}@media(max-width:560px){.seo h2{font-size:18px}.seo-lead{font-size:15px}}
+@media(max-width:560px){.pc{display:none}}.ls>span+span::before{content:" · "}@media(max-width:560px){.ls>span{display:block}.ls>span+span::before{content:none}}.seo .basis{font-size:14px}.seo .basis th,.seo .basis td{padding:9px 12px}@media(max-width:560px){.gift-tbl th:nth-child(2),.gift-tbl td:nth-child(2),.gift-tbl th:nth-child(3),.gift-tbl td:nth-child(3){display:none}.seo .basis th,.seo .basis td{padding:9px 8px}}.seo-lead b{white-space:nowrap}
+@media(max-width:400px){.seo .basis th,.seo .basis td,.seo .rate-table th,.seo .rate-table td{padding-left:6px;padding-right:6px}.basis td{word-break:keep-all;overflow-wrap:break-word}}
+@media(max-width:560px){.basis:not(.gift-tbl) tr:first-child{display:none}.basis:not(.gift-tbl) tr{display:block;padding:10px 12px;border-bottom:1px solid var(--border)}.basis:not(.gift-tbl) tr:last-child{border-bottom:0}.basis:not(.gift-tbl) td{display:block;padding:0!important;border:0!important;font-size:14px}.basis:not(.gift-tbl) td:first-child{font-weight:700;color:var(--navy);margin-bottom:2px}.basis:not(.gift-tbl) td:last-child{font-size:12px;margin-top:4px}}
 </style>
 </head>
 <body>
@@ -589,58 +604,47 @@ html.mnav-open,html.mnav-open body{overflow:hidden}
   </aside>
   <p class="aff-note">제휴 광고 · 셀프등기24가 수수료를 받을 수 있습니다</p>
 
+  <!-- 하단(2026-11-10 시안): 증여 계산기와 같은 틀 — 계산 근거 · 자주 묻는 질문 · 세금을 확인하셨다면.
+       위쪽 8개 질문은 구조화 데이터(FAQPage)와 같은 문구. 계산 로직을 바꾸면 이 표와 구조화 데이터도 같이 고친다 -->
   <div class="card">
-    <div class="toggle-hd" onclick="toggleSection(this)">
-      <div>
-        <div class="ct">1주택 표준세율표</div>
-        <div class="cs" style="margin-top:2px">공동주택 기준 · 지방교육세·농특세 포함 합산세율</div>
-      </div>
-      <span class="ico">+</span>
+    <div class="ch">
+      <div class="step-num">§</div>
+      <div><div class="ct">계산 근거</div><div class="cs">아파트 매매(유상거래) 기준 · 모든 세율은 법령 원문에서 확인한 값입니다.</div></div>
     </div>
-    <div class="toggle-body">
-      <div class="table-scroll">
-        <table class="rate-table">
-          <thead>
-            <tr>
-              <th>취득가액</th>
-              <th>취득세율</th>
-              <th>지방교육세</th>
-              <th>농특세</th>
-              <th>합산세율</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>6억원 이하</td>
-              <td>1.00%</td>
-              <td>0.10%</td>
-              <td>85㎡ 초과만 0.20%</td>
-              <td class="hl">1.10% / 1.30%</td>
-            </tr>
-            <tr>
-              <td>6억 초과~9억 이하</td>
-              <td>1.01%~2.99% <span style="font-size:12px;color:var(--muted)">(가액×2/3억−3)÷100</span></td>
-              <td>취득세×10%</td>
-              <td>85㎡ 초과만 0.20%</td>
-              <td class="hl">사선형 누진</td>
-            </tr>
-            <tr>
-              <td>9억원 초과</td>
-              <td>3.00%</td>
-              <td>0.30%</td>
-              <td>85㎡ 초과만 0.20%</td>
-              <td class="hl">3.30% / 3.50%</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="ntc inf" style="margin-top:10px">
-        <strong>다주택 중과세율 안내</strong><br>
-        · 조정지역 2주택 / 비조정 3주택 : 취득세 8%<br>
-        · 조정지역 3주택 / 4주택 이상 / 법인 : 취득세 12%
-      </div>
+    <div class="table-scroll">
+      <table class="basis">
+        <tr><th>항목</th><th>내용</th><th>근거</th></tr>
+        <tr><td>과세표준</td><td>실제 거래가액(사실상 취득가격)</td><td>지방세법 제10조의3제1항</td></tr>
+        <tr><td>1주택 세율</td><td>6억원 이하 1% / 6억 초과~9억원 이하 (취득가액 × 2/3억원 − 3) × 1/100 / 9억원 초과 3%</td><td>지방세법 제11조제1항제8호</td></tr>
+        <tr><td>다주택 중과</td><td>조정대상지역 2주택·비조정지역 3주택 8% / 조정대상지역 3주택 이상·비조정지역 4주택 이상 12%</td><td>지방세법 제13조의2제1항</td></tr>
+        <tr><td>일시적 2주택</td><td>기간 안에 종전 주택을 처분하면 중과 제외. 3년(종전·신규 모두 조정대상지역이면 2년, 2026.10.1 시행)</td><td>시행령 제28조의5제1항</td></tr>
+        <tr><td>지방교육세</td><td>1주택 세율 × 50% × 20% → 0.1%~0.3% / 중과(8·12%)는 (4% − 2%) × 20% = 0.4%</td><td>지방세법 제151조제1항제1호</td></tr>
+        <tr><td>농어촌특별세</td><td>표준세율을 2%로 적용해 산출한 취득세액의 10% → 0.2%. 전용 85㎡ 이하는 비과세</td><td>농어촌특별세법 제5조제1항제6호<br>제4조제11호</td></tr>
+        <tr><td>생애최초·출산 감면</td><td>취득가액 12억원 이하 · 생애최초 최대 200만원 / 출산·양육 가구 최대 500만원 (둘 중 하나)</td><td>지방세특례제한법 제36조의3·제36조의5</td></tr>
+        <tr><td>신고기한</td><td>취득일(잔금일)부터 60일. 등기 신청에 납부확인서가 필요해 실제로는 등기 접수 전</td><td>지방세법 제20조제1항</td></tr>
+      </table>
     </div>
   </div>
+
+  <section class="card seo" id="faq" aria-labelledby="sec-calc-faq">
+    <h2 id="sec-calc-faq">자주 묻는 질문</h2>
+    <details class="qa"><summary>1주택 6억원 이하 아파트의 취득세율은 얼마인가요?</summary><p>취득세율은 1.00%입니다. 지방교육세 0.10%가 함께 부과되어 합산 1.10%이며, 전용면적 85㎡를 초과하면 농어촌특별세 0.20%가 더해져 합산 1.30%가 됩니다. 최종 확인은 관할 지방자치단체 또는 위택스 안내를 따라 주세요.</p></details>
+    <details class="qa"><summary>취득가액 6억원 초과 9억원 이하 구간의 취득세율은 어떻게 계산하나요?</summary><p>정액이 아니라 사선형 누진입니다. 세율(%) = 취득가액 × 2 ÷ 3억 − 3 으로 계산해 1.01%부터 2.99% 사이의 값이 나옵니다. 예를 들어 7억 5천만원이면 2.00%입니다.</p></details>
+    <details class="qa"><summary>취득가액 9억원을 초과하면 취득세율은 얼마인가요?</summary><p>1주택 기준 취득세율 3.00%입니다. 지방교육세 0.30%를 포함해 합산 3.30%이며, 전용면적 85㎡ 초과 시 농어촌특별세 0.20%가 더해져 3.50%가 됩니다.</p></details>
+    <details class="qa"><summary>조정대상지역에서 2주택을 취득하면 취득세가 얼마인가요?</summary><p>취득세 8%의 중과세율이 적용됩니다. 이때 지방교육세는 취득가액의 0.40%로 계산되며, 전용면적 85㎡ 초과 시 농어촌특별세 0.60%가 추가됩니다. 비조정대상지역의 2주택은 중과 없이 1~3% 일반세율이 적용됩니다.</p></details>
+    <details class="qa"><summary>4주택 이상이면 취득세율이 어떻게 되나요?</summary><p>지역과 무관하게 12%의 최고 중과세율이 적용됩니다. 조정대상지역의 3주택도 동일하게 12%이며, 비조정대상지역 3주택은 8%입니다.</p></details>
+    <details class="qa"><summary>생애최초 주택 구입 시 취득세 감면은 얼마나 받나요?</summary><p>본인과 배우자가 주택을 소유한 사실이 없고 취득가액이 12억원 이하인 경우, 아파트는 산출세액에서 200만원을 공제합니다. 산출세액이 200만원 이하면 취득세가 면제됩니다. 전용면적 60제곱미터 이하이면서 취득가액 3억원(수도권 6억원) 이하인 아파트 외 공동주택·도시형생활주택·다가구주택과 인구감소지역 주택은 300만원 기준이 적용됩니다. 2028년 12월 31일까지 취득분에 적용되며, 취득일부터 3년 이내에 매각·증여하거나 임대하면 추징됩니다.</p></details>
+    <details class="qa"><summary>신생아 출산 가구(출산·양육 가구) 취득세 감면 한도는 얼마인가요?</summary><p>취득가액 12억원 이하이고 1가구 1주택인 경우, 산출세액에서 500만원을 공제하며 산출세액이 500만원 이하면 취득세가 면제됩니다. 2028년 12월 31일까지 출산한 부모가 출산일부터 5년 이내에 취득한 주택이 대상이고, 출산일 전 1년 이내에 취득한 경우도 포함됩니다. 자녀 1명당 먼저 신청하는 1개 주택으로 한정되며, 취득일부터 3년 이내에 매각·증여하거나 임대하면 추징됩니다.</p></details>
+    <details class="qa"><summary>농어촌특별세는 언제 부과되나요?</summary><p>전용면적 85㎡를 초과하는 주택에만 부과되고, 85㎡ 이하는 비과세입니다. 일반세율 구간은 0.20%, 취득세 8% 중과 구간은 0.60%, 12% 중과 구간은 1.00%가 적용됩니다.</p></details>
+    <details class="qa"><summary>취득세는 언제까지 내야 하나요?</summary><p>신고기한은 잔금일(취득일)부터 60일입니다(지방세법 제20조제1항). 다만 소유권이전등기를 신청할 때 취득세 납부확인서를 첨부해야 하므로, 실제로는 등기 접수 전에 납부를 마쳐야 합니다.</p></details>
+    <details class="qa"><summary>부부 공동명의면 취득세 신고를 두 번 하나요?</summary><p>아닙니다. 위택스·이택스에서 대표 매수인 1명 명의로 1건 신고하고, 지분은 세액 계산에만 반영됩니다. 납부는 일부납부로 지분만큼 나눠 낼 수 있습니다.</p></details>
+    <details class="qa"><summary>취득세를 카드로 나눠 낼 수 있나요?</summary><p>위택스 분할납부는 2024년 2월 시스템 개편으로 종료되었습니다. 납부액이 30만원 이상이면 일부만 먼저 내는 일부납부가 가능합니다. 카드 무이자 할부는 카드사와 시기에 따라 다르므로 카드사에서 확인하세요.</p></details>
+    <details class="qa"><summary>등기소에는 어떤 취득세 서류를 내나요?</summary><p>취득세 납부확인서를 냅니다. 납부서(영수증)는 등기 용도로 쓸 수 없습니다.</p></details>
+    <details class="qa"><summary>분양권·오피스텔도 주택 수에 들어가나요?</summary><p>주택분양권과 조합원입주권은 주택 수에 포함됩니다. 오피스텔은 주택으로 재산세를 내는 경우에만 포함되고, 시가표준액 1억원 이하이면 제외됩니다(지방세법 제13조의3, 시행령 제28조의4). 2020년 8월 12일 이후 취득한 것부터 적용됩니다. 예외가 있으므로 관할 구청 세무과에서 확인하세요.</p></details>
+    <details class="qa"><summary>일시적 2주택이면 중과되나요?</summary><p>새 집을 먼저 산 일시적 2주택은 기간 안에 종전 주택을 처분하면 1주택 세율(1~3%)이 적용됩니다. 처분 기간은 3년이며, 종전 주택과 새 주택이 모두 조정대상지역이면 2년입니다(지방세법 시행령 제28조의5, 2026년 10월 1일 시행). 2026년 8월 26일 이전에 계약하고 계약금을 낸 경우에는 종전 3년이 적용됩니다.</p></details>
+    <details class="qa"><summary>신축(분양) 아파트는 언제 취득한 것으로 보나요?</summary><p>일반적으로 잔금을 실제로 치른 날이 취득일입니다(지방세법 시행령 제20조제2항). 사용승인(준공) 전에 잔금을 대부분 냈다면 사용승인일을 취득일로 본 사례가 있고, 취득일 전에 등기를 먼저 하면 등기일이 취득일입니다. 사례마다 판단이 갈리므로 신고 전 관할 구청 세무과에 확인하세요.</p></details>
+  </section>
+
 
   <div class="card">
     <div class="toggle-hd" onclick="toggleSection(this)">
@@ -656,6 +660,23 @@ html.mnav-open,html.mnav-open body{overflow:hidden}
         <li>오피스텔, 증여, 상속 등 예외 조항은 포함되지 않은 아파트(매매) 기준입니다.</li>
         <li>셀프등기24는 본 계산 결과를 바탕으로 한 법적/재무적 책임(가산세 등)을 지지 않습니다.</li>
       </ul>
+    </div>
+  </div>
+
+  <!-- ── 다음 단계 ─────────────────────────── -->
+  <div class="card">
+    <div class="ch">
+      <div class="step-num">✓</div>
+      <div><div class="ct">세금을 확인하셨다면</div><div class="cs">매매로 산 아파트의 소유권이전등기는 법무사 없이 본인이 직접 신청할 수 있습니다.
+      절차와 준비서류는 무료로 확인하실 수 있습니다.</div></div>
+    </div>
+    <div class="next">
+      <a href="guide.html" class="s" onclick="window.SR&&SR.track('calc_cta',{key:'bottom_guide'})">셀프등기 절차 가이드 보기</a>
+      <a href="gift_tax.html" class="s" onclick="window.SR&&SR.track('calc_mode',{key:'gift_bottom'})">증여 취득세 계산기</a>
+    </div>
+    <div class="ntc inf">
+      <b>매매 등기 서류도 자동완성합니다.</b> 등기부를 올리면 부동산·매도인 정보가 채워지고, 위임장·소유권이전등기신청서를 부동산 1건 9,900원에 받을 수 있습니다.
+      <a href="guide.html">매매 등기 절차 보기</a> · <a href="normal_form.html" onclick="window.SR&&SR.track('calc_cta',{key:'bottom_form'})">서류 작성하기 →</a>
     </div>
   </div>
 
