@@ -120,7 +120,7 @@ img{max-width:100%;display:block}
 
 /* 네비게이션 */
 nav{background:rgba(248,250,252,.86);backdrop-filter:saturate(140%) blur(8px);-webkit-backdrop-filter:saturate(140%) blur(8px);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:var(--z-nav)}
-.nav-inner{max-width:1200px;margin:0 auto;padding:0 20px;height:54px;display:flex;align-items:center;gap:2px}
+.nav-inner{max-width:1072px;margin:0 auto;padding:0 20px;height:54px;display:flex;align-items:center;gap:2px}
 .nav-logo{flex-shrink:0;font-size:16px;font-weight:800;color:var(--navy);text-decoration:none;margin-right:auto;letter-spacing:-.02em}
 .nav-logo span{display:inline-block;background:#EAF0FF;color:#1F4FCC;font-size:14px;font-weight:700;letter-spacing:.08em;padding:2px 7px;border-radius:12px;vertical-align:2px;margin-left:6px}
 .nav-a{flex-shrink:0;color:#3D4350;font-size:14px;font-weight:600;padding:8px 10px;border-radius:8px;text-decoration:none;transition:all .15s}
@@ -134,7 +134,7 @@ nav{background:rgba(248,250,252,.86);backdrop-filter:saturate(140%) blur(8px);-w
 
 /* 히어로 (네이비, TOC 없음) */
 header{background:var(--navy)}
-.hero{max-width:1200px;margin:0 auto;padding:56px 20px 52px;text-align:center}
+.hero{max-width:1072px;margin:0 auto;padding:56px 20px 52px;text-align:center}
 .hero h1{font-size:var(--t-h2);font-weight:800;color:#fff;line-height:1.42;letter-spacing:-.02em;margin-bottom:14px;word-break:keep-all}
 .hero h1 em{font-style:normal;color:#2A62F0}
 .hero-sub{font-size:14px;color:rgba(255,255,255,.72);line-height:1.8;margin:0 auto 28px;max-width:900px;word-break:keep-all}
@@ -146,7 +146,7 @@ header{background:var(--navy)}
 @media(min-width:768px){.hero{padding:72px 20px 64px}.hero h1{font-size:var(--t-h1)}.hero-sub{font-size:16px}}
 
 /* 공통 섹션 */
-.section{max-width:1200px;margin:0 auto;padding:44px 20px 0}
+.section{max-width:1072px;margin:0 auto;padding:44px 20px 0}
 @media(min-width:768px){.section{padding-top:60px}}
 .sec-label{display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:700;color:var(--blue);letter-spacing:.6px;margin-bottom:10px}
 .sec-label::before{content:'';display:block;width:3px;height:12px;background:var(--blue);border-radius:2px}
@@ -302,7 +302,7 @@ header{background:var(--navy)}
 /* 푸터 */
 /* 푸터 규격 — index 기준 */
 footer{background:var(--bg);border-top:1px solid var(--border);margin-top:40px;padding:32px 20px 28px}
-.foot-inner{max-width:1200px;margin:0 auto}
+.foot-inner{max-width:1072px;margin:0 auto}
 .foot-brand{font-size:14px;font-weight:800;color:var(--navy);margin-bottom:8px}
 .foot-links{display:flex;gap:6px 14px;margin-bottom:12px;flex-wrap:wrap}
 .foot-links a{color:var(--muted);font-size:14px;text-decoration:none;padding:2px 0}
@@ -469,7 +469,7 @@ details.txt li{font-size:14px;line-height:1.75;color:var(--text);word-break:keep
 @media(max-width:640px){.stp{grid-template-columns:34px minmax(0,1fr);gap:0 12px}.stp-n{width:34px;height:34px;font-size:16px}.stp-head{margin-top:0}.stp-b{grid-column:1 / -1}.sec-title{font-size:24px}}
 .nav-logo{display:inline-flex;align-items:center;gap:7px}.nav-mark{width:22px;height:22px;flex:none}.nav-logo b{color:#2A62F0;font-weight:inherit}.nav-wm{font-weight:inherit}/* 푸터 공통 — index.html 기준 (2026-10-04) */
 footer{background:var(--bg);border-top:1px solid var(--border);margin-top:40px;padding:32px 20px 28px}
-.foot-inner{max-width:1200px;margin:0 auto}
+.foot-inner{max-width:1072px;margin:0 auto}
 .foot-brand{font-size:14px;font-weight:800;color:var(--navy);margin-bottom:8px;display:flex;align-items:center;gap:6px}.foot-mark{width:18px;height:18px;flex:none}.foot-brand b{color:#2A62F0;font-weight:inherit}
 .foot-links{display:flex;gap:6px 14px;margin-bottom:12px;flex-wrap:wrap}
 .foot-links a{color:var(--muted);font-size:14px;text-decoration:none;padding:2px 0}
@@ -478,7 +478,7 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:40px;p
 .foot-copy{font-size:14px;color:var(--muted);line-height:1.9;word-break:keep-all}
 
 /* 상단 메뉴 — index.html 수치로 통일 (2026-10-04) */
-.nav-inner{max-width:1200px;padding:0 20px;height:54px;gap:2px}
+.nav-inner{max-width:1072px;padding:0 20px;height:54px;gap:2px}
 .nav-logo{font-size:16px;letter-spacing:-.02em}
 .nav-a{font-size:14px;font-weight:600;padding:8px 12px;border-radius:8px;letter-spacing:-.16px}
 .nav-scroll{gap:2px}
@@ -545,7 +545,7 @@ html.mnav-open,html.mnav-open body{overflow:hidden}
 /* 페이지 목차 「단계 바」 — 히어로를 지나면 상단 메뉴 아래에 붙어 따라옴 (2026-10-04) */
 .secbar{position:fixed;left:0;right:0;top:54px;z-index:99;background:rgba(255,255,255,.95);-webkit-backdrop-filter:saturate(140%) blur(8px);backdrop-filter:saturate(140%) blur(8px);border-bottom:1px solid var(--border);transform:translateY(-100%);opacity:0;visibility:hidden;transition:transform .2s,opacity .2s,visibility .2s}
 .secbar.on{transform:none;opacity:1;visibility:visible}
-.secbar-inner{max-width:1200px;margin:0 auto;padding:0 20px;height:48px;display:flex;align-items:center;gap:4px;overflow-x:auto;scrollbar-width:none}
+.secbar-inner{max-width:1072px;margin:0 auto;padding:0 20px;height:48px;display:flex;align-items:center;gap:4px;overflow-x:auto;scrollbar-width:none}
 .secbar-inner::-webkit-scrollbar{display:none}
 .secbar-a{flex-shrink:0;display:inline-flex;align-items:center;gap:6px;padding:7px 12px;border-radius:999px;font-size:14px;font-weight:600;color:#3D4350;text-decoration:none;white-space:nowrap;letter-spacing:-.16px}
 .secbar-a:hover{background:#F4F5F8;color:var(--navy)}
@@ -630,7 +630,7 @@ details.txt li .tip{display:block;margin-top:6px;padding:7px 10px;background:#EA
 details.txt li .tip em{font-style:normal;font-weight:800;margin-right:6px}
 @media(max-width:640px){details.txt li{padding-left:30px}details.txt ol{margin:0 12px 12px}}
 /* 「혼자 해도 되나요?」 카드를 본문 단(1160)에 맞춤 — 좌우 20px 튀어나와 있었다 */
-#what{max-width:1160px;margin-left:auto;margin-right:auto}
+#what{max-width:1032px;margin-left:auto;margin-right:auto}
 .qlead{max-width:none}
 
 /* 시안 v5 — TurboTax식 4단: 큰 그림 + 한 문장 */
