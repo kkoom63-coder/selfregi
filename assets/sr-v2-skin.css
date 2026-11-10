@@ -65,3 +65,12 @@ footer .foot-links a{display:inline-flex;align-items:center;min-height:44px}
 /* 터치 영역 44 */
 .toc a{min-height:44px;display:inline-flex;align-items:center}
 .inp-wrap input,.rl-fee{min-height:44px}
+
+/* R5 크리틱 반영(2026-11-11) */
+:root :is(input,textarea)::placeholder{color:var(--sub)}
+.finish .finish-n,.finish small,.finish .fp,.finish-note{color:var(--sub)}
+/* 카드 안 「완료」는 보조, 파란 꽉 찬 버튼은 「다음」 하나 */
+.btn[data-pe=ok]{background:var(--soft);color:var(--ink);border-color:var(--soft)}
+.btn[data-pe=ok]:hover{background:var(--line)}
+/* 결과 강조: 흐려지지 않게, 살짝만 */
+@keyframes srv-pop{from{transform:scale(.96)}}
