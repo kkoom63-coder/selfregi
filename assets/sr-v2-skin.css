@@ -1,0 +1,67 @@
+/* 셀프등기24 v2 표면 — 구조를 그대로 둔 기존 페이지용 공통 덮개.
+   값은 assets/sr-v2.css 의 :root 와 같다(사본). 한쪽 값을 바꾸면 다른 쪽도 바꾼다. */
+:root{
+  --ink:#17171C;--body:#3D4350;--sub:#667085;--line:#E9ECF1;--line-strong:#D5DAE2;--soft:#F4F5F8;
+  --blue-h:#1F4FCC;--blue-soft:#EAF0FF;--warn-ink:#A2410B;--warn-soft:#FFF1E7;
+  --sh:0 20px 48px -20px rgba(23,23,28,.22);
+  --ease:cubic-bezier(.2,.7,.2,1);--spring:cubic-bezier(.3,1.5,.5,1);--d-fast:.2s;--d:.45s;--d-slow:.8s;
+  --t-h1:48px;--t-h2:32px;
+  /* 기존 페이지 변수의 v2 값 */
+  --bg:#fff;--card:#fff;--radius:16px;--shadow:none;
+}
+@media(max-width:768px){:root{--t-h1:32px;--t-h2:24px}}
+body{letter-spacing:-.015em;-webkit-font-smoothing:antialiased}
+h1,h2,h3{letter-spacing:-.035em;text-wrap:pretty}
+:is(a,button,input,select,textarea,summary,[tabindex]):focus-visible{outline:3px solid #2A62F0;outline-offset:3px}
+
+/* 표준 내비: 흰 반투명, 높이 64 */
+nav:has(>.nav-inner){background:rgba(255,255,255,.88);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:0}
+.nav-inner{height:64px}
+.nav-logo{font-size:18px;color:var(--ink);min-height:44px}
+.nav-mark{width:24px;height:24px}
+.nav-inner .nav-a{font-size:16px;color:var(--body);padding:10px 14px;border-radius:999px;transition:background var(--d-fast),color var(--d-fast),transform var(--d-fast) var(--spring)}
+.nav-inner .nav-a:hover{background:var(--soft);color:var(--ink)}
+.nav-inner .nav-a.active,.nav-inner .nav-dd-btn.active[aria-expanded="true"]{background:var(--blue-soft);color:var(--blue-h)}
+.nav-inner .nav-a.cta{background:#2A62F0;color:#fff;border-radius:12px;min-height:44px;padding:8px 18px;display:inline-flex;align-items:center;margin-left:6px}
+.nav-inner .nav-a.cta:hover{background:var(--blue-h);color:#fff}
+.nav-inner .nav-a.cta:active{transform:scale(.96)}
+.nav-dd-menu{border:0;border-radius:16px;box-shadow:var(--sh);padding:8px}
+.nav-dd-menu a{border-radius:12px;font-size:16px}
+.nav-dd-menu a span{font-size:14px;color:var(--sub)}
+.nav-dd-menu:not([hidden]){animation:srv-drop var(--d-fast) var(--ease)}
+@keyframes srv-drop{from{opacity:0;transform:translateY(-6px)}}
+@media(max-width:768px){.nav-logo{font-size:16px}.nav-inner .nav-a{font-size:14px;padding:8px 10px}.nav-inner .nav-a.cta{padding:8px 14px}}
+
+/* 누름 반응: 눌렀다는 응답 */
+:is(button,.btn,[role=button],a[class*=btn],a[class*=cta]){transition:background-color var(--d-fast),border-color var(--d-fast),color var(--d-fast),transform var(--d-fast) var(--spring)}
+:is(button,.btn,[role=button],a[class*=btn],a[class*=cta]):active{transform:scale(.97)}
+
+/* 나타남: 스크립트가 붙인 것만 숨긴다(스크립트가 없으면 처음부터 보인다) */
+.srv-rv{opacity:0;transform:translateY(24px);transition:opacity var(--d-slow) var(--ease),transform var(--d-slow) var(--ease)}
+.srv-rv.in{opacity:1;transform:none}
+/* 결과 강조: 계산 결과가 바뀌는 순간 한 번 */
+.srv-pop{animation:srv-pop var(--d) var(--spring)}
+@keyframes srv-pop{from{transform:scale(.94);opacity:.4}}
+/* 접는 것: 부드럽게 열린다 */
+details{interpolate-size:allow-keywords}
+details::details-content{block-size:0;overflow:hidden;transition:block-size .35s var(--ease),content-visibility .35s allow-discrete}
+details[open]::details-content{block-size:auto}
+
+@media print{.srv-rv{opacity:1!important;transform:none!important}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}html{scroll-behavior:auto}.srv-rv{opacity:1;transform:none}}
+
+/* 마무리 띠 · 바닥글: 진한 띠 대신 옅은 면, 주 행동은 파랑 하나 */
+.finish{background:var(--soft)}
+.finish h3{color:var(--ink)}
+.finish p{color:var(--body)}
+.finish-btns .p{background:#2A62F0;color:#fff}
+.finish-btns .p:hover{background:var(--blue-h)}
+.finish-btns .g{background:#fff;border-color:var(--line-strong);color:var(--ink)}
+.finish-btns .g:hover{background:var(--blue-soft)}
+footer{background:var(--soft);border-top:0}
+footer .foot-links a{display:inline-flex;align-items:center;min-height:44px}
+.presets button{min-height:44px}
+.seg-btn{min-height:44px}
+/* 터치 영역 44 */
+.toc a{min-height:44px;display:inline-flex;align-items:center}
+.inp-wrap input,.rl-fee{min-height:44px}
