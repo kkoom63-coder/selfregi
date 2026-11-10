@@ -179,25 +179,101 @@ h1 .over{display:block;font-size:var(--t-16);font-weight:600;color:var(--sub);le
   .plan .price,.proof-n{font-size:var(--t-48)}
   .shots{gap:8px}.shot figcaption{padding:8px 10px}
 }
+
+/* 표준 내비(다른 페이지와 같은 마크업 · 스크립트) — 값은 토큰 */
+.nav-inner{max-width:var(--frame);margin:0 auto;padding:0 var(--gutter);height:64px;display:flex;align-items:center;gap:4px}
+.nav-scroll{flex:1;min-width:0;display:flex;align-items:center;gap:4px}
+.nav-logo{display:inline-flex;align-items:center;gap:8px;min-height:44px;margin-right:auto;flex-shrink:0;font-size:var(--t-18);font-weight:800;color:var(--ink)}
+.nav-logo b{color:var(--blue);font-weight:inherit}.nav-wm{font-weight:inherit}.nav-mark{width:24px;height:24px;flex:none}
+.nav-a{flex-shrink:0;white-space:nowrap;transition:background var(--d-fast),color var(--d-fast)}
+.nav-a.cta{display:inline-flex;align-items:center;min-height:44px;padding:8px 18px;margin-left:6px;border-radius:var(--r-s);background:var(--blue);color:#fff;font-weight:700;transition:background var(--d-fast),transform var(--d-fast) var(--spring)}
+.nav-a.cta:hover{background:var(--blue-h)}.nav-a.cta:active{transform:scale(.96)}
+.nav-dd{flex-shrink:0;display:inline-flex}
+.nav-dd-btn{display:inline-flex;align-items:center;gap:4px;border:0;background:transparent;font:inherit;font-size:var(--t-16);font-weight:600;color:var(--body)}
+.nav-dd-ic{width:12px;height:12px;transition:transform var(--d-fast)}
+.nav-dd-btn[aria-expanded=true]{background:var(--soft);color:var(--ink)}
+.nav-dd-btn[aria-expanded=true] .nav-dd-ic{transform:rotate(180deg)}
+.nav-dd-menu{position:fixed;z-index:1000;min-width:240px;background:var(--card);border-radius:var(--r-m);box-shadow:var(--sh);padding:8px}
+.nav-dd-menu[hidden]{display:none}
+.js .nav-dd-menu:not([hidden]){animation:dd-in var(--d-fast) var(--ease)}
+@keyframes dd-in{from{opacity:0;transform:translateY(-6px)}}
+.nav-dd-menu a{display:block;padding:10px 12px;border-radius:var(--r-s);color:var(--ink);font-size:var(--t-16);font-weight:700;line-height:1.4}
+.nav-dd-menu a span{display:block;font-size:var(--t-14);font-weight:500;color:var(--sub);margin-top:2px}
+.nav-dd-menu a:hover,.nav-dd-menu a:focus-visible{background:var(--soft)}
+.nav-burger{display:none}
+.nav-burger svg{width:24px;height:24px;stroke:currentColor;stroke-width:2;stroke-linecap:round;fill:none}
+.nav-burger path{transition:transform var(--d-fast),opacity var(--d-fast);transform-origin:12px 12px}
+.nav-burger[aria-expanded=true] .b1{transform:translateY(5px) rotate(45deg)}
+.nav-burger[aria-expanded=true] .b2{opacity:0}
+.nav-burger[aria-expanded=true] .b3{transform:translateY(-5px) rotate(-45deg)}
+.mnav{position:fixed;left:0;right:0;bottom:0;z-index:999;background:var(--card);display:flex;flex-direction:column;overflow-y:auto;overscroll-behavior:contain;border-top:1px solid var(--line)}
+.mnav[hidden]{display:none}
+.mnav-list{flex:1;padding:4px var(--gutter) 20px}
+.mnav-a{display:flex;align-items:center;justify-content:space-between;width:100%;min-height:56px;padding:0;border:0;border-bottom:1px solid var(--line);background:none;font:inherit;font-size:var(--t-16);font-weight:700;color:var(--ink);text-align:left}
+.mnav-a svg{width:14px;height:14px;color:var(--body);transition:transform var(--d-fast)}
+.mnav-acc[aria-expanded=true]{border-bottom-color:transparent}
+.mnav-acc[aria-expanded=true] svg{transform:rotate(180deg)}
+.mnav-sub{padding:2px 0 10px;border-bottom:1px solid var(--line)}
+.mnav-sub[hidden]{display:none}
+.mnav-sub a{display:block;padding:10px 12px;border-radius:var(--r-s);font-size:var(--t-16);font-weight:600;color:var(--body)}
+.mnav-sub a span{display:block;font-size:var(--t-14);font-weight:500;color:var(--sub);margin-top:2px}
+.mnav-cta{padding:14px var(--gutter) calc(14px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--line)}
+.mnav-cta a{display:flex;align-items:center;justify-content:center;min-height:60px;border-radius:var(--r-m);background:var(--blue);color:#fff;font-size:var(--t-18);font-weight:700}
+.mnav-open,.mnav-open body{overflow:hidden}
+@media(max-width:768px){
+  .nav-scroll>.nav-dd{display:none}
+  .nav-inner>.nav-a.cta{display:inline-flex}
+  .js-mnav .nav-inner>.nav-a.cta{display:none}
+  .js-mnav .nav-burger{display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;width:44px;height:44px;margin-left:auto;margin-right:-10px;border:0;background:transparent;border-radius:var(--r-s);color:var(--ink)}
+}
+
+/* 가이드 안내 창 */
+.gg-back{position:fixed;inset:0;z-index:1100;display:none;align-items:center;justify-content:center;padding:20px;background:color-mix(in srgb,var(--ink) 55%,transparent)}
+.gg-back.open{display:flex}
+.gg{position:relative;width:100%;max-width:440px;background:var(--card);border-radius:var(--r-l);box-shadow:var(--sh);padding:32px}
+.js .gg-back.open .gg{animation:gg-in var(--d) var(--spring)}
+@keyframes gg-in{from{opacity:0;transform:translateY(16px) scale(.97)}}
+.gg-x{position:absolute;top:12px;right:12px;width:44px;height:44px;border:0;border-radius:var(--r-s);background:var(--soft);font-size:var(--t-16);color:var(--sub)}
+.gg-x:hover{color:var(--ink)}
+.gg-eyebrow{font-size:var(--t-14);font-weight:700;color:var(--blue-h);margin-bottom:8px}
+.gg-h{font-size:var(--t-24);font-weight:700;color:var(--ink);line-height:1.35;letter-spacing:-.035em;padding-right:44px;margin-bottom:8px}
+.gg-d{font-size:var(--t-16);margin-bottom:16px}
+.gg-list{display:grid;gap:8px;background:var(--soft);border-radius:var(--r-m);padding:16px;margin-bottom:24px}
+.gg-li{display:flex;gap:12px;font-size:var(--t-14);line-height:1.6}
+.gg-li b{flex:none;min-width:64px;color:var(--ink)}
+.gg-btns{display:flex;gap:8px}
+.gg-btns .btn{flex:1;padding-inline:12px}
+@media(max-width:768px){
+  .gg-back{align-items:flex-end;padding:0}
+  .gg{max-width:none;border-radius:var(--r-l) var(--r-l) 0 0;padding:24px 20px calc(24px + env(safe-area-inset-bottom,0px))}
+  .gg-btns{flex-direction:column-reverse}
+}
 </style>
 
 </head>
 <body>
 <a class="skip" href="#main">본문으로 건너뛰기</a>
-<nav><div class="nav-in">
-  <a class="logo" href="index.html" aria-label="셀프등기24 홈"><svg viewBox="0 0 64 64" aria-hidden="true"><g fill="#17171C"><rect x="9" y="41" width="14" height="14" rx="3"/><rect x="25" y="41" width="14" height="14" rx="3"/><rect x="25" y="25" width="14" height="14" rx="3"/><rect x="41" y="41" width="14" height="14" rx="3"/><rect x="41" y="25" width="14" height="14" rx="3"/></g><rect fill="#2A62F0" x="41" y="9" width="14" height="14" rx="3"/></svg><span>셀프등기<b>24</b></span></a>
-  <a class="nav-a" href="guide.html">셀프등기 가이드</a><a class="nav-a" href="cost.html">등기비용 비교</a><a class="nav-a" href="calculator.html">취득세 계산기</a>
-  <a class="btn btn-s" href="normal_form.html">서류 작성하기</a>
-</div></nav>
+<nav>
+  <div class="nav-inner">
+    <div class="nav-scroll">
+      <a href="index.html" class="nav-logo"><svg class="nav-mark" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><g fill="#17171C"><rect x="9" y="41" width="14" height="14" rx="1.5"/><rect x="25" y="41" width="14" height="14" rx="1.5"/><rect x="25" y="25" width="14" height="14" rx="1.5"/><rect x="41" y="41" width="14" height="14" rx="1.5"/><rect x="41" y="25" width="14" height="14" rx="1.5"/></g><rect x="41" y="9" width="14" height="14" rx="1.5" fill="#2A62F0"/></svg><strong class="nav-wm">셀프등기<b>24</b></strong></a>
+      <span class="nav-dd"><button type="button" class="nav-a nav-dd-btn" aria-expanded="false" aria-controls="nav-dd-guide">셀프등기 가이드<svg class="nav-dd-ic" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M3 4.5 6 7.5 9 4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button><span class="nav-dd-menu" id="nav-dd-guide" hidden><a href="guide.html">소유권이전등기 가이드<span>매매 절차·준비서류 전체</span></a><a href="joint.html">공동명의 셀프등기<span>단독명의와 달라지는 점</span></a><a href="gift_guide.html">증여 셀프등기<span>가족 간 증여 절차·신고</span></a><a href="cancel_guide.html">근저당권 말소 가이드<span>대출을 다 갚았을 때</span></a><a href="reject.html">반려·각하 점검<span>접수 전에 확인할 항목</span></a></span></span>
+      <a href="cost.html" class="nav-a">등기비용 비교</a>
+      <span class="nav-dd"><button type="button" class="nav-a nav-dd-btn" aria-expanded="false" aria-controls="nav-dd-calc">부동산 계산기<svg class="nav-dd-ic" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M3 4.5 6 7.5 9 4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button><span class="nav-dd-menu" id="nav-dd-calc" hidden><a href="calculator.html">취득세 계산기<span>매매로 취득할 때</span></a><a href="gift_tax.html">증여 취득세 계산기<span>증여로 취득할 때</span></a></span></span>
+      <a href="https://selfregi.tistory.com" target="_blank" rel="noopener" class="nav-a">블로그</a>
+    </div>
+    <a href="normal_form.html" class="nav-a cta">서류 작성하기</a>
+  </div>
+</nav>
 
 <main id="main">
 <!-- ① 첫 화면: 질문에 답하면 내 등기 계획 -->
 <section class="hero"><div class="wrap hero-g">
   <div class="hero-l">
     <h1><span class="over">법무사 없이 하는 소유권이전등기 셀프등기</span>몇 가지만 답하면,<br><em>내 등기 계획</em>이 나와요</h1>
-    <p class="sub">15억원 아파트면 법무사 보수가 <b class="nw">약 120만원.</b> <span class="nw">내 집은 얼마인지</span> 확인해 보세요.</p>
-    <ul class="checks"><li>가입 없이 바로 확인</li><li>주민등록번호는 저장하지 않아요</li><li>등기소는 단 한 번</li></ul>
-    <p class="note">※ 서울 중위가격 아파트 15억원 기준 법무사 기본보수 상한(대한법무사협회 보수기준 별표 2026. 8. 20. 개정 기준, 실비·부가세 별도) · 실제 견적은 법무사마다 다릅니다</p>
+    <p class="sub">내 집값이면 법무사 보수가 얼마인지, <span class="nw">신청 기한은 언제까지인지</span> 바로 확인할 수 있습니다.</p>
+    <ul class="checks"><li>가입 없이 바로 확인</li><li>주민등록번호는 저장하지 않습니다</li><li>등기소는 단 한 번</li></ul>
+    <p class="note">※ 법무사 보수는 기본보수 상한(대한법무사협회 보수기준 별표 2026. 8. 20. 개정 기준, 실비·부가세 별도)으로 계산합니다 · 실제 견적은 법무사마다 다릅니다</p>
   </div>
 
   <div class="card ask" id="ask">
@@ -245,9 +321,9 @@ h1 .over{display:block;font-size:var(--t-16);font-weight:600;color:var(--sub);le
 <!-- ② 도구: 등기부 한 장으로 칸이 채워진다 -->
 <section class="scene gray" id="tool"><div class="wrap duo">
   <div data-rv>
-    <h2>등기부 한 장 올리면,<br>칸은 알아서 채워져요</h2>
-    <p class="sub">부동산의 표시, 전유면적, 대지권 비율. 한 글자씩 옮겨 적지 않아도 돼요. 관할 등기소도 주소로 찾아 넣어요.</p>
-    <p class="note" style="margin-top:24px">예시 화면 · 완성된 위임장·소유권이전등기신청서는 Word 파일로 내려받아요. 최종 확인은 관할 등기소 안내를 따라 주세요.</p>
+    <h2>등기부 한 장으로 채우는<br>위임장·신청서</h2>
+    <p class="sub">부동산의 표시, 전유면적, 대지권 비율. 한 글자씩 옮겨 적지 않아도 됩니다. 관할 등기소도 주소로 찾아 넣습니다.</p>
+    <p class="note" style="margin-top:24px">예시 화면 · 완성된 위임장·소유권이전등기신청서는 Word 파일로 내려받습니다. 최종 확인은 관할 등기소 안내를 따라 주세요.</p>
   </div>
   <div class="phone" data-rv><div class="screen" data-demo data-state="done" aria-label="등기부를 올리면 칸이 채워지는 예시 화면">
     <div class="file"><span class="pdf">PDF</span>등기사항전부증명서.pdf<span class="st"><i class="st-r">읽는 중…</i><i class="st-d">완료</i></span></div>
@@ -267,20 +343,18 @@ h1 .over{display:block;font-size:var(--t-16);font-weight:600;color:var(--sub);le
 <!-- ③ 가이드: 흩어진 절차를 한 순서로 -->
 <section class="scene" id="guide"><div class="wrap">
   <div class="scene-head narrow" data-rv>
-    <h2>네 곳에 흩어진 절차를,<br>한 순서로 묶었어요</h2>
-    <p class="sub">정부24 · 위택스 · 은행 · 인터넷등기소를 오가는 일을 여섯 단계로 정리했어요. 화면은 실제 캡처 그대로예요.</p>
+    <h2>네 곳에 흩어진 절차,<br>한 순서로 정리한 가이드</h2>
+    <p class="sub">정부24 · 위택스 · 은행 · 인터넷등기소를 오가는 일을 네 단계로 정리했습니다. 화면은 실제 캡처 그대로입니다.</p>
   </div>
   <div class="guide-g">
     <div>
       <ol class="lines" id="lines">
-        <li>등기부 열람<small>인터넷등기소 · 올리면 서류 칸이 채워져요</small></li>
-        <li>위임장 날인<small>잔금일 현장 · 매도인 인감 날인을 받아요</small></li>
-        <li>취득세 신고·납부<small>위택스 · 납부확인서를 출력해요</small></li>
-        <li>국민주택채권 매입<small>은행 · 매입 후 바로 팔 수 있어요</small></li>
-        <li>등기신청수수료 납부<small>인터넷등기소 · 납부 번호를 넣으면 신청서가 완성돼요</small></li>
-        <li class="last">등기소 방문 접수<small>관할 등기소 · 서류를 내면 끝나요. 단 한 번이에요</small></li>
+        <li>서류 준비<small>정부24 · 인터넷등기소 · 등기부를 올리면 서류 칸이 채워집니다</small></li>
+        <li>세금·채권 납부<small>취득세 신고·납부(위택스) · 국민주택채권 매입(은행) · 등기신청수수료 납부(인터넷등기소)</small></li>
+        <li>위임장 날인<small>잔금일 현장 · 매도인 인감 날인을 받습니다</small></li>
+        <li class="last">신청서 접수<small>관할 등기소 방문 · 서류를 내면 끝납니다. 방문은 한 번입니다</small></li>
       </ol>
-      <p class="note" style="margin-top:24px">잔금일부터 60일 안에 신청해야 하고, 기한을 넘기면 과태료가 부과될 수 있어요. 취득세는 등기 접수 전까지 내야 해요.</p>
+      <p class="note" style="margin-top:24px">잔금일부터 60일 안에 신청해야 하고, 기한을 넘기면 과태료가 부과될 수 있습니다. 취득세는 등기 접수 전까지 내야 합니다.</p>
     </div>
     <div class="guide-r" data-rv>
       <div class="shots">
@@ -303,16 +377,16 @@ h1 .over{display:block;font-size:var(--t-16);font-weight:600;color:var(--sub);le
 <!-- ④ 왜 9,900원을 내는가: 직접 작성과 비교 -->
 <section class="scene gray" id="why"><div class="wrap">
   <div class="scene-head narrow" data-rv>
-    <h2>양식을 직접 채울 때와<br>무엇이 다른가요</h2>
-    <p class="sub">같은 등기부로 양식을 직접 내려받아 작성할 때와 비교했어요.</p>
+    <h2>양식 직접 작성과<br>셀프등기24의 차이</h2>
+    <p class="sub">같은 등기부로 양식을 직접 내려받아 작성할 때와 비교했습니다.</p>
   </div>
   <div class="cmp" data-rv>
     <div class="th"><p>양식을 직접 작성할 때</p><p>셀프등기24로 작성할 때</p></div>
-    <div><p>부동산의 표시를 등기부에서 한 글자씩 옮겨 적어요</p><p>등기부를 올리면 그대로 채워져요</p></div>
-    <div><p>어느 칸에 무엇을 적는지 직접 공부해서 채워요</p><p>전유면적·대지권 비율·지분을 읽어 채워요</p></div>
-    <div><p>관할 등기소가 어디인지 따로 확인해요</p><p>주소만 넣으면 관할 등기소를 찾아요</p></div>
-    <div><p>공동명의는 신청서를 직접 나눠 써야 해요</p><p>신청서 부수를 예규에 맞게 나눠요</p></div>
-    <div><p>빠뜨린 항목은 등기소에서 알게 돼요</p><p>반려·각하 사유와 대조해 접수 전에 알려요</p></div>
+    <div><p>부동산의 표시를 등기부에서 한 글자씩 옮겨 적습니다</p><p>등기부를 올리면 그대로 채워집니다</p></div>
+    <div><p>어느 칸에 무엇을 적는지 직접 공부해서 채웁니다</p><p>전유면적·대지권 비율·지분을 읽어 채웁니다</p></div>
+    <div><p>관할 등기소가 어디인지 따로 확인합니다</p><p>주소만 넣으면 관할 등기소를 찾습니다</p></div>
+    <div><p>공동명의는 신청서를 직접 나눠 써야 합니다</p><p>신청서 부수를 예규에 맞게 나눕니다</p></div>
+    <div><p>빠뜨린 항목은 등기소에서 알게 됩니다</p><p>반려·각하 사유와 대조해 접수 전에 알립니다</p></div>
   </div>
   <figure class="real" data-rv>
     <picture><source media="(max-width:768px)" srcset="hero_app_transfer_m3.webp"><img src="hero_app_transfer.webp" width="1800" height="1040" loading="lazy" alt="셀프등기24 서류 작성 화면: 등기사항전부증명서 올리기와 문서 반영 미리보기"></picture>
@@ -324,14 +398,14 @@ h1 .over{display:block;font-size:var(--t-16);font-weight:600;color:var(--sub);le
 <!-- ⑤ 요금: 고르면 바뀐다 -->
 <section class="scene" id="price"><div class="wrap">
   <div class="scene-head" data-rv>
-    <h2>가격은 이게 전부예요</h2>
-    <p class="sub">가이드와 계산기는 무료예요. 서류를 내려받을 때 한 번만 결제해요.</p>
+    <h2>요금</h2>
+    <p class="sub">가이드와 계산기는 무료입니다. 서류를 내려받을 때 한 번만 결제합니다.</p>
   </div>
   <div class="tile" style="padding:12px;display:inline-block;border-radius:var(--r-pill)" data-rv>
     <div class="seg" role="tablist" aria-label="등기 종류" id="seg" style="min-width:min(520px,calc(100vw - 72px))">
-      <button type="button" role="tab" id="tab-sale" aria-selected="true" aria-controls="plan" data-k="sale">집을 샀어요</button>
-      <button type="button" role="tab" id="tab-gift" aria-selected="false" aria-controls="plan" data-k="gift" tabindex="-1">증여받아요</button>
-      <button type="button" role="tab" id="tab-cancel" aria-selected="false" aria-controls="plan" data-k="cancel" tabindex="-1">대출 갚았어요</button>
+      <button type="button" role="tab" id="tab-sale" aria-selected="true" aria-controls="plan" data-k="sale">매매</button>
+      <button type="button" role="tab" id="tab-gift" aria-selected="false" aria-controls="plan" data-k="gift" tabindex="-1">증여</button>
+      <button type="button" role="tab" id="tab-cancel" aria-selected="false" aria-controls="plan" data-k="cancel" tabindex="-1">근저당 말소</button>
     </div>
   </div>
   <div class="card plan" id="plan" role="tabpanel" aria-labelledby="tab-sale" style="padding-inline:0">
@@ -351,7 +425,7 @@ h1 .over{display:block;font-size:var(--t-16);font-weight:600;color:var(--sub);le
 
 <!-- ⑥ 근거: 통계 · 보도 · 후기 -->
 <section class="scene gray center" id="proof"><div class="wrap">
-  <h2 data-rv>직접 하는 사람이 늘고 있어요</h2>
+  <h2 data-rv>늘어나는 본인 직접신청</h2>
   <div data-rv id="pn"><div class="proof-n"><span id="cnt" data-count="45978">45,978</span><small>건</small></div><span class="pill" style="margin-top:12px">2026년 1~8월 본인 직접신청 · 전년 동기 대비 +39.3%</span></div>
   <p class="note" style="margin-top:16px" data-rv>당사자(본인) 직접신청 · 전 등기목적 · 법원 등기정보광장 「부동산등기 신청현황(신청인별)」 재구성 · 근저당 말소 등 전 등기목적 포함, 타관할통지 제외</p>
   <div class="news narrow" data-rv>
@@ -371,7 +445,7 @@ h1 .over{display:block;font-size:var(--t-16);font-weight:600;color:var(--sub);le
 
 <!-- ⑦ 무료 도구 -->
 <section class="scene gray" id="tools"><div class="wrap">
-  <div class="scene-head" data-rv><h2>먼저 무료로 살펴보세요</h2></div>
+  <div class="scene-head" data-rv><h2>무료 도구</h2></div>
   <div class="tools" data-rv>
     <a class="tile tool" href="guide.html"><b>소유권이전등기 가이드</b><span>실제 화면 순서대로</span><i aria-hidden="true">→</i></a>
     <a class="tile tool" href="calculator.html"><b>취득세 계산기</b><span>생애최초·신생아 감면, 다주택 중과 반영</span><i aria-hidden="true">→</i></a>
@@ -407,6 +481,23 @@ h1 .over{display:block;font-size:var(--t-16);font-weight:600;color:var(--sub);le
   <p>© 2026 셀프등기24 · 개인정보를 별도로 저장하지 않으며, 개인정보를 기재하지 않아도 서류 생성이 가능합니다.</p>
   <p>본 서비스는 법률 자문을 제공하지 않으며 등기 신청을 대행하지 않습니다. 최종 확인은 관할 등기소 안내를 따라 주세요.</p>
 </div></footer>
+<div class="gg-back" id="ggBack" role="dialog" aria-modal="true" aria-labelledby="ggH">
+  <div class="gg">
+    <button class="gg-x" id="ggX" type="button" aria-label="닫기">✕</button>
+    <div class="gg-eyebrow">무료 가이드</div>
+    <div class="gg-h" id="ggH">서류를 작성하기 전에 가이드를 보시겠습니까?</div>
+    <div class="gg-d">작성에 필요한 내용을 무료로 정리해 두었습니다.</div>
+    <div class="gg-list">
+      <div class="gg-li"><b>준비서류</b><span>무엇을 어디서 발급받는지</span></div>
+      <div class="gg-li"><b>진행 절차</b><span>어떤 순서로 처리하는지</span></div>
+      <div class="gg-li"><b>실제 화면</b><span>정부24 · 위택스 · 인터넷등기소 캡처</span></div>
+    </div>
+    <div class="gg-btns">
+      <button class="btn btn-q gg-btn" id="ggSkip" type="button">바로 작성하기</button>
+      <button class="btn gg-btn" id="ggGo" type="button">가이드 먼저 보기 →</button>
+    </div>
+  </div>
+</div>
 <div class="dock" id="dock"><a class="btn" href="normal_form.html">서류 작성 시작하기</a></div>
 
 <script>
@@ -501,10 +592,10 @@ window.SR=window.SR||(function(){
         '<div data-st style="--i:1"><dt>셀프등기24 서류 자동완성</dt><dd>− 9,900원</dd></div>'+
         '<div class="total" data-st style="--i:2"><dt>아끼는 돈</dt><dd>약 <span id="r-diff">'+SRV.num(d)+'</span>원</dd></div></dl>'+
         '<dl class="facts"><div data-st style="--i:3"><dt>신청 기한</dt><dd>'+due+'<small'+(late?' class="late"':'')+'>'+sub+'</small></dd></div>'+
-        '<div data-st style="--i:4"><dt>할 일</dt><dd>6가지<small>등기소는 한 번만 가요</small></dd></div></dl>';
+        '<div data-st style="--i:4"><dt>할 일</dt><dd>4단계<small>등기소는 한 번만 가요</small></dd></div></dl>';
       note='보수는 매매가 '+SRV.eok(state.price)+' 기준 법무사 기본보수 상한(대한법무사협회 보수기준 별표 2026. 8. 20. 개정, 실비·부가세 별도)이에요. 실제 견적은 법무사마다 달라요. 취득세·채권·수수료는 어느 쪽이든 똑같이 내요. 기한은 참고용 계산이에요.';
       cta='등기부 올리고 시작하기';href='normal_form.html';
-      more=link('calculator.html','취득세도 계산해 보기')+link('guide.html','여섯 단계 가이드 보기');
+      more=link('calculator.html','취득세도 계산해 보기')+link('guide.html','네 단계 가이드 보기');
     }else if(t==='gift'){
       title='증여 등기, 이렇게 준비해요';
       body=rows([['서류 자동완성','14,900원'],['받는 서류','계약서 · 위임장 · 신청서'],['먼저 할 일','구청 검인']]);
@@ -533,7 +624,7 @@ window.SR=window.SR||(function(){
   /* ── ② 휴대폰 속 시연 ── */
   SRV.demo($('[data-demo]'),{loop:true});
 
-  /* ── ③ 여섯 줄: 화면 가운데를 지난 줄까지 켜진다 ── */
+  /* ── ③ 네 줄: 화면 가운데를 지난 줄까지 켜진다 ── */
   var lines=$('#lines'),lis=$$('li',lines);
   if('IntersectionObserver' in window&&!SRV.reduce){
     lines.classList.add('live');lis[0].classList.add('lit','now');
@@ -580,6 +671,127 @@ window.SR=window.SR||(function(){
   function onScroll(){dock.classList.toggle('show',ask.getBoundingClientRect().bottom<0);}
   addEventListener('scroll',onScroll,{passive:true});onScroll();
 })();
+</script>
+<script>
+/* 상단 메뉴 드롭다운(「셀프등기 가이드」·「부동산 계산기」): 클릭(모든 기기) + 마우스 올림(데스크톱).
+   2026-10-09 드롭다운이 둘이 되어 버튼마다 따로 묶는다. 하나를 열면 나머지는 닫힌다(navdd 이벤트). */
+[].forEach.call(document.querySelectorAll('.nav-dd-btn'),function(b){
+  var m=document.getElementById(b.getAttribute('aria-controls')); if(!m) return;
+  document.body.appendChild(m); /* 가로 스크롤 메뉴 안에서 잘리지 않게 body로 옮긴다 */
+  var hover=window.matchMedia('(hover:hover) and (pointer:fine)'), t=null, via='';
+  function place(){
+    var r=b.getBoundingClientRect(), nb=b.closest('nav').getBoundingClientRect();
+    m.style.top=Math.round(nb.bottom+6)+'px';
+    if(window.innerWidth<=640){ m.style.left='12px'; m.style.right='12px'; }
+    else { m.style.right='auto'; m.style.left=Math.round(Math.max(12,Math.min(r.left,window.innerWidth-m.offsetWidth-12)))+'px'; }
+  }
+  function open(src){ clearTimeout(t); via=src; if(!m.hidden) return; document.dispatchEvent(new CustomEvent('navdd',{detail:m})); m.hidden=false; b.setAttribute('aria-expanded','true'); place(); }
+  function close(){ clearTimeout(t); if(m.hidden) return; m.hidden=true; b.setAttribute('aria-expanded','false'); via=''; }
+  b.addEventListener('click',function(e){
+    e.stopPropagation();
+    if(!m.hidden && via==='hover'){ via='click'; return; }
+    if(m.hidden){ open('click'); if(e.detail===0){ var a=m.querySelector('a'); if(a) a.focus(); } } else close();
+  });
+  document.addEventListener('click',function(e){ if(!m.hidden && !m.contains(e.target)) close(); });
+  document.addEventListener('navdd',function(e){ if(e.detail!==m) close(); });
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape' && !m.hidden){ close(); b.focus(); } });
+  m.addEventListener('focusout',function(e){ if(e.relatedTarget && !m.contains(e.relatedTarget) && e.relatedTarget!==b) close(); });
+  window.addEventListener('resize',function(){ if(!m.hidden) place(); });
+  window.addEventListener('scroll',close,{passive:true});
+  var sc=b.closest('.nav-scroll'); if(sc) sc.addEventListener('scroll',close,{passive:true});
+  if(hover.matches){
+    [b,m].forEach(function(el){
+      el.addEventListener('mouseenter',function(){ open(via||'hover'); });
+      el.addEventListener('mouseleave',function(){ t=setTimeout(close,200); });
+    });
+  }
+});
+</script>
+<script>
+/* 모바일 햄버거 메뉴: 상단 메뉴 항목을 복제해 ≡ 패널로 보여준다 (768px 이하) */
+(function(){
+  var nav=document.querySelector('nav'),inner=nav&&nav.querySelector('.nav-inner'),sc=inner&&inner.querySelector('.nav-scroll'); if(!sc) return;
+  document.documentElement.classList.add('js-mnav');
+  var btn=document.createElement('button'); btn.type='button'; btn.className='nav-burger';
+  btn.setAttribute('aria-label','메뉴 열기'); btn.setAttribute('aria-expanded','false'); btn.setAttribute('aria-controls','mnav');
+  btn.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path class="b1" d="M4 7h16"/><path class="b2" d="M4 12h16"/><path class="b3" d="M4 17h16"/></svg>';
+  inner.appendChild(btn);
+  var p=document.createElement('div'); p.id='mnav'; p.className='mnav'; p.hidden=true; p.setAttribute('role','dialog'); p.setAttribute('aria-label','전체 메뉴');
+  var list=document.createElement('div'); list.className='mnav-list'; p.appendChild(list);
+  [].forEach.call(sc.children,function(el){
+    if(el.tagName==='A'&&el.classList.contains('nav-a')){ var a=el.cloneNode(true); a.removeAttribute('id'); a.className='mnav-a'; list.appendChild(a); }
+    else if(el.classList.contains('nav-dd')){
+      var ob=el.querySelector('.nav-dd-btn'),menu=ob&&document.getElementById(ob.getAttribute('aria-controls')); if(!menu) return;
+      var on=ob.classList.contains('active');
+      var ab=document.createElement('button'); ab.type='button'; ab.className='mnav-a mnav-acc';
+      ab.setAttribute('aria-expanded',on?'true':'false'); ab.setAttribute('aria-controls','mnav-sub-'+menu.id);
+      ab.innerHTML=ob.childNodes[0].textContent+'<svg viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M3 4.5 6 7.5 9 4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+      var sub=document.createElement('div'); sub.id='mnav-sub-'+menu.id; sub.className='mnav-sub'; sub.hidden=!on;
+      [].forEach.call(menu.querySelectorAll('a'),function(x){ sub.appendChild(x.cloneNode(true)); });
+      ab.addEventListener('click',function(){ var o=ab.getAttribute('aria-expanded')==='true'; ab.setAttribute('aria-expanded',String(!o)); sub.hidden=o; });
+      list.appendChild(ab); list.appendChild(sub);
+    }
+  });
+  var cta=null; [].forEach.call(inner.children,function(el){ if(el.classList.contains('cta')) cta=el; });
+  if(cta){ var f=document.createElement('div'); f.className='mnav-cta'; var c=cta.cloneNode(true); c.removeAttribute('class'); c.removeAttribute('id'); f.appendChild(c); p.appendChild(f); }
+  document.body.appendChild(p);
+  /* 메뉴가 열린 동안 뒤 화면은 키보드·화면낭독기에서 제외 */
+  function lock(on){ [].forEach.call(document.body.children,function(el){ if(el===p||el.contains(nav)||el.tagName==='SCRIPT') return; el.inert=on; }); }
+  function open(){ p.style.top=Math.max(0,Math.round(nav.getBoundingClientRect().bottom))+'px'; p.hidden=false; btn.setAttribute('aria-expanded','true'); btn.setAttribute('aria-label','메뉴 닫기'); document.documentElement.classList.add('mnav-open'); lock(true); var f=p.querySelector('a,button'); if(f) f.focus(); }
+  function close(){ p.hidden=true; btn.setAttribute('aria-expanded','false'); btn.setAttribute('aria-label','메뉴 열기'); document.documentElement.classList.remove('mnav-open'); lock(false); }
+  btn.addEventListener('click',function(){ p.hidden?open():close(); });
+  p.addEventListener('click',function(e){ if(e.target.closest&&e.target.closest('a')) close(); });
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape'&&!p.hidden){ close(); btn.focus(); } });
+  window.addEventListener('resize',function(){ if(window.innerWidth>768&&!p.hidden) close(); });
+})();
+</script>
+<script>
+/* 가이드 안내 창(운영본 동작 그대로): 가이드를 한 번도 연 적 없는 이용자가 서류 작성으로 갈 때, 페이지 로드당 한 번. */
+(function(){
+  var SEEN='selfregi_guide_seen_v1';
+  var shown=false;                       /* 페이지 로드 단위 — 새로고침하면 다시 노출됨 */
+  var back=document.getElementById('ggBack'), pending=null, lastFocus=null;
+  /* 저장소를 못 읽으면 true(=이미 봄)로 처리 — 기록이 안 남는 환경에서 매번 뜨는 것을 막음 */
+  function has(k){ try{ return !!localStorage.getItem(k); }catch(e){ return true; } }
+  window.ggNeeded=function(url){
+    url=String(url||'').split('?')[0];
+    if(url!=='normal_form.html' && url!=='land_form.html') return false;
+    return !has(SEEN) && !shown;
+  };
+  window.ggOpen=function(url){
+    pending=url; shown=true; lastFocus=document.activeElement;
+    back.classList.add('open'); document.body.style.overflow='hidden';
+    document.getElementById('ggGo').focus();
+    try{ window.SR&&SR.track('guide_gate_shown',{from:'case'}); }catch(e){}
+  };
+  function close(){
+    back.classList.remove('open'); document.body.style.overflow='';
+    if(lastFocus&&lastFocus.focus) lastFocus.focus();
+  }
+  function choose(c){
+    try{ window.SR&&SR.track('guide_gate_choice',{key:c}); }catch(e){}
+    location.href = (c==='guide') ? 'guide.html' : pending;
+  }
+  document.getElementById('ggGo').addEventListener('click',function(){ choose('guide'); });
+  document.getElementById('ggSkip').addEventListener('click',function(){ choose('form'); });
+  document.getElementById('ggX').addEventListener('click',close);
+  back.addEventListener('click',function(e){ if(e.target===back) close(); });
+  document.addEventListener('keydown',function(e){
+    if(!back.classList.contains('open')) return;
+    if(e.key==='Escape'){ e.preventDefault(); close(); return; }
+    if(e.key==='Tab'){ /* 포커스 트랩 */
+      var f=back.querySelectorAll('button'); if(!f.length) return;
+      var first=f[0], last=f[f.length-1];
+      if(e.shiftKey && document.activeElement===first){ e.preventDefault(); last.focus(); }
+      else if(!e.shiftKey && document.activeElement===last){ e.preventDefault(); first.focus(); }
+    }
+  });
+})();
+document.addEventListener('click',function(e){
+  var a=e.target.closest&&e.target.closest('#main a[href^="normal_form.html"],#dock a[href^="normal_form.html"]');
+  if(!a||!window.ggNeeded)return;var u=a.getAttribute('href');
+  if(ggNeeded(u)){e.preventDefault();ggOpen(u);}
+});
 </script>
 </body>
 </html>
