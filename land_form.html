@@ -29,7 +29,7 @@
 <meta property="og:description" content="대지지분 별도등기 신청서와 위임장을 입력값에 맞춰 자동으로 완성합니다.">
 <meta property="og:image" content="https://www.selfregi24.com/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/fonts/pretendard.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <style>
 body{word-break:keep-all;overflow-wrap:break-word} /* 한국어 단어 중간 줄바꿈 방지 — 팝업·패널 포함 사이트 전체 기본값(2026-10-17) */
@@ -41,78 +41,86 @@ body{word-break:keep-all;overflow-wrap:break-word} /* 한국어 단어 중간 �
 :root{
   /* z-index 스케일 — 다른 페이지와 동일 */
   --z-nav:100;--z-bar:150;--z-skip:250;--z-overlay:1000;--z-zoom:1100;--z-toast:1200;
-  --navy:#0F172A;--blue:#0369A1;--gold:#0369A1;--bg:#F8FAFC;--card:#fff;--text:#020617;--muted:#64748B;--border:#E2E8F0;--radius:12px;--shadow:0 2px 12px rgba(2,6,23,.08)}
-body{font-family:'Noto Sans KR','Malgun Gothic',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6}
+  --navy:#17171C;--blue:#2A62F0;--gold:#2A62F0;--bg:#F4F5F8;--card:#fff;--text:#17171C;--muted:#667085;--border:#E9ECF1;--radius:12px;--shadow:0 2px 12px rgba(23,23,28,.08)}
+body{font-family:'Pretendard Variable',Pretendard,-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6}
 header{background:var(--navy);color:#fff}
 .back-bar{background:var(--navy);border-bottom:1px solid rgba(255,255,255,.06);padding:0 20px}
 .back-bar-inner{max-width:720px;margin:0 auto;height:32px;display:flex;align-items:center}
-.back-a{display:inline-flex;align-items:center;gap:4px;color:rgba(255,255,255,.45);font-size:12px;font-weight:500;text-decoration:none;transition:color .12s}
+.back-a{display:inline-flex;align-items:center;gap:4px;color:rgba(255,255,255,.45);font-size:14px;font-weight:500;text-decoration:none;transition:color .12s}
 .back-a:hover{color:#fff}
 .hi{max-width:720px;margin:0 auto;padding:22px 20px 18px}
-.badge{display:inline-block;background:rgba(3,105,161,.25);color:#7DD3FC;font-size:12px;font-weight:700;letter-spacing:1.5px;padding:2px 9px;border-radius:20px;margin-bottom:10px}
-header h1{font-size:20px;font-weight:700;margin-bottom:4px}
+.badge{display:inline-block;background:rgba(42,98,240,.25);color:#2A62F0;font-size:14px;font-weight:700;letter-spacing:1.5px;padding:2px 9px;border-radius:999px;margin-bottom:10px}
+header h1{font-size:24px;font-weight:700;margin-bottom:4px}
 header p{font-size:14px;color:rgba(255,255,255,.6)}
-.sbar{background:#172f4e;border-top:1px solid rgba(255,255,255,.08)}
+.sbar{background:#17171C;border-top:1px solid rgba(255,255,255,.08)}
 .sbi{max-width:720px;margin:0 auto;padding:10px 20px;display:flex;gap:5px;align-items:center}
 .sd{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.25)}
-.sd.on{background:#7DD3FC}
-.sl{font-size:12px;color:rgba(255,255,255,.45);margin-right:6px}
+.sd.on{background:#2A62F0}
+.sl{font-size:14px;color:rgba(255,255,255,.45);margin-right:6px}
 main{max-width:720px;margin:0 auto;padding:20px 14px 60px}
 .card{background:var(--card);border-radius:var(--radius);border:1px solid var(--border);padding:22px;margin-bottom:14px;box-shadow:var(--shadow)}
-.card.blue-card{border:1.5px solid var(--blue);background:#E0F2FE}
+.card.blue-card{border:1.5px solid var(--blue);background:#EAF0FF}
 .ch{display:flex;align-items:center;gap:10px;margin-bottom:16px}
-.ci{width:32px;height:32px;background:#E0F2FE;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.ci{width:32px;height:32px;background:#EAF0FF;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
 .ct{font-size:14px;font-weight:700;color:var(--navy)}
-.cs{font-size:12px;color:var(--muted);margin-top:1px}
+.cs{font-size:14px;color:var(--muted);margin-top:1px}
 .fg{display:grid;grid-template-columns:1fr 1fr;gap:11px}
 .fg.s1{grid-template-columns:1fr}
 .fg.s3{grid-template-columns:1fr 1fr 1fr}
 .f{display:flex;flex-direction:column;gap:4px}
-label{font-size:12px;font-weight:500;color:#334155}
+label{font-size:14px;font-weight:500;color:#3D4350}
 .req{color:#DC2626;margin-left:2px}
 .hint{color:var(--muted);font-weight:400;margin-left:3px}
-.addr-tip{font-size:12px;color:var(--muted);line-height:1.6;margin-top:6px;padding:7px 10px;background:#f4f6fb;border-radius:6px;border-left:3px solid var(--blue)}
+.addr-tip{font-size:14px;color:var(--muted);line-height:1.6;margin-top:6px;padding:7px 10px;background:#F4F5F8;border-radius:8px;border-left:3px solid var(--blue)}
 .addr-tip b{color:var(--navy)}
 input[type=text],input[type=number],input[type=email],select{height:38px;border:1px solid var(--border);border-radius:8px;padding:0 10px;font-size:14px;font-family:inherit;color:var(--text);background:#FFFFFF;outline:none;transition:border-color .15s,box-shadow .15s;width:100%}
-input:focus,select:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(3,105,161,.12);background:#fff}
-input::placeholder{color:#c0c8d8;font-size:12px}
+input:focus,select:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(42,98,240,.12);background:#fff}
+input::placeholder{color:#D5DAE2;font-size:14px}
 select{cursor:pointer;appearance:auto}
-.fn{font-size:12px;color:var(--muted);line-height:1.4}
+.fn{font-size:14px;color:var(--muted);line-height:1.4}
 .divider{height:1px;background:var(--border);margin:16px 0}
-.ntc{border-radius:8px;padding:10px 12px;font-size:12px;line-height:1.6;margin-top:10px}
-.ntc.inf{background:#E0F2FE;border:1px solid #BAE6FD;color:#075985}
-.ntc.wrn{background:#fff8e6;border:1px solid #e8cc80;color:#5a3d00}
-.ntc.inf2{background:#E0F2FE;border:1px solid #b0c8f0;color:#1e3a6e}
+.ntc{border-radius:8px;padding:10px 12px;font-size:14px;line-height:1.6;margin-top:10px}
+.ntc.inf{background:#EAF0FF;border:1px solid #EAF0FF;color:#1F4FCC}
+.ntc.wrn{background:#FFF1E7;border:1px solid #FFF1E7;color:#A2410B}
+.ntc.inf2{background:#EAF0FF;border:1px solid #D5DAE2;color:#17171C}
 .ntc strong{font-weight:600}
 
 /* 신탁사 선택 */
-.trust-preview{display:none;background:#f4f8ff;border:1px solid #BAE6FD;border-radius:8px;padding:11px 13px;font-size:12px;color:#1e3a6e;line-height:1.9;margin-top:10px}
+.trust-preview{display:none;background:#EAF0FF;border:1px solid #EAF0FF;border-radius:8px;padding:11px 13px;font-size:14px;color:#17171C;line-height:1.9;margin-top:10px}
 .trust-preview strong{font-size:14px;display:block;margin-bottom:2px}
 #custom-fields{display:none;margin-top:12px}
 #custom-fields.open{display:block}
 
 /* 체크리스트 */
 .cl-section{margin-bottom:14px}
-.cl-section-title{font-size:12px;font-weight:700;color:var(--navy);background:#E0F2FE;border-radius:6px;padding:6px 10px;margin-bottom:8px}
-.cl-item{display:flex;align-items:flex-start;gap:8px;padding:7px 4px;border-bottom:1px solid #f0f2f6;font-size:12px;color:var(--text);line-height:1.5}
+.cl-section-title{font-size:14px;font-weight:700;color:var(--navy);background:#EAF0FF;border-radius:8px;padding:6px 10px;margin-bottom:8px}
+.cl-item{display:flex;align-items:flex-start;gap:8px;padding:7px 4px;border-bottom:1px solid #F4F5F8;font-size:14px;color:var(--text);line-height:1.5}
 .cl-item:last-child{border-bottom:none}
 .cl-item input[type=checkbox]{margin-top:2px;accent-color:var(--blue);width:14px;height:14px;flex-shrink:0;cursor:pointer}
 .cl-item label{cursor:pointer}
 
 /* 버튼 */
-.dbtn{display:flex;flex-direction:column;align-items:center;gap:5px;padding:16px 10px;border-radius:10px;border:none;cursor:pointer;font-family:inherit;transition:transform .15s,box-shadow .15s}
-.dbtn:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,.12)}
+.dbtn{display:flex;flex-direction:column;align-items:center;gap:5px;padding:16px 10px;border-radius:12px;border:none;cursor:pointer;font-family:inherit;transition:transform .15s,box-shadow .15s}
+.dbtn:hover{transform:translateY(-2px);box-shadow:0 20px 48px -20px rgba(23,23,28,.22)}
 .d1{background:var(--navy);color:#fff}
-.diw{width:36px;height:36px;background:rgba(255,255,255,.15);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:18px}
+.diw{width:36px;height:36px;background:rgba(255,255,255,.15);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px}
 .dn{font-size:14px;font-weight:700}
-.ds{font-size:12px;opacity:.75}
+.ds{font-size:14px;opacity:.75}
 
-.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(80px);background:#047857;color:#fff;padding:9px 18px;border-radius:8px;font-size:12px;font-weight:500;transition:transform .3s;z-index:var(--z-toast);white-space:nowrap}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(80px);background:#1F4FCC;color:#fff;padding:9px 18px;border-radius:8px;font-size:14px;font-weight:500;transition:transform .3s;z-index:var(--z-toast);white-space:nowrap}
 .toast.show{transform:translateX(-50%) translateY(0)}
-footer{text-align:center;padding:18px;font-size:12px;color:#64748B;max-width:720px;margin:0 auto}
+footer{text-align:center;padding:18px;font-size:14px;color:#667085;max-width:720px;margin:0 auto}
 @media(max-width:520px){.fg,.fg.s3{grid-template-columns:1fr}}
 </style>
 
+<link rel="stylesheet" href="assets/sr-v2-skin.css?v=1111">
+<style id="sr-v2-skin">
+/* v2 표면(2026-11-11) — 이 페이지의 진한 띠 · 고유 부품. 구조 · 문구 · 동작은 그대로다. */
+header{background:#F4F5F8;color:#17171C}
+.back-a{color:#667085}
+.back-a:hover{color:#17171C}
+header p{color:#3D4350}
+</style>
 </head>
 <body>
 
@@ -128,7 +136,7 @@ footer{text-align:center;padding:18px;font-size:12px;color:#64748B;max-width:720
   <div class="hi">
         <h1>📄 셀프등기 서류 자동생성기</h1>
     <p>대지지분 별도등기 서류를 직접 작성해 비용을 절약하세요</p>
-    <p style="font-size:12px;color:rgba(255,255,255,.4);margin-top:6px;">본 서비스는 개인정보를 별도로 저장하고 있지 않으며, 개인정보를 기재하지 않아도 서류를 자동완성할 수 있습니다.</p>
+    <p style="font-size:14px;color:rgba(255,255,255,.4);margin-top:6px;">본 서비스는 개인정보를 별도로 저장하고 있지 않으며, 개인정보를 기재하지 않아도 서류를 자동완성할 수 있습니다.</p>
   </div>
 </header>
 
@@ -233,9 +241,9 @@ footer{text-align:center;padding:18px;font-size:12px;color:#64748B;max-width:720
 
   <div class="trust-preview" id="trust-preview">
     <strong id="tp-name"></strong>
-    <span id="tp-addr" style="color:#075985;font-size:12px"></span><br>
-    <span style="color:#555">대표이사: </span><span id="tp-ceo"></span> &nbsp;|&nbsp;
-    <span style="color:#555">법인번호: </span><span id="tp-reg"></span>
+    <span id="tp-addr" style="color:#1F4FCC;font-size:14px"></span><br>
+    <span style="color:#3D4350">대표이사: </span><span id="tp-ceo"></span> &nbsp;|&nbsp;
+    <span style="color:#3D4350">법인번호: </span><span id="tp-reg"></span>
   </div>
 
   <div id="custom-fields">
@@ -298,8 +306,8 @@ footer{text-align:center;padding:18px;font-size:12px;color:#64748B;max-width:720
 
 <!-- ⑧ 로드맵 네비게이션 (다운로드 후 다음 단계) -->
 <div class="card">
-  <button id="btn-roadmap" class="dbtn" onclick="goRoadmap()" style="width:100%;display:flex;flex-direction:row;align-items:center;justify-content:center;gap:12px;padding:18px 20px;background:var(--navy);color:#fff;border:none;border-radius:10px;cursor:pointer;font-family:inherit;transition:background .15s">
-    <div class="diw" style="font-size:24px;background:rgba(255,255,255,.15);border-radius:7px;display:flex;align-items:center;justify-content:center;width:36px;height:36px">🗺️</div>
+  <button id="btn-roadmap" class="dbtn" onclick="goRoadmap()" style="width:100%;display:flex;flex-direction:row;align-items:center;justify-content:center;gap:12px;padding:18px 20px;background:var(--navy);color:#fff;border:none;border-radius:12px;cursor:pointer;font-family:inherit;transition:background .15s">
+    <div class="diw" style="font-size:24px;background:rgba(255,255,255,.15);border-radius:8px;display:flex;align-items:center;justify-content:center;width:36px;height:36px">🗺️</div>
     <div style="text-align:left">
       <div class="dn">준비서류 및 체크리스트 확인하기</div>
       <div class="ds">동선 로드맵 · 관할 구청·등기소 자동 안내</div>
@@ -309,8 +317,8 @@ footer{text-align:center;padding:18px;font-size:12px;color:#64748B;max-width:720
 
 </main>
 <footer>
-  셀프등기 서류 및 상세 절차 안내는 <a href="https://selfregi.tistory.com" target="_blank" rel="noopener" style="color:#64748B;text-decoration:underline">블로그</a>를 참고하시기 바랍니다.<br>
-  셀프등기24 · 대표 허민 · 사업자등록번호 164-20-02315 · 주소 서울특별시 중구 동호로 173 · 이메일 <a href="mailto:selfregi999@gmail.com" style="color:#0369A1;text-decoration:none">selfregi999@gmail.com</a><br>© 2026 셀프등기24 셀프등기 서류 자동생성기 · 본 서비스는 법률 자문을 제공하지 않습니다
+  셀프등기 서류 및 상세 절차 안내는 <a href="https://selfregi.tistory.com" target="_blank" rel="noopener" style="color:#667085;text-decoration:underline">블로그</a>를 참고하시기 바랍니다.<br>
+  셀프등기24 · 대표 허민 · 사업자등록번호 164-20-02315 · 주소 서울특별시 중구 동호로 173 · 이메일 <a href="mailto:selfregi999@gmail.com" style="color:#2A62F0;text-decoration:none">selfregi999@gmail.com</a><br>© 2026 셀프등기24 셀프등기 서류 자동생성기 · 본 서비스는 법률 자문을 제공하지 않습니다
 </footer>
 <div class="toast" id="toast"></div>
 
