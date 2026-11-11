@@ -93,3 +93,7 @@ footer .foot-links a{display:inline-flex;align-items:center;min-height:44px}
 :root .jr-a{min-height:44px}
 :root .home-date input{font-size:16px}
 :root .pg-seg a{display:inline-flex;align-items:center}
+/* R5-B09 · B11: 브라우저 기본값이 새어 나온 곳 */
+button,input,select,textarea{font-family:inherit}
+a:not([class]):not([style*=color]){color:var(--blue-h)}
+.req{color:var(--warn-ink)}
