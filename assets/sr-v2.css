@@ -145,8 +145,10 @@ input[type=date]:focus{border-color:var(--blue);outline:0}
 .lines li{display:grid;grid-template-columns:56px 1fr;align-items:baseline;gap:8px;padding:16px 0;font-size:var(--t-32);font-weight:800;letter-spacing:-.035em;color:var(--ink);line-height:1.3}
 .lines li::before{counter-increment:n;content:counter(n);font-size:var(--t-24);color:var(--blue);font-variant-numeric:tabular-nums}
 .lines small{display:block;grid-column:2;font-size:var(--t-16);font-weight:500;color:var(--sub);letter-spacing:-.01em;margin-top:2px}
-.js .lines.live li{opacity:.62;transition:opacity .35s var(--ease),transform .35s var(--ease)}
-.js .lines.live li.lit{opacity:1}
+/* 꺼진 줄은 흐림(opacity) 대신 색으로 — 대비 4.5:1 유지(R5-B01) */
+.js .lines.live li{color:var(--sub);transition:color .35s var(--ease),transform .35s var(--ease)}
+.js .lines.live li.lit{color:var(--ink)}
+.js .lines.live li.lit.last{color:var(--blue)}
 .js .lines.live li.now{transform:translateX(8px)}
 .lines .last{color:var(--blue)}
 
