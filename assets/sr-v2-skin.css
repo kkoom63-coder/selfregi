@@ -74,3 +74,22 @@ footer .foot-links a{display:inline-flex;align-items:center;min-height:44px}
 .btn[data-pe=ok]:hover{background:var(--line)}
 /* 결과 강조: 흐려지지 않게, 살짝만 */
 @keyframes srv-pop{from{transform:scale(.96)}}
+/* R5-B03 · B04: 옅은 파랑 면 위 글씨는 --blue-h / --body (4.5:1 이상) */
+.tt-w,.vault-prog,b.zero,.code,.pay-re b,.pay-state a,.guide-link,.h1-docs span{color:var(--blue-h)}
+.aff-t .cs,.sec-sub,.drop .sub,.drop .sub b,.pay-re,.jr-t small{color:var(--body)}
+.mode-tab a.on span{color:#fff}
+/* R5-B02: 파란 버튼 안 보조 글씨는 흰색 그대로 */
+.pay-btn .ds,.dbtn .ds{color:#fff!important;opacity:1!important}
+/* R5-B05 · B06: 서류 작성 화면 터치 44 · 입력 글자 16 */
+.pg-back,.back-a{display:inline-flex;align-items:center;min-height:44px}
+.pg-sale,.pg-gift,.home-ck,.deal-tab-btn,.guide-link{min-height:44px}
+.s7{min-height:44px}
+.fld input,.fld select,.fld textarea,input.bal,.f input,.f select,.f textarea,.fg input,.fg select{min-height:44px;font-size:16px}
+:root td b.zero{color:var(--blue-h)}
+:root .wz-card .pay-re{color:var(--body)}
+#btn-roadmap .ds{color:var(--body)!important}
+:root .pg-seg a,:root .home-date input,:root .dm-open,:root .pv-in{min-height:44px}
+:root a.iros{display:inline-flex;align-items:center;min-height:44px}
+:root .jr-a{min-height:44px}
+:root .home-date input{font-size:16px}
+:root .pg-seg a{display:inline-flex;align-items:center}
