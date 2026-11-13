@@ -144,7 +144,9 @@ h1 .over{display:block;font-size:var(--t-16);font-weight:600;color:var(--sub);le
 .plan .price{font-size:var(--t-num);font-weight:800;color:var(--ink);line-height:1.1;letter-spacing:-.04em;font-variant-numeric:tabular-nums}
 .plan .price small{font-size:var(--t-24);letter-spacing:0;margin-left:4px}
 .plan p{font-size:var(--t-16);margin-top:8px}
-.plan .btn{margin-top:20px}
+.pl-acts{display:flex;flex-wrap:wrap;gap:12px;margin-top:20px}
+.pl-acts [hidden]{display:none}
+@media(max-width:768px){.pl-acts .btn{flex:1 1 100%}}
 .terms{list-style:none;padding:0;display:grid;gap:12px}
 .terms li{background:var(--soft);border-radius:var(--r-m);padding:14px 18px;font-size:var(--t-16);font-weight:600;color:var(--ink)}
 .plan .svc{grid-column:1/-1;border-top:1px solid var(--line);border-bottom:0}
@@ -425,7 +427,7 @@ h1 .over{display:block;font-size:var(--t-16);font-weight:600;color:var(--sub);le
       <span class="tag sw" id="pl-tag">매매 소유권이전등기 · 부동산 1건 · 부가세 포함</span>
       <div class="price"><span id="pl-price">9,900</span><small id="pl-unit">원</small></div>
       <p class="sw" id="pl-desc">위임장 · 소유권이전등기신청서 · 매매목록(해당 시) 자동완성 (Word 파일). 공동명의(각 2인까지)도 결제는 한 번입니다.</p>
-      <a class="btn" href="normal_form.html" id="pl-cta">매매 서류 작성하기</a>
+      <div class="pl-acts"><a class="btn" href="normal_form.html" id="pl-cta">매매 서류 작성하기</a><a class="btn btn-q" href="guide.html" id="pl-guide">소유권이전등기 가이드 보기</a></div>
     </div>
     <ul class="terms">
       <li>같은 부동산·같은 매수인은 결제일부터 30일 이상 재발급 무료</li>
@@ -663,8 +665,8 @@ window.SR=window.SR||(function(){
 
   /* ── ⑤ 요금: 고르면 값이 굴러서 바뀐다 ── */
   var PLANS={
-    sale:{tag:'매매 소유권이전등기 · 부동산 1건 · 부가세 포함',price:9900,desc:'위임장 · 소유권이전등기신청서 · 매매목록(해당 시) 자동완성 (Word 파일). 공동명의(각 2인까지)도 결제는 한 번입니다.',cta:'매매 서류 작성하기',href:'normal_form.html'},
-    gift:{tag:'증여 소유권이전등기 · 부동산 1건 · 부가세 포함',price:14900,desc:'증여계약서(구청 검인용) · 위임장 · 소유권이전등기신청서(증여) 자동완성 (Word 파일). 대가 없는 단순 증여만 작성합니다.',cta:'증여 서류 작성하기',href:'normal_form.html?type=gift'},
+    sale:{tag:'매매 소유권이전등기 · 부동산 1건 · 부가세 포함',price:9900,desc:'위임장 · 소유권이전등기신청서 · 매매목록(해당 시) 자동완성 (Word 파일). 공동명의(각 2인까지)도 결제는 한 번입니다.',cta:'매매 서류 작성하기',href:'normal_form.html',guide:'소유권이전등기 가이드 보기',ghref:'guide.html'},
+    gift:{tag:'증여 소유권이전등기 · 부동산 1건 · 부가세 포함',price:14900,desc:'증여계약서(구청 검인용) · 위임장 · 소유권이전등기신청서(증여) 자동완성 (Word 파일). 대가 없는 단순 증여만 작성합니다.',cta:'증여 서류 작성하기',href:'normal_form.html?type=gift',guide:'증여 셀프등기 가이드 보기',ghref:'gift_guide.html'},
     cancel:{tag:'근저당권 말소 · 서류 무료',price:0,desc:'신청서·위임장·해지증서를 무료로 내려받습니다. 직접 신청 시 공과금 실비는 1건 기준 11,200원입니다.',cta:'근저당권 말소 가이드 보기',href:'cancel_guide.html'}
   };
   var seg=$('#seg'),tabs=$$('#seg button'),plan=$('#plan'),pp=$('#pl-price'),pu=$('#pl-unit'),pt;
@@ -674,7 +676,7 @@ window.SR=window.SR||(function(){
     seg.style.setProperty('--i',i);plan.setAttribute('aria-labelledby',tabs[i].id);
     tabs.forEach(function(b,k){b.setAttribute('aria-selected',String(k===i));b.tabIndex=k===i?0:-1;});
     clearTimeout(pt);plan.classList.add('out');
-    pt=setTimeout(function(){$('#pl-tag').textContent=p.tag;$('#pl-desc').textContent=p.desc;var c=$('#pl-cta');c.textContent=p.cta;c.setAttribute('href',p.href);plan.classList.remove('out');},SRV.reduce?0:160);
+    pt=setTimeout(function(){$('#pl-tag').textContent=p.tag;$('#pl-desc').textContent=p.desc;var c=$('#pl-cta');c.textContent=p.cta;c.setAttribute('href',p.href);var gd=$('#pl-guide');gd.hidden=!p.guide;if(p.guide){gd.textContent=p.guide;gd.setAttribute('href',p.ghref);}plan.classList.remove('out');},SRV.reduce?0:160);
     pu.hidden=!p.price;
     SRV.tween(pp,p.price,500,function(n){return !p.price&&n<1?'무료':SRV.num(n);});
   }
