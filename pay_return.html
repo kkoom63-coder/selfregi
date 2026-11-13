@@ -131,23 +131,23 @@ p{font-size:14px;line-height:1.7;color:#3D4350;margin:0 0 12px}
   }
   function drawCard(link, short, orderNo, ud){
     var W=900, H=1240, c=document.createElement('canvas'); c.width=W; c.height=H;
-    var x=c.getContext('2d'), F="'Noto Sans KR', sans-serif";
+    var x=c.getContext('2d'), F="'Pretendard Variable', sans-serif";
     x.fillStyle='#fff'; x.fillRect(0,0,W,H);
-    x.fillStyle='#0F172A'; x.fillRect(0,0,W,150);
+    x.fillStyle='#17171C'; x.fillRect(0,0,W,150);
     x.fillStyle='#fff'; x.font='800 44px '+F; x.fillText('셀프등기24 서류 이용권',56,95);
-    x.fillStyle='#0F172A'; x.font='700 30px '+F; x.fillText('주문번호  '+orderNo,56,220);
+    x.fillStyle='#17171C'; x.font='700 30px '+F; x.fillText('주문번호  '+orderNo,56,220);
     x.fillStyle='#047857'; x.fillText('사용 기한  '+ud+'까지',56,268);
     if(typeof qrcode==='function'){
       var qr=qrcode(0,'L'); qr.addData(qrText(link)); qr.make();
       var n=qr.getModuleCount(), size=440, cell=Math.floor(size/n), off=(W-cell*n)/2, top=310;
-      x.fillStyle='#0F172A';
+      x.fillStyle='#17171C';
       for(var r=0;r<n;r++) for(var k=0;k<n;k++) if(qr.isDark(r,k)) x.fillRect(off+k*cell, top+r*cell, cell, cell);
     }
-    x.fillStyle='#334155'; x.font='500 22px ui-monospace, Consolas, monospace';
+    x.fillStyle='#3D4350'; x.font='500 22px ui-monospace, Consolas, monospace';
     var y=800; wrapText(x, short, W-112).forEach(function(l){ x.fillText(l,56,y); y+=32; });
-    x.font='700 27px '+F; x.fillStyle='#0F172A'; y+=24;
+    x.font='700 27px '+F; x.fillStyle='#17171C'; y+=24;
     ['QR을 휴대폰 카메라로 찍으면 입력 내용과 결제가 함께 이어집니다.'].forEach(function(t){ wrapText(x,t,W-112).forEach(function(l){ x.fillText(l,56,y); y+=40; }); });
-    x.font='500 25px '+F; x.fillStyle='#475569';
+    x.font='500 25px '+F; x.fillStyle='#3D4350';
     ['위 주소(글자)로 들어오면 결제만 이어지니, 입력 내용은 위임장 파일로 불러오세요.','개인정보가 담긴 이미지이므로 반드시 본인만 보관해 주세요. 링크를 가진 사람은 이 결제로 서류를 받을 수 있습니다.']
       .forEach(function(t){ y+=8; wrapText(x,t,W-112).forEach(function(l){ x.fillText(l,56,y); y+=36; }); });
     return c;
@@ -183,7 +183,7 @@ p{font-size:14px;line-height:1.7;color:#3D4350;margin:0 0 12px}
       if(tight && Math.floor(cssMax*dpr/(n+4))>px){ Q=2; px=Math.floor(cssMax*dpr/(n+4)); }
       px=Math.max(1,px); var t=n+2*Q, side=t*px, q=cv.getContext('2d');
       cv.width=cv.height=side; cv.style.width=cv.style.height=(side/dpr)+'px';
-      q.fillStyle='#fff'; q.fillRect(0,0,side,side); q.fillStyle='#0F172A';
+      q.fillStyle='#fff'; q.fillRect(0,0,side,side); q.fillStyle='#17171C';
       for(var r=0;r<n;r++) for(var k=0;k<n;k++) if(qr.isDark(r,k)) q.fillRect((k+Q)*px,(r+Q)*px,px,px);
       return { n:n, cssCell:px/dpr };
     }catch(e){ return null; }
