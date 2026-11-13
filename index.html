@@ -112,8 +112,12 @@ h1 .over{display:block;font-size:var(--t-16);font-weight:600;color:var(--sub);le
 
 /* 장면 배치 */
 .duo{display:grid;grid-template-columns:1fr 360px;gap:72px;align-items:center}
-.guide-g{display:grid;grid-template-columns:1fr 400px;gap:72px;align-items:start}
-.guide-r{position:sticky;top:96px;display:grid;gap:12px}
+.guide-g{display:grid;grid-template-columns:1fr 400px;grid-template-areas:"l r" "k r";column-gap:72px;row-gap:40px;align-items:start}
+.g-l{grid-area:l}.g-k{grid-area:k}
+.guide-r{grid-area:r;position:sticky;top:96px;display:grid;gap:12px}
+.js .shots.live .shot{transition:outline-color var(--d) var(--ease)}
+.shot{outline:2px solid transparent;outline-offset:-2px}
+.js .shots.live .shot.on{outline-color:var(--blue)}
 .shots{display:grid;gap:12px}
 .shot{background:var(--soft);border-radius:var(--r-m);overflow:hidden}
 .shot img{width:100%}
@@ -166,6 +170,7 @@ h1 .over{display:block;font-size:var(--t-16);font-weight:600;color:var(--sub);le
 
 @media(max-width:900px){
   .hero-g,.duo,.guide-g{grid-template-columns:1fr;gap:40px}
+  .guide-g{grid-template-areas:"l" "r" "k"}
   .hero-l{padding-top:0}
   .guide-r{position:static}
   .shots{grid-template-columns:repeat(3,1fr)}
@@ -346,14 +351,14 @@ h1 .over{display:block;font-size:var(--t-16);font-weight:600;color:var(--sub);le
   </div></div>
 </div></section>
 
-<!-- ③ 가이드: 흩어진 절차를 한 순서로 -->
+<!-- ③ 가이드: 한 페이지로 보는 셀프등기 가이드 -->
 <section class="scene" id="guide"><div class="wrap">
   <div class="scene-head narrow" data-rv>
-    <h2>네 곳에 흩어진 절차,<br>한 순서로 정리한 가이드</h2>
-    <p class="sub">정부24 · 위택스 · 은행 · 인터넷등기소를 오가는 일을 네 단계로 정리했습니다. 화면은 실제 캡처 그대로입니다.</p>
+    <h2>한 페이지로 보는 셀프등기 가이드</h2>
+    <p class="sub">정부24 · 위택스 · 은행 · 인터넷등기소에서 할 일을 화면으로 보며 순서대로 따라 할 수 있습니다.</p>
   </div>
   <div class="guide-g">
-    <div>
+    <div class="g-l">
       <ol class="lines" id="lines">
         <li>서류 준비<small>정부24 · 인터넷등기소 · 등기부를 올리면 서류 칸이 채워집니다</small></li>
         <li>세금·채권 납부<small>취득세 신고·납부(위택스) · 국민주택채권 매입(은행) · 등기신청수수료 납부(인터넷등기소)</small></li>
@@ -363,12 +368,13 @@ h1 .over{display:block;font-size:var(--t-16);font-weight:600;color:var(--sub);le
       <p class="note" style="margin-top:24px">잔금일부터 60일 안에 신청해야 하고, 기한을 넘기면 과태료가 부과될 수 있습니다. 취득세는 등기 접수 전까지 내야 합니다.</p>
     </div>
     <div class="guide-r" data-rv>
-      <div class="shots">
-        <figure class="shot"><img src="proof_gov24.webp" width="520" height="322" loading="lazy" alt="정부24 실제 화면: 서류 발급 메뉴"><figcaption>정부24<span>서류 발급</span></figcaption></figure>
-        <figure class="shot"><img src="proof_wetax.webp" width="520" height="322" loading="lazy" alt="위택스 실제 화면: 로그인 위치 표시"><figcaption>위택스<span>취득세 신고·납부</span></figcaption></figure>
-        <figure class="shot"><img src="proof_iros.webp" width="520" height="322" loading="lazy" alt="인터넷등기소 실제 화면: 등기신청수수료 납부 메뉴"><figcaption>인터넷등기소<span>수수료 납부</span></figcaption></figure>
+      <div class="shots" id="shots">
+        <figure class="shot" data-step="0"><img src="proof_gov24.webp" width="520" height="322" loading="lazy" alt="정부24 실제 화면: 서류 발급 메뉴"><figcaption>정부24<span>서류 발급</span></figcaption></figure>
+        <figure class="shot" data-step="1"><img src="proof_wetax.webp" width="520" height="322" loading="lazy" alt="위택스 실제 화면: 로그인 위치 표시"><figcaption>위택스<span>취득세 신고·납부</span></figcaption></figure>
+        <figure class="shot" data-step="1"><img src="proof_iros.webp" width="520" height="322" loading="lazy" alt="인터넷등기소 실제 화면: 등기신청수수료 납부 메뉴"><figcaption>인터넷등기소<span>수수료 납부</span></figcaption></figure>
       </div>
-      <p class="note">실제 화면과 재현 이미지로 단계별 셀프등기 가이드를 제공합니다.</p>
+    </div>
+    <div class="g-k">
       <ul class="glinks">
         <li><a href="guide.html">소유권이전등기 가이드<span>매매 절차·준비서류 전체 →</span></a></li>
         <li><a href="joint.html">공동명의 셀프등기<span>단독명의와 달라지는 점 →</span></a></li>
@@ -641,12 +647,16 @@ window.SR=window.SR||(function(){
   SRV.demo($('[data-demo]'),{loop:true});
 
   /* ── ③ 네 줄: 화면 가운데를 지난 줄까지 켜진다 ── */
-  var lines=$('#lines'),lis=$$('li',lines);
+  var lines=$('#lines'),lis=$$('li',lines),shots=$('#shots'),figs=shots?$$('.shot',shots):[];
+  /* 지금 줄과 같은 단계의 실제 화면에 파란 테두리 */
+  function markShots(n){figs.forEach(function(f){f.classList.toggle('on',+f.getAttribute('data-step')===n);});}
   if('IntersectionObserver' in window&&!SRV.reduce){
     lines.classList.add('live');lis[0].classList.add('lit','now');
+    if(shots){shots.classList.add('live');markShots(0);}
     var io=new IntersectionObserver(function(es){es.forEach(function(e){
       if(!e.isIntersecting)return;var n=lis.indexOf(e.target);
       lis.forEach(function(l,k){l.classList.toggle('lit',k<=n);l.classList.toggle('now',k===n);});
+      markShots(n);
     });},{rootMargin:'-48% 0px -48% 0px'});
     lis.forEach(function(l){io.observe(l);});
   }
