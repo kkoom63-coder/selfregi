@@ -143,6 +143,12 @@ h1 .over{display:block;font-size:var(--t-16);font-weight:600;color:var(--sub);le
 .plan .btn{margin-top:20px}
 .terms{list-style:none;padding:0;display:grid;gap:12px}
 .terms li{background:var(--soft);border-radius:var(--r-m);padding:14px 18px;font-size:var(--t-16);font-weight:600;color:var(--ink)}
+.plan .svc{grid-column:1/-1;border-top:1px solid var(--line);border-bottom:0}
+.plan .svc summary{font-size:var(--t-16);min-height:60px}
+.plan .svc dl{display:grid;gap:12px;padding-bottom:16px}
+.plan .svc dl div{display:grid;grid-template-columns:96px 1fr;gap:12px;font-size:var(--t-16);color:var(--body)}
+.plan .svc dt{font-weight:700;color:var(--ink)}
+@media(max-width:768px){.plan .svc dl div{grid-template-columns:1fr;gap:4px}}
 .js .plan .sw{transition:opacity var(--d-fast),translate var(--d-fast) var(--ease)}
 .js .plan.out .sw{opacity:0;translate:0 6px}
 
@@ -420,6 +426,16 @@ h1 .over{display:block;font-size:var(--t-16);font-weight:600;color:var(--sub);le
       <li>문서 오류 등 회사 귀책이면 전액 환불(이용약관 제6조)</li>
       <li>추가 요금 없음 · 토스페이·네이버페이 결제</li>
     </ul>
+    <details class="svc">
+      <summary>서비스 제공 방식과 시점 · 재발급 · 환불<i aria-hidden="true"></i></summary>
+      <dl>
+        <div><dt>제공 방식</dt><dd>브라우저에서 Word(.docx) 파일로 내려받습니다. 별도 배송이나 승인 대기가 없습니다.</dd></div>
+        <div><dt>제공 시점</dt><dd>위임장(증여는 증여계약서 포함)은 결제 승인 직후, 신청서는 제세공과금 납부 후 번호를 입력하는 즉시 내려받습니다.</dd></div>
+        <div><dt>재발급</dt><dd>결제일부터 30일(매매는 잔금일부터 14일이 더 늦으면 그날)까지, 동일 부동산·동일 매수인(증여는 수증인)에 한해 횟수 제한 없이 무상입니다. 결제 완료 화면의 재발급 링크로 이용하시며 별도 요청 절차는 없습니다.</dd></div>
+        <div><dt>환불</dt><dd>회사 귀책(문서 오류·미제공 등)은 사유를 안 날부터 7일 이내 요청하시면 3영업일 이내 전액 환불합니다. 디지털 콘텐츠 특성상 단순 변심에 따른 환불은 제한됩니다.</dd></div>
+      </dl>
+      <p class="note">자세한 내용은 <a href="terms.html#a5">이용약관 제5·6조</a>를 확인해 주세요.</p>
+    </details>
   </div>
 </div></section>
 
