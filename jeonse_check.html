@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<link rel="stylesheet" href="assets/fonts/pretendard.css">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-DR3W5XWF50"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  /* 실제 주소(www)에서만 수집한다. 테스트·미리보기 주소는 제외.
+     ?notrack=1 로 한 번 열면 이 브라우저는 계속 제외된다(?notrack=0 으로 해제). */
+  (function(){var ID='G-DR3W5XWF50',off=location.hostname!=='www.selfregi24.com';
+    try{var q=new URLSearchParams(location.search).get('notrack');
+      if(q==='1')localStorage.setItem('sr_notrack','1');if(q==='0')localStorage.removeItem('sr_notrack');
+      if(localStorage.getItem('sr_notrack')==='1')off=true;}catch(e){}
+    if(off)window['ga-disable-'+ID]=true;gtag('set',{page_location:cl(location.href),page_referrer:cl(document.referrer)});gtag('config',ID);function cl(u){try{var x=new URL(u);if(x.hostname!==location.hostname)return u;var k=[];x.searchParams.forEach(function(v,n){if(!/^(utm_|n_)|^(gclid|type|track)$/.test(n))k.push(n);});k.forEach(function(n){x.searchParams.delete(n);});x.hash='';return x.toString();}catch(e){return '';}}})(); /* GA 주소 정리(2026-10-17): 우리 사이트 주소는 utm·광고·type·track 외 파라미터를 지우고 보낸다 — ?addr=(동·호수)·?pass=(재발급 토큰)·결제 번호가 GA에 남지 않게. 이전 페이지 주소(referrer)도 같은 기준 */
+</script>
+<meta charset="UTF-8">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>전세사기 예방 등기부등본 확인 · 깡통전세 계산 (무료) | 셀프등기24</title>
+<meta name="description" content="전세 계약 전 등기부등본(등기사항전부증명서) PDF를 올리면 소유자, 압류·가압류·경매, 신탁, 근저당 채권최고액을 찾아 정리합니다. 전세가율과 보증금+선순위 근저당 비율로 깡통전세 위험을 가늠할 비율을 계산합니다. 앱 설치·회원가입 없이 무료, 파일은 이 기기 안에서만 읽습니다.">
+<meta property="og:title" content="전세사기 예방 등기부등본 확인 — 근저당 · 압류 · 신탁 · 깡통전세 계산">
+<meta property="og:description" content="등기부 PDF 한 장으로 계약 전에 확인할 것을 정리합니다. 파일은 서버로 보내지 않습니다.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.selfregi24.com/jeonse_check.html">
+<meta property="og:image" content="https://www.selfregi24.com/og-image.png">
+<meta property="og:site_name" content="셀프등기24">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://www.selfregi24.com/jeonse_check.html">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "전세사기 예방 등기부등본 점검 · 깡통전세 계산기", "featureList": ["등기부등본 PDF 판독", "소유자 · 압류 · 가압류 · 경매 · 신탁 확인", "근저당 채권최고액 합계", "전세가율 계산", "보증금 + 선순위 근저당 비율 계산"],"url": "https://www.selfregi24.com/jeonse_check.html", "applicationCategory": "UtilitiesApplication", "operatingSystem": "Web", "inLanguage": "ko", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "KRW"}, "description": "등기사항전부증명서 PDF에서 소유자·압류·가압류·신탁·근저당 채권최고액을 찾아 전세 계약 전 확인할 것으로 정리합니다. 파일은 브라우저 안에서만 읽습니다.", "provider": {"@type": "Organization", "name": "셀프등기24", "url": "https://www.selfregi24.com/"}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "등기부는 어디서 보나요?", "acceptedAnswer": {"@type": "Answer", "text": "대법원 인터넷등기소에서 회원가입 없이 열람할 수 있습니다(700원). 열람 화면에서 PDF로 저장하면 이 페이지에 올릴 수 있습니다."}}, {"@type": "Question", "name": "등기부등본만 보면 전세사기를 피할 수 있나요?", "acceptedAnswer": {"@type": "Answer", "text": "아닙니다. 등기부에는 집주인의 세금 체납과 다가구주택의 다른 세입자 보증금이 나오지 않습니다. 미납국세 열람, 확정일자 부여현황, 보증금 반환보증 가입 가능 여부를 함께 확인하세요."}}, {"@type": "Question", "name": "깡통전세는 어떻게 계산하나요?", "acceptedAnswer": {"@type": "Answer", "text": "보증금과 선순위 근저당 채권최고액을 더해 집값과 견줍니다. 전세가율(보증금 ÷ 집값)이 높을수록, 합계가 집값에 가까울수록 경매로 넘어갔을 때 보증금을 다 돌려받지 못할 수 있습니다. 위 계산 칸에 숫자를 넣으면 두 비율이 바로 나옵니다."}},{"@type": "Question", "name": "채권최고액은 무엇인가요?", "acceptedAnswer": {"@type": "Answer", "text": "근저당으로 담보하는 최대 한도 금액입니다. 실제 대출 잔액보다 크게 잡히는 것이 일반적이라, 등기부만으로 남은 빚을 정확히 알 수는 없습니다."}}, {"@type": "Question", "name": "신탁등기가 된 집은 어떻게 확인하나요?", "acceptedAnswer": {"@type": "Answer", "text": "소유자가 신탁회사(수탁자)로 되어 있고, 누가 임대할 수 있는지는 신탁원부에 정해져 있습니다. 등기소에서 신탁원부를 발급받아 임대 권한과 동의 절차를 확인하세요."}}, {"@type": "Question", "name": "등기부는 언제 다시 확인해야 하나요?", "acceptedAnswer": {"@type": "Answer", "text": "계약서를 쓰기 직전과 잔금 직전에 다시 열람하세요. 그 사이 새 근저당이나 압류가 등기될 수 있습니다."}}, {"@type": "Question", "name": "올린 등기부는 저장되나요?", "acceptedAnswer": {"@type": "Answer", "text": "저장하지 않습니다. PDF는 서버로 보내지 않고 이 기기의 브라우저 안에서만 읽습니다."}}, {"@type": "Question", "name": "전세 진단 앱과 무엇이 다른가요?", "acceptedAnswer": {"@type": "Answer", "text": "앱 설치나 회원가입 없이 웹에서 무료로 씁니다. 주소가 아니라 직접 열람한 등기부등본 PDF를 읽기 때문에 열람 시점의 기재 내용 그대로 정리됩니다."}}]}</script>
+
+<style>
+body{word-break:keep-all;overflow-wrap:break-word} /* 한국어 단어 중간 줄바꿈 방지 — 팝업·패널 포함 사이트 전체 기본값(2026-10-17) */
+.skip-link{position:fixed;top:-64px;left:8px;background:var(--navy);color:#fff;padding:10px 16px;min-height:44px;display:inline-flex;align-items:center;border-radius:8px;font-size:14px;font-weight:700;text-decoration:none;z-index:250;transition:top .15s}
+.skip-link:focus{top:8px}
+a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(--blue);outline-offset:2px;border-radius:8px}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#17171C;--blue:#2A62F0;
+  --text:#17171C;--muted:#667085;--border:#E9ECF1;
+  --bg:#F4F5F8;--card:#fff;--radius:12px;
+}
+html{scroll-behavior:smooth}
+body{overflow-x:hidden;font-family:'Pretendard Variable',Pretendard,-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;letter-spacing:-.01em}
+
+/* 네비게이션 — 전 페이지 표준 */
+nav{background:rgba(255,255,255,.86);backdrop-filter:saturate(140%) blur(8px);-webkit-backdrop-filter:saturate(140%) blur(8px);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100}
+.nav-inner{max-width:1072px;margin:0 auto;padding:0 20px;height:54px;display:flex;align-items:center;gap:2px}
+.nav-scroll{flex:1;min-width:0;display:flex;align-items:center;gap:2px}
+.nav-logo{flex-shrink:0;font-size:16px;font-weight:800;color:var(--navy);text-decoration:none;margin-right:auto;letter-spacing:-.02em}
+.nav-a{flex-shrink:0;color:#3D4350;font-size:14px;font-weight:600;padding:8px 10px;border-radius:8px;text-decoration:none;transition:all .15s}
+.nav-a:hover{color:var(--navy);background:#F4F5F8}
+.nav-a.cta{background:var(--blue);color:#fff;font-weight:700;padding:8px 14px;margin-left:4px}
+.nav-a.cta:hover{background:#1F4FCC}
+@media(max-width:600px){
+  .nav-scroll{overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 20px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 20px),transparent)}
+  .nav-scroll::-webkit-scrollbar{display:none}
+}
+
+/* ===== 페이지 머리말·카드 — calculator.html 틀 (2026-10-05) ===== */
+:root{--shadow:0 1px 3px rgba(23,23,28,.06)}
+.page-header{background:var(--bg);padding:44px 20px 36px}
+.page-header-inner{max-width:1032px;margin:0 auto}
+.page-eyebrow{display:inline-block;background:#EAF0FF;border:1px solid #EAF0FF;color:#1F4FCC;font-size:14px;font-weight:700;letter-spacing:.4px;padding:3px 12px;border-radius:999px;margin-bottom:12px}
+.page-header h1{font-size:var(--t-h2);font-weight:800;color:var(--navy);margin-bottom:6px;word-break:keep-all}
+.page-header p{font-size:14px;color:var(--muted);word-break:keep-all}
+.wrap{max-width:1072px;margin:0 auto;padding:20px 20px 60px}
+.card{background:var(--card);border-radius:var(--radius);border:1px solid var(--border);padding:22px;margin-bottom:14px;box-shadow:var(--shadow)}
+.ch{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+.step-num{width:32px;height:32px;background:var(--navy);color:#fff;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;flex-shrink:0;letter-spacing:-.3px}
+.ct{font-size:14px;font-weight:700;color:var(--navy)}
+.cs{font-size:14px;color:var(--muted);margin-top:1px;word-break:keep-all}
+.card p.tx{font-size:14px;line-height:1.75;color:#3D4350;margin-top:12px;word-break:keep-all}
+.card p.tx a{color:var(--blue);font-weight:700}
+
+/* 01 매매가 입력 + 결과 */
+.calc-row{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px}
+.calc-in{display:flex;align-items:center;gap:8px;width:100%;max-width:340px}
+.calc-in input{flex:1;min-width:0;height:46px;padding:10px 14px;border:1px solid var(--border);border-radius:12px;font-size:16px;font-weight:700;font-family:inherit;color:var(--navy);text-align:right;background:#fff}
+.calc-in input:focus{border-color:var(--blue);outline:none;box-shadow:0 0 0 3px rgba(42,98,240,.12)}
+.calc-in span{font-size:14px;font-weight:700;color:var(--navy)}
+.presets{display:flex;flex-wrap:wrap;gap:6px}
+.presets button{min-height:40px;padding:6px 14px;border:1px solid var(--border);border-radius:8px;background:#fff;font-family:inherit;font-size:14px;font-weight:600;color:#3D4350;cursor:pointer}
+.presets button:hover,.presets button[aria-pressed="true"]{border-color:var(--blue);color:#fff;background:var(--blue)}
+.sum{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-top:18px}
+.sum>div{background:#F4F5F8;border:1px solid var(--border);border-radius:12px;padding:14px 16px}
+.sum dt{font-size:14px;font-weight:700;color:#3D4350}
+.sum dd{font-size:24px;font-weight:800;color:var(--navy);margin-top:2px;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.sum dd small{display:block;font-size:14px;font-weight:500;color:var(--muted);letter-spacing:0;margin-top:2px}
+.sum .us{background:#EAF0FF;border-color:#EAF0FF}
+.sum .us dd{color:var(--blue)}
+.sum .diff{background:var(--navy);border-color:var(--navy)}
+.sum .diff dt{color:#D5DAE2}.sum .diff dd{color:#fff}.sum .diff dd small{color:#D5DAE2}
+
+/* 표 */
+.tbl-wrap{border:1px solid var(--border);border-radius:12px;overflow:hidden;background:#fff}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{padding:12px 14px;text-align:left;border-bottom:1px solid var(--border);vertical-align:top;word-break:keep-all;line-height:1.6}
+thead th{background:#F4F5F8;font-size:14px;font-weight:700;color:#3D4350;white-space:nowrap}
+tbody tr:last-child td{border-bottom:none}
+td.num,th.num{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+td small{display:block;font-size:14px;color:#3D4350;margin-top:2px;white-space:normal}
+tr.grp th{background:#F4F5F8;font-size:14px;font-weight:700;color:#3D4350;padding:8px 14px}
+tr.us td{background:#EAF0FF}
+td .m{display:block;font-weight:700;color:var(--navy)}
+td ul.pts{list-style:none;margin:4px 0 0;padding:0}
+td ul.pts li{position:relative;padding-left:11px;font-size:14px;line-height:1.65;color:#3D4350}
+td ul.pts li::before{content:"";position:absolute;left:0;top:.72em;width:4px;height:4px;border-radius:50%;background:#667085}
+tr.us td ul.pts li{color:var(--navy)}
+tr.us td ul.pts li::before{background:var(--blue)}
+td b.v{font-weight:700;color:var(--navy)}
+td b.zero{font-size:16px;font-weight:800;color:var(--blue)}
+td b.tot{font-weight:800;color:var(--navy)}
+.fee-hl{font-weight:800;color:var(--navy);border-radius:8px;padding:0 3px}
+.fee-hl.flash{animation:feeflash .9s ease-out}
+@keyframes feeflash{from{background:#EAF0FF}to{background:transparent}}
+@media(prefers-reduced-motion:reduce){.fee-hl.flash{animation:none}}
+.note{background:#EAF0FF;border:1px solid #EAF0FF;border-radius:12px;padding:12px 14px;margin-top:12px;font-size:14px;line-height:1.7;color:#17171C;word-break:keep-all}
+.note b{color:#1F4FCC}
+/* 모바일: 표 행을 카드처럼 쌓는다 — 숫자 칸은 「라벨 … 값」 한 줄 */
+@media(max-width:640px){
+  table,tbody,tr,td,th{display:block}
+  thead{display:none}
+  tbody tr{padding:12px 14px;border-bottom:1px solid var(--border)}
+  tbody tr:last-child{border-bottom:none}
+  td{border:0;padding:0}
+  td+td{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding-top:6px;text-align:right}
+  td+td::before{content:attr(data-l);font-size:14px;font-weight:600;color:#3D4350;text-align:left;white-space:nowrap}
+  td.num small{display:none}
+  tr.grp{padding:0;border-bottom:1px solid var(--border)}
+  tr.grp th{padding:8px 14px}
+}
+
+/* 04 이용료로 대신하는 일 */
+.does{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.does li{display:flex;gap:12px;align-items:flex-start}
+.does .k{flex-shrink:0;width:24px;height:24px;border-radius:8px;background:#EAF0FF;color:#1F4FCC;font-size:14px;font-weight:800;display:flex;align-items:center;justify-content:center;margin-top:1px}
+.does b{display:block;font-size:14px;font-weight:700;color:var(--navy)}
+.does span{display:block;font-size:14px;color:#3D4350;line-height:1.65;word-break:keep-all}
+.free-h{font-size:14px;font-weight:700;color:var(--navy);margin:18px 0 8px;padding-top:16px;border-top:1px solid var(--border)}
+.free{display:flex;flex-wrap:wrap;gap:8px}
+.free a{display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:6px 14px;border:1px solid var(--border);border-radius:8px;background:#fff;font-size:14px;font-weight:700;color:var(--navy);text-decoration:none}
+.free a:hover{border-color:var(--blue);color:var(--blue)}
+.free a em{font-style:normal;font-size:14px;font-weight:700;color:#1F4FCC}
+.src-tx{font-size:14px;line-height:1.8;color:#3D4350;word-break:keep-all}
+
+/* 마무리 */
+.finish{background:var(--navy);border-radius:var(--radius);padding:28px 24px;margin-top:6px}
+.finish h3{font-size:18px;font-weight:800;color:#fff;line-height:1.45;word-break:keep-all}
+.finish p{font-size:14px;color:#D5DAE2;line-height:1.75;margin-top:8px;word-break:keep-all}
+.finish-btns{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+.finish-btns a{display:inline-flex;align-items:center;min-height:46px;padding:0 20px;border-radius:12px;font-size:14px;font-weight:800;text-decoration:none}
+.finish-btns .p{background:#fff;color:var(--navy)}
+.finish-btns .p:hover{background:#EAF0FF}
+.finish-btns .g{border:1px solid rgba(255,255,255,.35);color:#fff}
+.finish-btns .g:hover{background:rgba(255,255,255,.08)}
+@media(max-width:560px){.card{padding:18px 16px}.page-header{padding:32px 20px 24px}.sum dd{font-size:24px}}
+
+
+footer{background:var(--bg);border-top:1px solid var(--border);margin-top:48px;padding:32px 20px 28px}
+.foot-inner{max-width:1072px;margin:0 auto}
+.foot-brand{font-size:14px;font-weight:800;color:var(--navy);margin-bottom:8px}
+.foot-links{display:flex;gap:6px 14px;margin-bottom:12px;flex-wrap:wrap}
+.foot-links a{color:var(--muted);font-size:14px;text-decoration:none;padding:2px 0}
+.foot-links a:hover{color:var(--navy)}
+.foot-biz{font-size:14px;color:#3D4350;font-weight:500;margin-bottom:10px}
+.foot-biz a{color:var(--blue);text-decoration:underline}
+
+.foot-copy{font-size:14px;color:var(--muted);line-height:1.9;word-break:keep-all}
+
+.nav-logo{display:inline-flex;align-items:center;gap:7px}.nav-mark{width:22px;height:22px;flex:none}.nav-logo b{color:#2A62F0;font-weight:inherit}.nav-wm{font-weight:inherit}
+
+/* ===== index.html 기준 양식 통일 (2026-10-05) ===== */
+.nav-a{padding:8px 12px;letter-spacing:-.16px}
+/* 상단 메뉴 「부동산 계산기」 드롭다운 — 클릭으로 열고, 데스크톱은 마우스를 올려도 열림 */
+.nav-a.active{background:#EAF0FF;color:#1F4FCC;font-weight:600}
+.nav-dd-btn{display:inline-flex;align-items:center;gap:4px;border:0;background:transparent;font-family:inherit;line-height:inherit;cursor:pointer;letter-spacing:-.16px}
+.nav-dd-ic{width:12px;height:12px;transition:transform .15s}
+.nav-dd-btn[aria-expanded="true"]{background:#F4F5F8;color:var(--navy)}
+.nav-dd-btn.active[aria-expanded="true"]{background:#EAF0FF;color:#1F4FCC}
+.nav-dd-btn[aria-expanded="true"] .nav-dd-ic{transform:rotate(180deg)}
+.nav-dd-menu{position:fixed;z-index:1000;min-width:240px;background:#fff;border:1px solid var(--border);border-radius:12px;box-shadow:0 20px 48px -20px rgba(23,23,28,.22);padding:6px}
+.nav-dd-menu[hidden]{display:none}
+.nav-dd-menu a{display:block;padding:10px 12px;border-radius:8px;color:var(--navy);font-size:14px;font-weight:700;text-decoration:none;line-height:1.4}
+.nav-dd-menu a span{display:block;font-size:14px;font-weight:500;color:#3D4350;margin-top:2px}
+.nav-dd-menu a:hover,.nav-dd-menu a:focus-visible{background:#F4F5F8}
+.nav-dd-menu a[aria-current="page"]{background:#EAF0FF;color:#1F4FCC}
+@media(prefers-reduced-motion:reduce){.nav-dd-ic{transition:none}}
+
+/* 상단 메뉴 반응형 보정 (2026-10-04): 좁은 화면에서 줄바꿈·겹침 방지 */
+.nav-dd{flex-shrink:0;display:inline-flex}
+.nav-dd-btn{white-space:nowrap}
+@media(max-width:768px){
+  .nav-scroll{overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 20px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 20px),transparent)}
+  .nav-scroll::-webkit-scrollbar{display:none}
+  .nav-logo{font-size:14px;margin-right:8px}.nav-mark{width:20px;height:20px}
+  .nav-a{font-size:14px;padding:8px 10px}
+  .nav-a.cta{padding:8px 12px;margin-left:6px}
+}
+@media(max-width:560px){.nav-a{font-size:14px;padding:7px 9px}.nav-a.cta{font-size:14px;padding:7px 11px}}
+
+/* 모바일 햄버거 메뉴 (768px 이하, 2026-10-04) — 상단 버튼은 숨기고 ≡ 메뉴 안으로 */
+.nav-burger{display:none}
+@media(max-width:768px){
+  .js-mnav .nav-scroll>.nav-a,.js-mnav .nav-scroll>.nav-dd,.js-mnav .nav-inner>.nav-a.cta{display:none}
+  .js-mnav .nav-scroll{overflow:visible;-webkit-mask-image:none;mask-image:none}
+  .js-mnav .nav-burger{display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;width:44px;height:44px;margin-left:auto;margin-right:-10px;border:0;background:transparent;border-radius:8px;color:var(--navy);cursor:pointer}
+}
+.nav-burger svg{width:24px;height:24px;stroke:currentColor;stroke-width:2;stroke-linecap:round;fill:none}
+.nav-burger path{transition:transform .2s,opacity .2s;transform-origin:12px 12px}
+.nav-burger[aria-expanded="true"] .b1{transform:translateY(5px) rotate(45deg)}
+.nav-burger[aria-expanded="true"] .b2{opacity:0}
+.nav-burger[aria-expanded="true"] .b3{transform:translateY(-5px) rotate(-45deg)}
+.mnav{position:fixed;left:0;right:0;bottom:0;z-index:999;background:#fff;display:flex;flex-direction:column;overflow-y:auto;overscroll-behavior:contain;border-top:1px solid var(--border)}
+.mnav[hidden]{display:none}
+.mnav-list{flex:1;padding:4px 20px 20px}
+.mnav-a{display:flex;align-items:center;justify-content:space-between;width:100%;min-height:56px;padding:0;border:0;border-bottom:1px solid var(--border);background:none;font-family:inherit;font-size:16px;font-weight:700;color:var(--navy);text-decoration:none;text-align:left;cursor:pointer;letter-spacing:-.02em}
+.mnav-a svg{width:14px;height:14px;transition:transform .2s;color:#3D4350}
+.mnav-acc[aria-expanded="true"]{border-bottom-color:transparent}
+.mnav-acc[aria-expanded="true"] svg{transform:rotate(180deg)}
+.mnav-sub{padding:2px 0 10px;border-bottom:1px solid var(--border)}
+.mnav-sub[hidden]{display:none}
+.mnav-sub a{display:block;padding:10px 12px;border-radius:8px;font-size:16px;font-weight:600;color:#3D4350;text-decoration:none}
+.mnav-sub a span{display:block;font-size:14px;font-weight:500;color:#3D4350;margin-top:2px}
+.mnav-sub a[aria-current="page"]{background:#EAF0FF;color:#1F4FCC}
+.mnav-cta{padding:14px 20px calc(14px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--border);background:#fff}
+.mnav-cta a{display:flex;align-items:center;justify-content:center;min-height:52px;border-radius:12px;background:var(--blue);color:#fff;font-size:16px;font-weight:700;text-decoration:none}
+html.mnav-open,html.mnav-open body{overflow:hidden}
+@media(prefers-reduced-motion:reduce){.nav-burger path,.mnav-a svg{transition:none}}
+
+/* 품질 기준 보강 (2026-10-04): 키보드 포커스 · 대비 · 최소 글씨 12px */
+:is(a,button,input,select,textarea,summary,[tabindex]):focus-visible{outline:2px solid var(--blue,#2A62F0);outline-offset:2px}
+.foot-biz,.foot-biz a,.foot-copy{font-size:14px}
+/* 푸터 — index.html 기준 */
+footer{background:var(--bg);border-top:1px solid var(--border);margin-top:40px;padding:32px 20px 28px}
+.foot-inner{max-width:1072px;margin:0 auto;text-align:left}
+.foot-brand{font-size:14px;font-weight:800;color:var(--navy);margin-bottom:8px;display:flex;align-items:center;gap:6px}.foot-mark{width:18px;height:18px;flex:none}.foot-brand b{color:#2A62F0;font-weight:inherit}
+.foot-links{display:flex;gap:6px 14px;margin-bottom:12px;flex-wrap:wrap;justify-content:flex-start}
+.foot-links a{color:var(--muted);font-size:14px;text-decoration:none;padding:2px 0}
+.foot-links a:hover{color:var(--navy)}
+.foot-biz{font-size:14px;color:#3D4350;font-weight:500;margin-bottom:10px;line-height:1.7;word-break:keep-all}.foot-biz a{color:var(--blue);text-decoration:underline}
+.foot-copy{font-size:14px;color:var(--muted);line-height:1.9;word-break:keep-all}
+@media(max-width:560px){.foot-links a,footer a{display:inline-block;min-height:24px;line-height:24px}}
+/* joint.html 전용 — 절마다 결론 문단(.ans) → 표·목록 → 근거 한 줄(.src) */
+.ans{font-size:14px;line-height:1.8;color:#17171C;margin:0 0 14px;word-break:keep-all}
+.ans b{color:var(--navy)}
+.pts2{list-style:none;padding:0;margin:0 0 12px;display:grid;gap:10px}
+.pts2 li{position:relative;padding-left:16px;font-size:14px;line-height:1.75;color:#3D4350;word-break:keep-all}
+.pts2 li::before{content:'';position:absolute;left:2px;top:10px;width:5px;height:5px;border-radius:50%;background:var(--blue)}
+.pts2 b{color:var(--navy)}
+.src{font-size:14px;color:#3D4350;line-height:1.7;margin-top:12px;word-break:keep-all}
+.src a{color:var(--blue);font-weight:600}
+.note .ex{display:block;margin-top:6px;font-size:14px;color:#3D4350}
+.faq details{border-top:1px solid var(--border)}
+.faq details:last-child{border-bottom:1px solid var(--border)}
+.faq summary{cursor:pointer;list-style:none;padding:14px 28px 14px 0;font-size:14px;font-weight:700;color:var(--navy);position:relative;word-break:keep-all}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:'+';position:absolute;right:4px;top:12px;font-size:18px;font-weight:400;color:#3D4350}
+.faq details[open] summary::after{content:'−'}
+.faq details p{font-size:14px;line-height:1.8;color:#3D4350;padding:0 0 16px;word-break:keep-all}
+/* reject.html 전용 — 각하 사유 목록·점검항목 */
+.grounds{list-style:none;padding:0;margin:0 0 4px;display:grid;gap:8px}
+.grounds li{display:flex;gap:10px;font-size:14px;line-height:1.7;color:#3D4350;word-break:keep-all}
+.gno{flex:0 0 52px;font-weight:700;color:var(--navy)}
+.gcnt{display:inline-block;margin-left:4px;font-size:14px;font-weight:700;color:var(--blue);white-space:nowrap}
+.grp{margin-top:22px}
+.grp-h{font-size:16px;font-weight:700;color:var(--navy);padding-bottom:8px;border-bottom:2px solid var(--navy);margin-bottom:4px;word-break:keep-all}
+.chk{padding:14px 0;border-bottom:1px solid var(--border)}
+.chk-t{font-size:14px;font-weight:700;color:var(--navy);margin-bottom:8px;line-height:1.6;word-break:keep-all}
+.chk p{font-size:14px;line-height:1.75;color:#3D4350;margin-top:4px;word-break:keep-all}
+.chk p b{display:inline-block;min-width:76px;color:var(--navy);font-weight:700}
+.chk .src{margin-top:6px}
+.sev{display:inline-block;vertical-align:2px;margin-left:6px;font-size:14px;font-weight:700;padding:2px 8px;border-radius:12px;white-space:nowrap}
+.sev.high{background:#FFF1E7;color:#A2410B}
+.sev.mid{background:#EAF0FF;color:#1F4FCC}
+.sev.low{background:#F4F5F8;color:#3D4350}
+</style>
+<link rel="stylesheet" href="assets/sr-v2-skin.css?v=1111">
+<style>
+/* 전세 계약 전 등기부 점검(2026-11-14) — 값은 v2 토큰 값(#2A62F0 · #1F4FCC · #EAF0FF · #F4F5F8 · #A2410B · #FFF1E7 · #3D4350 · #667085)만 */
+.jc-drop{border:1.5px dashed #2A62F0;border-radius:16px;background:#EAF0FF;padding:24px 16px;text-align:center}
+.jc-drop-t{font-size:18px;font-weight:800;color:#17171C}
+.jc-drop-s{font-size:14px;color:#3D4350;margin-top:4px}
+.jc-file{position:absolute;width:1px;height:1px;opacity:0;overflow:hidden}
+.jc-drop:has(.jc-file:focus-visible) .jc-btn{outline:3px solid #2A62F0;outline-offset:3px}
+.jc-btn{display:block;width:100%;max-width:320px;margin:16px auto 0;min-height:56px;line-height:56px;border-radius:16px;background:#2A62F0;color:#fff;font-size:16px;font-weight:700;cursor:pointer}
+.jc-btn:hover{background:#1F4FCC}
+.jc-say{font-size:14px;color:#3D4350;margin-top:12px}
+.jc-say:empty{display:none}
+.jc-how{margin-top:12px;font-size:14px;color:#3D4350}
+.jc-how summary{cursor:pointer;font-weight:700;color:#17171C;min-height:44px;display:flex;align-items:center}
+.jc-how ol{padding-left:20px;line-height:1.8;margin:4px 0 8px}
+.jc-how a{color:#1F4FCC;font-weight:700}
+.jc-res{margin-top:20px}
+.jc-addr{font-size:16px;font-weight:700;color:#17171C;margin-bottom:12px;word-break:keep-all}
+.jc-gu{margin-top:12px;font-size:14px;color:#3D4350;word-break:keep-all}.jc-gu a{display:inline-flex;align-items:center;min-height:44px;font-weight:700;color:#1F4FCC}
+.jc-list{list-style:none;padding:0;display:grid;gap:8px}
+.jc-it{display:flex;gap:12px;align-items:flex-start;background:#F4F5F8;border-radius:12px;padding:14px 16px}
+.jc-it b{font-size:16px;color:#17171C;word-break:keep-all}
+.jc-it p{font-size:14px;line-height:1.7;color:#3D4350;margin-top:2px;word-break:keep-all}
+.jc-lv{flex:none;font-size:14px;font-weight:700;border-radius:8px;padding:2px 8px;background:#fff;color:#3D4350;white-space:nowrap}
+.lv-check{background:#FFF1E7}.lv-check .jc-lv{color:#A2410B}
+.lv-ok .jc-lv{color:#1F4FCC}
+.jc-calc{margin-top:24px;border-top:1px solid #E9ECF1;padding-top:20px}
+.jc-calc-h{font-size:16px;font-weight:800;color:#17171C;word-break:keep-all}
+.jc-in{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px}
+.jc-in label{display:flex;flex-direction:column;gap:6px;font-size:14px;font-weight:600;color:#3D4350;position:relative}
+.jc-in input{height:52px;border:1px solid #D5DAE2;border-radius:12px;padding:0 36px 0 14px;font:inherit;font-size:16px;color:#17171C;text-align:right;font-variant-numeric:tabular-nums}
+.jc-in input:focus{outline:3px solid #2A62F0;outline-offset:1px;border-color:#2A62F0}
+.jc-in span{position:absolute;right:14px;bottom:15px;font-size:14px;color:#667085}
+.jc-out{margin-top:14px;font-size:16px;color:#17171C;font-variant-numeric:tabular-nums}
+.jc-out b{color:#1F4FCC}
+.jc-note{display:block;margin-top:8px;padding:12px 14px;border-radius:12px;background:#FFF1E7;color:#A2410B;font-size:14px;line-height:1.6;word-break:keep-all}
+.jc-five{padding-left:20px;display:grid;gap:10px;font-size:14px;line-height:1.75;color:#3D4350}
+.jc-five b{color:#17171C;margin-right:6px}
+.jc-when{list-style:none;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.jc-when li{background:#F4F5F8;border-radius:12px;padding:14px 16px;font-size:14px;color:#3D4350;line-height:1.6;word-break:keep-all}
+.jc-when b{display:block;font-size:16px;color:#17171C;margin-bottom:2px}
+@media(max-width:900px){.jc-in{grid-template-columns:1fr}}
+@media(max-width:768px){.jc-when{grid-template-columns:1fr}}
+</style>
+
+</head>
+<body>
+<a href="#main" class="skip-link">본문으로 건너뛰기</a>
+<nav><div class="nav-inner">
+  <div class="nav-scroll">
+    <a href="index.html" class="nav-logo"><svg class="nav-mark" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><g fill="#17171C"><rect x="9" y="41" width="14" height="14" rx="1.5"/><rect x="25" y="41" width="14" height="14" rx="1.5"/><rect x="25" y="25" width="14" height="14" rx="1.5"/><rect x="41" y="41" width="14" height="14" rx="1.5"/><rect x="41" y="25" width="14" height="14" rx="1.5"/></g><rect x="41" y="9" width="14" height="14" rx="1.5" fill="#2A62F0"/></svg><strong class="nav-wm">셀프등기<b>24</b></strong></a>
+    <span class="nav-dd"><button type="button" class="nav-a nav-dd-btn" aria-expanded="false" aria-controls="nav-dd-guide">셀프등기 가이드<svg class="nav-dd-ic" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M3 4.5 6 7.5 9 4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button><span class="nav-dd-menu" id="nav-dd-guide" hidden><a href="guide.html">소유권이전등기 가이드<span>매매 절차·준비서류 전체</span></a><a href="joint.html">공동명의 셀프등기<span>단독명의와 달라지는 점</span></a><a href="gift_guide.html">증여 셀프등기<span>가족 간 증여 절차·신고</span></a><a href="cancel_guide.html">근저당권 말소 가이드<span>대출을 다 갚았을 때</span></a><a href="reject.html" aria-current="page">반려·각하 점검<span>접수 전에 확인할 항목</span></a></span></span>
+    <a href="cost.html" class="nav-a">등기비용 비교</a>
+    <span class="nav-dd"><button type="button" class="nav-a nav-dd-btn" aria-expanded="false" aria-controls="nav-dd-calc">부동산 계산기<svg class="nav-dd-ic" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M3 4.5 6 7.5 9 4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button><span class="nav-dd-menu" id="nav-dd-calc" hidden><a href="calculator.html">취득세 계산기<span>매매로 취득할 때</span></a><a href="gift_tax.html">증여 취득세 계산기<span>증여로 취득할 때</span></a></span></span><span class="nav-dd"><button type="button" class="nav-a nav-dd-btn active" aria-expanded="false" aria-controls="nav-dd-data">전세 데이터<svg class="nav-dd-ic" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M3 4.5 6 7.5 9 4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button><span class="nav-dd-menu" id="nav-dd-data" hidden><a href="jeonse_signal.html">서울 전세 신호<span>구별 임차권등기명령 · 경매</span></a><a href="jeonse_check.html" aria-current="page">전세 계약 전 등기부 점검<span>근저당 · 압류 · 깡통전세 계산</span></a><a href="stats.html">셀프등기 통계<span>본인 신청 건수 · 비율</span></a></span></span>
+    <a href="https://selfregi.tistory.com" class="nav-a" target="_blank" rel="noopener">블로그</a>
+  </div>
+  <a href="normal_form.html" class="nav-a cta">서류 작성하기</a>
+</div></nav>
+
+<main id="main">
+<div class="page-header">
+  <div class="page-header-inner">
+    <div class="page-eyebrow">전세사기 예방 · 앱 설치 없이 무료</div>
+    <h1>전세 계약 전 등기부등본 확인 — 근저당 · 압류 · 신탁 · 깡통전세 계산</h1>
+    <p>등기부등본(등기사항전부증명서) PDF를 올리면 소유자, 압류 · 가압류 · 가처분 · 경매, 신탁, 근저당 채권최고액을 찾아 계약 전에 확인할 것으로 정리합니다.</p>
+  </div>
+</div>
+
+<div class="wrap">
+  <section class="card" id="tool" aria-labelledby="j1-h">
+    <div class="ch">
+      <div class="step-num">01</div>
+      <div><h2 class="ct" id="j1-h">등기부 올리고 확인할 것 보기</h2><div class="cs">인터넷등기소에서 열람한 뒤 PDF로 저장한 <span class="nw">파일을 올리세요</span></div></div>
+    </div>
+    <div class="jc-drop" id="jcDrop">
+      <p class="jc-drop-t">등기사항전부증명서 PDF</p>
+      <p class="jc-drop-s">서버로 보내지 않고 이 기기에서만 읽습니다</p>
+      <label class="jc-btn" for="jcFile">등기부 올리기</label>
+      <input type="file" id="jcFile" class="jc-file" accept="application/pdf">
+      <p class="jc-say" id="jcSay" role="status" aria-live="polite"></p>
+    </div>
+    <details class="jc-how"><summary>등기부가 아직 없나요?</summary>
+      <ol><li>인터넷등기소에서 회원가입 없이 열람(700원)</li><li>열람 화면에서 PDF로 저장</li><li>저장한 PDF를 위에 올리기</li></ol>
+      <a href="https://www.iros.go.kr" target="_blank" rel="noopener">인터넷등기소 바로가기 ↗</a>
+    </details>
+
+    <div class="jc-res" id="jcRes" hidden>
+      <p class="jc-addr" id="jcAddr"></p>
+      <ul class="jc-list" id="jcList"></ul>
+      <p class="jc-gu" id="jcGu" hidden></p>
+    </div>
+
+    <div class="jc-calc" id="jcCalc">
+      <h3 class="jc-calc-h">깡통전세 계산 — 전세가율 · 근저당 포함 비율</h3>
+      <div class="jc-in">
+        <label>전세 보증금<input type="text" inputmode="numeric" id="jcDep" placeholder="예: 300,000,000" autocomplete="off"><span>원</span></label>
+        <label>근저당 채권최고액 합계<input type="text" inputmode="numeric" id="jcLien" placeholder="등기부를 올리면 채워집니다" autocomplete="off"><span>원</span></label>
+        <label>집값(시세)<input type="text" inputmode="numeric" id="jcPrice" placeholder="예: 500,000,000" autocomplete="off"><span>원</span></label>
+      </div>
+      <p class="jc-out" id="jcOut">세 칸을 채우면 전세가율과 합계 <span class="nw">비율이 나옵니다.</span></p>
+      <p class="src">전세가율 = 보증금 ÷ 집값. 합계 비율 = (보증금 + 채권최고액) ÷ 집값.<br>채권최고액은 근저당으로 담보하는 최대 한도로, 실제 대출 잔액보다 크게 잡히는 것이 일반적입니다. 이 비율은 판단 기준이 아니라 계약 전 대화에 쓰는 숫자입니다. 지역별 평균 전세가율은 <a href="https://www.rtech.or.kr" target="_blank" rel="noopener">한국부동산원 부동산테크</a>에서 볼 수 있습니다.</p>
+    </div>
+  </section>
+
+  <section class="card" id="five" aria-labelledby="j2-h">
+    <div class="ch">
+      <div class="step-num">02</div>
+      <div><h2 class="ct" id="j2-h">계약 전에 등기부에서 볼 다섯 가지</h2><div class="cs">등기부는 표제부 · 갑구 · 을구로 나뉩니다</div></div>
+    </div>
+    <ol class="jc-five">
+      <li><b>소유자</b> 갑구 또는 「주요 등기사항 요약」 1번의 소유자가 계약하는 임대인과 같은 사람인지 확인합니다. 소유자가 여러 명이면 누가 계약하는지와 지분을 함께 봅니다.</li>
+      <li><b>압류 · 가압류 · 가처분 · 경매</b> 갑구에 기재되어 있으면 소유권에 제한이 걸린 상태입니다. 계약 전에 말소 여부와 경위를 확인합니다.</li>
+      <li><b>신탁</b> 소유자가 신탁회사(수탁자)로 되어 있으면 임대 권한과 동의 절차가 신탁원부에 정해져 있습니다. 등기소에서 신탁원부를 발급받아 확인합니다.</li>
+      <li><b>근저당 · 전세권</b> 을구에 적힌 채권최고액은 내 보증금보다 앞서는 권리입니다. 합계를 보증금과 함께 집값에 견주어 봅니다.</li>
+      <li><b>열람 일시</b> 등기부는 바뀔 수 있으니 계약 직전과 잔금 직전에 다시 열람합니다.</li>
+    </ol>
+  </section>
+
+  <section class="card" id="when" aria-labelledby="j3-h">
+    <div class="ch">
+      <div class="step-num">03</div>
+      <div><h2 class="ct" id="j3-h">등기부를 다시 볼 때</h2><div class="cs">같은 집이라도 날짜마다 다시 확인합니다</div></div>
+    </div>
+    <ul class="jc-when">
+      <li><b>계약서 쓰기 전</b>소유자 · 제한 · 근저당을 확인합니다</li>
+      <li><b>잔금 치르기 전</b>계약 뒤 새로 생긴 기재가 없는지 봅니다</li>
+      <li><b>전입한 뒤</b>보증금보다 앞선 권리가 새로 들어오지 않았는지 봅니다</li>
+    </ul>
+  </section>
+
+  <section class="card" id="more" aria-labelledby="j5-h">
+    <div class="ch">
+      <div class="step-num">04</div>
+      <div><h2 class="ct" id="j5-h">등기부등본에 나오지 않는 것</h2><div class="cs">전세사기는 등기부 밖의 빚에서 자주 생깁니다</div></div>
+    </div>
+    <ol class="jc-five">
+      <li><b>집주인의 밀린 세금</b> 국세 · 지방세 체납은 등기부에 없습니다. 계약 전에는 임대인 동의를 받아, 계약 뒤 입주 전까지는 보증금이 1천만원을 넘으면 동의 없이도 세무서에서 미납국세를 열람할 수 있습니다(국세징수법 제109조). 지방세는 시 · 군 · 구청에서 확인합니다.</li>
+      <li><b>먼저 들어온 세입자</b> 다가구주택은 다른 세대의 보증금이 등기부에 나오지 않습니다. 임대인 동의를 받아 주민센터에서 확정일자 부여현황을 받아 봅니다(주택임대차보호법 제3조의6).</li>
+      <li><b>임대인의 보증사고 이력</b> HUG 안심전세앱에서 시세와 임대인 정보를 조회할 수 있습니다<span class="nw">(일부 항목은 임대인 동의 필요).</span></li>
+      <li><b>시세</b> 집값은 국토교통부 <a href="https://rt.molit.go.kr" target="_blank" rel="noopener">실거래가 공개시스템</a>에서 같은 단지 · 비슷한 집의 최근 거래로 확인합니다.</li>
+      <li><b>보증금 반환보증</b> HUG · HF · SGI서울보증 상품이 있고, 가입 조건은 기관마다 다릅니다. 계약 전에 가입할 수 있는 집인지 먼저 확인합니다.</li>
+    </ol>
+    <p class="src">우리 동네 흐름은 <a href="jeonse_signal.html" data-cta="jc_signal">서울 전세 신호(구별 임차권등기명령 · 경매개시)</a>에서 매달 확인할 수 있습니다. 상담은 서울시 전월세종합지원센터 등 지자체 센터를 이용하세요.</p>
+  </section>
+
+  <section class="card" id="faq" aria-labelledby="j4-h">
+    <div class="ch">
+      <div class="step-num">05</div>
+      <div><h2 class="ct" id="j4-h">자주 묻는 질문</h2><div class="cs">전세사기 예방 · 등기부등본 확인</div></div>
+    </div>
+    <div class="faq">
+      <details><summary>등기부는 어디서 보나요?</summary><p>대법원 인터넷등기소에서 회원가입 없이 열람할 수 있습니다(700원). 열람 화면에서 PDF로 저장하면 이 페이지에 올릴 수 있습니다.</p></details>
+      <details><summary>등기부등본만 보면 전세사기를 피할 수 있나요?</summary><p>아닙니다. 등기부에는 집주인의 세금 체납과 다가구주택의 다른 세입자 보증금이 나오지 않습니다. 미납국세 열람, 확정일자 부여현황, 보증금 반환보증 가입 가능 여부를 함께 확인하세요.</p></details>
+      <details><summary>깡통전세는 어떻게 계산하나요?</summary><p>보증금과 선순위 근저당 채권최고액을 더해 집값과 견줍니다. 전세가율(보증금 ÷ 집값)이 높을수록, 합계가 집값에 가까울수록 경매로 넘어갔을 때 보증금을 다 돌려받지 못할 수 있습니다. 위 계산 칸에 숫자를 넣으면 두 비율이 바로 나옵니다.</p></details>
+      <details><summary>채권최고액은 무엇인가요?</summary><p>근저당으로 담보하는 최대 한도 금액입니다. 실제 대출 잔액보다 크게 잡히는 것이 일반적이라, 등기부만으로 남은 빚을 정확히 알 수는 없습니다.</p></details>
+      <details><summary>신탁등기가 된 집은 어떻게 확인하나요?</summary><p>소유자가 신탁회사(수탁자)로 되어 있고, 누가 임대할 수 있는지는 신탁원부에 정해져 있습니다. 등기소에서 신탁원부를 발급받아 임대 권한과 동의 절차를 확인하세요.</p></details>
+      <details><summary>등기부는 언제 다시 확인해야 하나요?</summary><p>계약서를 쓰기 직전과 잔금 직전에 다시 열람하세요. 그 사이 새 근저당이나 압류가 등기될 수 있습니다.</p></details>
+      <details><summary>올린 등기부는 저장되나요?</summary><p>저장하지 않습니다. PDF는 서버로 보내지 않고 이 기기의 브라우저 안에서만 읽습니다.</p></details>
+      <details><summary>전세 진단 앱과 무엇이 다른가요?</summary><p>앱 설치나 회원가입 없이 웹에서 무료로 씁니다. 주소가 아니라 직접 열람한 등기부등본 PDF를 읽기 때문에 열람 시점의 기재 내용 그대로 정리됩니다.</p></details>
+    </div>
+    <p class="src">이 점검은 등기부에 적힌 사항을 정리할 뿐 계약의 안전을 판단하지 않습니다.<br>확정일자 · 전입신고 · 보증보험 등은 따로 확인하고, 최종 판단은 공인중개사 · 법률 전문가와 함께 하세요.</p>
+  </section>
+
+  <div class="finish">
+    <h3>계약할 집이 있는 동네의 흐름도 보세요</h3>
+    <p>서울 25개 구의 임차권등기명령 · 경매개시를 매달 정리합니다. 집을 사게 되면 소유권이전등기도 셀프등기24로 직접 할 수 있습니다.</p>
+    <div class="finish-btns">
+      <a href="jeonse_signal.html" class="p" data-cta="jc_hub">서울 전세 신호 보기</a>
+      <a href="guide.html" class="g" data-cta="jc_guide">셀프등기 가이드</a>
+    </div>
+  </div>
+</div>
+</main>
+
+
+<footer>
+  <div class="foot-inner">
+    <div class="foot-brand"><svg class="foot-mark" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><g fill="#17171C"><rect x="9" y="41" width="14" height="14" rx="1.5"/><rect x="25" y="41" width="14" height="14" rx="1.5"/><rect x="25" y="25" width="14" height="14" rx="1.5"/><rect x="41" y="41" width="14" height="14" rx="1.5"/><rect x="41" y="25" width="14" height="14" rx="1.5"/></g><rect x="41" y="9" width="14" height="14" rx="1.5" fill="#2A62F0"/></svg><span>셀프등기<b>24</b></span></div>
+    <div class="foot-links">
+      <a href="guide.html">셀프등기 가이드</a>
+      <a href="cost.html">등기비용 비교</a>
+      <a href="calculator.html">취득세 계산기</a>
+      <a href="https://selfregi.tistory.com" target="_blank" rel="noopener">블로그</a>
+      <a href="terms.html">이용약관</a>
+      <a href="privacy.html">개인정보처리방침</a>
+    </div>
+    <div class="foot-biz">셀프등기24 · 대표 허민 · 사업자등록번호 164-20-02315 · 주소 서울특별시 중구 동호로 173 · 문의 <a href="mailto:selfregi999@gmail.com">selfregi999@gmail.com</a> · 전화 070-8019-0609</div>
+    <div class="foot-copy">
+      © 2026 셀프등기24 · 개인정보를 별도로 저장하지 않으며, 개인정보를 기재하지 않아도 서류 생성이 가능합니다.<br>
+      본 서비스는 법률 자문을 제공하지 않으며 등기 신청을 대행하지 않습니다. 최종 확인은 관할 등기소 안내를 따라 주세요.
+    </div>
+  </div>
+</footer>
+
+<script>
+/* 상단 메뉴 드롭다운(「셀프등기 가이드」·「부동산 계산기」): 클릭(모든 기기) + 마우스 올림(데스크톱).
+   2026-10-09 드롭다운이 둘이 되어 버튼마다 따로 묶는다. 하나를 열면 나머지는 닫힌다(navdd 이벤트). */
+[].forEach.call(document.querySelectorAll('.nav-dd-btn'),function(b){
+  var m=document.getElementById(b.getAttribute('aria-controls')); if(!m) return;
+  document.body.appendChild(m); /* 가로 스크롤 메뉴 안에서 잘리지 않게 body로 옮긴다 */
+  var hover=window.matchMedia('(hover:hover) and (pointer:fine)'), t=null, via='';
+  function place(){
+    var r=b.getBoundingClientRect(), nb=b.closest('nav').getBoundingClientRect();
+    m.style.top=Math.round(nb.bottom+6)+'px';
+    if(window.innerWidth<=640){ m.style.left='12px'; m.style.right='12px'; }
+    else { m.style.right='auto'; m.style.left=Math.round(Math.max(12,Math.min(r.left,window.innerWidth-m.offsetWidth-12)))+'px'; }
+  }
+  function open(src){ clearTimeout(t); via=src; if(!m.hidden) return; document.dispatchEvent(new CustomEvent('navdd',{detail:m})); m.hidden=false; b.setAttribute('aria-expanded','true'); place(); }
+  function close(){ clearTimeout(t); if(m.hidden) return; m.hidden=true; b.setAttribute('aria-expanded','false'); via=''; }
+  b.addEventListener('click',function(e){
+    e.stopPropagation();
+    if(!m.hidden && via==='hover'){ via='click'; return; }
+    if(m.hidden){ open('click'); if(e.detail===0){ var a=m.querySelector('a'); if(a) a.focus(); } } else close();
+  });
+  document.addEventListener('click',function(e){ if(!m.hidden && !m.contains(e.target)) close(); });
+  document.addEventListener('navdd',function(e){ if(e.detail!==m) close(); });
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape' && !m.hidden){ close(); b.focus(); } });
+  m.addEventListener('focusout',function(e){ if(e.relatedTarget && !m.contains(e.relatedTarget) && e.relatedTarget!==b) close(); });
+  window.addEventListener('resize',function(){ if(!m.hidden) place(); });
+  window.addEventListener('scroll',close,{passive:true});
+  var sc=b.closest('.nav-scroll'); if(sc) sc.addEventListener('scroll',close,{passive:true});
+  if(hover.matches){
+    [b,m].forEach(function(el){
+      el.addEventListener('mouseenter',function(){ open(via||'hover'); });
+      el.addEventListener('mouseleave',function(){ t=setTimeout(close,200); });
+    });
+  }
+});
+</script>
+<script>
+/* 모바일 햄버거 메뉴: 상단 메뉴 항목을 복제해 ≡ 패널로 보여준다 (768px 이하) */
+(function(){
+  var nav=document.querySelector('nav'),inner=nav&&nav.querySelector('.nav-inner'),sc=inner&&inner.querySelector('.nav-scroll'); if(!sc) return;
+  document.documentElement.classList.add('js-mnav');
+  var btn=document.createElement('button'); btn.type='button'; btn.className='nav-burger';
+  btn.setAttribute('aria-label','메뉴 열기'); btn.setAttribute('aria-expanded','false'); btn.setAttribute('aria-controls','mnav');
+  btn.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path class="b1" d="M4 7h16"/><path class="b2" d="M4 12h16"/><path class="b3" d="M4 17h16"/></svg>';
+  inner.appendChild(btn);
+  var p=document.createElement('div'); p.id='mnav'; p.className='mnav'; p.hidden=true; p.setAttribute('role','dialog'); p.setAttribute('aria-label','전체 메뉴');
+  var list=document.createElement('div'); list.className='mnav-list'; p.appendChild(list);
+  [].forEach.call(sc.children,function(el){
+    if(el.tagName==='A'&&el.classList.contains('nav-a')){ var a=el.cloneNode(true); a.removeAttribute('id'); a.className='mnav-a'; list.appendChild(a); }
+    else if(el.classList.contains('nav-dd')){
+      var ob=el.querySelector('.nav-dd-btn'),menu=ob&&document.getElementById(ob.getAttribute('aria-controls')); if(!menu) return;
+      var on=ob.classList.contains('active');
+      var ab=document.createElement('button'); ab.type='button'; ab.className='mnav-a mnav-acc';
+      ab.setAttribute('aria-expanded',on?'true':'false'); ab.setAttribute('aria-controls','mnav-sub-'+menu.id);
+      ab.innerHTML=ob.childNodes[0].textContent+'<svg viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M3 4.5 6 7.5 9 4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+      var sub=document.createElement('div'); sub.id='mnav-sub-'+menu.id; sub.className='mnav-sub'; sub.hidden=!on;
+      [].forEach.call(menu.querySelectorAll('a'),function(x){ sub.appendChild(x.cloneNode(true)); });
+      ab.addEventListener('click',function(){ var o=ab.getAttribute('aria-expanded')==='true'; ab.setAttribute('aria-expanded',String(!o)); sub.hidden=o; });
+      list.appendChild(ab); list.appendChild(sub);
+    }
+  });
+  var cta=null; [].forEach.call(inner.children,function(el){ if(el.classList.contains('cta')) cta=el; });
+  if(cta){ var f=document.createElement('div'); f.className='mnav-cta'; var c=cta.cloneNode(true); c.removeAttribute('class'); c.removeAttribute('id'); f.appendChild(c); p.appendChild(f); }
+  document.body.appendChild(p);
+  /* 메뉴가 열린 동안 뒤 화면은 키보드·화면낭독기에서 제외 */
+  function lock(on){ [].forEach.call(document.body.children,function(el){ if(el===p||el.contains(nav)||el.tagName==='SCRIPT') return; el.inert=on; }); }
+  function open(){ p.style.top=Math.max(0,Math.round(nav.getBoundingClientRect().bottom))+'px'; p.hidden=false; btn.setAttribute('aria-expanded','true'); btn.setAttribute('aria-label','메뉴 닫기'); document.documentElement.classList.add('mnav-open'); lock(true); var f=p.querySelector('a,button'); if(f) f.focus(); }
+  function close(){ p.hidden=true; btn.setAttribute('aria-expanded','false'); btn.setAttribute('aria-label','메뉴 열기'); document.documentElement.classList.remove('mnav-open'); lock(false); }
+  btn.addEventListener('click',function(){ p.hidden?open():close(); });
+  p.addEventListener('click',function(e){ if(e.target.closest&&e.target.closest('a')) close(); });
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape'&&!p.hidden){ close(); btn.focus(); } });
+  window.addEventListener('resize',function(){ if(window.innerWidth>768&&!p.hidden) close(); });
+})();
+</script>
+<script src="assets/sr-v2-motion.js?v=1111" data-rv=".card,.finish" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="regparse.js"></script>
+<script src="jeonsecheck.js"></script>
+<script>
+/* 전세 계약 전 등기부 점검 화면(2026-11-14). PDF는 브라우저 안에서만 읽는다 — fetch · 저장 없음.
+   이벤트(이름만, 개인정보 없음): jc_upload · jc_ok · jc_fail · jc_calc · jc_cta */
+(function(){
+  function trk(n,d){try{if(typeof gtag==='function')gtag('event',n,d||{});}catch(e){}}
+  try{if(window.pdfjsLib)pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';}catch(e){}
+  var $=function(id){return document.getElementById(id);};
+  var fi=$('jcFile'),say=$('jcSay'),res=$('jcRes'),list=$('jcList'),addrEl=$('jcAddr');
+  var dep=$('jcDep'),lien=$('jcLien'),price=$('jcPrice'),out=$('jcOut'),calcSent=false;
+  var LV={ok:'기재 없음',info:'확인',check:'계약 전 확인',unknown:'직접 확인'};
+  function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  function comma(el){var n=JeonseCheck._won(el.value);el.value=n?n.toLocaleString('ko-KR'):'';}
+  function calc(){
+    var r=JeonseCheck.ratio(dep.value,JeonseCheck._won(lien.value),price.value);
+    if(!JeonseCheck._won(dep.value)||r.pct==null){out.textContent='세 칸을 채우면 합계와 비율이 나옵니다.';return;}
+    var note=r.pct>=100?'<br><span class="jc-note">보증금과 채권최고액 합계가 집값보다 큽니다. 계약 전에 근저당 실제 잔액 · 말소 계획과 보증금 반환보증 가입 가능 여부를 먼저 확인하세요.</span>'
+      :r.pct>=80?'<br><span class="jc-note">합계가 집값에 가깝습니다. 집값이 내리거나 경매로 넘어가면 보증금을 다 돌려받지 못할 수 있어, 보증금 반환보증 가입 가능 여부를 먼저 확인하세요.</span>':'';
+    out.innerHTML='전세가율 <b>'+r.jeonsePct+'%</b> · 보증금 + 채권최고액 합계 <b>'+r.total.toLocaleString('ko-KR')+'원</b>(집값의 <b>'+r.pct+'%</b>)'+note;
+    if(!calcSent){calcSent=true;trk('jc_calc');}
+  }
+  [dep,lien,price].forEach(function(el){el.addEventListener('input',function(){comma(el);calc();});});
+  function show(a){
+    list.innerHTML=a.items.map(function(i){return '<li class="jc-it lv-'+i.level+'"><span class="jc-lv">'+LV[i.level]+'</span><div><b>'+esc(i.title)+'</b><p>'+esc(i.detail)+'</p></div></li>';}).join('');
+    addrEl.textContent=a.address||'';addrEl.hidden=!a.address;
+    var gp=JeonseCheck.guPage(a.address),guEl=$('jcGu');
+    if(gp){guEl.innerHTML='이 집이 있는 '+esc(gp.gu)+'의 임차권등기명령 · 경매 흐름 <a href="'+esc(gp.href)+'" data-cta="jc_gu">'+esc(gp.gu)+' 전세 신호 보기 →</a>';guEl.hidden=false;}else{guEl.hidden=true;}
+    res.hidden=false;
+    lien.value=a.lienSum?a.lienSum.toLocaleString('ko-KR'):'0';calc();
+    res.scrollIntoView({behavior:'smooth',block:'start'});
+  }
+  function fail(msg,why){say.textContent=msg;trk('jc_fail',{key:why});}
+  fi.addEventListener('change',function(){
+    var f=fi.files&&fi.files[0];fi.value='';if(!f)return;
+    trk('jc_upload');
+    if(!/pdf$/i.test(f.type)&&!/\.pdf$/i.test(f.name))return fail('PDF 파일만 읽을 수 있습니다. 인터넷등기소에서 열람한 뒤 PDF로 저장해 올려 주세요.','type');
+    if(!window.pdfjsLib||!window.RegParse)return fail('읽기 도구를 불러오지 못했습니다. 화면을 새로고침해 주세요.','lib');
+    say.textContent='등기부를 읽는 중입니다…';res.hidden=true;
+    f.arrayBuffer().then(function(buf){return RegParse.parseRegistry(pdfjsLib,buf);}).then(function(r){
+      if(!r||!r.ok){
+        var m=r&&r.reason==='NO_TEXT_LAYER'?'사진이나 스캔으로 만든 PDF는 아직 읽지 못합니다. 인터넷등기소에서 열람한 화면을 PDF로 저장한 파일을 올려 주세요.'
+          :r&&r.reason==='NOT_REGISTRY'?'등기사항전부증명서로 보이지 않습니다. 등기부 PDF인지 확인해 주세요.':'PDF를 읽지 못했습니다. 다른 파일로 다시 시도해 주세요.';
+        return fail(m,(r&&r.reason)||'parse');
+      }
+      var a=JeonseCheck.analyze(r);
+      say.textContent='읽었습니다. 아래 항목을 계약 전에 확인하세요.';
+      trk('jc_ok',{key:a.items.filter(function(i){return i.level==='check';}).length+'check'});
+      show(a);
+    }).catch(function(){fail('PDF를 읽지 못했습니다. 다른 파일로 다시 시도해 주세요.','error');});
+  });
+  document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('[data-cta]');if(a)trk('jc_cta',{key:a.getAttribute('data-cta')});});
+})();
+</script>
+
+</body>
+</html>
