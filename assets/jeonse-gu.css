@@ -1,0 +1,114 @@
+/* 구 페이지 시안 공통 — 도표 · 움직임. 값은 sr-v2.css 토큰만 */
+.vz{width:100%;height:auto;display:block;overflow:visible}
+.vz .ax{stroke:var(--line-strong);stroke-width:1}
+.vz .avg{stroke:var(--ink);stroke-width:2;stroke-dasharray:4 4}
+.vz .xlab{font-size:var(--t-14);fill:var(--sub);text-anchor:middle;font-variant-numeric:tabular-nums}
+.vz .blab{font-size:var(--t-16);font-weight:700;fill:var(--ink);text-anchor:middle;font-variant-numeric:tabular-nums}
+.vz .vbar{fill:var(--line-strong)}
+.vz .vbar.now{fill:var(--blue)}
+.vz .area{fill:var(--blue-soft)}
+.vz .ln{fill:none;stroke:var(--blue);stroke-width:3;stroke-linejoin:round;stroke-linecap:round}
+.vz .dot{fill:var(--card);stroke:var(--ink);stroke-width:3}
+.vz .dot.now{fill:var(--blue);stroke:var(--card)}
+.vz .sd{fill:var(--line-strong)}
+.vz .sd.me{fill:var(--blue);stroke:var(--card);stroke-width:3}
+.num{font-size:var(--t-num);font-weight:800;line-height:1;letter-spacing:-.04em;color:var(--ink);font-variant-numeric:tabular-nums}
+.num-u{font-size:var(--t-24);font-weight:700;color:var(--ink);margin-left:4px}
+.kick{font-size:var(--t-16);font-weight:600;color:var(--sub)}
+.src{font-size:var(--t-14);color:var(--sub);line-height:1.6;margin-top:16px}
+.rk{display:grid;grid-template-columns:28px 76px 1fr 44px;align-items:center;gap:8px;min-height:44px;color:var(--body);font-size:var(--t-16);font-variant-numeric:tabular-nums;border-radius:var(--r-s);padding:0 8px}
+.rk:hover{background:var(--soft)}
+.rk-n{color:var(--sub);font-size:var(--t-14)}
+.rk-v{text-align:right}
+.rk-b{height:12px;background:var(--soft);border-radius:var(--r-pill);overflow:hidden}
+.rk-b i{display:block;height:100%;width:var(--w);background:var(--line-strong);border-radius:var(--r-pill)}
+.rk.me{color:var(--ink);font-weight:700;background:var(--blue-soft)}
+.rk.me .rk-b{background:var(--card)}
+.rk.me .rk-b i{background:var(--blue)}
+.cta{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:24px}
+.cta p{font-size:var(--t-16);color:var(--sub);margin-top:8px}
+.kpis{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.kpi b{display:block;font-size:var(--t-32);font-weight:800;color:var(--ink);font-variant-numeric:tabular-nums;letter-spacing:-.03em}
+.kpi span{font-size:var(--t-14);color:var(--sub)}
+
+/* 움직임 — .js 범위에서만 숨기고, 줄이기 설정이면 전부 끈다 */
+.js .grow .vbar{transform:scaleY(0);transform-origin:0 192px;transition:transform var(--d-slow) var(--ease);transition-delay:calc(var(--i) * 40ms)}
+.js .grow.in .vbar{transform:none}
+.js .draw .ln{stroke-dasharray:var(--len);stroke-dashoffset:var(--len);transition:stroke-dashoffset 1.6s var(--ease)}
+.js .draw.in .ln{stroke-dashoffset:0}
+.js .draw .area,.js .draw .dot,.js .draw .blab{opacity:0;transition:opacity var(--d) var(--ease) 1.2s}
+.js .draw.in .area,.js .draw.in .dot,.js .draw.in .blab{opacity:1}
+.js .spread .sd{opacity:0;transition:opacity var(--d) var(--ease);transition-delay:calc(var(--i) * 30ms)}
+.js .spread.in .sd{opacity:1}
+.js .bars-in .rk-b i{width:0;transition:width var(--d-slow) var(--ease);transition-delay:calc(var(--i) * 30ms)}
+.js .bars-in.in .rk-b i{width:var(--w)}
+.js [data-rv]{opacity:0;transform:translateY(24px);transition:opacity var(--d-slow) var(--ease),transform var(--d-slow) var(--ease)}
+.js [data-rv].in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.js *{transition:none!important}.js .grow .vbar{transform:none}.js .bars-in .rk-b i{width:var(--w)}.js .draw .ln{stroke-dashoffset:0}.js .draw .area,.js .draw .dot,.js .draw .blab,.js .spread .sd,.js [data-rv]{opacity:1;transform:none}}
+@media (max-width:768px){.num{font-size:var(--t-48)}.kpi b{font-size:var(--t-24)}.rk{grid-template-columns:24px 68px 1fr 40px}}
+
+/* 구 페이지 배치 (A + C 조합, 2026-11-15) */
+.g-hero{padding-top:56px;padding-bottom:var(--scene)}
+.g-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:48px;align-items:center;margin-top:40px}
+.g-fig .pos{font-size:var(--t-18);color:var(--ink);margin-top:16px}
+.g-fig .pos em{font-style:normal;color:var(--blue);font-weight:700}
+.g-two{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,2fr);gap:24px;align-items:stretch}
+.g-two h2,.g-sec h2{font-size:var(--t-32)}
+.g-kpis{display:grid;gap:24px;align-content:center}
+.g-sec .scene-head{max-width:var(--read)}
+.g-map{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:6px;max-width:var(--read)}
+.cell{aspect-ratio:1;min-height:44px;border-radius:var(--r-s);display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:var(--t-14);font-weight:700;color:var(--ink);background:color-mix(in srgb,var(--blue) calc(var(--k) * 100%),var(--card));box-shadow:inset 0 0 0 1px var(--line);transition:transform var(--d-fast) var(--spring)}
+.cell small{font-size:var(--t-14);font-weight:500;font-variant-numeric:tabular-nums}
+.cell.dark{color:var(--card)}
+.cell:hover{transform:scale(1.04)}
+.cell:active{transform:scale(.94)}
+.cell[aria-current="page"]{outline:3px solid var(--ink);outline-offset:2px}
+.legend{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:16px;font-size:var(--t-14);color:var(--sub)}
+.legend i{width:20px;height:12px;border-radius:var(--r-xs);background:color-mix(in srgb,var(--blue) var(--k),var(--card));box-shadow:inset 0 0 0 1px var(--line)}
+.js .g-map .cell{opacity:0;transform:scale(.8);transition:opacity var(--d) var(--ease),transform var(--d) var(--spring);transition-delay:calc(var(--o) * 25ms)}
+.js .g-map.in .cell{opacity:1;transform:none}
+.g-faq details{border-top:1px solid var(--line)}
+.g-faq details:last-child{border-bottom:1px solid var(--line)}
+.g-faq summary{cursor:pointer;list-style:none;min-height:56px;display:flex;align-items:center;font-size:var(--t-18);font-weight:700;color:var(--ink)}
+.g-faq summary::-webkit-details-marker{display:none}
+.g-faq .ans{font-size:var(--t-16);line-height:1.7;padding-bottom:20px}
+.g-faq .ans b{color:var(--ink)}
+.g-tbl{width:100%;border-collapse:collapse;font-size:var(--t-14);font-variant-numeric:tabular-nums;margin-top:12px}
+.g-tbl th,.g-tbl td{padding:6px 4px;border-bottom:1px solid var(--line);text-align:right}
+.g-tbl th:first-child,.g-tbl td:first-child{text-align:left}
+.g-more{margin-top:16px}
+.g-more summary{cursor:pointer;min-height:44px;display:inline-flex;align-items:center;font-size:var(--t-14);font-weight:600;color:var(--sub)}
+@media (max-width:900px){.g-grid,.g-two{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:768px){.g-hero{padding-top:32px;padding-bottom:80px}.scene{padding:80px 0}.g-hero h1{font-size:var(--t-32)}.g-two h2,.g-sec h2{font-size:var(--t-24)}.g-map{gap:4px}.cell{font-size:var(--t-14)}}
+@media (prefers-reduced-motion:reduce){.js .g-map .cell{opacity:1;transform:none}}
+
+/* 서울 전체(큰 테마) → 구(소테마) 이동 (2026-11-15) */
+.g-back{display:inline-flex;align-items:center;min-height:44px;padding:0 16px;margin-bottom:16px;border-radius:var(--r-pill);background:var(--soft);color:var(--ink);font-size:var(--t-16);font-weight:700}
+.g-back:hover{background:var(--line)}
+.h-grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:48px;align-items:start;margin-top:48px}
+.h-fig .pos{font-size:var(--t-18);color:var(--ink);margin-top:12px}
+.h-fig .pos em{font-style:normal;color:var(--blue);font-weight:700}
+.h-top{font-size:var(--t-16);color:var(--sub);margin-top:24px;padding-top:16px;border-top:1px solid var(--line)}
+.h-top a{font-weight:700;display:inline-flex;align-items:center;min-height:44px}
+.h-maphead{margin-bottom:12px}
+.h-map{max-width:none}
+.h-tbl{width:100%;border-collapse:collapse;font-size:var(--t-16);font-variant-numeric:tabular-nums}
+.h-tbl th,.h-tbl td{padding:10px 8px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
+.h-tbl thead th{font-size:var(--t-14);color:var(--sub);font-weight:600}
+.h-tbl th:first-child{text-align:left}
+.h-tbl tbody th a{display:inline-flex;align-items:center;min-height:44px;min-width:44px;padding-right:8px;font-weight:700}
+@media (max-width:900px){.h-grid{grid-template-columns:minmax(0,1fr);gap:40px;margin-top:32px}.h-grid>div:last-child{order:-1}}
+@media (max-width:768px){.h-tbl{font-size:var(--t-14)}.h-tbl :is(th,td):is(:nth-child(2),:nth-child(3),:nth-child(4),:nth-child(8)){display:none}}
+
+/* 이 숫자로 판단할 수 있는 것 — 번호 + 굵은 한 줄 + 설명 (2026-11-15) */
+.uses{list-style:none;padding:0;display:grid;gap:12px;max-width:var(--read);margin-bottom:24px}
+.uses li{display:flex;gap:16px;align-items:flex-start;background:var(--card);border-radius:var(--r-m);padding:20px 24px}
+.u-n{flex:none;display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:var(--r-xs);background:var(--ink);color:var(--card);font-size:var(--t-14);font-weight:700}
+.uses b{display:block;font-size:var(--t-18);color:var(--ink);line-height:1.45}
+.uses p{font-size:var(--t-16);color:var(--body);margin-top:6px;line-height:1.6}
+@media (max-width:768px){.uses li{padding:16px}.uses b{font-size:var(--t-16)}}
+
+/* R7 반영(2026-11-15): 구 첫 화면 주 버튼 · 범례 줄바꿈 */
+.g-cta{margin-top:24px}
+.legend{row-gap:4px}.legend span:last-child{white-space:nowrap}
+@media (max-width:768px){.g-cta{width:100%}}
