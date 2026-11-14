@@ -54,7 +54,7 @@
   },
   {
    "@type": "Question",
-   "name": "증여 등기에서 신고해야 하는 세금은 무엇인가요?",
+   "name": "증여 등기 때 내는 세금은 무엇인가요?",
    "acceptedAnswer": {
     "@type": "Answer",
     "text": "취득세와 증여세 두 가지이고, 둘 다 증여받는 사람(수증인)이 냅니다. 취득세는 시·군·구청(위택스)에 등기 접수 전까지, 증여세는 세무서(홈택스)에 증여받은 날이 속한 달의 말일부터 3개월 안에 신고합니다."
@@ -320,6 +320,11 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:40px;p
 .faq summary::after{content:'+';position:absolute;right:4px;top:12px;font-size:18px;font-weight:400;color:#3D4350}
 .faq details[open] summary::after{content:'−'}
 .faq details p{font-size:14px;line-height:1.8;color:#3D4350;padding:0 0 16px;word-break:keep-all}
+/* 제휴 광고 카드(gift_tax.html 과 같은 값, 2026-11-15) */
+.aff{display:flex;align-items:center;gap:16px;background:#EAF0FF;border-color:#EAF0FF}.aff-brand{display:flex;align-items:center;gap:8px;flex:none}.aff-logo{width:56px;height:28px;border-radius:8px;object-fit:cover;flex:none}.aff-t{flex:1;min-width:0}.aff-tag{display:inline-block;font-size:14px;font-weight:700;color:#1F4FCC;background:#fff;border:1px solid #EAF0FF;border-radius:999px;padding:0 8px;line-height:18px}.aff .cs{margin-top:3px}.aff .cs b{color:#1F4FCC;font-weight:700}.aff.card{margin-bottom:6px}.aff-note{margin:0 0 14px;padding:0 4px;font-size:14px;color:var(--muted)}.aff-b{display:flex;gap:8px;flex:none}.aff-b a{padding:9px 14px;background:#fff;border:1px solid #EAF0FF;border-radius:8px;font-size:14px;font-weight:700;color:#1F4FCC;text-decoration:none;white-space:nowrap;transition:border-color .15s,background .15s}.aff-b a:hover{border-color:#2A62F0;background:#EAF0FF}@media(max-width:720px){.aff{flex-direction:column;align-items:stretch;gap:10px}.aff .ct{font-size:16px;line-height:1.45}.aff .cs{margin-top:4px;line-height:1.5}.aff-b{width:100%}.aff-b a{flex:1;text-align:center;padding:11px 8px}}
+/* R7 반영: 바로 위 안내 상자(옅은 파랑)와 섞이지 않게 흰 바탕 · 테두리, 버튼 44px, 360px 에서 버튼 세로 쌓기 */
+.aff.card{background:var(--card);border-color:var(--border)}.aff-b a{min-height:44px;display:inline-flex;align-items:center;justify-content:center}
+@media(max-width:400px){.aff-b{flex-direction:column}}
 </style>
 <link rel="stylesheet" href="assets/sr-v2-skin.css?v=1111">
 </head>
@@ -330,7 +335,7 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:40px;p
     <a href="index.html" class="nav-logo"><svg class="nav-mark" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><g fill="#17171C"><rect x="9" y="41" width="14" height="14" rx="1.5"/><rect x="25" y="41" width="14" height="14" rx="1.5"/><rect x="25" y="25" width="14" height="14" rx="1.5"/><rect x="41" y="41" width="14" height="14" rx="1.5"/><rect x="41" y="25" width="14" height="14" rx="1.5"/></g><rect x="41" y="9" width="14" height="14" rx="1.5" fill="#2A62F0"/></svg><strong class="nav-wm">셀프등기<b>24</b></strong></a>
     <span class="nav-dd"><button type="button" class="nav-a nav-dd-btn active" aria-expanded="false" aria-controls="nav-dd-guide">셀프등기 가이드<svg class="nav-dd-ic" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M3 4.5 6 7.5 9 4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button><span class="nav-dd-menu" id="nav-dd-guide" hidden><a href="guide.html">소유권이전등기 가이드<span>매매 절차·준비서류 전체</span></a><a href="joint.html">공동명의 셀프등기<span>단독명의와 달라지는 점</span></a><a href="gift_guide.html" aria-current="page">증여 셀프등기<span>가족 간 증여 절차·신고</span></a><a href="cancel_guide.html">근저당권 말소 가이드<span>대출을 다 갚았을 때</span></a><a href="reject.html">반려·각하 점검<span>접수 전에 확인할 항목</span></a></span></span>
     <a href="cost.html" class="nav-a">등기비용 비교</a>
-    <span class="nav-dd"><button type="button" class="nav-a nav-dd-btn" aria-expanded="false" aria-controls="nav-dd-calc">부동산 계산기<svg class="nav-dd-ic" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M3 4.5 6 7.5 9 4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button><span class="nav-dd-menu" id="nav-dd-calc" hidden><a href="calculator.html">취득세 계산기<span>매매로 취득할 때</span></a><a href="gift_tax.html">증여 취득세 계산기<span>증여로 취득할 때</span></a></span></span>
+    <span class="nav-dd"><button type="button" class="nav-a nav-dd-btn" aria-expanded="false" aria-controls="nav-dd-calc">부동산 계산기<svg class="nav-dd-ic" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M3 4.5 6 7.5 9 4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button><span class="nav-dd-menu" id="nav-dd-calc" hidden><a href="calculator.html">취득세 계산기<span>매매로 취득할 때</span></a><a href="gift_tax.html">증여 취득세 계산기<span>증여로 취득할 때</span></a></span></span><span class="nav-dd"><button type="button" class="nav-a nav-dd-btn" aria-expanded="false" aria-controls="nav-dd-data">전세 데이터<svg class="nav-dd-ic" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M3 4.5 6 7.5 9 4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button><span class="nav-dd-menu" id="nav-dd-data" hidden><a href="jeonse_signal.html">서울 전세 신호<span>구별 임차권등기명령 · 경매</span></a><a href="jeonse_check.html">전세 계약 전 등기부 점검<span>근저당 · 압류 · 깡통전세 계산</span></a><a href="stats.html">셀프등기 통계<span>본인 신청 건수 · 비율</span></a></span></span>
     <a href="https://selfregi.tistory.com" class="nav-a" target="_blank" rel="noopener">블로그</a>
   </div>
   <a href="normal_form.html" class="nav-a cta">서류 작성하기</a>
@@ -341,7 +346,7 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:40px;p
   <div class="page-header-inner">
     <div class="page-eyebrow">법령·등기예규·인터넷등기소 양식 기준 · 2026. 10. 확인</div>
     <h1>증여 셀프등기, 매매와 무엇이 다른가요</h1>
-    <p>증여로 인한 소유권이전도 등기소에 내는 절차는 매매와 같습니다. 달라지는 것은 증여계약서 검인, 세금 신고 두 가지, 채권 요율, 인감증명서입니다.</p>
+    <p>증여로 인한 소유권이전도 등기소에 내는 절차는 매매와 같습니다. 달라지는 것은 증여계약서 검인, 세금 신고 두 가지, <span class="nw">채권 요율, 인감증명서입니다.</span></p>
   </div>
 </div>
 
@@ -360,7 +365,7 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:40px;p
           <tr><td data-l="순서">1</td><td data-l="할 일">증여계약서 작성·날인</td><td data-l="어디서">증여인·수증인</td><td data-l="언제까지">계약일 = 등기원인일자</td></tr>
           <tr><td data-l="순서">2</td><td data-l="할 일">증여계약서 검인</td><td data-l="어디서">부동산 소재지 시·군·구청</td><td data-l="언제까지">취득세 신고 전</td></tr>
           <tr><td data-l="순서">3</td><td data-l="할 일">취득세 신고·납부</td><td data-l="어디서">위택스 또는 구청 세무과 <a href="guide.html#g=wetax">화면 보기</a></td><td data-l="언제까지">등기 접수 전</td></tr>
-          <tr><td data-l="순서">4</td><td data-l="할 일">국민주택채권 매입 · 등기신청수수료 납부</td><td data-l="어디서">은행 · 인터넷등기소 <a href="guide.html#g=bondonline">채권</a> · <a href="guide.html#g=efee">수수료</a> 화면 보기</td><td data-l="언제까지">등기 접수 전</td></tr>
+          <tr><td data-l="순서">4</td><td data-l="할 일"><span class="nw">국민주택채권 매입</span> · <span class="nw">등기신청수수료 납부</span></td><td data-l="어디서">은행 · 인터넷등기소 <a href="guide.html#g=bondonline">채권</a> · <a href="guide.html#g=efee">수수료</a> 화면 보기</td><td data-l="언제까지">등기 접수 전</td></tr>
           <tr><td data-l="순서">5</td><td data-l="할 일">서류 묶기 · 등기소 접수</td><td data-l="어디서">관할 등기소</td><td data-l="언제까지">—</td></tr>
           <tr class="us"><td data-l="순서">별도</td><td data-l="할 일">증여세 신고</td><td data-l="어디서">홈택스 또는 관할 세무서</td><td data-l="언제까지">증여일이 속한 달 말일부터 3개월</td></tr>
         </tbody>
@@ -373,9 +378,9 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:40px;p
   <section class="card" id="diff" aria-labelledby="c2-h">
     <div class="ch">
       <div class="step-num">02</div>
-      <div><h2 class="ct" id="c2-h">매매와 달라지는 점</h2><div class="cs">같은 소유권이전이라도 원인 서류와 신고가 다릅니다</div></div>
+      <div><h2 class="ct" id="c2-h">매매와 달라지는 점</h2><div class="cs">같은 소유권이전이라도 원인 서류와 <span class="nw">신고가 다릅니다</span></div></div>
     </div>
-    <p class="ans"><b>매매계약서·거래신고필증 대신 검인받은 증여계약서가 원인 서류입니다.</b> 신청서에 거래가액을 적지 않고, 매매목록도 없습니다.</p>
+    <p class="ans"><b>매매계약서·거래신고필증 대신 검인받은 증여계약서가 원인 서류입니다.</b> 신청서에 거래가액을 적지 않고, <span class="nw">매매목록도 없습니다.</span></p>
     <div class="tbl-wrap">
       <table>
         <thead><tr><th>항목</th><th>매매</th><th>증여</th></tr></thead>
@@ -403,7 +408,7 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:40px;p
       <table>
         <thead><tr><th>세금</th><th>신고하는 곳</th><th>기한</th><th>등기와의 관계</th></tr></thead>
         <tbody>
-          <tr><td data-l="세금">취득세(지방세)</td><td data-l="신고하는 곳">위택스 또는 시·군·구청 세무과</td><td data-l="기한">취득일이 속한 달 말일부터 3개월, 등기 전이면 접수일까지</td><td data-l="등기와의 관계">영수필확인서를 신청서에 첨부</td></tr>
+          <tr><td data-l="세금">취득세(지방세)</td><td data-l="신고하는 곳">위택스 또는 시·군·구청 세무과</td><td data-l="기한">취득일이 속한 달 말일부터 3개월,<br>등기 전이면 접수일까지</td><td data-l="등기와의 관계">영수필확인서를 신청서에 첨부</td></tr>
           <tr><td data-l="세금">증여세(국세)</td><td data-l="신고하는 곳">홈택스 또는 관할 세무서</td><td data-l="기한">증여일이 속한 달 말일부터 3개월</td><td data-l="등기와의 관계">첨부서면 아님 · 따로 신고</td></tr>
         </tbody>
       </table>
@@ -412,10 +417,25 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:40px;p
     <p class="src">근거: 지방세법 제20조제1항(취득세 신고), 상속세 및 증여세법 제68조제1항(증여세 신고)</p>
   </section>
 
+  <!-- 제휴 광고(링크프라이스·숨고, 2026-11-15): 증여 취득세 계산기와 같은 카드. 「증여세 신고」 구역 바로 아래 —
+       등기는 셀프로 하되 증여세 신고 · 시가 평가는 전문가가 필요한 지점. 서류 작성 버튼 근처에는 두지 않는다(증여 서류 결제와 경쟁 방지) -->
+  <aside class="card aff" aria-label="제휴 광고">
+    <div class="aff-brand"><span class="aff-tag">광고</span><img class="aff-logo" src="https://img.linkprice.com/files/glink/soomgo/20250717/NrVw2YYIxgabj_3.%20%E1%84%8B%E1%85%A5%E1%84%91%E1%85%B5%E1%86%AF%E1%84%85%E1%85%B5%E1%84%8B%E1%85%A6%E1%84%8B%E1%85%B5%E1%84%90%E1%85%B3_%E1%84%80%E1%85%B5%E1%84%87%E1%85%A9%E1%86%AB%E1%84%85%E1%85%A9%E1%84%80%E1%85%A9%E1%84%92%E1%85%A7%E1%86%BC%E1%84%87%E1%85%A2%E1%84%82%E1%85%A5_120%2060.png" alt="숨고" width="120" height="60" loading="lazy"></div>
+    <div class="aff-t">
+      <div class="ct">증여세 신고·감정평가, 전문가 견적을 <span class="nw">비교해 보세요</span></div>
+      <div class="cs">숨고에서 세무사 · 감정평가사 견적을 <b>무료</b>로</div>
+    </div>
+    <div class="aff-b">
+      <a href="https://lpweb.kr/click.php?m=soomgo&a=A100709312&l=9999&l_cd1=3&l_cd2=0&tu=https%3A%2F%2Fsoomgo.com%2Fhire%2F%ED%9A%8C%EA%B3%84-%EC%84%B8%EB%AC%B4-%EB%8C%80%ED%96%89" target="_blank" rel="sponsored noopener" data-aff="tax">세무·회계사 견적 받기 →</a>
+      <a href="https://lpweb.kr/click.php?m=soomgo&a=A100709312&l=9999&l_cd1=3&l_cd2=0&tu=https%3A%2F%2Fsoomgo.com%2Fhire%2F%EA%B0%90%EC%A0%95%ED%8F%89%EA%B0%80" target="_blank" rel="sponsored noopener" data-aff="appraise">감정평가 견적 받기 →</a>
+    </div>
+  </aside>
+  <p class="aff-note">제휴 광고 · 셀프등기24가 수수료를 받을 수 있습니다</p>
+
   <section class="card" id="bond" aria-labelledby="c4-h">
     <div class="ch">
       <div class="step-num">04</div>
-      <div><h2 class="ct" id="c4-h">증여는 국민주택채권 매입 비율이 매매보다 높습니다</h2><div class="cs">증여는 「상속(증여 그 밖의 무상취득 포함)」 요율을 씁니다</div></div>
+      <div><h2 class="ct" id="c4-h">증여는 국민주택채권 매입 비율이 매매보다 높습니다</h2><div class="cs">증여는 「상속(증여 그 밖의 무상취득 포함)」 <span class="nw">요율을 씁니다</span></div></div>
     </div>
     <p class="ans"><b>시가표준액 1억 5천만원 이상이면 특별시·광역시 42/1,000, 그 밖의 지역 39/1,000입니다.</b> 매매 요율을 그대로 쓰면 매입액이 모자랍니다.</p>
     <div class="tbl-wrap">
@@ -436,14 +456,14 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:40px;p
       <div class="step-num">05</div>
       <div><h2 class="ct" id="c5-h">증여 등기 필요서류</h2><div class="cs">등기소에 함께 내는 서류입니다</div></div>
     </div>
-    <p class="ans"><b>증여인 인감증명서는 일반용으로 주민센터에서 발급받습니다.</b> 등기소 제출용은 전자 발급이 되지 않습니다.</p>
+    <p class="ans"><b>증여인 인감증명서는 일반용으로 주민센터에서 발급받습니다.</b> 등기소 제출용은 <span class="nw">전자 발급이 되지 않습니다.</span></p>
     <ul class="pts2">
-      <li><b>증여계약서(구청 검인)</b> — 원본 제출, 등기를 마친 뒤 돌려받습니다.</li>
+      <li><b>증여계약서(구청 검인)</b> — 원본 제출, <span class="nw">등기를 마친 뒤 돌려받습니다.</span></li>
       <li><b>증여인</b> — 인감증명서(일반용) · 등기필증(등기필정보) · 주민등록초본(주소 변동 이력 전체)</li>
       <li><b>수증인</b> — 주민등록등본(또는 초본)</li>
       <li><b>납부 영수증</b> — 취득세영수필확인서 · 국민주택채권 매입 번호 · 등기신청수수료 영수필확인서</li>
-      <li><b>대장</b> — 토지대장등본(대지권등록부 포함) · 집합건축물대장등본(전유부), 각 발행일부터 3개월 이내</li>
-      <li><b>위임장</b> — 한 사람이 대신 접수할 때, 위임인의 인감도장 날인</li>
+      <li><b>대장</b> — 토지대장등본(대지권등록부 포함) · 집합건축물대장등본(전유부), <span class="nw">각 발행일부터 3개월 이내</span></li>
+      <li><b>위임장</b> — 한 사람이 대신 접수할 때, <span class="nw">위임인의 인감도장 날인</span></li>
     </ul>
     <p class="src">초본·등본·대장은 <a href="guide.html#g=gov24">정부24 발급 화면</a>에서 순서대로 볼 수 있습니다. 근거: 인감증명법 시행령 제13조(용도·전자 발급 제외), 부동산등기규칙 제60조의2(본인서명사실확인서로 대신 가능).</p>
   </section>
@@ -455,8 +475,8 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:40px;p
     </div>
     <p class="ans"><b>아파트·오피스텔 등 집합건물을 증여인 1명이 수증인 2명까지에게 넘기는 단순 증여입니다.</b> 증여계약서·위임장·소유권이전등기신청서를 Word 파일로 자동완성합니다.</p>
     <ul class="pts2">
-      <li><b>제공하지 않는 경우</b> — 대출·전세보증금을 함께 넘기는 부담부증여, 미성년 수증인, 토지·단독주택, 증여인 2명 이상</li>
-      <li>세금 신고 대행이나 세액 상담은 하지 않습니다. 최종 확인은 관할 등기소·구청·세무서 안내를 따라 주세요.</li>
+      <li><b>제공하지 않는 경우</b> — 대출·전세보증금을 함께 넘기는 부담부증여, 미성년 수증인, <span class="nw">토지·단독주택, 증여인 2명 이상</span></li>
+      <li>세금 신고 대행이나 세액 상담은 하지 않습니다. 최종 확인은 관할 등기소·구청·세무서 <span class="nw">안내를 따라 주세요.</span></li>
     </ul>
   </section>
 
@@ -468,8 +488,8 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:40px;p
     <div class="faq">
       <details><summary>증여 등기도 법무사 없이 직접 할 수 있나요?</summary><p>할 수 있습니다. 증여로 인한 소유권이전등기는 법무사 선임 의무가 없어 증여인과 수증인이 직접 신청하거나, 한 사람이 다른 사람의 위임을 받아 신청할 수 있습니다.</p></details>
       <details><summary>증여계약서는 어디서 받나요?</summary><p>정해진 법정 서식은 없고 당사자가 작성합니다. 작성한 원본을 부동산 소재지 시·군·구청에 내면 검인 도장을 찍어 돌려줍니다. 구청이 계약서를 대신 써 주지는 않습니다.</p></details>
-      <details><summary>증여 등기에서 신고해야 하는 세금은 무엇인가요?</summary><p>취득세와 증여세 두 가지이고, 둘 다 증여받는 사람(수증인)이 냅니다. 취득세는 시·군·구청(위택스)에 등기 접수 전까지, 증여세는 세무서(홈택스)에 증여받은 날이 속한 달의 말일부터 3개월 안에 신고합니다.</p></details>
-      <details><summary>증여도 부동산 거래신고를 하나요?</summary><p>하지 않습니다. 부동산 거래신고는 매매계약 대상이라 증여에는 거래신고필증이 없고, 신청서에 거래가액도 적지 않습니다.</p></details>
+      <details><summary>증여 등기 때 내는 세금은 무엇인가요?</summary><p>취득세와 증여세 두 가지이고, 둘 다 증여받는 사람(수증인)이 냅니다. 취득세는 시·군·구청(위택스)에 등기 접수 전까지, 증여세는 세무서(홈택스)에 증여받은 날이 속한 달의 말일부터 3개월 안에 신고합니다.</p></details>
+      <details><summary>증여도 부동산 거래신고를 하나요?</summary><p>하지 않습니다. 부동산 거래신고는 매매계약 대상이라 증여에는 거래신고필증이 없고, <span class="nw">신청서에 거래가액도 적지 않습니다.</span></p></details>
       <details><summary>증여계약서에 수입인지를 붙여야 하나요?</summary><p>대가 없는 증여계약서는 납부할 인지세가 없습니다(국세청 소비46440-416, 1994). 대출이나 전세보증금을 함께 넘기는 부담부증여는 인수하는 채무액이 대가가 되어 인지세가 생길 수 있습니다.</p></details>
       <details><summary>증여인 인감증명서는 매도용으로 받나요?</summary><p>아닙니다. 매도용은 매매 전용이라 증여는 일반용으로 받습니다. 등기소 제출용은 전자 발급이 되지 않아 주민센터에서 발급받고, 본인서명사실확인서로 대신할 수 있습니다.</p></details>
     </div>
@@ -580,5 +600,7 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:40px;p
 })();
 </script>
 <script src="assets/sr-v2-motion.js?v=1111" data-rv=".card,.finish" defer></script>
+<script>/* 제휴 광고 클릭(2026-11-10): 매매 계산기와 같은 이벤트명·키(soomgo_tax·soomgo_appraise). 휠 클릭도 센다 */
+document.querySelectorAll('.aff [data-aff]').forEach(function(a){function hit(){window.gtag&&gtag('event','aff_click',{key:'soomgo_'+a.dataset.aff})}a.addEventListener('click',hit);a.addEventListener('auxclick',function(e){if(e.button===1)hit()})});</script>
 </body>
 </html>
