@@ -25,6 +25,11 @@ nav:has(>.nav-inner){background:rgba(255,255,255,.88);backdrop-filter:blur(14px)
 .nav-inner .nav-a.cta{background:#2A62F0;color:#fff;border-radius:12px;min-height:44px;padding:8px 18px;display:inline-flex;align-items:center;margin-left:6px}
 .nav-inner .nav-a.cta:hover{background:var(--blue-h);color:#fff}
 .nav-inner .nav-a.cta:active{transform:scale(.96)}
+/* 줄바꿈 묶음 — sr-v2.css 와 같은 부품(2026-11-15: 스킨 페이지에는 빠져 있어 guide · gift_guide 의 .nw 가 듣지 않았다) */
+.nw{white-space:nowrap}
+/* 「전세 데이터 ▾」 추가(2026-11-15)로 769~1000px 에서 내비가 넘친다 — 그 폭에서만 블로그 링크를 숨긴다(바닥글 · 휴대폰 메뉴에는 남음) */
+@media (min-width:769px) and (max-width:1000px){.nav-scroll>a.nav-a[href*="tistory"]{display:none}}
+@media (min-width:769px) and (max-width:900px){.nav-inner .nav-scroll>.nav-a,.nav-inner .nav-scroll .nav-dd-btn{padding-left:8px;padding-right:8px}}
 .nav-dd-menu{border:0;border-radius:16px;box-shadow:var(--sh);padding:8px}
 .nav-dd-menu a{border-radius:12px;font-size:16px}
 .nav-dd-menu a span{font-size:14px;color:var(--sub)}
