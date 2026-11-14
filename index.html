@@ -206,6 +206,8 @@ h1 .over{display:block;font-size:var(--t-16);font-weight:600;color:var(--sub);le
 .nav-dd-ic{width:12px;height:12px;transition:transform var(--d-fast)}
 .nav-dd-btn[aria-expanded=true]{background:var(--soft);color:var(--ink)}
 .nav-dd-btn[aria-expanded=true] .nav-dd-ic{transform:rotate(180deg)}
+@media (min-width:769px) and (max-width:1000px){.nav-scroll>a.nav-a[href*="tistory"]{display:none}}
+@media (min-width:769px) and (max-width:900px){.nav-inner .nav-scroll>.nav-a,.nav-inner .nav-scroll .nav-dd-btn{padding-left:8px;padding-right:8px}}
 .nav-dd-menu{position:fixed;z-index:1000;min-width:240px;background:var(--card);border-radius:var(--r-m);box-shadow:var(--sh);padding:8px}
 .nav-dd-menu[hidden]{display:none}
 .js .nav-dd-menu:not([hidden]){animation:dd-in var(--d-fast) var(--ease)}
@@ -272,7 +274,7 @@ h1 .over{display:block;font-size:var(--t-16);font-weight:600;color:var(--sub);le
       <a href="index.html" class="nav-logo"><svg class="nav-mark" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><g fill="#17171C"><rect x="9" y="41" width="14" height="14" rx="1.5"/><rect x="25" y="41" width="14" height="14" rx="1.5"/><rect x="25" y="25" width="14" height="14" rx="1.5"/><rect x="41" y="41" width="14" height="14" rx="1.5"/><rect x="41" y="25" width="14" height="14" rx="1.5"/></g><rect x="41" y="9" width="14" height="14" rx="1.5" fill="#2A62F0"/></svg><strong class="nav-wm">셀프등기<b>24</b></strong></a>
       <span class="nav-dd"><button type="button" class="nav-a nav-dd-btn" aria-expanded="false" aria-controls="nav-dd-guide">셀프등기 가이드<svg class="nav-dd-ic" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M3 4.5 6 7.5 9 4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button><span class="nav-dd-menu" id="nav-dd-guide" hidden><a href="guide.html">소유권이전등기 가이드<span>매매 절차·준비서류 전체</span></a><a href="joint.html">공동명의 셀프등기<span>단독명의와 달라지는 점</span></a><a href="gift_guide.html">증여 셀프등기<span>가족 간 증여 절차·신고</span></a><a href="cancel_guide.html">근저당권 말소 가이드<span>대출을 다 갚았을 때</span></a><a href="reject.html">반려·각하 점검<span>접수 전에 확인할 항목</span></a></span></span>
       <a href="cost.html" class="nav-a">등기비용 비교</a>
-      <span class="nav-dd"><button type="button" class="nav-a nav-dd-btn" aria-expanded="false" aria-controls="nav-dd-calc">부동산 계산기<svg class="nav-dd-ic" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M3 4.5 6 7.5 9 4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button><span class="nav-dd-menu" id="nav-dd-calc" hidden><a href="calculator.html">취득세 계산기<span>매매로 취득할 때</span></a><a href="gift_tax.html">증여 취득세 계산기<span>증여로 취득할 때</span></a></span></span>
+      <span class="nav-dd"><button type="button" class="nav-a nav-dd-btn" aria-expanded="false" aria-controls="nav-dd-calc">부동산 계산기<svg class="nav-dd-ic" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M3 4.5 6 7.5 9 4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button><span class="nav-dd-menu" id="nav-dd-calc" hidden><a href="calculator.html">취득세 계산기<span>매매로 취득할 때</span></a><a href="gift_tax.html">증여 취득세 계산기<span>증여로 취득할 때</span></a></span></span><span class="nav-dd"><button type="button" class="nav-a nav-dd-btn" aria-expanded="false" aria-controls="nav-dd-data">전세 데이터<svg class="nav-dd-ic" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M3 4.5 6 7.5 9 4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button><span class="nav-dd-menu" id="nav-dd-data" hidden><a href="jeonse_signal.html">서울 전세 신호<span>구별 임차권등기명령 · 경매</span></a><a href="jeonse_check.html">전세 계약 전 등기부 점검<span>근저당 · 압류 · 깡통전세 계산</span></a><a href="stats.html">셀프등기 통계<span>본인 신청 건수 · 비율</span></a></span></span>
       <a href="https://selfregi.tistory.com" target="_blank" rel="noopener" class="nav-a">블로그</a>
     </div>
     <a href="normal_form.html" class="nav-a cta">서류 작성하기</a>
@@ -284,7 +286,7 @@ h1 .over{display:block;font-size:var(--t-16);font-weight:600;color:var(--sub);le
 <section class="hero"><div class="wrap hero-g">
   <div class="hero-l">
     <h1><span class="over">법무사 없이 하는 소유권이전등기 셀프등기</span>몇 가지만 답하면,<br><em>내 등기 계획</em>이 나와요</h1>
-    <p class="sub">내 집값이면 법무사 보수가 얼마인지, <span class="nw">신청 기한은 언제까지인지</span> 바로 확인할 수 있습니다.</p>
+    <p class="sub">내 집값이면 법무사 보수가 얼마인지, <span class="nw">신청 기한은 언제까지인지</span> <span class="nw">바로 확인할 수 있습니다.</span></p>
     <ul class="checks"><li>가입 없이 바로 확인</li><li>주민등록번호는 저장하지 않습니다</li><li>등기소는 단 한 번</li></ul>
     <p class="note">※ 법무사 보수는 기본보수 상한(대한법무사협회 보수기준 별표 2026. 8. 20. 개정 기준, 실비·부가세 별도)으로 계산합니다 · 실제 견적은 법무사마다 다릅니다</p>
   </div>
@@ -336,7 +338,7 @@ h1 .over{display:block;font-size:var(--t-16);font-weight:600;color:var(--sub);le
   <div data-rv>
     <h2>등기부 한 장으로 채우는<br>위임장·신청서</h2>
     <p class="sub">부동산의 표시, 전유면적, 대지권 비율. 한 글자씩 옮겨 적지 않아도 됩니다. 관할 등기소도 주소로 찾아 넣습니다.</p>
-    <p class="note" style="margin-top:24px">예시 화면 · 완성된 위임장·소유권이전등기신청서는 Word 파일로 내려받습니다. 최종 확인은 관할 등기소 안내를 따라 주세요.</p>
+    <p class="note" style="margin-top:24px">예시 화면 · 완성된 위임장·소유권이전등기신청서는 <span class="nw">Word 파일로 내려받습니다.</span> 최종 확인은 <span class="nw">관할 등기소 안내를 따라 주세요.</span></p>
   </div>
   <div class="phone" data-rv><div class="screen" data-demo data-state="done" aria-label="등기부를 올리면 칸이 채워지는 예시 화면">
     <div class="file"><span class="pdf">PDF</span>등기사항전부증명서.pdf<span class="st"><i class="st-r">읽는 중…</i><i class="st-d">완료</i></span></div>
@@ -357,7 +359,7 @@ h1 .over{display:block;font-size:var(--t-16);font-weight:600;color:var(--sub);le
 <section class="scene" id="guide"><div class="wrap">
   <div class="scene-head narrow" data-rv>
     <h2>한 페이지로 보는 셀프등기 가이드</h2>
-    <p class="sub">정부24 · 위택스 · 은행 · 인터넷등기소에서 할 일을 화면으로 보며 순서대로 따라 할 수 있습니다.</p>
+    <p class="sub">정부24 · 위택스 · 은행 · 인터넷등기소에서 할 일을 화면으로 보며 <span class="nw">순서대로 따라 할 수 있습니다.</span></p>
   </div>
   <div class="guide-g">
     <div class="g-l">
@@ -367,7 +369,7 @@ h1 .over{display:block;font-size:var(--t-16);font-weight:600;color:var(--sub);le
         <li>위임장 날인<small>잔금일 현장 · 매도인 인감 날인을 받습니다</small></li>
         <li class="last">신청서 접수<small>관할 등기소 방문 · 서류를 내면 끝납니다. 방문은 한 번입니다</small></li>
       </ol>
-      <p class="note" style="margin-top:24px">잔금일부터 60일 안에 신청해야 하고, 기한을 넘기면 과태료가 부과될 수 있습니다. 취득세는 등기 접수 전까지 내야 합니다.</p>
+      <p class="note" style="margin-top:24px">잔금일부터 60일 안에 신청해야 하고, 기한을 넘기면 과태료가 부과될 수 있습니다. 취득세는 <span class="nw">등기 접수 전까지 내야 합니다.</span></p>
     </div>
     <div class="guide-r" data-rv>
       <div class="shots" id="shots">
@@ -396,11 +398,11 @@ h1 .over{display:block;font-size:var(--t-16);font-weight:600;color:var(--sub);le
   </div>
   <div class="cmp" data-rv>
     <div class="th"><p>양식을 직접 작성할 때</p><p>셀프등기24로 작성할 때</p></div>
-    <div><p>부동산의 표시를 등기부에서 한 글자씩 옮겨 적습니다</p><p>등기부를 올리면 그대로 채워집니다</p></div>
-    <div><p>어느 칸에 무엇을 적는지 직접 공부해서 채웁니다</p><p>전유면적·대지권 비율·지분을 읽어 채웁니다</p></div>
+    <div><p>부동산의 표시를 등기부에서 한 글자씩 <span class="nw">옮겨 적습니다</span></p><p>등기부를 올리면 그대로 채워집니다</p></div>
+    <div><p>어느 칸에 무엇을 적는지 직접 공부해서 채웁니다</p><p>전유면적·대지권 비율·<span class="nw">지분을 읽어 채웁니다</span></p></div>
     <div><p>관할 등기소가 어디인지 따로 확인합니다</p><p>주소만 넣으면 관할 등기소를 찾습니다</p></div>
     <div><p>공동명의는 신청서를 직접 나눠 써야 합니다</p><p>신청서 부수를 예규에 맞게 나눕니다</p></div>
-    <div><p>빠뜨린 항목은 등기소에서 알게 됩니다</p><p>반려·각하 사유와 대조해 접수 전에 알립니다</p></div>
+    <div><p>빠뜨린 항목은 등기소에서 알게 됩니다</p><p>반려·각하 사유와 대조해 <span class="nw">접수 전에 알립니다</span></p></div>
   </div>
   <figure class="real" data-rv>
     <picture><source media="(max-width:768px)" srcset="form_v2_m.webp"><img src="form_v2.webp" width="1800" height="1040" loading="lazy" alt="셀프등기24 서류 작성 화면: 등기사항전부증명서 올리기와 문서 반영 미리보기"></picture>
@@ -431,7 +433,7 @@ h1 .over{display:block;font-size:var(--t-16);font-weight:600;color:var(--sub);le
     </div>
     <ul class="terms">
       <li>같은 부동산·같은 매수인은 결제일부터 30일 이상 재발급 무료</li>
-      <li>문서 오류 등 회사 귀책이면 전액 환불(이용약관 제6조)</li>
+      <li>문서 오류 등 회사 귀책이면 <span class="nw">전액 환불(이용약관 제6조)</span></li>
       <li>추가 요금 없음 · 토스페이·네이버페이 결제</li>
     </ul>
     <details class="svc">
@@ -485,16 +487,16 @@ h1 .over{display:block;font-size:var(--t-16);font-weight:600;color:var(--sub);le
     <details name="faq"><summary><span>셀프등기, 정말 혼자 할 수 있나요?</span><i aria-hidden="true"></i></summary><div class="ans"><p><b>부동산등기는 법무사 선임 의무가 없어 본인이 직접 신청할 수 있습니다.</b> 셀프등기24는 서류 자동완성 도구와 단계별 절차 안내를 제공합니다. 개별 사안의 최종 확인은 관할 등기소 안내를 따라 주세요.</p></div></details>
     <details name="faq"><summary><span>직접 하면 시간이 얼마나 드나요?</span><i aria-hidden="true"></i></summary><div class="ans"><p><b>절차에 익숙한 정도에 따라 다릅니다.</b> 서류 발급, 취득세 신고, 국민주택채권 매입 등 온라인으로 할 수 있는 일을 일찍 끝낼수록 줄어들고, 마지막에는 관할 등기소에 한 번 방문해 서류를 제출하면 됩니다. 셀프등기24는 단계별 가이드와 위임장·소유권이전등기 신청서 자동완성으로 정보를 찾아보고 확인하는 시간을 줄입니다.</p></div></details>
     <details name="faq"><summary><span>잔금대출이 있어도 셀프등기가 가능한가요?</span><i aria-hidden="true"></i></summary><div class="ans"><p><b>대출 은행이 허용해야 가능합니다.</b> 잔금대출은 은행과 연계된 법무사가 근저당권설정등기를 맡는 것이 일반적이어서, 은행이 승인하지 않으면 소유권이전등기만 직접 하기는 어렵습니다. 대출을 신청할 때 셀프등기가 가능한지 은행에 먼저 문의하세요.</p></div></details>
-    <details name="faq"><summary><span>공동명의(부부 등)도 직접 신청할 수 있나요?</span><i aria-hidden="true"></i></summary><div class="ans"><p><b>가능합니다.</b> 절차는 단독명의와 같고, 신청서 부수·위임장·인감증명서·등기필정보 등 몇 가지가 달라집니다. 매도인과 매수인이 모두 2인 이상이면 신청서를 2부로 나눠야 하며, 한 장에 함께 적으면 수리되지 않습니다(등기예규 제1363호). 셀프등기24는 매도인·매수인 각 2인까지 공동명의 서류를 자동완성합니다. 달라지는 점은 <a href="joint.html">공동명의 셀프등기 안내</a>에서 확인하실 수 있습니다.</p></div></details>
+    <details name="faq"><summary><span>공동명의(부부 등)도 직접 <span class="nw">신청할 수 있나요?</span></span><i aria-hidden="true"></i></summary><div class="ans"><p><b>가능합니다.</b> 절차는 단독명의와 같고, 신청서 부수·위임장·인감증명서·등기필정보 등 몇 가지가 달라집니다. 매도인과 매수인이 모두 2인 이상이면 신청서를 2부로 나눠야 하며, 한 장에 함께 적으면 수리되지 않습니다(등기예규 제1363호). 셀프등기24는 매도인·매수인 각 2인까지 공동명의 서류를 자동완성합니다. 달라지는 점은 <a href="joint.html">공동명의 셀프등기 안내</a>에서 확인하실 수 있습니다.</p></div></details>
     <details name="faq"><summary><span>근저당권 말소도 직접 할 수 있나요?</span><i aria-hidden="true"></i></summary><div class="ans"><p><b>대출금을 전부 상환해도 등기부 을구에 기록된 근저당권은 자동으로 지워지지 않아, 말소등기를 따로 신청해야 합니다.</b> 직접 신청하면 공과금 실비만 들며, 등기 대상 1건 기준 11,200원입니다(등록면허세 6,000원 + 지방교육세 1,200원 + 등기신청수수료 4,000원, 서면 접수 기준). 은행은 대개 협약 법무사를 통한 말소를 안내하며 이 경우 대행 보수가 별도로 발생합니다. 절차와 준비서류는 <a href="cancel_guide.html">근저당권 말소 가이드</a>에서 무료로 확인하실 수 있습니다.</p></div></details>
     <details name="faq"><summary><span>개인정보는 어떻게 처리되나요?</span><i aria-hidden="true"></i></summary><div class="ans"><p><b>주민등록번호 등 민감정보는 서버에 저장하지 않으며, 문서 생성은 이용자 기기 안에서 이루어집니다.</b> 민감정보를 기재하지 않아도 서류 생성이 가능하며, 빈칸은 출력 후 손으로 기재하시면 됩니다.</p></div></details>
-    <details name="faq"><summary><span>휴대폰으로 결제했는데 PC에서 인쇄할 수 있나요?</span><i aria-hidden="true"></i></summary><div class="ans"><p><b>네.</b> 결제 완료 화면에서 재발급 링크를 카카오톡 「나와의 채팅」이나 메일로 보내 두고 PC에서 열면, 입력 내용(주민등록번호 제외)과 결제가 함께 이어집니다. 링크는 결제일부터 30일(매매는 잔금일부터 14일이 더 늦으면 그날)까지 쓸 수 있고, 받아 둔 위임장 파일을 올려 이어서 할 수도 있습니다. 링크에 입력하신 정보가 담겨 있으니 본인만 보관해 주세요.</p></div></details>
+    <details name="faq"><summary><span>휴대폰으로 결제했는데 PC에서 <span class="nw">인쇄할 수 있나요?</span></span><i aria-hidden="true"></i></summary><div class="ans"><p><b>네.</b> 결제 완료 화면에서 재발급 링크를 카카오톡 「나와의 채팅」이나 메일로 보내 두고 PC에서 열면, 입력 내용(주민등록번호 제외)과 결제가 함께 이어집니다. 링크는 결제일부터 30일(매매는 잔금일부터 14일이 더 늦으면 그날)까지 쓸 수 있고, 받아 둔 위임장 파일을 올려 이어서 할 수도 있습니다. 링크에 입력하신 정보가 담겨 있으니 본인만 보관해 주세요.</p></div></details>
     <details name="faq"><summary><span>증여도 셀프등기로 할 수 있나요?</span><i aria-hidden="true"></i></summary><div class="ans"><p><b>가족 간에 대가 없이 아파트를 넘기는 단순 증여라면 셀프등기24에서 증여계약서·위임장·소유권이전등기신청서를 자동완성할 수 있습니다(부동산 1건 9,900원).</b> 증여계약서는 부동산이 있는 구청에서 검인을 받아 등기소에 냅니다. 대출·전세를 함께 넘기는 부담부증여, 미성년 수증인은 대상이 아니며, 증여세 신고는 수증인이 홈택스 또는 세무서에 직접 합니다.</p></div></details>
   </div>
 </div></div></section>
 
 <div class="end"><div class="wrap">
-  <p>어려워서 못하는 게 아닙니다.<b>제대로 된 순서를 몰랐을 뿐입니다.</b></p>
+  <p>어려워서 <span class="nw">못하는 게 아닙니다.</span><b>제대로 된 순서를 <span class="nw">몰랐을 뿐입니다.</span></b></p>
   <a class="btn" href="normal_form.html">서류 작성 시작하기</a>
 </div></div>
 </main>
@@ -502,8 +504,8 @@ h1 .over{display:block;font-size:var(--t-16);font-weight:600;color:var(--sub);le
 <footer><div class="wrap">
   <div class="f-links"><a href="guide.html">셀프등기 가이드</a><a href="cost.html">등기비용 비교</a><a href="calculator.html">취득세 계산기</a><a href="https://selfregi.tistory.com">블로그</a><a href="terms.html">이용약관</a><a href="privacy.html">개인정보처리방침</a></div>
   <p>셀프등기24 · 대표 허민 · 사업자등록번호 164-20-02315 · 주소 서울특별시 중구 동호로 173 · 문의 <a href="mailto:selfregi999@gmail.com">selfregi999@gmail.com</a> · 전화 070-8019-0609</p>
-  <p>© 2026 셀프등기24 · 개인정보를 별도로 저장하지 않으며, 개인정보를 기재하지 않아도 서류 생성이 가능합니다.</p>
-  <p>본 서비스는 법률 자문을 제공하지 않으며 등기 신청을 대행하지 않습니다. 최종 확인은 관할 등기소 안내를 따라 주세요.</p>
+  <p>© 2026 셀프등기24 · 개인정보를 별도로 저장하지 않으며, 개인정보를 기재하지 않아도 <span class="nw">서류 생성이 가능합니다.</span></p>
+  <p>본 서비스는 법률 자문을 제공하지 않으며 등기 신청을 대행하지 않습니다. 최종 확인은 <span class="nw">관할 등기소 안내를 따라 주세요.</span></p>
 </div></footer>
 <div class="gg-back" id="ggBack" role="dialog" aria-modal="true" aria-labelledby="ggH">
   <div class="gg">
@@ -618,7 +620,7 @@ window.SR=window.SR||(function(){
         '<dl class="facts"><div data-st style="--i:3"><dt>신청 기한</dt><dd>'+due+'<small'+(late?' class="late"':'')+'>'+sub+'</small></dd></div>'+
         '<div data-st style="--i:4"><dt>할 일</dt><dd>4단계<small>등기소는 한 번만 가요</small></dd></div></dl>';
       note='보수는 매매가 '+SRV.eok(state.price)+' 기준 법무사 기본보수 상한(대한법무사협회 보수기준 별표 2026. 8. 20. 개정, 실비·부가세 별도)이에요. 실제 견적은 법무사마다 달라요. 취득세·채권·수수료는 어느 쪽이든 똑같이 내요. 기한은 참고용 계산이에요.';
-      cta='등기부 올리고 시작하기';href='normal_form.html';
+      cta='등기부 올리고 시작하기';href='normal_form.html'+(state.date?'?bal='+state.date:''); /* 11/14 A2: 잔금일만 이어서(집값은 거래가액과 달라 넘기지 않음) */
       more=link('calculator.html','취득세도 계산해 보기')+link('guide.html','네 단계 가이드 보기');
     }else if(t==='gift'){
       title='증여 등기, 이렇게 준비해요';

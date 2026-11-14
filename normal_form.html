@@ -104,6 +104,11 @@ button{font-family:inherit;cursor:pointer}
 .say{align-self:stretch;font-size:14px;color:var(--sub2);margin-top:8px}
 .say:empty{display:none}
 .reg-how{margin:12px 0 0;font-size:14px;color:var(--sub2)}
+.fb.big{display:block;width:100%;max-width:320px;margin:16px auto 0;height:56px;line-height:56px;font-size:16px;border-radius:16px}
+.noreg{margin:12px 0 0;font-size:14px;color:var(--sub2)}
+.noreg summary{cursor:pointer;font-weight:700;color:#17171C;min-height:44px;display:flex;align-items:center}
+.noreg ol{margin:4px 0 6px;padding-left:20px;line-height:1.7}
+.manual-row{margin:4px 0 0}
 .ocr-docs{margin:12px 0 0;font-size:14px;color:var(--sub2)}
 .ocr-docs b{color:var(--navy);font-weight:600}
 .iros{display:inline-block;margin-top:4px;font-size:14px;font-weight:700;color:var(--blue);text-decoration:none}
@@ -693,6 +698,17 @@ p,.pv-r,.ck span,.rvl p{font-size:14px;line-height:1.6}
 .pvp-bar button{background:#2A62F0;color:#fff}
 .stp-note{color:#667085}
 .pvp-bar span{color:#667085}
+/* 2026-11-14 A3: 휴대폰 — 입력칸 16px(아이폰이 누를 때 확대하지 않게) · 누르는 곳 44px 이상 */
+@media (max-width:960px){
+  #app input:not([type=checkbox]):not([type=radio]):not([type=file]),#app select,#app textarea{font-size:16px}
+  .home-date input{min-height:44px}
+  .ck{padding:11px 8px}.ck input{width:22px;height:22px;margin:0}
+  #app .btn{min-height:48px}
+  .pvp-bar button{min-height:44px;padding:0 18px}
+  .seo-q summary,#app details>summary{min-height:44px;display:flex;align-items:center}
+  .rvl-nav button{width:44px;height:44px}
+  #app button.link{min-height:44px}
+}
 </style>
 </head>
 <body>
@@ -702,7 +718,7 @@ p,.pv-r,.ck span,.rvl p{font-size:14px;line-height:1.6}
       <a href="index.html" class="nav-logo"><svg class="nav-mark" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><g fill="#17171C"><rect x="9" y="41" width="14" height="14" rx="1.5"/><rect x="25" y="41" width="14" height="14" rx="1.5"/><rect x="25" y="25" width="14" height="14" rx="1.5"/><rect x="41" y="41" width="14" height="14" rx="1.5"/><rect x="41" y="25" width="14" height="14" rx="1.5"/></g><rect x="41" y="9" width="14" height="14" rx="1.5" fill="#2A62F0"/></svg><strong class="nav-wm">셀프등기<b>24</b></strong></a>
       <span class="nav-dd"><button type="button" class="nav-a nav-dd-btn" aria-expanded="false" aria-controls="nav-dd-guide">셀프등기 가이드<svg class="nav-dd-ic" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M3 4.5 6 7.5 9 4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button><span class="nav-dd-menu" id="nav-dd-guide" hidden><a href="guide.html">소유권이전등기 가이드<span>매매 절차·준비서류 전체</span></a><a href="joint.html">공동명의 셀프등기<span>단독명의와 달라지는 점</span></a><a href="gift_guide.html">증여 셀프등기<span>가족 간 증여 절차·신고</span></a><a href="cancel_guide.html">근저당권 말소 가이드<span>대출을 다 갚았을 때</span></a><a href="reject.html">반려·각하 점검<span>접수 전에 확인할 항목</span></a></span></span>
       <a href="cost.html" class="nav-a">등기비용 비교</a>
-      <span class="nav-dd"><button type="button" class="nav-a nav-dd-btn" aria-expanded="false" aria-controls="nav-dd-calc">부동산 계산기<svg class="nav-dd-ic" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M3 4.5 6 7.5 9 4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button><span class="nav-dd-menu" id="nav-dd-calc" hidden><a href="calculator.html">취득세 계산기<span>매매로 취득할 때</span></a><a href="gift_tax.html">증여 취득세 계산기<span>증여로 취득할 때</span></a></span></span>
+      <span class="nav-dd"><button type="button" class="nav-a nav-dd-btn" aria-expanded="false" aria-controls="nav-dd-calc">부동산 계산기<svg class="nav-dd-ic" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M3 4.5 6 7.5 9 4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button><span class="nav-dd-menu" id="nav-dd-calc" hidden><a href="calculator.html">취득세 계산기<span>매매로 취득할 때</span></a><a href="gift_tax.html">증여 취득세 계산기<span>증여로 취득할 때</span></a></span></span><span class="nav-dd"><button type="button" class="nav-a nav-dd-btn" aria-expanded="false" aria-controls="nav-dd-data">전세 데이터<svg class="nav-dd-ic" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M3 4.5 6 7.5 9 4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button><span class="nav-dd-menu" id="nav-dd-data" hidden><a href="jeonse_signal.html">서울 전세 신호<span>구별 임차권등기명령 · 경매</span></a><a href="jeonse_check.html">전세 계약 전 등기부 점검<span>근저당 · 압류 · 깡통전세 계산</span></a><a href="stats.html">셀프등기 통계<span>본인 신청 건수 · 비율</span></a></span></span>
       <a href="https://selfregi.tistory.com" class="nav-a" target="_blank" rel="noopener">블로그</a>
     </div>
     <span class="nav-a here" aria-current="page">서류 작성</span>
@@ -1311,7 +1327,7 @@ function giftScreen(){
     +'<p class="hero-note">입력과 단계 안내는 무료입니다. <b>증여계약서·위임장·신청서 Word 파일은 2단계에서 9,900원 결제 후</b> 받습니다.</p>';
 }
 function stageHtml(view){
-  var s=STEPS[view-1],h=regCard()+'<section class="wz" aria-labelledby="wz-t"><div class="wz-h"><span class="ph-n">'+view+'</span><div><h2 class="ph-t" id="wz-t">'+s.t+'</h2><span class="ph-w">'+s.w+'</span></div></div>';
+  var s=STEPS[view-1],h=(addr()?regCard():'')+'<section class="wz" aria-labelledby="wz-t"><div class="wz-h"><span class="ph-n">'+view+'</span><div><h2 class="ph-t" id="wz-t">'+s.t+'</h2><span class="ph-w">'+s.w+'</span></div></div>';
   h+=view===1?dealScreen():s.tasks.map(wzCard).join('');
   h+='<div class="wz-nav">'+(view>1?'<button type="button" class="btn line" data-ph="'+(view-1)+'">← 이전</button>':'<span></span>')
     +(view<STEPS.length?'<button type="button" class="btn'+(s.k==='poa'&&!S.pass?' line':'')+'" data-ph="'+(view+1)+'" data-next="1">다음: '+STEPS[view].t+' →</button>':'')+'</div></section>'; /* 결제 전에는 결제 버튼만 주인공(폰 레스토프) */
@@ -1320,7 +1336,8 @@ function stageHtml(view){
 var CUR=1,VIEW=1,PAYV=false,FILLED=0,PREVDONE=null,LASTVIEW=0; /* FILLED: 방금 판독해 채운 시각 · PREVDONE: 직전 그리기의 완료 단계 · LASTVIEW: 직전 단계 */ /* PAYV: 이 방문에서 결제 버튼 노출(nf_pay_view)을 이미 보냈는지 */
 function render(){
   var nk=nowKey(),pv=pvBody(reg());CUR=curStep(nk);VIEW=OPEN.ph||CUR;
-  var html=homeCard()+'<div class="hgrid"><div class="stage">'+stageHtml(VIEW)
+  /* 2026-11-14 A1: 집 정보가 없을 때는 업로드 상자를 맨 위로(서류 화면 진입 138명 중 올리기 시도 10명 — 휴대폰에서 업로드 버튼이 첫 화면 밖이었다) */
+  var html=(addr()?'':regCard())+homeCard()+'<div class="hgrid"><div class="stage">'+stageHtml(VIEW)
     +'<p class="disc">세액·채권 금액은 각 기관 영수증 기준이며, 최종 확인은 관할 등기소에서 하세요.</p>'+(RV_STEP[STEPS[VIEW-1].k]?reviewLine('rvl-main'):'')+'</div>' /* 후기는 결제와 관련된 위임장·신청서 단계에서 — 좁은 화면은 본문 아래 */
     +'<aside class="pvp'+(OPEN.pvp?' open':'')+'" aria-label="문서 반영 미리보기">'
     +'<div class="pvp-bar"><b>문서 반영 미리보기</b><span>채운 칸 '+pv.ok+' · 남은 칸 '+pv.left+'</span><button type="button" data-pvp="1">보기</button></div>'
@@ -1375,17 +1392,18 @@ function regCard(){
   /* 올린 뒤에도 업로드 상자는 그대로 둔다(다른 서류·다시 올리기). 채운 결과는 오른쪽 미리보기에 */
   return '<section class="ocr" id="reg" aria-labelledby="ocr-t"><div class="ch"><div class="ci'+(g?' ok':'')+'">'+(g?'✓':'0')+'</div><div class="ct" id="ocr-t">등기부로 자동 채우기</div><span></span></div>'
     +(g?'<p class="sum"><span class="lv'+(g.got<6||g.ocr?' oc':'')+'">'+(g.got<6?'정확도 낮음':(g.ocr?'정확도 보통':'정확도 높음'))+'</span>등기부에서 <b>'+g.got+'칸</b>을 채웠습니다. 미리보기에서 고칠 수 있습니다.</p>'
-      :'<p class="hero-note"><b>등기부 한 장이면 자동으로 채워집니다.</b> 민감정보는 출력 후 적어도 됩니다.</p>')
+      :'<p class="hero-note"><b>등기부 PDF 한 장이면 주소·매도인이 채워집니다.</b> 민감정보는 출력 후 적어도 됩니다.</p>')
     +'<div class="drop" id="dz">'+DZ_IC
     +'<div class="slot-t">등기사항전부증명서 올리기</div>'
     +'<div class="sub">인터넷등기소에서 받은 PDF는 글자를 그대로 가져옵니다.<br><b>사진이면 여러 장을 한꺼번에</b> 올려 주세요.</div>'
-    +'<label class="fb" for="fi">파일 선택</label><input type="file" id="fi" accept="application/pdf,image/*,.docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document" multiple hidden>'
+    +'<label class="fb'+(g?'':' big')+'" for="fi">'+(g?'파일 선택':'등기부 올리기')+'</label><input type="file" id="fi" accept="application/pdf,image/*,.docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document" multiple hidden>'
     +(OCR.busy?'<div class="pr"><i style="width:'+Math.round(OCR.pct*100)+'%"></i></div>':'')
     +'<div class="say">'+esc(OCR.say)+'</div></div>'
     +(OCR.err?'<div class="ocr-err">'+OCR.err+'</div>':'')
     +'<p class="ocr-docs">'+(GIFT?'<b>취득세 납부확인서</b>도':'<b>부동산거래 신고필증·취득세 납부확인서</b>도')+' 올리면 서류에 들어갈 값이 자동으로 채워집니다.</p>'
-    +'<p class="reg-how">등기부가 없다면 인터넷등기소에서 회원가입 없이 열람(700원)한 뒤 PDF로 저장해 올리세요.</p>'
-    +'<a class="iros" href="https://www.iros.go.kr" target="_blank" rel="noopener">인터넷등기소 바로가기 ↗</a>'
+    +(g?'<p class="reg-how">등기부가 없다면 인터넷등기소에서 회원가입 없이 열람(700원)한 뒤 PDF로 저장해 올리세요.</p><a class="iros" href="https://www.iros.go.kr" target="_blank" rel="noopener">인터넷등기소 바로가기 ↗</a>'
+      :'<details class="noreg" data-noreg="1"><summary>등기부가 아직 없나요?</summary><ol><li>인터넷등기소에서 회원가입 없이 열람(700원)</li><li>열람 화면에서 PDF로 저장</li><li>저장한 PDF를 여기에 올리기</li></ol><a class="iros" href="https://www.iros.go.kr" target="_blank" rel="noopener">인터넷등기소 바로가기 ↗</a></details>'
+      +'<p class="manual-row"><button type="button" class="dm-open" data-manual="1">등기부 없이 직접 입력하기</button></p>')
     +'<p class="reg-how">받아 둔 위임장 파일(.docx)을 올리면 다른 기기에서 입력한 내용을 이어서 씁니다.</p>'
     +'</section>'+'<p class="dm-row"><button type="button" class="dm-open" data-dm="1">올릴 수 있는 서류 보기</button></p>';
 }
@@ -2231,6 +2249,8 @@ function bind(){
     var nk=nowKey();render();if(nk&&nk!=='reg')goTask(nk);};});
   A.querySelectorAll('[data-prep]').forEach(function(x){x.onclick=openPrep;});
   A.querySelectorAll('[data-dm]').forEach(function(x){x.onclick=openDocs;});
+  A.querySelectorAll('[data-noreg]').forEach(function(x){x.addEventListener('toggle',function(){if(x.open)track('hub_noreg');});}); /* 11/14 A1: 올리기 전 이탈 원인 — 등기부가 없는 사람 */
+  A.querySelectorAll('[data-manual]').forEach(function(x){x.onclick=function(){track('hub_manual');var w=A.querySelector('.wz');scrollToEl(w);var f=w&&w.querySelector('input,select,textarea');if(f)setTimeout(function(){f.focus({preventScroll:true});},450);};});
   A.querySelectorAll('[data-wpv]').forEach(function(x){x.onclick=function(){if(window.SRBundle&&SRBundle.openHtml){SRBundle.openHtml(wimiPv(true),'내가 입력한 값으로 채운 위임장');track('hub_wpv',{});}};});
   /* 후기 넘기기(미리보기 아래) — 버튼·좌우 밀기 */
   A.querySelectorAll('.rvl-car').forEach(function(box){var ps=box.querySelectorAll('.rvl-sl p'),lab=box.querySelector('.rvl-n'),n=ps.length;if(n<2)return;
@@ -2317,6 +2337,10 @@ DS.innerHTML=DEMOS.map(function(d){return '<button type="button" data-demo="'+d.
 DS.querySelectorAll('[data-demo]').forEach(function(btn){btn.onclick=function(){setMode(btn.getAttribute('data-demo'));render();window.scrollTo(0,0);};});
 
 window.addEventListener('storage',function(){if(!demoOn()){S=realState();render();}});
+/* 2026-11-14 A2: 첫 화면 결과 카드에서 넣은 잔금일(?bal=YYYY-MM-DD)을 이어받는다 — 비어 있을 때만, 매매만. 집값은 거래가액과 달라 넘기지 않는다 */
+(function(){var m=/[?&]bal=(\d{4}-\d{2}-\d{2})(&|$)/.exec(location.search);if(!m)return;var v=m[1],d=new Date(v+'T00:00:00');
+  if(!GIFT&&!isNaN(d)&&!S.hub.balance&&!demoOn()){S.hub.balance=v;saveHub();track('hub_balance',{from:'index'});}
+  try{history.replaceState(null,'',location.pathname+location.search.replace(/([?&])bal=[^&]*(&|$)/,function(a,p,q){return q?p:'';}).replace(/[?&]$/,'')+location.hash);}catch(e){}})();
 syncForm(true);
 render();
 })();
