@@ -7,8 +7,9 @@ export async function onRequestPost({ request, env }) {
   if (!key || !secret(env)) return json(503, { ok: false, msg: '결제 설정이 아직 완료되지 않았습니다.' });
 
   const origin = new URL(request.url).origin;
-  const orderNo = makeOrderNo();
-  const pr = PRODUCTS[productKey((await readJson(request)).product)];
+  const product = productKey((await readJson(request)).product);
+  const orderNo = makeOrderNo(product); // 증여는 주문번호 끝 글자로 표시(confirm 이 금액 대신 이것으로 상품을 정한다)
+  const pr = PRODUCTS[product];
 
   let r;
   try {

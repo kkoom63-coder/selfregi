@@ -21,7 +21,7 @@
      페이지가 setProduct('gift')로 지금 작성 중인 상품을 알려 준다(기본 매매). */
   var PRODUCTS = {
     sale: { key: 'selfregi_pass_v1', price: 9900, label: '9,900원', name: '서류 자동완성' },
-    gift: { key: 'selfregi_pass_gift_v1', price: 14900, label: '14,900원', name: '증여 서류 자동완성' }
+    gift: { key: 'selfregi_pass_gift_v1', price: 9900, label: '9,900원', name: '증여 서류 자동완성' }
   };
   var cur = 'sale';
   function prodOf(v) { return v === 'gift' ? 'gift' : 'sale'; }
