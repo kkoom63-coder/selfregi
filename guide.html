@@ -800,6 +800,15 @@ header{background:#F4F5F8}
 .vbar .cnt{background:#EAF0FF;color:#1F4FCC}
 .vbar .r{color:#1F4FCC}
 :is(a,button,input,summary,[tabindex]):focus-visible{outline-color:#2A62F0}
+/* 2026-11-14 R5 크리틱 표면 수정 — B01 360 넘침 · B02/B05 대비 · B03 44px · A11 여백 · A12 격자 · A13 바닥글 축 */
+.vault-grid>*,.rin{min-width:0}
+.pgo{color:#1F4FCC}
+.pitem.warn .pi-d,.pitem.warn small{color:#3D4350}
+.prog-reset{min-height:44px;padding:0 14px}
+.rin-row input,.rin-row button{min-height:44px;height:auto}
+@media(min-width:560px){.ckl{grid-template-columns:1fr 1fr}}
+@media(max-width:640px){#what{margin-left:20px;margin-right:20px}}
+.foot-inner{max-width:1032px}
 </style>
 </head>
 <body>
@@ -811,7 +820,7 @@ header{background:#F4F5F8}
     <a href="index.html" class="nav-logo"><svg class="nav-mark" viewBox="0 0 64 64" aria-hidden="true" focusable="false"><g fill="#0F172A"><rect x="9" y="41" width="14" height="14" rx="1.5"/><rect x="25" y="41" width="14" height="14" rx="1.5"/><rect x="25" y="25" width="14" height="14" rx="1.5"/><rect x="41" y="41" width="14" height="14" rx="1.5"/><rect x="41" y="25" width="14" height="14" rx="1.5"/></g><rect x="41" y="9" width="14" height="14" rx="1.5" fill="#0369A1"/></svg><strong class="nav-wm">셀프등기<b>24</b></strong></a>
       <span class="nav-dd"><button type="button" class="nav-a nav-dd-btn active" aria-expanded="false" aria-controls="nav-dd-guide">셀프등기 가이드<svg class="nav-dd-ic" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M3 4.5 6 7.5 9 4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button><span class="nav-dd-menu" id="nav-dd-guide" hidden><a href="guide.html" aria-current="page">소유권이전등기 가이드<span>매매 절차·준비서류 전체</span></a><a href="joint.html">공동명의 셀프등기<span>단독명의와 달라지는 점</span></a><a href="gift_guide.html">증여 셀프등기<span>가족 간 증여 절차·신고</span></a><a href="cancel_guide.html">근저당권 말소 가이드<span>대출을 다 갚았을 때</span></a><a href="reject.html">반려·각하 점검<span>접수 전에 확인할 항목</span></a></span></span>
       <a href="cost.html" class="nav-a">등기비용 비교</a>
-      <span class="nav-dd"><button type="button" class="nav-a nav-dd-btn" aria-expanded="false" aria-controls="nav-dd-calc">부동산 계산기<svg class="nav-dd-ic" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M3 4.5 6 7.5 9 4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button><span class="nav-dd-menu" id="nav-dd-calc" hidden><a href="calculator.html">취득세 계산기<span>매매로 취득할 때</span></a><a href="gift_tax.html">증여 취득세 계산기<span>증여로 취득할 때</span></a></span></span>
+      <span class="nav-dd"><button type="button" class="nav-a nav-dd-btn" aria-expanded="false" aria-controls="nav-dd-calc">부동산 계산기<svg class="nav-dd-ic" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M3 4.5 6 7.5 9 4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button><span class="nav-dd-menu" id="nav-dd-calc" hidden><a href="calculator.html">취득세 계산기<span>매매로 취득할 때</span></a><a href="gift_tax.html">증여 취득세 계산기<span>증여로 취득할 때</span></a></span></span><span class="nav-dd"><button type="button" class="nav-a nav-dd-btn" aria-expanded="false" aria-controls="nav-dd-data">전세 데이터<svg class="nav-dd-ic" viewBox="0 0 12 12" aria-hidden="true" focusable="false"><path d="M3 4.5 6 7.5 9 4.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button><span class="nav-dd-menu" id="nav-dd-data" hidden><a href="jeonse_signal.html">서울 전세 신호<span>구별 임차권등기명령 · 경매</span></a><a href="jeonse_check.html">전세 계약 전 등기부 점검<span>근저당 · 압류 · 깡통전세 계산</span></a><a href="stats.html">셀프등기 통계<span>본인 신청 건수 · 비율</span></a></span></span>
       <a href="https://selfregi.tistory.com" target="_blank" rel="noopener" class="nav-a">블로그</a>
     </div>
     <a href="normal_form.html" class="nav-a cta">서류 작성하기</a>
@@ -855,7 +864,7 @@ header{background:#F4F5F8}
   <li class="tt" id="card-1"><div class="tt-tx"><div class="tt-h"><span class="tt-n">1</span><span class="tt-w">잔금 전</span></div><h3 class="tt-t">서류 준비</h3><p class="tt-d">정부24에서 주민등록등본·토지대장·건축물대장을 무료로 발급합니다.</p><button type="button" class="tt-a" onclick="openShot('gov24',0)">화면 보며 따라 하기 →</button></div><figure class="tt-img" data-url="gov.kr"><img src="gover24_1.webp" alt="정부24 첫 화면 — 발급할 서류 4개 표시" loading="lazy"></figure></li>
   <li class="tt" id="card-2"><div class="tt-tx"><div class="tt-h"><span class="tt-n">2</span><span class="tt-w">잔금 전</span></div><h3 class="tt-t">세금·채권 납부</h3><p class="tt-d">취득세·국민주택채권·인지·수수료를 온라인으로 내고, 받은 번호를 적어 둡니다.</p><button type="button" class="tt-a" onclick="openShot('wetax',0)">화면 보며 따라 하기 →</button></div><figure class="tt-img" data-url="wetax.go.kr"><img src="wetax_1.webp" alt="위택스 첫 화면" loading="lazy"></figure></li>
   <li class="tt" id="card-3"><div class="tt-tx"><div class="tt-h"><span class="tt-n">3</span><span class="tt-w">잔금일</span></div><h3 class="tt-t">위임장 날인·서류 받기</h3><p class="tt-d">위임장에 매도인 인감을 받고, 인감증명서·초본·등기필정보를 받습니다.</p><button type="button" class="tt-a" onclick="openShot('seal',0)">날인 위치 보기 →</button></div><figure class="tt-img" data-url="위임장 견본 · 가상 인물"><img src="sample_wimi.png" alt="위임장 견본(가상 인물)" loading="lazy"></figure></li>
-  <li class="tt" id="card-4"><div class="tt-tx"><div class="tt-h"><span class="tt-n">4</span><span class="tt-w">등기소 한 번</span></div><h3 class="tt-t">신청서 출력·등기소 접수</h3><p class="tt-d">신청서를 자동완성해 관할 등기소에 한 번 제출합니다.</p><div class="tt-go"><a class="tt-cta" href="normal_form.html">서류 작성 시작하기 →</a><span>등기부 한 장으로 시작 · 입력과 안내는 무료</span></div></div><figure class="tt-img" data-url="selfregi24.com"><img src="form_v2.webp" alt="셀프등기24 서류 작성 화면" loading="lazy"></figure></li>
+  <li class="tt" id="card-4"><div class="tt-tx"><div class="tt-h"><span class="tt-n">4</span><span class="tt-w">등기소 한 번</span></div><h3 class="tt-t">신청서 출력·등기소 접수</h3><p class="tt-d">신청서를 자동완성해 관할 등기소에 <span class="nw">한 번 제출합니다.</span></p><div class="tt-go"><a class="tt-cta" href="normal_form.html">서류 작성 시작하기 →</a><span>등기부 한 장으로 시작 · 입력과 안내는 무료</span></div></div><figure class="tt-img" data-url="selfregi24.com"><img src="form_v2.webp" alt="셀프등기24 서류 작성 화면" loading="lazy"></figure></li>
 </ol>
 <details class="all">
     <summary>단계별 자세한 설명 읽기</summary>
@@ -900,7 +909,7 @@ header{background:#F4F5F8}
     <div class="stp-head"><h3 class="stp-t" id="step-2-t">세금·채권 납부하기</h3></div><div class="stp-where"><span>위택스</span><span>은행</span><span>전자수입인지</span><span>인터넷등기소</span></div>
     <div class="stp-b">
     <p class="stp-lead">취득세, 국민주택채권, 인지세, 등기신청수수료를 온라인으로 냅니다. 채권·인지·수수료는 잔금 전에 미리 낼 수 있습니다. 받은 번호는 아래 <a href="#vault-sec">번호 보관함</a>에 저장하면 신청서에 자동으로 채워집니다. 예상 취득세는 <a href="calculator.html">취득세 계산기</a>에서 확인하세요.</p>
-    <p class="stp-flow" style="margin:10px 0 0"><a href="guide_flow.html" style="font-weight:700">한 화면씩 따라 하기 →</a> <span style="color:#64748B;font-size:14px">이미 낸 것은 건너뛰고 번호만 적습니다</span></p>
+    <p class="stp-flow" style="margin:10px 0 0"><a href="guide_flow.html" style="font-weight:700">한 화면씩 따라 하기 →</a> <span style="color:#667085;font-size:14px">이미 낸 것은 건너뛰고 번호만 적습니다</span></p>
     <div class="dl-note">
       <b>취득세는 등기 접수 전에 납부가 끝나 있어야 합니다</b>
       <p>신고·납부 기한은 취득일(보통 잔금일)부터 60일이지만, 신청서에 취득세 납부확인서를 첨부하므로 <span class="dl-em">등기를 접수하는 날까지 납부가 끝나 있어야</span> 합니다. 일정은 60일이 아니라 등기 접수일을 기준으로 세우세요.</p>
