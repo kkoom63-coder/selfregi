@@ -22,6 +22,10 @@
 - [반려·각하 사유 점검](https://www.selfregi24.com/reject.html): 부동산등기법 제29조 각하 사유별 점검 항목
 - [근저당권 말소 셀프 안내](https://www.selfregi24.com/cancel_guide.html)
 - [증여 등기 셀프 안내](https://www.selfregi24.com/gift_guide.html) · [증여 취득세 계산기](https://www.selfregi24.com/gift_tax.html)
+- [전세 계약 전 등기부 점검](https://www.selfregi24.com/jeonse_check.html): 등기부 PDF에서 소유자·압류·가압류·신탁·근저당 채권최고액을 찾아 계약 전 확인할 것으로 정리(무료, 파일은 브라우저 안에서만 읽음)
+- [셀프등기 통계](https://www.selfregi24.com/stats.html): 대법원 등기정보광장 기준 당사자(셀프) 직접 신청 건수·비중 월별 추이(2026년 1~8월 45,978건, 전체의 1.31%, 전년 같은 기간 대비 +39.3%)
+- [서울 전세 신호](https://www.selfregi24.com/jeonse_signal.html): 대법원 등기정보광장 Open API 기준 서울 25개 구별 임차권등기명령 · 경매개시 · 확정일자 전세 비중 · 전세 보증금 평균, 매달 갱신
+- 구별 페이지(25개): 주소 형식 https://www.selfregi24.com/jeonse_seoul_<구 영문>.html (예: jeonse_seoul_gangseo.html) — 구마다 임차권등기명령 월별 건수 · 확정일자 1,000건당 비율 · 서울 내 순위 · 경매개시 · 전세 보증금 평균
 
 ## 운영
 - 운영: 셀프등기24 (사업자등록번호 164-20-02315), 서울특별시 중구 동호로 173
