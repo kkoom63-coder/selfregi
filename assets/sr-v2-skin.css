@@ -102,3 +102,13 @@ footer .foot-links a{display:inline-flex;align-items:center;min-height:44px}
 button,input,select,textarea{font-family:inherit}
 a:not([class]):not([style*=color]){color:var(--blue-h)}
 .req{color:var(--warn-ink)}
+/* 글 위주 페이지 A2(2026-11-16 사용자 확정): 머리는 흰색, 본문 바닥은 연회색, 흰 카드가 떠 보이게. 카드 제목 18 · 본문 16 으로 위계.
+   대상 = .page-header 가 있는 페이지(calculator · cost · gift_guide · gift_tax · jeonse_check · joint · reject · stats) */
+html:has(.page-header),body:has(.page-header){background:var(--soft)}
+body:has(.page-header) .page-header{background:#fff;padding-bottom:40px}
+body:has(.page-header) .card{border:0;border-radius:var(--r-l,24px);padding:32px;margin-bottom:16px}
+body:has(.page-header) .step-num{background:var(--blue-soft);color:var(--blue-h)}
+body:has(.page-header) .ct{font-size:18px;color:var(--ink)}
+body:has(.page-header) .ans{font-size:16px;line-height:1.7}
+body:has(.page-header) footer{border-top:1px solid var(--line)}
+@media(max-width:640px){body:has(.page-header) .card{padding:24px 16px;border-radius:var(--r-m,16px)}}
