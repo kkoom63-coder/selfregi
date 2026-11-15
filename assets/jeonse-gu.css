@@ -92,6 +92,8 @@
 .h-top a{font-weight:700;display:inline-flex;align-items:center;min-height:44px}
 .h-maphead{margin-bottom:12px}
 .h-map{max-width:none}
+/* 지도는 <nav> 라 sr-v2 의 nav{position:sticky} 가 같이 걸린다 — 가로 모드에서 화면을 덮던 원인(모바일 보강 2026-11-15) */
+.g-map{position:static;z-index:auto;background:none;backdrop-filter:none}
 .h-tbl{width:100%;border-collapse:collapse;font-size:var(--t-16);font-variant-numeric:tabular-nums}
 .h-tbl th,.h-tbl td{padding:10px 8px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
 .h-tbl thead th{font-size:var(--t-14);color:var(--sub);font-weight:600}
@@ -112,3 +114,5 @@
 .g-cta{margin-top:24px}
 .legend{row-gap:4px}.legend span:last-child{white-space:nowrap}
 @media (max-width:768px){.g-cta{width:100%}}
+/* 320 · 큰 글자에서 표가 넘치지 않게 — 아래에 둬야 위 .h-tbl 여백 규칙을 이긴다(모바일 보강 2026-11-15) */
+@media (max-width:400px){.h-tbl thead th{white-space:normal}.h-tbl th,.h-tbl td{padding-left:4px;padding-right:4px}}
