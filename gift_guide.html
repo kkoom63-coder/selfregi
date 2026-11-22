@@ -602,6 +602,8 @@ footer{background:var(--bg);border-top:1px solid var(--border);margin-top:40px;p
 </script>
 <script src="assets/sr-v2-motion.js?v=1111" data-rv=".card,.finish" defer></script>
 <script>/* 제휴 광고 클릭(2026-11-10): 매매 계산기와 같은 이벤트명·키(soomgo_tax·soomgo_appraise). 휠 클릭도 센다 */
-document.querySelectorAll('.aff [data-aff]').forEach(function(a){function hit(){window.gtag&&gtag('event','aff_click',{key:'soomgo_'+a.dataset.aff})}a.addEventListener('click',hit);a.addEventListener('auxclick',function(e){if(e.button===1)hit()})});</script>
+document.querySelectorAll('.aff [data-aff]').forEach(function(a){function hit(){window.gtag&&gtag('event','aff_click',{key:'soomgo_'+a.dataset.aff})}a.addEventListener('click',hit);a.addEventListener('auxclick',function(e){if(e.button===1)hit()})});
+/* 광고 노출(2026-11-22): 광고 카드가 화면에 절반 이상 1초 넘게 보이면 페이지당 한 번 aff_view. 클릭률 = aff_click ÷ aff_view */
+(function(){var cs=document.querySelectorAll('.aff');if(!cs.length||!('IntersectionObserver' in window))return;var done=0,t={};var o=new IntersectionObserver(function(es){es.forEach(function(e,i){if(done)return;var k=e.target;if(e.isIntersecting){k._t=setTimeout(function(){if(done)return;done=1;o.disconnect();window.gtag&&gtag('event','aff_view',{key:'soomgo'})},1000)}else clearTimeout(k._t)})},{threshold:.5});cs.forEach(function(c){o.observe(c)})})();</script>
 </body>
 </html>
