@@ -709,6 +709,16 @@ p,.pv-r,.ck span,.rvl p{font-size:14px;line-height:1.6}
   .rvl-nav button{width:44px;height:44px}
   #app button.link{min-height:44px}
 }
+/* 2026-11-23 R8-B107 · B108: 휴대폰 단계 줄 — 7칸을 같은 폭으로 나눠 화면 밖으로 밀리지 않게, 칸마다 44px.
+   단계 이름은 바로 아래 카드 제목(h2)에 있으니 줄 안 글자는 화면 읽기용으로만 남긴다. 데스크톱은 그대로. */
+@media (max-width:960px){
+  .stp7{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:0;overflow:visible;margin-left:-8px;margin-right:-8px}
+  .stp7 li{min-width:0}
+  .s7,.s7:not(.cur):not(.sel){position:relative;justify-content:center;min-height:44px;padding:0}
+  .s7 .s7-t,.s7:not(.cur):not(.sel) .s7-t{display:block;position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  .pv-x{min-height:32px;min-width:44px;margin-left:2px}
+  .pvp-reset{min-height:44px;display:flex;align-items:center}
+}
 </style>
 </head>
 <body>
